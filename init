@@ -1,0 +1,116 @@
+#!/bin/bash
+
+bootstrap_dir=$(dirname "${BASH_SOURCE}")
+cd $bootstrap_dir
+bootstrap_dir=$(pwd)
+target_dir=${BOOTSTRAP_TARGET_DIR:-$HOME}
+
+# Place any user specific / private defaults or overrides in $HOME/.bootstrap_private
+if [[ -e "$HOME/.bootstrap_private" ]]; then source "$HOME/.bootstrap_private"; fi
+
+# a BSD/OS X version is expected
+READLINK=${READLINK:-/usr/bin/readlink}
+# this shell will be added to /etc/shells and set as the default
+DESIRED_SHELL=${DESIRED_SHELL:-/usr/local/bin/zsh}
+
+# --- --- --- --- --- --- ---
+# create dot file symlinks
+# --- --- --- --- --- --- ---
+
+shopt -s dotglob
+for f in "$bootstrap_dir/dots"/*; do
+  dotbasename=${f##*/}
+  if [[ "$dotbasename" = "README.md" ]]; then continue; fi
+  target_instance="$target_dir/$dotbasename"
+  create_symlink=1
+  create_backup=1
+  if [[ -e $target_instance ]]; then
+    if [[ -h $target_instance ]]; then
+      target_linkval=$(READLINK "$target_instance")
+      if [[ "$target_linkval" = "$f" ]]; then
+        create_symlink=0
+        create_backup=0
+        echo "dot file $dotbasename is already set up correctly"
+      fi
+    fi
+  else
+    create_backup=0
+  fi
+  if [[ $create_symlink -eq 1 ]]; then
+    if [[ $create_backup -eq 1 ]]; then
+      backup="$target_instance.bak" 
+      echo "mv \"$target_instance\" \"$backup\""
+      mv "$target_instance" "$backup"
+    fi
+    mkdir -p "${target_instance%/*}"
+    echo "ln -s \"$f\" \"$target_instance\""
+    ln -s "$f" "$target_instance"
+  fi
+done
+shopt -u dotglob
+
+
+# --- --- --- --- --- --- ---
+# configure git
+# --- --- --- --- --- --- ---
+
+if [[ ! "$GIT_AUTHOR_NAME" = "" && ! "$GIT_AUTHOR_EMAIL" = "" ]]; then
+  git config --global user.name "$GIT_AUTHOR_NAME"
+  git config --global user.email "$GIT_AUTHOR_EMAIL"
+fi
+
+
+# --- --- --- --- --- --- ---
+# set desired os x behavior
+# --- --- --- --- --- --- ---
+
+echo "setting up OS X behavior preferences"
+source "$bootstrap_dir/scripts/set_up_os_x"
+
+
+# --- --- --- --- --- --- ---
+# install and run homebrew
+# --- --- --- --- --- --- ---
+
+if ! (command -v brew >/dev/null); then
+  echo "Homebrew was not found. Installing..."
+  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+fi
+brewcmd="brew bundle $target_dir/Brewfile"
+echo "$brewcmd"
+$brewcmd
+
+
+# --- --- --- --- --- --- ---
+# set up Sublime Text 3
+# --- --- --- --- --- --- ---
+
+link_location="$HOME/Library/Application Support/Sublime Text 3"
+mkdir -p "$(dirname $link_location)"
+rm -rf "$link_location"
+ln -s "$bootstrap_dir/prefs/SublimeText3" "$link_location"
+mkdir -p "$HOME/bin"
+rm -f "$HOME/bin/subl"
+ln -s "$HOME/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl" "$HOME/bin/subl"
+
+
+# --- --- --- --- --- --- ---
+# set up iTerm 2
+# --- --- --- --- --- --- ---
+
+link_location="$HOME/Library/Preferences/com.googlecode.iterm2.plist"
+mkdir -p "$(dirname $link_location)"
+rm -f "$link_location"
+ln -s "$bootstrap_dir/prefs/com.googlecode.iterm2.plist" "$link_location"
+
+
+# --- --- --- --- --- --- ---
+# set the desired shell
+# --- --- --- --- --- --- ---
+
+if ! $(grep -q $DESIRED_SHELL /etc/shells); then
+  echo $DESIRED_SHELL|sudo tee -a /etc/shells>/dev/null;
+fi
+if ! [[ "$(finger $USER|grep -o 'Shell: .*')" = "Shell: $DESIRED_SHELL" ]]; then
+  chsh -s $DESIRED_SHELL;
+fi

@@ -1,0 +1,20 @@
+# Place a copy of this template at ~/.bootstrap_private prior
+# to running the init script. This file will also be read during
+# shell initialization.
+
+# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+# used by bootstrap init 
+# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+DESIRED_SHELL=/usr/local/bin/zsh
+
+GIT_AUTHOR_NAME="<your git username>"
+GIT_COMMITTER_NAME=$GIT_AUTHOR_NAME
+GIT_AUTHOR_EMAIL="<your git email>"
+GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+
+# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+# any other private/personal/user specific values, formulae, aliases
+# --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+alias webproject="cd ~/mycompanyprojects/web"

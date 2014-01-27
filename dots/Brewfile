@@ -1,0 +1,75 @@
+# Homebrew Brewfile
+# run with: brew bundle /path/to/Brewfile
+
+# update Homebrew
+update
+
+# upgrade install formulae
+upgrade
+
+install openssl
+install coreutils
+install findutils
+install bash
+install libxml2
+install libxslt
+install libyaml
+install mongodb
+install tig
+install reattach-to-user-namespace
+install tmux
+install the_silver_searcher
+install sqlite
+install ec2-api-tools
+install aws-cfn-tools
+install aws-elasticbeanstalk
+install aws-iam-tools
+install bash-completion
+install cloud-watch
+install ctags
+install elb-tools
+install imagemagick
+install maven
+install watch
+install zsh
+install jq
+install gnu-sed
+
+# set up brew cask
+tap phinze/homebrew-cask
+install brew-cask
+tap caskroom/versions
+
+# casks
+cask install bettertouchtool
+cask install iterm2-nightly
+cask install sublime-text3
+cask install virtualbox
+cask install vagrant
+cask install alfred
+cask alfred link
+cask install dropbox
+cask install caffeine
+cask install evernote
+cask install steam
+cask install mou
+cask install adium
+cask install firefox
+cask install google-chrome
+cask install sequel-pro
+cask install spotify
+cask install nvalt
+cask install appcleaner
+cask install fantastical
+cask install bowtie
+cask install vlc
+
+# these are currently coming from the Mac App Store, not Cask
+# xee
+# formatmatch
+# kypass companion
+# clear
+
+# remove old cruft
+cleanup
+

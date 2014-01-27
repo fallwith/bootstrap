@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# with content from:
+#   https://github.com/mathiasbynens/dotfiles/blob/master/.osx
+
+# Save to disk (not to iCloud) by default
+defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
+
+# Automatically quit printer app once the print jobs complete
+defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
+
+# Trackpad: enable tap to click for this user and for the login screen
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+
+# Enable full keyboard access for all controls
+# (e.g. enable Tab in modal dialogs)
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
+# Disable Spotlight indexing of /Volumes mounted volumes
+sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
+
+# Disable the "Are you sure you want to open this application?" dialog
+defaults write com.apple.LaunchServices LSQuarantine -bool false
+
+# Empty Trash securely by default
+#defaults write com.apple.finder EmptyTrashSecurely -bool true
+
+# Disable smart quotes as they’re annoying when typing code
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+
+# Disable smart dashes as they’re annoying when typing code
+defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+
+# Enable subpixel font rendering on non-Apple LCDs  # 1/2
+defaults write NSGlobalDomain AppleFontSmoothing -int 2
+
+# Set a low key initial key repeat and go as fast as possible afterwards
+defaults write NSGlobalDomain InitialKeyRepeat -int 7
+defaults write NSGlobalDomain KeyRepeat -int 0
