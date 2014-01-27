@@ -1,1 +1,0 @@
-/Users/jamesbunch/scratch/test/.vim
