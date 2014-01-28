@@ -1,6 +1,8 @@
 prefs/SublimeText3/Cache
 prefs/SublimeText3/Index
 prefs/SublimeText3/Local
+prefs/SublimeText3/Packages/User/Package Control.cache
+prefs/SublimeText3/Packages/User/Package Control.last-run
 .bootstrap_private
 dots/.zsh/.zcompdump*
 dots/.zsh/.zsh_history
