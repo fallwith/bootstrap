@@ -80,3 +80,7 @@ export AWS_CLOUDWATCH_HOME="/usr/local/Library/LinkedKegs/cloud-watch/jars"
 export SERVICE_HOME="$AWS_CLOUDWATCH_HOME"
 rds_tool_ver=$(ls /usr/local/Cellar/rds-command-line-tools)
 export AWS_RDS_HOME="/usr/local/Cellar/rds-command-line-tools/$rds_tool_ver/libexec"
+
+# bundler
+alias bspec='bundle exec rspec'
+alias brake='bundle exec rake'
