@@ -55,11 +55,16 @@ clean() {
 gitidentity() {
   gitusername=$1
   gitemail=$2
+  gitsshkey=$3
   if [[ ! "$gitusername" = "" && ! "$gitemail" = "" ]]; then
     git config --global user.name "$gitusername"
     git config --global user.email "$gitemail"
+    if [[ ! "$gitsshkey" == "" && -e "$gitsshkey" ]]; then
+      ssh-add -D
+      ssh-add "$gitsshkey"
+    fi
   else
-    echo "Usage: gitidentify <user> <email>"
+    echo "Usage: gitidentify <user> <email> (/path/to/ssh/key)"
   fi
 }
 
