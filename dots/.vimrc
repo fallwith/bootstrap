@@ -1,7 +1,8 @@
-" james' .vimrc - 2012-07-27
+" james' .vimrc - 2014-03-02
 
-" see twerth's .vimrc:    https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
-" see railsjedi's .vimrc: https://github.com/railsjedi/vimconfig/blob/master/vimrc
+" see twerth's .vimrc:     https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
+" see railsjedi's .vimrc:  https://github.com/railsjedi/vimconfig/blob/master/vimrc
+" see thoughtbot's .vimrc: https://github.com/thoughtbot/dotfiles/blob/master/vimrc
 
 " Vundle
 " run :BundleInstall to install bundles, :BundleUpdate to update them, :BundleClean to remove them
@@ -11,50 +12,30 @@ Bundle 'gmarik/vundle'
 Bundle 'rking/ag.vim'
 Bundle 'wesgibbs/vim-irblack'
 Bundle 'nanotech/jellybeans.vim'
-
-" set runtimepath=$HOME/.vim,$VIMRUNTIME
-
-" A vim function that keeps your state
-" http://technotales.wordpress.com/2010/03/31/preserve
-function! Preserve(command)
-  " Preparation: save last search, and cursor position.
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
-  " Do the business:
-  execute a:command
-  " Clean up: restore previous search history, and cursor position
-  let @/=_s
-  call cursor(l, c)
-endfunction
-
-" Ruby: provide a clickable list of all lines in the current
-" file that contain 'def '.
-function! ListMethods()
-  vimgrep /def /j %
-  copen
-endfunction
-command! -bar -narg=0 Methods call ListMethods()
+Bundle 'kien/ctrlp.vim'
+Bundle 'scrooloose/nerdtree'
+Bundle 'jistr/vim-nerdtree-tabs'
+Bundle 'bling/vim-airline'
+Bundle 'tpope/vim-fugitive'
+Bundle 'scrooloose/nerdcommenter'
 
 set nocompatible          " disable vi compatibilty
 "filetype plugin indent on " autodetect file type, load plugins and indent settings
+filetype plugin on        " autodetect file type, load appropriate plugins
 
 syntax enable             " enable syntax highlighting
 set t_Co=256              " 256 colors
-colorscheme jellybeans    " set default color scheme (ir_black, desert) 
-" let g:solarized_termcolors=256
-" let g:solarized_termtrans=1
-" colorscheme solarized
+colorscheme jellybeans    " set default color scheme (ir_black, desert)
 set bg=dark               " use dark background
 
 " GUI specific features
 if has('gui_running')
-  set transparency=10                 " transparent background (requires experimental renderer in MacVim)
+  set transparency=10                 " transparent background
   set list                            " show invisibles
   set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
-  set nu                              " enable line numbers
-  set numberwidth=4                   " specify line numbers column width
-  set guifont=Inconsolata:h14         " specify font family and size
+  "set guifont=Inconsolata:h14         " specify font family and size
+  "set guifont=Monaco:h12
+  "set guifont=Menlo:h11
 endif
 
 set autowrite             " save on shell commands
@@ -74,27 +55,19 @@ set ignorecase            " case insensitive searching
 set smartcase             " trigger case sensitivity when an upper case char is used
 set incsearch             " as-you-type searching
 set nocindent             " disable c style indenting
-
-" if /tmp is availabe, write backup/swap files there
-if filewritable("/tmp")
-  silent execute '!mkdir -p /tmp/vim'
-  " delete any files older than n days
-  silent execute '!find /tmp/vim -mtime +7 -exec rm {} \;'
-  set directory=/tmp/vim
-  set backupdir=/tmp/vim
-endif
+set nobackup              " disable backups"
+set nowritebackup         " disable backups"
+set noswapfile            " disable the creation of .swp swap files
+set nu                    " enable line numbers
+set numberwidth=5         " specify line numbers column width
+set vb t_vb=              " disable bell
 
 let mapleader = ","
 
 :noremap <Leader>i :set nolist!<CR>  " toggle display of invisibles
 
-set vb t_vb= " disable bell
-
 " Leader-r reloads the vimrc -- making all changes active (have to save first)
-map <silent> <Leader>r :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>:NERDTreeClose<CR>
-
-map <S-Enter> O<ESC> " awesome, inserts new line without going into insert mode
-map <Enter> o<ESC>
+map <silent> <Leader>r :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
 " Replicate textmate CMD-[ and CMD-] for indentation
 nmap <D-[> <<
@@ -123,13 +96,38 @@ vmap <S-left> h
 nmap <S-h> vh
 vmap <S-h> h
 
-" strip away all trailing whitespace (hit shift + s quickly after the leader)
-nmap <leader><S-s> :call Preserve("%s/\\s\\+$//e")<CR>
-
-" pass the current script to ruby on F5
-map <F5> :!ruby %<CR>
-
 " Vertical and horizontal split then hop to a new buffer
 :noremap <Leader>v :vsp^M^W^W<cr>
 :noremap <Leader>h :split^M^W^W<cr>
 
+" NERDTree
+" ctrl-n to toggle NERDTree
+map <C-n> :NERDTreeToggle<CR>
+" show hidden files
+let NERDTreeShowHidden=1
+" quit NERDTree if it is the last buffer open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" splits
+" instead of ctrl+w, letter, just do ctrl+letter
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+:noremap <Leader>l :CtrlPLine<CR>
+
+" use ag instead of grep
+" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+if executable('ag')
+" Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+" ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
+let g:airline_theme='powerlineish'
