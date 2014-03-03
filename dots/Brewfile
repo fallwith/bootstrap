@@ -34,6 +34,7 @@ install watch
 install zsh
 install jq
 install gnu-sed
+install macvim --override-system-vim
 
 # set up brew cask
 tap phinze/homebrew-cask
