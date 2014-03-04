@@ -5,7 +5,19 @@
 " see thoughtbot's .vimrc: https://github.com/thoughtbot/dotfiles/blob/master/vimrc
 
 " Vundle
+"
 " run :BundleInstall to install bundles, :BundleUpdate to update them, :BundleClean to remove them
+"
+" Automatic installation logic originally from:
+"   http://www.erikzaadi.com/2012/03/19/auto-installing-vundle-from-your-vimrc/
+let bundleInstallNeeded=0
+if !filereadable(expand('~/.vim/bundle/vundle/README.md'))
+  echo 'Installing Vundle...'
+  echo ''
+  silent !mkdir -p ~/.vim/bundle
+  silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
+  let bundleInstallNeeded=1
+endif
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 Bundle 'gmarik/vundle'
@@ -18,6 +30,11 @@ Bundle 'jistr/vim-nerdtree-tabs'
 Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
 Bundle 'scrooloose/nerdcommenter'
+if bundleInstallNeeded == 1
+  echo 'Running :BundleInstall to install Vundle bundles...'
+  echo ''
+  :BundleInstall
+endif
 
 set nocompatible          " disable vi compatibilty
 "filetype plugin indent on " autodetect file type, load plugins and indent settings
