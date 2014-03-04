@@ -63,6 +63,7 @@
   rev = !git revision
   pullr = pull --rebase
   longmessage = commit -F- <<EOF
+  forceclean = clean -fx
 [core]
   excludesfile = ~/.gitignore
 [push]
