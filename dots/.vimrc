@@ -26,10 +26,11 @@ Bundle 'wesgibbs/vim-irblack'
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/nerdtree'
-Bundle 'jistr/vim-nerdtree-tabs'
 Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
 Bundle 'scrooloose/nerdcommenter'
+Bundle 'mhinz/vim-startify'
+Bundle 'techlivezheng/vim-plugin-minibufexpl'
 if bundleInstallNeeded == 1
   echo 'Running :BundleInstall to install Vundle bundles...'
   echo ''
@@ -118,6 +119,8 @@ vmap <S-h> h
 :noremap <Leader>h :split^M^W^W<cr>
 
 " NERDTree
+" don't autostart when vim is launched with a gui (only needed for vim-nerdtree-tabs)
+" let g:nerdtree_tabs_open_on_gui_startup=0
 " ctrl-n to toggle NERDTree
 map <C-n> :NERDTreeToggle<CR>
 " show hidden files
@@ -133,6 +136,7 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 :noremap <Leader>l :CtrlPLine<CR>
+:noremap <Leader>b :CtrlPBufTag<CR>
 
 " use ag instead of grep
 " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
@@ -148,3 +152,13 @@ if executable('ag')
 endif
 
 let g:airline_theme='powerlineish'
+
+let g:startify_unlisted_buffer=0
+
+let g:startify_custom_header = [
+\ '  \  /. _ _ ',
+\ '   \/ || | |',
+\ '',
+\ '',
+\ ]
+
