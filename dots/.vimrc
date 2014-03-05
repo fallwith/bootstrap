@@ -1,8 +1,11 @@
-" james' .vimrc - 2014-03-02
+" fallwith's .vimrc - 2014-03-04
 
-" see twerth's .vimrc:     https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
-" see railsjedi's .vimrc:  https://github.com/railsjedi/vimconfig/blob/master/vimrc
-" see thoughtbot's .vimrc: https://github.com/thoughtbot/dotfiles/blob/master/vimrc
+" references:
+"   twerth's .vimrc:     https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
+"   railsjedi's .vimrc:  https://github.com/railsjedi/vimconfig/blob/master/vimrc
+"   thoughtbot's .vimrc: https://github.com/thoughtbot/dotfiles/blob/master/vimrc
+"   astrails' dotvim:    https://github.com/astrails/dotvim#installation
+"   timss' .vimrc:       https://github.com/timss/vimconf/blob/master/.vimrc
 
 " Vundle
 "
@@ -31,6 +34,12 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'mhinz/vim-startify'
 Bundle 'techlivezheng/vim-plugin-minibufexpl'
+Bundle 'scrooloose/syntastic'
+Bundle 'tpope/vim-surround'
+" Vundle bundles that only apply to / only work well with the gui
+if has('gui_running')
+  Bundle 'Raimondi/delimitMate'
+endif
 if bundleInstallNeeded == 1
   echo 'Running :BundleInstall to install Vundle bundles...'
   echo ''
@@ -38,8 +47,7 @@ if bundleInstallNeeded == 1
 endif
 
 set nocompatible          " disable vi compatibilty
-"filetype plugin indent on " autodetect file type, load plugins and indent settings
-filetype plugin on        " autodetect file type, load appropriate plugins
+filetype plugin on        " enable plugins related to the opened file's type
 
 syntax enable             " enable syntax highlighting
 set t_Co=256              " 256 colors
@@ -51,9 +59,13 @@ if has('gui_running')
   set transparency=10                 " transparent background
   set list                            " show invisibles
   set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
-  "set guifont=Inconsolata:h14         " specify font family and size
+
+  "set guifont=Inconsolata:h14        " specify font family and size
   "set guifont=Monaco:h12
   "set guifont=Menlo:h11
+
+  " indentation seems a bit odd outside of the gui
+  filetype plugin indent on
 endif
 
 set autowrite             " save on shell commands
@@ -66,8 +78,8 @@ set ts=2                  " tabs are 2 spaces
 set bs=2                  " backspace over everything in insert mode
 set shiftwidth=2          " tabs under smart indent
 set laststatus=2          " always show status line
-"set autoindent            " a new line is indented as far as the previous one
-"set smartindent           " enable intelligent indenting behavior
+set autoindent            " a new line is indented as far as the previous one
+set smartindent           " enable intelligent indenting behavior
 set hlsearch              " highlight located values being searched for
 set ignorecase            " case insensitive searching
 set smartcase             " trigger case sensitivity when an upper case char is used
@@ -86,12 +98,6 @@ let mapleader = ","
 
 " Leader-r reloads the vimrc -- making all changes active (have to save first)
 map <silent> <Leader>r :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
-
-" Replicate textmate CMD-[ and CMD-] for indentation
-nmap <D-[> <<
-nmap <D-]> >>
-vmap <D-[> <gv
-vmap <D-]> >gv
 
 " Replicate textmate shift arrow/movement in order to select stuff
 nmap <S-up> vk
@@ -135,26 +141,30 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" CtrlP
+" search for a fuzzily matching line within the current file
 :noremap <Leader>l :CtrlPLine<CR>
+" search for a fuzzily matching tag within the current buffer (method list)
 :noremap <Leader>b :CtrlPBufTag<CR>
 
-" use ag instead of grep
-" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+" ag (The Silver Searcher)
+" https://github.com/ggreer/the_silver_searcher
 if executable('ag')
-" Use Ag over Grep
+  " use ag instead of grep
   set grepprg=ag\ --nogroup\ --nocolor
 
-" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  " use ag for CtrlP for listing files
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
-" ag is fast enough that CtrlP doesn't need to cache
+  " ag is fast enough for CtrlP not to have to cache
   let g:ctrlp_use_caching = 0
 endif
 
+" Airline
 let g:airline_theme='powerlineish'
 
+" Startify
 let g:startify_unlisted_buffer=0
-
 let g:startify_custom_header = [
 \ '  \  /. _ _ ',
 \ '   \/ || | |',
