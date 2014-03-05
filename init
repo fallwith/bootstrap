@@ -82,19 +82,6 @@ $brewcmd
 
 
 # --- --- --- --- --- --- ---
-# set up Sublime Text 3
-# --- --- --- --- --- --- ---
-
-link_location="$HOME/Library/Application Support/Sublime Text 3"
-mkdir -p "$(dirname $link_location)"
-rm -rf "$link_location"
-ln -s "$bootstrap_dir/prefs/SublimeText3" "$link_location"
-mkdir -p "$HOME/bin"
-rm -f "$HOME/bin/subl"
-ln -s "$HOME/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl" "$HOME/bin/subl"
-
-
-# --- --- --- --- --- --- ---
 # set up iTerm 2
 # --- --- --- --- --- --- ---
 
