@@ -44,7 +44,6 @@ tap caskroom/versions
 # casks
 cask install bettertouchtool
 cask install iterm2-nightly
-cask install sublime-text3
 cask install virtualbox
 cask install vagrant
 cask install alfred
@@ -67,7 +66,6 @@ cask install vlc
 
 # these are currently coming from the Mac App Store, not Cask
 # xee
-# formatmatch
 # kypass companion
 # clear
 
