@@ -1,11 +1,12 @@
 " fallwith's .vimrc - 2014-03-04
 
 " references:
-"   twerth's .vimrc:     https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
-"   railsjedi's .vimrc:  https://github.com/railsjedi/vimconfig/blob/master/vimrc
-"   thoughtbot's .vimrc: https://github.com/thoughtbot/dotfiles/blob/master/vimrc
-"   astrails' dotvim:    https://github.com/astrails/dotvim#installation
-"   timss' .vimrc:       https://github.com/timss/vimconf/blob/master/.vimrc
+"   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
+"   railsjedi's .vimrc:     https://github.com/railsjedi/vimconfig/blob/master/vimrc
+"   thoughtbot's .vimrc:    https://github.com/thoughtbot/dotfiles/blob/master/vimrc
+"   astrails' dotvim:       https://github.com/astrails/dotvim#installation
+"   timss' .vimrc:          https://github.com/timss/vimconf/blob/master/.vimrc
+"   tpope's sensibilities:  https://github.com/tpope/vim-sensible
 
 " Vundle
 "
@@ -68,6 +69,8 @@ if has('gui_running')
 
   " indentation seems a bit odd outside of the gui
   filetype plugin indent on
+else
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 endif
 
 set autowrite             " save on shell commands
@@ -95,6 +98,10 @@ set numberwidth=5         " specify line numbers column width
 set vb t_vb=              " disable bell
 set tags=.tags;/          " look for a .tags ctags file and keep looking all the way up to /
 set cursorline            " highlight the line the cursor resides on
+set shiftround            " round indentation to a multiple of 'shiftwidth'
+set wildmenu              " when tab completing commands, show available matches in a menu
+set display+=lastline     " display as much as possible of the last (overly long) line
+set history=1000          " increase the default number of remembered items from 20
 
 let mapleader = ","
 
