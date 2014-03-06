@@ -94,6 +94,7 @@ set nu                    " enable line numbers
 set numberwidth=5         " specify line numbers column width
 set vb t_vb=              " disable bell
 set tags=.tags;/          " look for a .tags ctags file and keep looking all the way up to /
+set cursorline            " highlight the line the cursor resides on
 
 let mapleader = ","
 
@@ -122,6 +123,10 @@ nmap <S-left> v
 vmap <S-left> h
 nmap <S-h> vh
 vmap <S-h> h
+
+" Rulers (column highlights)
+set cc=120
+:hi ColorColumn guibg=grey13 ctermbg=246
 
 " Vertical and horizontal split then hop to a new buffer
 :noremap <Leader>v :vsp^M^W^W<cr>
