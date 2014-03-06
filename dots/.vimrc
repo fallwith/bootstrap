@@ -189,3 +189,10 @@ nmap <F8> :TagbarOpen fj<CR>
 :command Rubyctags !rubyctags %:p<CR>
 :command Rtags Rubyctags
 
+" Tabular
+" use tabular to align on equals signs and on colons (ruby 1.9+ style hashes)
+nmap <Leader>a= :Tab/=<CR>
+vmap <Leader>a= :Tab/=<CR>
+nmap <Leader>a: :Tab/:\zs<CR>
+vmap <Leader>a: :Tab/:\zs<CR>
+
