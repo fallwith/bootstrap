@@ -36,6 +36,8 @@ Bundle 'mhinz/vim-startify'
 Bundle 'techlivezheng/vim-plugin-minibufexpl'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-surround'
+Bundle 'godlygeek/tabular'
+Bundle 'majutsushi/tagbar'
 " Vundle bundles that only apply to / only work well with the gui
 if has('gui_running')
   Bundle 'Raimondi/delimitMate'
@@ -91,6 +93,7 @@ set noswapfile            " disable the creation of .swp swap files
 set nu                    " enable line numbers
 set numberwidth=5         " specify line numbers column width
 set vb t_vb=              " disable bell
+set tags=.tags;/          " look for a .tags ctags file and keep looking all the way up to /
 
 let mapleader = ","
 
@@ -171,4 +174,13 @@ let g:startify_custom_header = [
 \ '',
 \ '',
 \ ]
+
+" Tagbar
+nmap <F8> :TagbarOpen fj<CR>
+
+" Ctags
+" create a Ruby project ctags file by passing the current file's path to the
+" external 'rubyctags' script. (see https://gist.github.com/fallwith/9383650)
+:command Rubyctags !rubyctags %:p<CR>
+:command Rtags Rubyctags
 
