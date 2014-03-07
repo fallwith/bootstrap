@@ -180,12 +180,8 @@ let g:airline_theme='powerlineish'
 
 " Startify
 let g:startify_unlisted_buffer=0
-let g:startify_custom_header = [
-\ '  \  /. _ _ ',
-\ '   \/ || | |',
-\ '',
-\ '',
-\ ]
+let g:ctrlp_reuse_window = 'startify'
+" put customizations in ~/.vimrc.last
 
 " Tagbar
 nmap <F8> :TagbarOpen fj<CR>
@@ -202,4 +198,10 @@ nmap <Leader>a= :Tab/=<CR>
 vmap <Leader>a= :Tab/=<CR>
 nmap <Leader>a: :Tab/:\zs<CR>
 vmap <Leader>a: :Tab/:\zs<CR>
+
+if filereadable($HOME . "/.vimrc.last")
+  source $HOME/.vimrc.last
+else
+  call system("touch $HOME/.vimrc.last")
+endif
 
