@@ -110,6 +110,12 @@ let mapleader = ","
 " Leader-r reloads the vimrc -- making all changes active (have to save first)
 map <silent> <Leader>r :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
+" Convert arrow key presses into instructions
+nnoremap <Left> :echoe "Use h"<CR>
+nnoremap <Right> :echoe "Use l"<CR>
+nnoremap <Up> :echoe "Use k"<CR>
+nnoremap <Down> :echoe "Use j"<CR>
+
 " Replicate textmate shift arrow/movement in order to select stuff
 nmap <S-up> vk
 vmap <S-up> k
