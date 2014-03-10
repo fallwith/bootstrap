@@ -21,3 +21,5 @@ eval red052='$FG[052]'
 eval red124='$FG[124]'
 eval green112='$FG[112]'
 eval blue039='$FG[039]'
+eval voilet013='$FG[013]'
+
