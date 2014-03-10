@@ -41,7 +41,7 @@ alias mongostart="mongod --fork --logpath /usr/local/homebrew/var/log/mongodb/mo
 
 # Clean up source code by converting tabs to 2 spaces, Windows newlines to
 # unix ones, and by stripping away trailing whitespace. Pass in a list of
-# files to clean, or let ack find a list of suitable candidates.
+# files to clean, or let ag find a list of suitable candidates.
 clean() {
   if [ $1 ]; then
     files=$@
