@@ -26,8 +26,6 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'rking/ag.vim'
-Bundle 'wesgibbs/vim-irblack'
-Bundle 'nanotech/jellybeans.vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'bling/vim-airline'
@@ -39,6 +37,10 @@ Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-surround'
 Bundle 'godlygeek/tabular'
 Bundle 'majutsushi/tagbar'
+" themes
+Bundle 'nanotech/jellybeans.vim'
+Bundle 'morhetz/gruvbox'
+Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 " Vundle bundles that only apply to / only work well with the gui
 if has('gui_running')
   Bundle 'Raimondi/delimitMate'
@@ -49,13 +51,13 @@ if bundleInstallNeeded == 1
   :BundleInstall
 endif
 
-set nocompatible          " disable vi compatibilty
-filetype plugin on        " enable plugins related to the opened file's type
+set nocompatible            " disable vi compatibilty
+filetype plugin on          " enable plugins related to the opened file's type
 
-syntax enable             " enable syntax highlighting
-set t_Co=256              " 256 colors
-colorscheme jellybeans    " set default color scheme (ir_black, desert)
-set bg=dark               " use dark background
+syntax enable               " enable syntax highlighting
+set t_Co=256                " 256 colors
+colorscheme Tomorrow-Night  " set default color scheme (ir_black, desert, jellybeans) :colorscheme<tab> for list
+set bg=dark                 " use dark background
 
 " GUI specific features
 if has('gui_running')
