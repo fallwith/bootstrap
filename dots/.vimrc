@@ -210,3 +210,9 @@ vmap <Leader>a: :Tab/:\zs<CR>
 " :S to quickly re-enable syntax highlighting
 :command! S syntax on<CR>
 
+" Syntastic
+" bypass checking if :wq (or ZZ) is used
+let g:syntastic_check_on_wq = 0
+" specify which ruby to use (enforces MRI in JRuby projects)
+let g:syntastic_ruby_mri_exec = '~/bin/ruby21'
+
