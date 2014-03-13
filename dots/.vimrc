@@ -30,7 +30,6 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
-Bundle 'mhinz/vim-startify'
 Bundle 'tpope/vim-commentary'
 Bundle 'techlivezheng/vim-plugin-minibufexpl'
 Bundle 'scrooloose/syntastic'
@@ -186,11 +185,6 @@ endif
 " Airline
 let g:airline_theme='powerlineish'
 
-" Startify
-let g:startify_unlisted_buffer=0
-let g:ctrlp_reuse_window = 'startify'
-" put customizations in ~/.vimrc.last
-
 " Tagbar
 nmap <F8> :TagbarOpen fj<CR>
 
@@ -207,9 +201,10 @@ vmap <Leader>a= :Tab/=<CR>
 nmap <Leader>a: :Tab/:\zs<CR>
 vmap <Leader>a: :Tab/:\zs<CR>
 
-if filereadable($HOME . "/.vimrc.last")
-  source $HOME/.vimrc.last
-else
-  call system("touch $HOME/.vimrc.last")
-endif
+"if filereadable($HOME . "/.vimrc.last")
+"  source $HOME/.vimrc.last
+"else
+"  call system("touch $HOME/.vimrc.last")
+"endif
+
 
