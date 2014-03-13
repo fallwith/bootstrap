@@ -207,4 +207,6 @@ vmap <Leader>a: :Tab/:\zs<CR>
 "  call system("touch $HOME/.vimrc.last")
 "endif
 
+" :S to quickly re-enable syntax highlighting
+:command! S syntax on<CR>
 
