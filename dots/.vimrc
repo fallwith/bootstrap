@@ -191,8 +191,8 @@ nmap <F8> :TagbarOpen fj<CR>
 " Ctags
 " create a Ruby project ctags file by passing the current file's path to the
 " external 'rubyctags' script. (see https://gist.github.com/fallwith/9383650)
-:command Rubyctags !rubyctags %:p<CR>
-:command Rtags Rubyctags
+:command! Rubyctags !rubyctags %:p<CR>
+:command! Rtags Rubyctags
 
 " Tabular
 " use tabular to align on equals signs and on colons (ruby 1.9+ style hashes)
