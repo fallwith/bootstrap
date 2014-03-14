@@ -13,9 +13,19 @@ function zle-line-init zle-keymap-select {
 zle -N zle-keymap-select
 zle -N zle-line-init
 
-# allow ctrl-r to search across history, as in emacs mode
+# emacs bindings
+# ctrl-r for history searching
 bindkey -M viins '^r' history-incremental-search-backward
 bindkey -M vicmd '^r' history-incremental-search-backward
+# ctrl-a for beginning of line
+bindkey -M viins '^a' beginning-of-line
+bindkey -M vicmd '^a' beginning-of-line
+# ctrl-e for end of line
+bindkey -M viins '^e' end-of-line
+bindkey -M vicmd '^e' end-of-line
+# ctrl-d for forward delete
+bindkey -M viins '^d' 'kill-word'
+bindkey -M vicmd '^d' 'kill-word'
 
 # allow ctrl-c to behave the same in normal mode as in insert mode
 bindkey -M vicmd '^c' self-insert
