@@ -1,4 +1,4 @@
-" fallwith's .vimrc - 2014-03-04
+" fallwith's .vimrc - 2014-03-13
 
 " references:
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -40,6 +40,7 @@ Bundle 'majutsushi/tagbar'
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'morhetz/gruvbox'
 Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+Bundle 'w0ng/vim-hybrid'
 " Vundle bundles that only apply to / only work well with the gui
 if has('gui_running')
   Bundle 'Raimondi/delimitMate'
@@ -110,6 +111,9 @@ let mapleader = ","
 
 " Leader-r reloads the vimrc -- making all changes active (have to save first)
 map <silent> <Leader>r :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+
+" Autocompletion
+imap <S-Tab> <C-P>
 
 " Convert arrow key presses into instructions
 nnoremap <Left> :echoe "Use h"<CR>
