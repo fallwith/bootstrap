@@ -1,4 +1,5 @@
-local ret_status="%(?:%{$green112%}$>:%{$red124%}$>%s)" # green/red indicates the result of the last operation
+# a green or red promptchar (%#) to signify the success/failure of the last operation
+local ret_status="%(?:%{$green112%}%#:%{$red124%}%#%s)"
 eval emkoala=`echo -e '\xF0\x9F\x90\xA8'`
 GIT_BRANCH_PREFIX=" %{$reset_color%}%{$fg[white]%}["
 GIT_BRANCH_SUFFIX="]%{$reset_color%}"
