@@ -108,6 +108,7 @@ set shiftround            " round indentation to a multiple of 'shiftwidth'
 set wildmenu              " when tab completing commands, show available matches in a menu
 set display+=lastline     " display as much as possible of the last (overly long) line
 set history=1000          " increase the default number of remembered items from 20
+set nojoinspaces          " don't use extra space when joining lines (with J)
 
 let mapleader = ","
 
