@@ -38,6 +38,8 @@ Bundle 'godlygeek/tabular'
 Bundle 'majutsushi/tagbar'
 Bundle 'justinmk/vim-sneak'
 Bundle 'vim-scripts/YankRing.vim'
+Bundle 'kshenoy/vim-signature'
+Bundle 'Yggdroot/indentLine'
 " themes
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'morhetz/gruvbox'
