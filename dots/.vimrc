@@ -132,6 +132,9 @@ nnoremap <Down> :echoe "Use j"<CR>
 set cc=120
 :hi ColorColumn guibg=grey13 ctermbg=246
 
+" Markdown
+command! Mou :silent :!open -a Mou.app '%:p'
+
 " NERDTree
 " don't autostart when vim is launched with a gui (only needed for vim-nerdtree-tabs)
 " let g:nerdtree_tabs_open_on_gui_startup=0
