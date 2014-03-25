@@ -1,4 +1,4 @@
-" fallwith's .vimrc - 2014-03-19
+" fallwith's .vimrc - 2014-03-25
 
 " references:
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -31,7 +31,6 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-commentary'
-Bundle 'techlivezheng/vim-plugin-minibufexpl'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-surround'
 Bundle 'godlygeek/tabular'
@@ -39,7 +38,7 @@ Bundle 'majutsushi/tagbar'
 Bundle 'justinmk/vim-sneak'
 Bundle 'vim-scripts/YankRing.vim'
 Bundle 'kshenoy/vim-signature'
-Bundle 'Yggdroot/indentLine'
+Bundle 'nathanaelkane/vim-indent-guides'
 " themes
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'morhetz/gruvbox'
@@ -159,10 +158,8 @@ set splitbelow
 set splitright
 
 " CtrlP
-" search for a fuzzily matching line within the current file
-:noremap <Leader>l :CtrlPLine<CR>
-" search for a fuzzily matching tag within the current buffer (method list)
-:noremap <Leader>b :CtrlPBufTag<CR>
+" list buffers
+:noremap <Leader>b :CtrlPBuffer<CR>
 
 " ag (The Silver Searcher)
 " https://github.com/ggreer/the_silver_searcher
@@ -219,3 +216,11 @@ let g:yankring_replace_n_pkey = '<leader>['
 let g:yankring_replace_n_nkey = '<leader>]'
 nmap <leader>y :YRShow<cr>
 let g:yankring_history_dir = '~/.vim'
+
+" Indent Guides
+" <Leader>ig to toggle
+" :help indent-guides
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_color_change_percent = 20
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2
