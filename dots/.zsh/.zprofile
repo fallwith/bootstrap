@@ -71,8 +71,6 @@ gitidentity() {
 export JRUBY_OPTS="-J-XX:MaxPermSize=256m -J-Xmx1024m"
 export JAVA_HOME="$(/usr/libexec/java_home)"
 
-alias ag="ag -i"
-
 # aws
 export EC2_PRIVATE_KEY=~/.ec2/pk-amazon.pem
 export EC2_CERT=~/.ec2/cert-amazon.pem
