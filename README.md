@@ -39,19 +39,16 @@ Currently, the following operations are carried out:
 
 3. Several OS X behavior configuration changes are made to cater to the power user's preferences. See [scripts/set_up_os_x](scripts/set_up_os_x) for more details.
 
-4. [Sublime Text 3][3] - after being installed by Homebrew-cask - is enhanced with helpful settings and packages.
+4. [iTerm 2][4] - after being installed by Homebrew-cask - is configured with a custom property list file.
 
-5. [iTerm 2][4] - after being installed by Homebrew-cask - is configured with a custom property list file.
+5. Several dot files for software such as The Silver Searcher, Pry, Git, Tmux, etc. are configured in the user's home directory.
 
-6. Several dot files for software such as The Silver Searcher, Pry, Git, Tmux, etc. are configured in the user's home directory.
+6. [Vim][5] is configured and set up to use [Vundle][6] for plugin management.
 
-7. [Vim][5] is configured and set up to use [Vundle][6] for plugin management.
-
-8. [Zsh][7] is configured for a balance of power and speed by leveraging some of the work from both the [oh-my -zsh][8] and [Prezto][9] projects without loading either.
+6. [Zsh][7] is configured for a balance of power and speed by leveraging some of the work from both the [oh-my -zsh][8] and [Prezto][9] projects without loading either.
 
 [1]: http://brew.sh/
 [2]: https://github.com/phinze/homebrew-cask
-[3]: http://www.sublimetext.com/3
 [4]: http://www.iterm2.com/
 [5]: http://www.vim.org/
 [6]: https://github.com/gmarik/vundle
