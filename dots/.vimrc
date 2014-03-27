@@ -113,6 +113,9 @@ let mapleader = ","
 
 map w!! %!sudo tee > /dev/null %      " force a write if vim was launched without sudo
 
+" Filetypes
+au BufRead,BufNewFile *.md set filetype=markdown        " treat .md files as Markdown (not Modula)
+
 " Leader-r reloads the vimrc -- making all changes active (have to save first)
 map <silent> <Leader>r :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
