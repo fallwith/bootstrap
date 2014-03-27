@@ -55,8 +55,7 @@ if bundleInstallNeeded == 1
 endif
 
 set nocompatible            " disable vi compatibilty
-filetype plugin on          " enable plugins related to the opened file's type
-
+filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
 syntax enable               " enable syntax highlighting
 set t_Co=256                " 256 colors
 colorscheme jellybeans      " set default color scheme (ir_black, desert, jellybeans) :colorscheme<tab> for list
@@ -71,9 +70,6 @@ if has('gui_running')
   "set guifont=Inconsolata:h14        " specify font family and size
   "set guifont=Monaco:h12
   "set guifont=Menlo:h11
-
-  " indentation seems a bit odd outside of the gui
-  filetype plugin indent on
 else
   set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 endif
@@ -108,6 +104,8 @@ set wildmenu              " when tab completing commands, show available matches
 set display+=lastline     " display as much as possible of the last (overly long) line
 set history=1000          " increase the default number of remembered items from 20
 set nojoinspaces          " don't use extra space when joining lines (with J)
+set nrformats=            " treat all numerals as decimal (leading zeroes won't signify octal)
+set pastetoggle=<F2>      " (for non gui Vim) hit F2 to toggle paste mode (which won't attempt to apply indentation)
 
 let mapleader = ","
 
