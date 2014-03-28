@@ -1,14 +1,15 @@
-" fallwith's .vimrc - 2014-03-25
+" vim:fdm=marker
+" fallwith's .vimrc - 2014-03-28
 
-" references:
+" references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
 "   railsjedi's .vimrc:     https://github.com/railsjedi/vimconfig/blob/master/vimrc
 "   thoughtbot's .vimrc:    https://github.com/thoughtbot/dotfiles/blob/master/vimrc
 "   astrails' dotvim:       https://github.com/astrails/dotvim#installation
 "   timss' .vimrc:          https://github.com/timss/vimconf/blob/master/.vimrc
 "   tpope's sensibilities:  https://github.com/tpope/vim-sensible
-
-" Vundle
+" }}}
+" vundle {{{
 "
 " run :BundleInstall to install bundles, :BundleUpdate to update them, :BundleClean to remove them
 "
@@ -53,15 +54,52 @@ if bundleInstallNeeded == 1
   echo ''
   :BundleInstall
 endif
-
+" }}}
+" {{{ basic configuation
+let mapleader = ","         " use a comma as the <Leader> character
 set nocompatible            " disable vi compatibilty
 filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
 syntax enable               " enable syntax highlighting
 set t_Co=256                " 256 colors
 colorscheme jellybeans      " set default color scheme (ir_black, desert, jellybeans) :colorscheme<tab> for list
 set bg=dark                 " use dark background
-
-" GUI specific features
+set autowrite               " save on shell commands
+set noerrorbells            " don't make noise
+set showcmd                 " always display the status line
+set ruler                   " enable the ruler
+set timeoutlen=250          " time to wait after ESC
+set expandtab               " expand tabs to spaces
+set ts=2                    " tabs are 2 spaces
+set bs=2                    " backspace over everything in insert mode
+set shiftwidth=2            " tabs under smart indent
+set laststatus=2            " always show status line
+set autoindent              " a new line is indented as far as the previous one
+set smartindent             " enable intelligent indenting behavior
+set hlsearch                " highlight located values being searched for
+set ignorecase              " case insensitive searching
+set smartcase               " trigger case sensitivity when an upper case char is used
+set incsearch               " as-you-type searching
+set nocindent               " disable c style indenting
+set nobackup                " disable backups"
+set nowritebackup           " disable backups"
+set noswapfile              " disable the creation of .swp swap files
+set nu                      " enable line numbers
+set numberwidth=5           " specify line numbers column width
+set vb t_vb=                " disable bell
+set tags=.tags;/            " look for a .tags ctags file and keep looking all the way up to /
+set cursorline              " highlight the line the cursor resides on
+set shiftround              " round indentation to a multiple of 'shiftwidth'
+set wildmenu                " when tab completing commands, show available matches in a menu
+set display+=lastline       " display as much as possible of the last (overly long) line
+set history=1000            " increase the default number of remembered items from 20
+set nojoinspaces            " don't use extra space when joining lines (with J)
+set nrformats=              " treat all numerals as decimal (leading zeroes won't signify octal)
+set pastetoggle=<F2>        " (for non gui Vim) hit F2 to toggle paste mode (which won't attempt to apply indentation)
+set cc=120                  " (ruler) colorcolumn. column 120 is visually styled
+:hi ColorColumn guibg=grey13 ctermbg=246 " apply the desired visual styling to the colorcolumn
+set grepprg=ag\ --nogroup\ --nocolor     " use ag instead of grep
+" }}}
+" gui specific {{{
 if has('gui_running')
   set transparency=10                 " transparent background
   set list                            " show invisibles
@@ -73,48 +111,13 @@ if has('gui_running')
 else
   set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 endif
-
-set autowrite             " save on shell commands
-set noerrorbells          " don't make noise
-set showcmd               " always display the status line
-set ruler                 " enable the ruler
-set timeoutlen=250        " time to wait after ESC
-set expandtab             " expand tabs to spaces
-set ts=2                  " tabs are 2 spaces
-set bs=2                  " backspace over everything in insert mode
-set shiftwidth=2          " tabs under smart indent
-set laststatus=2          " always show status line
-set autoindent            " a new line is indented as far as the previous one
-set smartindent           " enable intelligent indenting behavior
-set hlsearch              " highlight located values being searched for
-set ignorecase            " case insensitive searching
-set smartcase             " trigger case sensitivity when an upper case char is used
-set incsearch             " as-you-type searching
-set nocindent             " disable c style indenting
-set nobackup              " disable backups"
-set nowritebackup         " disable backups"
-set noswapfile            " disable the creation of .swp swap files
-set nu                    " enable line numbers
-set numberwidth=5         " specify line numbers column width
-set vb t_vb=              " disable bell
-set tags=.tags;/          " look for a .tags ctags file and keep looking all the way up to /
-set cursorline            " highlight the line the cursor resides on
-set shiftround            " round indentation to a multiple of 'shiftwidth'
-set wildmenu              " when tab completing commands, show available matches in a menu
-set display+=lastline     " display as much as possible of the last (overly long) line
-set history=1000          " increase the default number of remembered items from 20
-set nojoinspaces          " don't use extra space when joining lines (with J)
-set nrformats=            " treat all numerals as decimal (leading zeroes won't signify octal)
-set pastetoggle=<F2>      " (for non gui Vim) hit F2 to toggle paste mode (which won't attempt to apply indentation)
-
-let mapleader = ","
-
-:noremap <Leader>i :set nolist!<CR>   " toggle display of invisibles
-
-map w!! %!sudo tee > /dev/null %      " force a write if vim was launched without sudo
-
-" Filetypes
+" }}}
+" {{{ filetype specific
 au BufRead,BufNewFile *.md set filetype=markdown        " treat .md files as Markdown (not Modula)
+" }}}
+" {{{ custom mappings
+:noremap <Leader>i :set nolist!<CR>   " toggle display of invisibles
+map w!! %!sudo tee > /dev/null %      " force a write if vim was launched without sudo
 
 " Leader-r reloads the vimrc -- making all changes active (have to save first)
 map <silent> <Leader>r :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
@@ -127,25 +130,8 @@ nnoremap <Left> :echoe "Use h"<CR>
 nnoremap <Right> :echoe "Use l"<CR>
 nnoremap <Up> :echoe "Use k"<CR>
 nnoremap <Down> :echoe "Use j"<CR>
-
-" Rulers (column highlights)
-set cc=120
-:hi ColorColumn guibg=grey13 ctermbg=246
-
-" Markdown
-command! Mou :silent :!open -a Mou.app '%:p'
-
-" NERDTree
-" don't autostart when vim is launched with a gui (only needed for vim-nerdtree-tabs)
-" let g:nerdtree_tabs_open_on_gui_startup=0
-" ctrl-n to toggle NERDTree
-map <C-n> :NERDTreeToggle<CR>
-" show hidden files
-let NERDTreeShowHidden=1
-" quit NERDTree if it is the last buffer open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-" splits
+" }}}
+" {{{ splits
 " vertical and horizontal split to new buffer
 :noremap <Leader>v :below vnew<CR>
 :noremap <Leader>h :below new<CR>
@@ -157,29 +143,10 @@ nnoremap <C-H> <C-W><C-H>
 " open new horizonal split panes to the bottom and vertical panes to the right
 set splitbelow
 set splitright
-
-" CtrlP
-" list buffers
-:noremap <Leader>b :CtrlPBuffer<CR>
-
-" ag (The Silver Searcher)
-" https://github.com/ggreer/the_silver_searcher
-if executable('ag')
-  " use ag instead of grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " use ag for CtrlP for listing files
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough for CtrlP not to have to cache
-  let g:ctrlp_use_caching = 0
-endif
-
-" Airline
-let g:airline_theme='powerlineish'
-
-" Tagbar
-nmap <F8> :TagbarOpen fj<CR>
+" }}}
+" {{{ custom commands
+" Markdown
+command! Mou :silent :!open -a Mou.app '%:p'
 
 " Ctags
 " create a Ruby project ctags file by passing the current file's path to the
@@ -187,21 +154,38 @@ nmap <F8> :TagbarOpen fj<CR>
 :command! Rubyctags !rubyctags %:p<CR>
 :command! Rtags Rubyctags
 
+" :S to quickly re-enable syntax highlighting
+:command! S syntax on<CR>
+" }}}
+" {{{ plugins
+" NERDTree
+" don't autostart when vim is launched with a gui (only needed for vim-nerdtree-tabs)
+" let g:nerdtree_tabs_open_on_gui_startup=0
+" ctrl-n to toggle NERDTree
+map <C-n> :NERDTreeToggle<CR>
+" show hidden files
+let NERDTreeShowHidden=1
+" quit NERDTree if it is the last buffer open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" CtrlP
+" list buffers
+:noremap <Leader>b :CtrlPBuffer<CR>
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""' " use ag for CtrlP for listing files
+let g:ctrlp_use_caching = 0 " ag is fast enough for CtrlP not to have to cache
+
+" Airline
+let g:airline_theme='powerlineish'
+
+" Tagbar
+nmap <F8> :TagbarOpen fj<CR>
+
 " Tabular
 " use tabular to align on equals signs and on colons (ruby 1.9+ style hashes)
 nmap <Leader>a= :Tab/=<CR>
 vmap <Leader>a= :Tab/=<CR>
 nmap <Leader>a: :Tab/:\zs<CR>
 vmap <Leader>a: :Tab/:\zs<CR>
-
-"if filereadable($HOME . "/.vimrc.last")
-"  source $HOME/.vimrc.last
-"else
-"  call system("touch $HOME/.vimrc.last")
-"endif
-
-" :S to quickly re-enable syntax highlighting
-:command! S syntax on<CR>
 
 " Syntastic
 " bypass checking if :wq (or ZZ) is used
@@ -225,3 +209,11 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_color_change_percent = 20
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 2
+" }}}
+" {{{ .vimrc.last overrides
+"if filereadable($HOME . "/.vimrc.last")
+"  source $HOME/.vimrc.last
+"else
+"  call system("touch $HOME/.vimrc.last")
+"endif
+" }}}
