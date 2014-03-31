@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2014-03-28
+" fallwith's .vimrc - 2014-03-31
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -205,7 +205,6 @@ let g:yankring_history_dir = '~/.vim'
 " Indent Guides
 " <Leader>ig to toggle
 " :help indent-guides
-let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_color_change_percent = 20
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 2
