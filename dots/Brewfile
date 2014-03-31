@@ -20,14 +20,9 @@ install reattach-to-user-namespace
 install tmux
 install the_silver_searcher
 install sqlite
-install ec2-api-tools
-install aws-cfn-tools
-install aws-elasticbeanstalk
-install aws-iam-tools
+install awscli
 install bash-completion
-install cloud-watch
 install ctags
-install elb-tools
 install imagemagick
 install maven
 install watch
