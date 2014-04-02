@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2014-03-31
+" fallwith's .vimrc - 2014-04-02
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -25,30 +25,37 @@ if !filereadable(expand('~/.vim/bundle/vundle/README.md'))
 endif
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
+" vundle: keep Vundle itself up to date with Vundle
 Bundle 'gmarik/vundle'
-Bundle 'rking/ag.vim'
-Bundle 'kien/ctrlp.vim'
-Bundle 'scrooloose/nerdtree'
+" airline: a lightweight provider of a fancy status line
 Bundle 'bling/vim-airline'
+" fugitive: allows for the use of Git from within Vim
 Bundle 'tpope/vim-fugitive'
+" commentary: allows for the commenting/uncommenting of text
 Bundle 'tpope/vim-commentary'
+" syntastic: a linter / code syntax checker wrapper
 Bundle 'scrooloose/syntastic'
+" surround: add, remove, swap surroundings like quotes or braces
 Bundle 'tpope/vim-surround'
+" tabular: automatically align blocks of text based on a delimiter 
 Bundle 'godlygeek/tabular'
-Bundle 'majutsushi/tagbar'
+" sneak: jump around the current buffer easily and precisely
 Bundle 'justinmk/vim-sneak'
-Bundle 'vim-scripts/YankRing.vim'
-Bundle 'kshenoy/vim-signature'
-Bundle 'nathanaelkane/vim-indent-guides'
+" delimitMate: automatically provides closing quotes and braces
+Bundle 'Raimondi/delimitMate'
+" vimproc: offers async processing for other plugins
+"   after bundling vimproc: cd ~/.vim/bundle/vimproc.vim && make
+Bundle 'Shougo/vimproc.vim'
+" neomru: interface to the most recently used files
+Bundle 'Shougo/neomru.vim'
+" unite: unites a variety of functionality with a common interface
+"   async fuzzy find, mru, buffer list, yank register list, dir browsing, etc.
+Bundle 'Shougo/unite.vim'
 " themes
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'morhetz/gruvbox'
 Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 Bundle 'w0ng/vim-hybrid'
-" Vundle bundles that only apply to / only work well with the gui
-if has('gui_running')
-  Bundle 'Raimondi/delimitMate'
-endif
 if bundleInstallNeeded == 1
   echo 'Running :BundleInstall to install Vundle bundles...'
   echo ''
@@ -158,27 +165,8 @@ command! Mou :silent :!open -a Mou.app '%:p'
 :command! S syntax on<CR>
 " }}}
 " {{{ plugins
-" NERDTree
-" don't autostart when vim is launched with a gui (only needed for vim-nerdtree-tabs)
-" let g:nerdtree_tabs_open_on_gui_startup=0
-" ctrl-n to toggle NERDTree
-map <C-n> :NERDTreeToggle<CR>
-" show hidden files
-let NERDTreeShowHidden=1
-" quit NERDTree if it is the last buffer open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-" CtrlP
-" list buffers
-:noremap <Leader>b :CtrlPBuffer<CR>
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""' " use ag for CtrlP for listing files
-let g:ctrlp_use_caching = 0 " ag is fast enough for CtrlP not to have to cache
-
 " Airline
 let g:airline_theme='powerlineish'
-
-" Tagbar
-nmap <F8> :TagbarOpen fj<CR>
 
 " Tabular
 " use tabular to align on equals signs and on colons (ruby 1.9+ style hashes)
@@ -186,6 +174,8 @@ nmap <Leader>a= :Tab/=<CR>
 vmap <Leader>a= :Tab/=<CR>
 nmap <Leader>a: :Tab/:\zs<CR>
 vmap <Leader>a: :Tab/:\zs<CR>
+nmap <Leader>a> :Tab/=><CR>
+vmap <Leader>a> :Tab/=><CR>
 
 " Syntastic
 " bypass checking if :wq (or ZZ) is used
@@ -196,18 +186,24 @@ let g:syntastic_ruby_mri_exec = '~/bin/ruby21'
 " VimSneak
 let g:sneak#streak = 1
 
-" YankRing
-let g:yankring_replace_n_pkey = '<leader>['
-let g:yankring_replace_n_nkey = '<leader>]'
-nmap <leader>y :YRShow<cr>
-let g:yankring_history_dir = '~/.vim'
-
-" Indent Guides
-" <Leader>ig to toggle
-" :help indent-guides
-let g:indent_guides_color_change_percent = 20
-let g:indent_guides_guide_size = 1
-let g:indent_guides_start_level = 2
+" Unite
+" <C-p> = interactive fuzzy file finder
+map <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
+" <Leader>b = list buffers in an interactive menu
+:noremap <Leader>b :Unite buffer<CR>
+" <C-n> = interactive filesystem browser
+map <C-n> :Unite file<CR>
+" <Leader>y = search through yank history
+let g:unite_source_history_yank_enable = 1
+nnoremap <leader>y :<C-u>Unite history/yank<CR>
+" most recently used files
+:noremap <Leader>m :Unite -start-insert file_mru<CR>
+" use ag for searching
+let g:unite_source_grep_command = 'ag'
+let g:unite_source_grep_default_opts = '--nocolor --nogroup --column'
+let g:unite_source_grep_recursive_opt = ''
+" <Leader>ag = interactive front-end to ag searching
+nno <leader>ag :<C-u>Unite grep -start-insert -default-action=above -auto-preview<CR>
 " }}}
 " {{{ .vimrc.last overrides
 "if filereadable($HOME . "/.vimrc.last")
