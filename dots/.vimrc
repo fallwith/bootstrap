@@ -194,6 +194,9 @@ let g:sneak#streak = 1
 map <C-p> :<C-u>Unite -start-insert -buffer-name=files file_rec/async:!<CR>
 " default to using fuzzy matching
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" default to using the 'sorter_rank' rank logic
+call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#custom#source('file_rec/async','sorters','sorter_rank')
 " <Leader>b = list buffers in an interactive menu
 :noremap <Leader>b :Unite buffer<CR>
 " <C-n> = interactive filesystem browser
