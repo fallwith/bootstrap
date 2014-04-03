@@ -163,6 +163,9 @@ command! Mou :silent :!open -a Mou.app '%:p'
 
 " :S to quickly re-enable syntax highlighting
 :command! S syntax on<CR>
+
+" :Tig to launch Tig
+:command! Tig :silent :!tig
 " }}}
 " {{{ plugins
 " Airline
