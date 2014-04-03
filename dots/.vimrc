@@ -187,8 +187,10 @@ let g:syntastic_ruby_mri_exec = '~/bin/ruby21'
 let g:sneak#streak = 1
 
 " Unite
-" <C-p> = interactive fuzzy file finder
-map <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
+" <C-p> = interactive file finder
+map <C-p> :<C-u>Unite -start-insert -buffer-name=files file_rec/async:!<CR>
+" default to using fuzzy matching
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
 " <Leader>b = list buffers in an interactive menu
 :noremap <Leader>b :Unite buffer<CR>
 " <C-n> = interactive filesystem browser
