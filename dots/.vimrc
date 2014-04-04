@@ -37,7 +37,7 @@ Bundle 'tpope/vim-commentary'
 Bundle 'scrooloose/syntastic'
 " surround: add, remove, swap surroundings like quotes or braces
 Bundle 'tpope/vim-surround'
-" tabular: automatically align blocks of text based on a delimiter 
+" tabular: automatically align blocks of text based on a delimiter
 Bundle 'godlygeek/tabular'
 " sneak: jump around the current buffer easily and precisely
 Bundle 'justinmk/vim-sneak'
