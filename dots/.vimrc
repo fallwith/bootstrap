@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2014-04-02
+" fallwith's .vimrc - 2014-04-04
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -103,8 +103,9 @@ set nojoinspaces            " don't use extra space when joining lines (with J)
 set nrformats=              " treat all numerals as decimal (leading zeroes won't signify octal)
 set pastetoggle=<F2>        " (for non gui Vim) hit F2 to toggle paste mode (which won't attempt to apply indentation)
 set cc=120                  " (ruler) colorcolumn. column 120 is visually styled
-:hi ColorColumn guibg=grey13 ctermbg=246 " apply the desired visual styling to the colorcolumn
-set grepprg=ag\ --nogroup\ --nocolor     " use ag instead of grep
+:hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
+set grepprg=ag\ --nogroup\ --nocolor      " use ag instead of grep
+set viminfo+=n~/.vim/.viminfo             " store the vim info file beneath ~/.vim
 " }}}
 " gui specific {{{
 if has('gui_running')
@@ -123,8 +124,9 @@ endif
 au BufRead,BufNewFile *.md set filetype=markdown        " treat .md files as Markdown (not Modula)
 " }}}
 " {{{ custom mappings
-:noremap <Leader>i :set nolist!<CR>   " toggle display of invisibles
-map w!! %!sudo tee > /dev/null %      " force a write if vim was launched without sudo
+:noremap <Leader>i :set nolist!<CR>     " toggle display of invisibles
+map w!! %!sudo tee > /dev/null %        " force a write if vim was launched without sudo
+nmap <silent> <Leader>/ :nohlsearch<CR> " clear currently displayed search highlighting
 
 " Leader-r reloads the vimrc -- making all changes active (have to save first)
 map <silent> <Leader>r :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
@@ -166,6 +168,9 @@ command! Mou :silent :!open -a Mou.app '%:p'
 
 " :Tig to launch Tig
 :command! Tig :silent :!tig
+
+" :Vimrc to open ~/.vimrc
+:command! Vimrc :silent :e ~/.vimrc
 " }}}
 " {{{ plugins
 " Airline
