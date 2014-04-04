@@ -212,6 +212,18 @@ let g:unite_source_grep_default_opts = '--nocolor --nogroup --column'
 let g:unite_source_grep_recursive_opt = ''
 " <Leader>ag = interactive front-end to ag searching
 nno <leader>ag :<C-u>Unite grep -start-insert -default-action=above -auto-preview<CR>
+" settings
+function! s:unite_settings()
+  " use C-k and C-j for up/down navigation
+  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  " use C-h, C-v, and C-t to open the selection in a split or a tab
+  imap <silent><buffer><expr> <C-h> unite#do_action('split')
+  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+  " exit if ESC is pressed
+  nmap <buffer> <ESC> <Plug>(unite_exit)
+endfunction
 " }}}
 " {{{ .vimrc.last overrides
 "if filereadable($HOME . "/.vimrc.last")
