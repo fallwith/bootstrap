@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2014-04-04
+" fallwith's .vimrc - 2014-04-14
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -56,6 +56,9 @@ Bundle 'nanotech/jellybeans.vim'
 Bundle 'morhetz/gruvbox'
 Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 Bundle 'w0ng/vim-hybrid'
+Bundle 'vim-scripts/wombat256.vim'
+Bundle 'garybernhardt/dotfiles', {'rtp': '.vim/'}
+Bundle 'Lokaltog/vim-distinguished'
 if bundleInstallNeeded == 1
   echo 'Running :BundleInstall to install Vundle bundles...'
   echo ''
@@ -68,7 +71,9 @@ set nocompatible            " disable vi compatibilty
 filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
 syntax enable               " enable syntax highlighting
 set t_Co=256                " 256 colors
-colorscheme jellybeans      " set default color scheme (ir_black, desert, jellybeans) :colorscheme<tab> for list
+"colorscheme jellybeans      " set default color scheme (ir_black, desert, jellybeans) :colorscheme<tab> for list
+"colorscheme Tomorrow-Night-Bright " set default color scheme (ir_black, desert, jellybeans) :colorscheme<tab> for list
+colorscheme distinguished   " set default color scheme (ir_black, desert, jellybeans) :colorscheme<tab> for list
 set bg=dark                 " use dark background
 set autowrite               " save on shell commands
 set noerrorbells            " don't make noise
@@ -114,7 +119,7 @@ if has('gui_running')
   set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
 
   "set guifont=Inconsolata:h14        " specify font family and size
-  "set guifont=Monaco:h12
+  set guifont=Monaco:h11
   "set guifont=Menlo:h11
 else
   set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
@@ -218,16 +223,17 @@ let g:unite_source_grep_recursive_opt = ''
 " <Leader>ag = interactive front-end to ag searching
 nno <leader>ag :<C-u>Unite grep -start-insert -default-action=above -auto-preview<CR>
 " settings
-function! s:unite_settings()
-  " use C-k and C-j for up/down navigation
-  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-  " use C-h, C-v, and C-t to open the selection in a split or a tab
-  imap <silent><buffer><expr> <C-h> unite#do_action('split')
-  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
-  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-  " exit if ESC is pressed
-  nmap <buffer> <ESC> <Plug>(unite_exit)
+" use <C-h> and <C-v> to open a selected file in a split below or to the right
+" use <C-j> and <C-k> to move up and down
+" use Escape (or the default 'q') to quit a Unite window
+autocmd FileType unite call s:unite_my_settings()
+function! s:unite_my_settings()
+    imap <silent><buffer><expr> <C-h>     unite#do_action('below')
+    imap <silent><buffer><expr> <C-v>     unite#do_action('right')
+    imap <buffer> <C-j>     <C-n>
+    imap <buffer> <C-k>     <C-p>
+    nmap <buffer> <esc> <plug>(unite_exit)
+    imap <buffer> <esc> <plug>(unite_exit)
 endfunction
 " }}}
 " {{{ .vimrc.last overrides

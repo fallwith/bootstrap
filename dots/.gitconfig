@@ -1,5 +1,7 @@
 [user]
   editor = vi
+	name = fallwith
+	email = fallwith@gmail.com
 [color]
   diff = auto
   status = auto
