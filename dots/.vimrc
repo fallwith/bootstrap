@@ -176,6 +176,10 @@ command! Mou :silent :!open -a Mou.app '%:p'
 
 " :Vimrc to open ~/.vimrc
 :command! Vimrc :silent :e ~/.vimrc
+
+:command! Double :silent :set columns=252 lines=60
+:command! Single :silent :set columns=126 lines=50
+
 " }}}
 " {{{ plugins
 " Airline
