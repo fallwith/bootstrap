@@ -1,0 +1,50 @@
+# https://github.com/jigish/dotfiles/blob/master/slate
+# https://github.com/jigish/slate/blob/master/Slate/default.slate
+# http://thume.ca/howto/2012/11/19/using-slate/
+# https://github.com/jigish/slate/wiki/Global-Configs
+
+config defaultToCurrentScreen true
+config nudgePercentOf screenSize
+config resizePercentOf screenSize
+config secondsBetweenRepeat 0.1
+
+# make window fullscreen
+bind `:ctrl move screenOriginX;screenOriginY screenSizeX;screenSizeY
+# make window centered
+bind 1:ctrl move screenOriginX+screenSizeX/8;screenOriginY+screenSizeY/8 screenSizeX/8*6;screenSizeY/8*6
+
+# resize
+bind right:ctrl resize +10% +0
+bind left:ctrl  resize -10% +0
+bind up:ctrl    resize +0   -10%
+bind down:ctrl  resize +0   +10%
+bind right:alt  resize -10% +0 bottom-right
+bind left:alt   resize +10% +0 bottom-right
+bind up:alt     resize +0   +10% bottom-right
+bind down:alt   resize +0   -10% bottom-right
+
+# push
+bind right:ctrl;shift push right bar-resize:screenSizeX/3
+bind left:ctrl;shift  push left  bar-resize:screenSizeX/3
+bind up:ctrl;shift    push up    bar-resize:screenSizeY/2
+bind down:ctrl;shift  push down  bar-resize:screenSizeY/2
+
+# nudge
+bind right:ctrl;alt nudge +10% +0
+bind left:ctrl;alt  nudge -10% +0
+bind up:ctrl;alt    nudge +0   -10%
+bind down:ctrl;alt  nudge +0   +10%
+
+# grid and hint
+bind esc:ctrl grid
+bind esc:cmd hint ASDFGHJKLQWERTYUIOPCVBN
+config windowHintsShowIcons true
+config windowHintsIgnoreHiddenWindows false
+config windowHintsSpread true
+
+# apps
+bind i:ctrl;cmd focus 'iTerm'
+bind m:ctrl;cmd focus 'MacVim'
+bind g:ctrl;cmd focus 'Google Chrome'
+bind f:ctrl;cmd focus 'Firefox'
+bind s:ctrl;cmd focus 'Spotify'
