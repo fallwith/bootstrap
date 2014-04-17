@@ -44,7 +44,7 @@ cask install vagrant
 cask install alfred
 cask alfred link
 cask install dropbox
-cask install caffeine
+#cask install caffeine
 cask install evernote
 cask install steam
 cask install mou
