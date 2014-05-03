@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2014-04-14
+" fallwith's .vimrc - 2014-04-28
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -43,11 +43,15 @@ Bundle 'godlygeek/tabular'
 Bundle 'justinmk/vim-sneak'
 " delimitMate: automatically provides closing quotes and braces
 Bundle 'Raimondi/delimitMate'
+" vim-ruby: power Vim's Ruby support, bundle to fetch newer code that what Vim shipped with
+Bundle 'vim-ruby/vim-ruby'
 " vimproc: offers async processing for other plugins
 "   after bundling vimproc: cd ~/.vim/bundle/vimproc.vim && make
 Bundle 'Shougo/vimproc.vim'
 " neomru: interface to the most recently used files
 Bundle 'Shougo/neomru.vim'
+" vimfiler: netrw replacement
+Bundle 'Shougo/vimfiler.vim'
 " unite: unites a variety of functionality with a common interface
 "   async fuzzy find, mru, buffer list, yank register list, dir browsing, etc.
 Bundle 'Shougo/unite.vim'
@@ -68,6 +72,7 @@ endif
 " {{{ basic configuation
 let mapleader = ","         " use a comma as the <Leader> character
 set nocompatible            " disable vi compatibilty
+let g:ruby_path='~/bin/ruby21'  " dramatically improve Ruby syntax processing time by not using the system ruby
 filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
 syntax enable               " enable syntax highlighting
 set t_Co=256                " 256 colors
@@ -108,7 +113,7 @@ set nojoinspaces            " don't use extra space when joining lines (with J)
 set nrformats=              " treat all numerals as decimal (leading zeroes won't signify octal)
 set pastetoggle=<F2>        " (for non gui Vim) hit F2 to toggle paste mode (which won't attempt to apply indentation)
 set cc=120                  " (ruler) colorcolumn. column 120 is visually styled
-:hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
+hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
 set grepprg=ag\ --nogroup\ --nocolor      " use ag instead of grep
 set viminfo+=n~/.vim/.viminfo             " store the vim info file beneath ~/.vim
 " }}}
@@ -203,9 +208,15 @@ let g:syntastic_ruby_mri_exec = '~/bin/ruby21'
 " VimSneak
 let g:sneak#streak = 1
 
+" VimFiler
+map <C-n> :VimFilerExplorer -quit<CR>
+
 " Unite
 " <C-p> = interactive file finder
 map <C-p> :<C-u>Unite -start-insert -buffer-name=files file_rec/async:!<CR>
+" unlimited file buffer
+let g:unite_source_file_rec_max_cache_files = 0
+call unite#custom#source('file_mru,file_rec,file_rec/async,grepocate', 'max_candidates', 0)
 " default to using fuzzy matching
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 " default to using the 'sorter_rank' rank logic
@@ -214,7 +225,7 @@ call unite#custom#source('file_rec/async','sorters','sorter_rank')
 " <Leader>b = list buffers in an interactive menu
 :noremap <Leader>b :Unite buffer<CR>
 " <C-n> = interactive filesystem browser
-map <C-n> :Unite file<CR>
+" map <C-n> :Unite file<CR>
 " <Leader>y = search through yank history
 let g:unite_source_history_yank_enable = 1
 nnoremap <leader>y :<C-u>Unite history/yank<CR>
