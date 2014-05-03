@@ -14,14 +14,14 @@ bind `:ctrl move screenOriginX;screenOriginY screenSizeX;screenSizeY
 bind 1:ctrl move screenOriginX+screenSizeX/8;screenOriginY+screenSizeY/8 screenSizeX/8*6;screenSizeY/8*6
 
 # resize
-bind right:ctrl resize +10% +0
-bind left:ctrl  resize -10% +0
-bind up:ctrl    resize +0   -10%
-bind down:ctrl  resize +0   +10%
-bind right:alt  resize -10% +0 bottom-right
-bind left:alt   resize +10% +0 bottom-right
-bind up:alt     resize +0   +10% bottom-right
-bind down:alt   resize +0   -10% bottom-right
+bind right:ctrl resize +1% +0
+bind left:ctrl  resize -1% +0
+bind up:ctrl    resize +0   -1%
+bind down:ctrl  resize +0   +1%
+bind right:alt  resize -1% +0 bottom-right
+bind left:alt   resize +1% +0 bottom-right
+bind up:alt     resize +0   +1% bottom-right
+bind down:alt   resize +0   -1% bottom-right
 
 # push
 bind right:ctrl;shift push right bar-resize:screenSizeX/3
@@ -30,10 +30,10 @@ bind up:ctrl;shift    push up    bar-resize:screenSizeY/2
 bind down:ctrl;shift  push down  bar-resize:screenSizeY/2
 
 # nudge
-bind right:ctrl;alt nudge +10% +0
-bind left:ctrl;alt  nudge -10% +0
-bind up:ctrl;alt    nudge +0   -10%
-bind down:ctrl;alt  nudge +0   +10%
+bind right:ctrl;alt nudge +1% +0
+bind left:ctrl;alt  nudge -1% +0
+bind up:ctrl;alt    nudge +0   -1%
+bind down:ctrl;alt  nudge +0   +1%
 
 # grid and hint
 bind esc:ctrl grid
