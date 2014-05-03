@@ -33,3 +33,8 @@ bindkey -M vicmd '^c' self-insert
 # make backspace and ^h work after returning from command mode http://dougblack.io/words/zsh-vi-mode.html
 bindkey '^?' backward-delete-char
 bindkey '^h' backward-delete-char
+
+# edit the command line text in vi (as with Bash's <Ctrl-X> e)
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
