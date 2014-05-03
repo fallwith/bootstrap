@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2014-04-28
+" fallwith's .vimrc - 2014-05-03
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -45,16 +45,28 @@ Bundle 'justinmk/vim-sneak'
 Bundle 'Raimondi/delimitMate'
 " vim-ruby: power Vim's Ruby support, bundle to fetch newer code that what Vim shipped with
 Bundle 'vim-ruby/vim-ruby'
+" ctrl-p: fast, fuzzy finder for searching filesystems, buffers, and mru items
+Bundle 'kien/ctrlp.vim'
+" vim-vinegar: netrw file browsing improvements
+Bundle 'tpope/vim-vinegar'
+" vim-yankstack: more easily navigate through previous yanks
+Bundle 'maxbrunsfeld/vim-yankstack'
+" vim-endwise: add helpful closing structures (like 'end') for Ruby and others
+Bundle 'tpope/vim-endwise'
+
 " vimproc: offers async processing for other plugins
 "   after bundling vimproc: cd ~/.vim/bundle/vimproc.vim && make
-Bundle 'Shougo/vimproc.vim'
+"Bundle 'Shougo/vimproc.vim'
 " neomru: interface to the most recently used files
-Bundle 'Shougo/neomru.vim'
+"Bundle 'Shougo/neomru.vim'
 " vimfiler: netrw replacement
-Bundle 'Shougo/vimfiler.vim'
+"Bundle 'Shougo/vimfiler.vim'
 " unite: unites a variety of functionality with a common interface
 "   async fuzzy find, mru, buffer list, yank register list, dir browsing, etc.
-Bundle 'Shougo/unite.vim'
+"Bundle 'Shougo/unite.vim'
+
+
+
 " themes
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'morhetz/gruvbox'
@@ -182,8 +194,13 @@ command! Mou :silent :!open -a Mou.app '%:p'
 " :Vimrc to open ~/.vimrc
 :command! Vimrc :silent :e ~/.vimrc
 
+" :Double and :Single to resize the window in gvim
 :command! Double :silent :set columns=252 lines=60
 :command! Single :silent :set columns=126 lines=50
+
+" <leader>ag to prep a quickfix window based ag (silver searcher) search
+:command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nno <leader>ag :Ag<SPACE>
 
 " }}}
 " {{{ plugins
@@ -208,48 +225,67 @@ let g:syntastic_ruby_mri_exec = '~/bin/ruby21'
 " VimSneak
 let g:sneak#streak = 1
 
+" Vinegar
+autocmd FileType netrw nnoremap <silent> q :bd<CR>
+
+" CtrlP
+" list buffers
+:noremap <Leader>b :CtrlPBuffer<CR>
+" list mru
+:noremap <Leader>m :CtrlPMRU<CR>
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""' " use ag for CtrlP for listing files
+let g:ctrlp_use_caching = 0 " ag is fast enough for CtrlP not to have to cache
+
+" Yankstack
+call yankstack#setup()
+let g:yankstack_map_keys = 0
+nmap <leader>p <Plug>yankstack_substitute_older_paste
+nmap <leader>P <Plug>yankstack_substitute_newer_paste
+:noremap <Leader>y :Yanks<CR>
+
+
 " VimFiler
-map <C-n> :VimFilerExplorer -quit<CR>
+"map <C-n> :VimFilerExplorer -quit<CR>
 
 " Unite
 " <C-p> = interactive file finder
-map <C-p> :<C-u>Unite -start-insert -buffer-name=files file_rec/async:!<CR>
+"map <C-p> :<C-u>Unite -start-insert -buffer-name=files file_rec/async:!<CR>
 " unlimited file buffer
-let g:unite_source_file_rec_max_cache_files = 0
-call unite#custom#source('file_mru,file_rec,file_rec/async,grepocate', 'max_candidates', 0)
+"let g:unite_source_file_rec_max_cache_files = 0
+"call unite#custom#source('file_mru,file_rec,file_rec/async,grepocate', 'max_candidates', 0)
 " default to using fuzzy matching
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
+"call unite#filters#matcher_default#use(['matcher_fuzzy'])
 " default to using the 'sorter_rank' rank logic
-call unite#filters#sorter_default#use(['sorter_rank'])
-call unite#custom#source('file_rec/async','sorters','sorter_rank')
+"call unite#filters#sorter_default#use(['sorter_rank'])
+"call unite#custom#source('file_rec/async','sorters','sorter_rank')
 " <Leader>b = list buffers in an interactive menu
-:noremap <Leader>b :Unite buffer<CR>
+":noremap <Leader>b :Unite buffer<CR>
 " <C-n> = interactive filesystem browser
 " map <C-n> :Unite file<CR>
 " <Leader>y = search through yank history
-let g:unite_source_history_yank_enable = 1
-nnoremap <leader>y :<C-u>Unite history/yank<CR>
+"let g:unite_source_history_yank_enable = 1
+"nnoremap <leader>y :<C-u>Unite history/yank<CR>
 " most recently used files
-:noremap <Leader>m :Unite -start-insert file_mru<CR>
+":noremap <Leader>m :Unite -start-insert file_mru<CR>
 " use ag for searching
-let g:unite_source_grep_command = 'ag'
-let g:unite_source_grep_default_opts = '--nocolor --nogroup --column'
-let g:unite_source_grep_recursive_opt = ''
+"let g:unite_source_grep_command = 'ag'
+"let g:unite_source_grep_default_opts = '--nocolor --nogroup --column'
+"let g:unite_source_grep_recursive_opt = ''
 " <Leader>ag = interactive front-end to ag searching
-nno <leader>ag :<C-u>Unite grep -start-insert -default-action=above -auto-preview<CR>
+"nno <leader>ag :<C-u>Unite grep -start-insert -default-action=above -auto-preview<CR>
 " settings
 " use <C-h> and <C-v> to open a selected file in a split below or to the right
 " use <C-j> and <C-k> to move up and down
 " use Escape (or the default 'q') to quit a Unite window
-autocmd FileType unite call s:unite_my_settings()
-function! s:unite_my_settings()
-    imap <silent><buffer><expr> <C-h>     unite#do_action('below')
-    imap <silent><buffer><expr> <C-v>     unite#do_action('right')
-    imap <buffer> <C-j>     <C-n>
-    imap <buffer> <C-k>     <C-p>
-    nmap <buffer> <esc> <plug>(unite_exit)
-    imap <buffer> <esc> <plug>(unite_exit)
-endfunction
+"autocmd FileType unite call s:unite_my_settings()
+"function! s:unite_my_settings()
+"    imap <silent><buffer><expr> <C-h>     unite#do_action('below')
+"    imap <silent><buffer><expr> <C-v>     unite#do_action('right')
+"    imap <buffer> <C-j>     <C-n>
+"    imap <buffer> <C-k>     <C-p>
+"    nmap <buffer> <esc> <plug>(unite_exit)
+"    imap <buffer> <esc> <plug>(unite_exit)
+"endfunction
 " }}}
 " {{{ .vimrc.last overrides
 "if filereadable($HOME . "/.vimrc.last")
