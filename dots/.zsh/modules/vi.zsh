@@ -24,8 +24,8 @@ bindkey -M vicmd '^a' beginning-of-line
 bindkey -M viins '^e' end-of-line
 bindkey -M vicmd '^e' end-of-line
 # ctrl-d for forward delete
-bindkey -M viins '^d' 'kill-word'
-bindkey -M vicmd '^d' 'kill-word'
+bindkey -M viins '^d' delete-char
+bindkey -M vicmd '^d' delete-char
 
 # allow ctrl-c to behave the same in normal mode as in insert mode
 bindkey -M vicmd '^c' self-insert
