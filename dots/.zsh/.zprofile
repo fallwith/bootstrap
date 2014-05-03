@@ -68,21 +68,13 @@ gitidentity() {
   fi
 }
 
-export JRUBY_OPTS="-J-XX:MaxPermSize=256m -J-Xmx1024m"
+export JRUBY_OPTS='-Xcompile.invokedynamic=false -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-noverify -Xcompile.mode=OFF -J-Xmx1024m -J-XX:MaxPermSize=256m --1.9'
 export JAVA_HOME="$(/usr/libexec/java_home)"
 
 # aws
 export EC2_PRIVATE_KEY=~/.ec2/pk-amazon.pem
 export EC2_CERT=~/.ec2/cert-amazon.pem
 export AWS_CREDENTIAL_FILE=~/.ec2/.aws-credentials-master
-#export EC2_HOME="/usr/local/Library/LinkedKegs/ec2-api-tools/jars"
-#export AWS_ELB_HOME="/usr/local/Library/LinkedKegs/elb-tools/jars"
-#export AWS_AUTO_SCALING_HOME="/usr/local/Library/LinkedKegs/auto-scaling/jars"
-#export AWS_IAM_HOME="/usr/local/opt/aws-iam-tools/jars"
-#export AWS_CLOUDWATCH_HOME="/usr/local/Library/LinkedKegs/cloud-watch/jars"
-#export SERVICE_HOME="$AWS_CLOUDWATCH_HOME"
-#rds_tool_ver=$(ls /usr/local/Cellar/rds-command-line-tools)
-#export AWS_RDS_HOME="/usr/local/Cellar/rds-command-line-tools/$rds_tool_ver/libexec"
 
 # bundler
 alias bspec='bundle exec rspec'
