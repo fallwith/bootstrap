@@ -57,17 +57,6 @@ Plugin 'maxbrunsfeld/vim-yankstack'
 " vim-endwise: add helpful closing structures (like 'end') for Ruby and others
 Plugin 'tpope/vim-endwise'
 
-" vimproc: offers async processing for other plugins
-"   after bundling vimproc: cd ~/.vim/bundle/vimproc.vim && make
-"Bundle 'Shougo/vimproc.vim'
-" neomru: interface to the most recently used files
-"Bundle 'Shougo/neomru.vim'
-" vimfiler: netrw replacement
-"Bundle 'Shougo/vimfiler.vim'
-" unite: unites a variety of functionality with a common interface
-"   async fuzzy find, mru, buffer list, yank register list, dir browsing, etc.
-"Bundle 'Shougo/unite.vim'
-
 " themes
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'morhetz/gruvbox'
@@ -250,50 +239,6 @@ let g:yankstack_map_keys = 0
 nmap <leader>p <Plug>yankstack_substitute_older_paste
 nmap <leader>P <Plug>yankstack_substitute_newer_paste
 :noremap <Leader>y :Yanks<CR>
-
-
-" VimFiler
-"map <C-n> :VimFilerExplorer -quit<CR>
-
-" Unite
-" <C-p> = interactive file finder
-"map <C-p> :<C-u>Unite -start-insert -buffer-name=files file_rec/async:!<CR>
-" unlimited file buffer
-"let g:unite_source_file_rec_max_cache_files = 0
-"call unite#custom#source('file_mru,file_rec,file_rec/async,grepocate', 'max_candidates', 0)
-" default to using fuzzy matching
-"call unite#filters#matcher_default#use(['matcher_fuzzy'])
-" default to using the 'sorter_rank' rank logic
-"call unite#filters#sorter_default#use(['sorter_rank'])
-"call unite#custom#source('file_rec/async','sorters','sorter_rank')
-" <Leader>b = list buffers in an interactive menu
-":noremap <Leader>b :Unite buffer<CR>
-" <C-n> = interactive filesystem browser
-" map <C-n> :Unite file<CR>
-" <Leader>y = search through yank history
-"let g:unite_source_history_yank_enable = 1
-"nnoremap <leader>y :<C-u>Unite history/yank<CR>
-" most recently used files
-":noremap <Leader>m :Unite -start-insert file_mru<CR>
-" use ag for searching
-"let g:unite_source_grep_command = 'ag'
-"let g:unite_source_grep_default_opts = '--nocolor --nogroup --column'
-"let g:unite_source_grep_recursive_opt = ''
-" <Leader>ag = interactive front-end to ag searching
-"nno <leader>ag :<C-u>Unite grep -start-insert -default-action=above -auto-preview<CR>
-" settings
-" use <C-h> and <C-v> to open a selected file in a split below or to the right
-" use <C-j> and <C-k> to move up and down
-" use Escape (or the default 'q') to quit a Unite window
-"autocmd FileType unite call s:unite_my_settings()
-"function! s:unite_my_settings()
-"    imap <silent><buffer><expr> <C-h>     unite#do_action('below')
-"    imap <silent><buffer><expr> <C-v>     unite#do_action('right')
-"    imap <buffer> <C-j>     <C-n>
-"    imap <buffer> <C-k>     <C-p>
-"    nmap <buffer> <esc> <plug>(unite_exit)
-"    imap <buffer> <esc> <plug>(unite_exit)
-"endfunction
 " }}}
 " {{{ .vimrc.last overrides
 "if filereadable($HOME . "/.vimrc.last")
