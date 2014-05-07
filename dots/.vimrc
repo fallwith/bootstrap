@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2014-05-03
+" fallwith's .vimrc - 2014-05-07
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -11,48 +11,51 @@
 " }}}
 " vundle {{{
 "
-" run :BundleInstall to install bundles, :BundleUpdate to update them, :BundleClean to remove them
+" :PluginList          - list configured plugins
+" :PluginInstall(!)    - install (update) plugins
+" :PluginSearch(!) foo - search (or refresh cache first) for foo
+" :PluginClean(!)      - confirm (or auto-approve) removal of unused plugins
 "
 " Automatic installation logic originally from:
 "   http://www.erikzaadi.com/2012/03/19/auto-installing-vundle-from-your-vimrc/
-let bundleInstallNeeded=0
+let pluginInstallNeeded=0
 if !filereadable(expand('~/.vim/bundle/vundle/README.md'))
   echo 'Installing Vundle...'
   echo ''
   silent !mkdir -p ~/.vim/bundle
   silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
-  let bundleInstallNeeded=1
+  let pluginInstallNeeded=1
 endif
 set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+call vundle#begin()
 " vundle: keep Vundle itself up to date with Vundle
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
 " airline: a lightweight provider of a fancy status line
-Bundle 'bling/vim-airline'
+Plugin 'bling/vim-airline'
 " fugitive: allows for the use of Git from within Vim
-Bundle 'tpope/vim-fugitive'
+Plugin 'tpope/vim-fugitive'
 " commentary: allows for the commenting/uncommenting of text
-Bundle 'tpope/vim-commentary'
+Plugin 'tpope/vim-commentary'
 " syntastic: a linter / code syntax checker wrapper
-Bundle 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
 " surround: add, remove, swap surroundings like quotes or braces
-Bundle 'tpope/vim-surround'
+Plugin 'tpope/vim-surround'
 " tabular: automatically align blocks of text based on a delimiter
-Bundle 'godlygeek/tabular'
+Plugin 'godlygeek/tabular'
 " sneak: jump around the current buffer easily and precisely
-Bundle 'justinmk/vim-sneak'
+Plugin 'justinmk/vim-sneak'
 " delimitMate: automatically provides closing quotes and braces
-Bundle 'Raimondi/delimitMate'
+Plugin 'Raimondi/delimitMate'
 " vim-ruby: power Vim's Ruby support, bundle to fetch newer code that what Vim shipped with
-Bundle 'vim-ruby/vim-ruby'
+Plugin 'vim-ruby/vim-ruby'
 " ctrl-p: fast, fuzzy finder for searching filesystems, buffers, and mru items
-Bundle 'kien/ctrlp.vim'
+Plugin 'kien/ctrlp.vim'
 " vim-vinegar: netrw file browsing improvements
-Bundle 'tpope/vim-vinegar'
+Plugin 'tpope/vim-vinegar'
 " vim-yankstack: more easily navigate through previous yanks
-Bundle 'maxbrunsfeld/vim-yankstack'
+Plugin 'maxbrunsfeld/vim-yankstack'
 " vim-endwise: add helpful closing structures (like 'end') for Ruby and others
-Bundle 'tpope/vim-endwise'
+Plugin 'tpope/vim-endwise'
 
 " vimproc: offers async processing for other plugins
 "   after bundling vimproc: cd ~/.vim/bundle/vimproc.vim && make
@@ -65,20 +68,19 @@ Bundle 'tpope/vim-endwise'
 "   async fuzzy find, mru, buffer list, yank register list, dir browsing, etc.
 "Bundle 'Shougo/unite.vim'
 
-
-
 " themes
-Bundle 'nanotech/jellybeans.vim'
-Bundle 'morhetz/gruvbox'
-Bundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
-Bundle 'w0ng/vim-hybrid'
-Bundle 'vim-scripts/wombat256.vim'
-Bundle 'garybernhardt/dotfiles', {'rtp': '.vim/'}
-Bundle 'Lokaltog/vim-distinguished'
-if bundleInstallNeeded == 1
-  echo 'Running :BundleInstall to install Vundle bundles...'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'morhetz/gruvbox'
+Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+Plugin 'w0ng/vim-hybrid'
+Plugin 'vim-scripts/wombat256.vim'
+Plugin 'garybernhardt/dotfiles', {'rtp': '.vim/'}
+Plugin 'Lokaltog/vim-distinguished'
+call vundle#end()
+if pluginInstallNeeded == 1
+  echo 'Running :PluginInstall to install plugins with Vundle...'
   echo ''
-  :BundleInstall
+  :PluginInstall
 endif
 " }}}
 " {{{ basic configuation
