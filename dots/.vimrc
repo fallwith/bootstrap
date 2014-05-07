@@ -233,8 +233,14 @@ autocmd FileType netrw nnoremap <silent> q :bd<CR>
 :noremap <Leader>b :CtrlPBuffer<CR>
 " list mru
 :noremap <Leader>m :CtrlPMRU<CR>
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""' " use ag for CtrlP for listing files
+" let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""' " use ag for CtrlP for listing files
 let g:ctrlp_use_caching = 0 " ag is fast enough for CtrlP not to have to cache
+let g:ctrlp_user_command = {
+  \ 'types': {
+    \ 1: ['.git', 'cd %s && git ls-files'],
+    \ },
+  \ 'fallback': 'ag %s -l --nocolor -g ""'
+  \ }
 
 " Yankstack
 call yankstack#setup()
