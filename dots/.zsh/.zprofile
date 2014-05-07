@@ -31,7 +31,7 @@ alias rvminstall="\curl -L https://get.rvm.io | bash -s stable --autolibs=enable
 alias rvmdefaults="rvm use ruby-2.1.0@default --create --install --default"
 
 # mongo
-alias mongostart="mongod --fork --logpath /usr/local/homebrew/var/log/mongodb/mongo.log"
+alias mongostart="mongod --fork --config /usr/local/etc/mongod.conf"
 #To have launchd start mongodb at login:
 #    ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents
 #Then to load mongodb now:
