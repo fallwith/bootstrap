@@ -32,7 +32,7 @@ install gnu-sed
 install macvim --override-system-vim
 
 # set up brew cask
-tap phinze/homebrew-cask
+tap caskroom/homebrew-cask
 install brew-cask
 tap caskroom/versions
 
