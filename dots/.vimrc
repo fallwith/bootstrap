@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2014-05-07
+" fallwith's .vimrc - 2014-06-05
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -42,8 +42,6 @@ Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-surround'
 " tabular: automatically align blocks of text based on a delimiter
 Plugin 'godlygeek/tabular'
-" sneak: jump around the current buffer easily and precisely
-Plugin 'justinmk/vim-sneak'
 " delimitMate: automatically provides closing quotes and braces
 Plugin 'Raimondi/delimitMate'
 " vim-ruby: power Vim's Ruby support, bundle to fetch newer code that what Vim shipped with
@@ -56,6 +54,8 @@ Plugin 'tpope/vim-vinegar'
 Plugin 'maxbrunsfeld/vim-yankstack'
 " vim-endwise: add helpful closing structures (like 'end') for Ruby and others
 Plugin 'tpope/vim-endwise'
+" nerdtree: file explorer (netrw replacement)
+Plugin 'scrooloose/nerdtree'
 
 " themes
 Plugin 'nanotech/jellybeans.vim'
@@ -185,6 +185,9 @@ command! Mou :silent :!open -a Mou.app '%:p'
 " :Vimrc to open ~/.vimrc
 :command! Vimrc :silent :e ~/.vimrc
 
+" :Slate to open ~/.slate
+:command! Slate :silent :e ~/.slate
+
 " :Double and :Single to resize the window in gvim
 :command! Double :silent :set columns=252 lines=60
 :command! Single :silent :set columns=126 lines=50
@@ -212,12 +215,17 @@ vmap <Leader>a> :Tab/=><CR>
 let g:syntastic_check_on_wq = 0
 " specify which ruby to use (enforces MRI in JRuby projects)
 let g:syntastic_ruby_mri_exec = '~/bin/ruby21'
+" use mri and rubocop checkers with ruby files
+"let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
 " VimSneak
 let g:sneak#streak = 1
 
 " Vinegar
 autocmd FileType netrw nnoremap <silent> q :bd<CR>
+
+" NERDTree
+:noremap <C-n> :NERDTreeToggle<CR>
 
 " CtrlP
 " list buffers
@@ -234,8 +242,8 @@ let g:ctrlp_user_command = {
   \ }
 
 " Yankstack
-call yankstack#setup()
 let g:yankstack_map_keys = 0
+call yankstack#setup()
 nmap <leader>p <Plug>yankstack_substitute_older_paste
 nmap <leader>P <Plug>yankstack_substitute_newer_paste
 :noremap <Leader>y :Yanks<CR>
