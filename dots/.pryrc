@@ -1,5 +1,6 @@
 begin
   require 'active_support/all'
-rescue LoadError
-  #puts "ActiveSupport is not available"
+  require 'interactive_editor'
+rescue LoadError => e
+  puts "#{e.message}"
 end
