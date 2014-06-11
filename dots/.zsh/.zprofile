@@ -28,7 +28,7 @@ alias mysqlrestart="sudo /Library/StartupItems/MySQLCOM/MySQLCOM restart"
 # rvm
 alias rvminstall="\curl -L https://get.rvm.io | bash -s stable --autolibs=enabled"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-alias rvmdefaults="rvm use ruby-2.1.0@default --create --install --default"
+alias rvmdefaults="rvm use ruby-2.1.2@default --create --install --default"
 
 # mongo
 alias mongostart="mongod --fork --config /usr/local/etc/mongod.conf"
