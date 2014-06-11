@@ -5,7 +5,7 @@
 update
 
 # upgrade install formulae
-upgrade
+upgrade --without-x11
 
 install openssl
 install coreutils
