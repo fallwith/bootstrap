@@ -38,13 +38,15 @@ tap caskroom/versions
 
 # casks
 cask install bettertouchtool
-cask install iterm2-nightly
+#cask install iterm2-nightly
+cask install iterm2
 cask install virtualbox
 cask install vagrant
 cask install alfred
 cask alfred link
 cask install dropbox
-#cask install caffeine
+cask install box-sync
+cask install caffeine
 cask install evernote
 cask install steam
 cask install mou
