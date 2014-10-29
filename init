@@ -59,13 +59,21 @@ if [[ ! "$GIT_AUTHOR_NAME" = "" && ! "$GIT_AUTHOR_EMAIL" = "" ]]; then
   git config --global user.email "$GIT_AUTHOR_EMAIL"
 fi
 
+# --- --- --- --- --- --- ---
+# create ~/bin
+# --- --- --- --- --- --- ---
+mkdir -p "$HOME/bin"
 
 # --- --- --- --- --- --- ---
 # set desired os x behavior
 # --- --- --- --- --- --- ---
 
 echo "setting up OS X behavior preferences"
-source "$bootstrap_dir/scripts/set_up_os_x"
+echo "linking to set_up_os_x in ~/bin..."
+rm -f "$HOME/bin/set_up_os_x"
+ln -s "$bootstrap_dir/scripts/set_up_os_x" "$HOME/bin/set_up_os_x"
+echo "sourcing set_up_os_x..."
+source "$HOME/bin/set_up_os_x"
 
 
 # --- --- --- --- --- --- ---
@@ -76,7 +84,12 @@ if ! (command -v brew >/dev/null); then
   echo "Homebrew was not found. Installing..."
   ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
 fi
-brewcmd="brew bundle $target_dir/Brewfile"
+
+echo "linking to brewscript in ~/bin..."
+rm -f "$HOME/bin/brewscript"
+ln -s "$bootstrap_dir/scripts/brewscript" "$HOME/bin/brewscript"
+echo "running brewscript from ~/bin..."
+brewcmd="$HOME/bin/./brewscript"
 echo "$brewcmd"
 $brewcmd
 
