@@ -764,19 +764,19 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>367 342 214 309 0 0 1680 1028 </string>
 	<key>NSWindow Frame Preferences</key>
-	<string>147 435 924 485 0 0 1920 1058 </string>
+	<string>148 435 924 485 0 0 1920 1058 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
 	<string>1476 861 400 129 0 0 1920 1058 </string>
 	<key>NSWindow Frame SUUpdateAlertFrame</key>
 	<string>672 509 575 392 0 0 1920 1058 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>19 52 900 740 0 0 1920 1058 </string>
+	<string>1115 84 900 740 0 0 1920 1058 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>761 568 585 451 0 0 1920 1058 </string>
+	<string>11 81 1201 706 0 0 1920 1058 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>963 395 585 451 0 0 1920 1058 </string>
+	<string>542 163 900 740 0 0 1920 1058 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>946 179 900 741 0 0 1920 1058 </string>
+	<string>10 274 900 740 0 0 1920 1058 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
 	<string>653 81 900 741 0 0 1920 1058 </string>
 	<key>NSWindow Frame iTerm Window 5</key>
@@ -3140,7 +3140,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2014-07-15T18:50:42Z</date>
+	<date>2014-10-24T01:29:16Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>Show Toolbelt</key>
@@ -3176,7 +3176,7 @@
 	<key>WebKitDefaultFontSize</key>
 	<integer>11</integer>
 	<key>WebKitStandardFont</key>
-	<string>Lucida Grande</string>
+	<string>.Lucida Grande UI</string>
 	<key>WindowNumber</key>
 	<true/>
 	<key>WindowStyle</key>
