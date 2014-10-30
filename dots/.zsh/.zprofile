@@ -39,6 +39,10 @@ alias mongostart="mongod --fork --config /usr/local/etc/mongod.conf"
 #Or, if you don't want/need launchctl, you can just run:
 #    mongod
 
+# mysql
+alias mysqlstart="mysql.server start"
+alias mysqlstop="mysql.server stop"
+
 # Clean up source code by converting tabs to 2 spaces, Windows newlines to
 # unix ones, and by stripping away trailing whitespace. Pass in a list of
 # files to clean, or let ag find a list of suitable candidates.
