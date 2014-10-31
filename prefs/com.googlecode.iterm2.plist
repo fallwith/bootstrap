@@ -770,9 +770,9 @@
 	<key>NSWindow Frame SUUpdateAlertFrame</key>
 	<string>672 509 575 392 0 0 1920 1058 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>1115 84 900 740 0 0 1920 1058 </string>
+	<string>13 70 900 740 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>11 81 1201 706 0 0 1920 1058 </string>
+	<string>150 89 900 740 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>542 163 900 740 0 0 1920 1058 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -3140,7 +3140,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2014-10-24T01:29:16Z</date>
+	<date>2014-10-31T04:23:06Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>Show Toolbelt</key>
@@ -3176,7 +3176,7 @@
 	<key>WebKitDefaultFontSize</key>
 	<integer>11</integer>
 	<key>WebKitStandardFont</key>
-	<string>.Lucida Grande UI</string>
+	<string>.Helvetica Neue DeskInterface</string>
 	<key>WindowNumber</key>
 	<true/>
 	<key>WindowStyle</key>
