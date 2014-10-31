@@ -2,6 +2,14 @@
 
 # Homebrew brew script
 
+function install_homebrew_if_needed() {
+  if ! [ -e '/usr/local/bin/brew' ]; then
+    echo "Homebrew 'brew' binary not found in your PATH. Installing Homebrew..."
+    rm -rf /usr/local/Cellar /usr/local/.git
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  fi
+}
+
 function run_command() {
   desc=$1
   cmd=$2
@@ -33,6 +41,8 @@ function check_or_install_cask() {
   fi 
 }
 
+
+install_homebrew_if_needed
 
 run_command 'Updating Homebrew itself' 'brew update'
 run_command 'Upgrading all installed formulae' 'brew upgrade --without-x11'
