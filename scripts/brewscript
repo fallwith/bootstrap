@@ -94,10 +94,12 @@ declare -a desired_casks=(adium
                           firefox
                           google-chrome
                           iterm2
+                          java
                           mou
                           nvalt
                           onepassword
                           sequel-pro
+                          slack
                           spotify
                           steam
                           vagrant
