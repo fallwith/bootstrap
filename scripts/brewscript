@@ -71,6 +71,7 @@ declare -a desired_formulae=(awscli
                              tig
                              tmux
                              watch
+                             wget
                              zsh)
 
 # install desired formulae
@@ -88,6 +89,7 @@ declare -a desired_casks=(adium
                           appcleaner
                           bettertouchtool
                           caffeine
+                          chefdk
                           dropbox
                           evernote
                           fantastical
