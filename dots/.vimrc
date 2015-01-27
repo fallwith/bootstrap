@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2014-06-05
+" fallwith's .vimrc - 2015-01-26
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -44,7 +44,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'godlygeek/tabular'
 " delimitMate: automatically provides closing quotes and braces
 Plugin 'Raimondi/delimitMate'
-" vim-ruby: power Vim's Ruby support, bundle to fetch newer code that what Vim shipped with
+" vim-ruby: powers Vim's Ruby editing support, bundle to fetch newer code that what Vim shipped with
 Plugin 'vim-ruby/vim-ruby'
 " ctrl-p: fast, fuzzy finder for searching filesystems, buffers, and mru items
 Plugin 'kien/ctrlp.vim'
@@ -56,6 +56,8 @@ Plugin 'maxbrunsfeld/vim-yankstack'
 Plugin 'tpope/vim-endwise'
 " nerdtree: file explorer (netrw replacement)
 Plugin 'scrooloose/nerdtree'
+" vim-tmux-navigator (seamless navigation between Vim and Tmux splits)
+Plugin 'christoomey/vim-tmux-navigator'
 
 " themes
 Plugin 'nanotech/jellybeans.vim'
@@ -65,6 +67,10 @@ Plugin 'w0ng/vim-hybrid'
 Plugin 'vim-scripts/wombat256.vim'
 Plugin 'garybernhardt/dotfiles', {'rtp': '.vim/'}
 Plugin 'Lokaltog/vim-distinguished'
+Plugin 'noahfrederick/vim-hemisu'
+Plugin 'zeis/vim-kolor'
+Plugin 'tomasr/molokai'
+
 call vundle#end()
 if pluginInstallNeeded == 1
   echo 'Running :PluginInstall to install plugins with Vundle...'
@@ -81,7 +87,7 @@ syntax enable               " enable syntax highlighting
 set t_Co=256                " 256 colors
 "colorscheme jellybeans      " set default color scheme (ir_black, desert, jellybeans) :colorscheme<tab> for list
 "colorscheme Tomorrow-Night-Bright " set default color scheme (ir_black, desert, jellybeans) :colorscheme<tab> for list
-colorscheme distinguished   " set default color scheme (ir_black, desert, jellybeans) :colorscheme<tab> for list
+"colorscheme distinguished   " set default color scheme (ir_black, desert, jellybeans) :colorscheme<tab> for list
 set bg=dark                 " use dark background
 set autowrite               " save on shell commands
 set noerrorbells            " don't make noise
@@ -116,12 +122,14 @@ set nojoinspaces            " don't use extra space when joining lines (with J)
 set nrformats=              " treat all numerals as decimal (leading zeroes won't signify octal)
 set pastetoggle=<F2>        " (for non gui Vim) hit F2 to toggle paste mode (which won't attempt to apply indentation)
 set cc=120                  " (ruler) colorcolumn. column 120 is visually styled
+set complete-=i             " remove 'included files' from the list of autocomplete sources
 hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
 set grepprg=ag\ --nogroup\ --nocolor      " use ag instead of grep
 set viminfo+=n~/.vim/.viminfo             " store the vim info file beneath ~/.vim
 " }}}
 " gui specific {{{
 if has('gui_running')
+  colorscheme distinguished   " set default color scheme (ir_black, desert, jellybeans) :colorscheme<tab> for list
   set transparency=10                 " transparent background
   set list                            " show invisibles
   set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
@@ -131,6 +139,8 @@ if has('gui_running')
   "set guifont=Menlo:h11
 else
   set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+  " colorscheme Tomorrow-Night-Bright
+  colorscheme distinguished
 endif
 " }}}
 " {{{ filetype specific
@@ -236,7 +246,7 @@ autocmd FileType netrw nnoremap <silent> q :bd<CR>
 let g:ctrlp_use_caching = 0 " ag is fast enough for CtrlP not to have to cache
 let g:ctrlp_user_command = {
   \ 'types': {
-    \ 1: ['.git', 'cd %s && git ls-files'],
+    \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
     \ },
   \ 'fallback': 'ag %s -l --nocolor -g ""'
   \ }
