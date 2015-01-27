@@ -28,10 +28,10 @@ alias mysqlrestart="sudo /Library/StartupItems/MySQLCOM/MySQLCOM restart"
 # rvm
 alias rvminstall="\curl -L https://get.rvm.io | bash -s stable --autolibs=enabled"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-alias rvmdefaults="rvm use ruby-2.1.2@default --create --install --default"
 
 # mongo
 alias mongostart="mongod --fork --config /usr/local/etc/mongod.conf"
+alias mongostop="pkill mongod"
 #To have launchd start mongodb at login:
 #    ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents
 #Then to load mongodb now:
@@ -72,7 +72,7 @@ gitidentity() {
   fi
 }
 
-export JRUBY_OPTS='-Xcompile.invokedynamic=false -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-noverify -Xcompile.mode=OFF -J-Xmx1024m -J-XX:MaxPermSize=256m --1.9'
+export JRUBY_OPTS='-Xcompile.invokedynamic=false -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-noverify -Xcompile.mode=OFF -J-Xmx1024m --1.9'
 export JAVA_HOME="$(/usr/libexec/java_home)"
 
 # aws
