@@ -38,7 +38,7 @@ for f in "$bootstrap_dir/dots"/*; do
   fi
   if [[ $create_symlink -eq 1 ]]; then
     if [[ $create_backup -eq 1 ]]; then
-      backup="$target_instance.bak" 
+      backup="$target_instance.bak"
       echo "mv \"$target_instance\" \"$backup\""
       mv "$target_instance" "$backup"
     fi
