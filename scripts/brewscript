@@ -24,7 +24,7 @@ function check_or_install_formula() {
   echo "Checking if '$formula' is installed..."
   if `brew list $formula >/dev/null 2>&1`; then
     echo "Formula '$formula' already installed"
-  else  
+  else
     echo "Formula '$formula' not yet installed."
     run_command "Installing '$formula'" "brew install $formula_string"
   fi
@@ -32,15 +32,32 @@ function check_or_install_formula() {
 
 function check_or_install_cask() {
   cask=$1
+  force=$2
+  installed=0
   echo "Checking if '$cask' is installed..."
   if `brew cask list $cask >/dev/null 2>&1`; then
     echo "Cask '$cask' already installed."
+    installed=1
   else
     echo "Cask '$cask' not yet installed."
-    run_command "Installing '$cask'" "brew cask install $cask"
-  fi 
+  fi
+  if [[ $installed -eq 0 || $force -eq 1 ]]; then
+    cmd="brew cask install"
+    if [ $force -eq 1 ]; then
+      echo "Forcing installation..."
+      cmd="$cmd --force"
+    fi
+    cmd="$cmd $cask"
+    run_command "Installing '$cask'" "$cmd"
+  fi
 }
 
+
+# allow this script to receive --force and pass it along
+force_install=0
+if [ "$1" = '--force' ]; then
+  force_install=1
+fi
 
 install_homebrew_if_needed
 
@@ -83,6 +100,7 @@ done
 run_command 'Tapping homebrew-cask' 'brew tap caskroom/homebrew-cask'
 check_or_install_formula brew-cask
 run_command 'Tapping versions' 'brew tap caskroom/versions'
+run_command 'Upgrading brew-cask' 'brew upgrade brew-cask'
 
 declare -a desired_casks=(adium
                           alfred
@@ -110,7 +128,7 @@ declare -a desired_casks=(adium
 
 # install desired casks
 for cask in "${desired_casks[@]}"; do
-  check_or_install_cask $cask
+  check_or_install_cask $cask $force_install
 done
 
 # these are currently coming from the Mac App Store, not Cask
@@ -120,3 +138,4 @@ done
 # remove old cruft
 run_command 'Cleaning up old formula versions and cache' 'brew cleanup'
 run_command 'Removing dead symlinks' 'brew prune'
+run_command 'Cleaning up old cask content' 'brew cask cleanup'
