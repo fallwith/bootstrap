@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2015-01-26
+" fallwith's .vimrc - 2015-02-03
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -8,6 +8,7 @@
 "   astrails' dotvim:       https://github.com/astrails/dotvim#installation
 "   timss' .vimrc:          https://github.com/timss/vimconf/blob/master/.vimrc
 "   tpope's sensibilities:  https://github.com/tpope/vim-sensible
+"   DanielFGray's guide:    https://gist.github.com/DanielFGray/6d81dbede41e93bbd803
 " }}}
 " vundle {{{
 "
@@ -162,6 +163,10 @@ nnoremap <Left> :echoe "Use h"<CR>
 nnoremap <Right> :echoe "Use l"<CR>
 nnoremap <Up> :echoe "Use k"<CR>
 nnoremap <Down> :echoe "Use j"<CR>
+
+" immediately reselect text after indenting/outdenting
+vnoremap < <gv
+vnoremap > >gv
 " }}}
 " {{{ splits
 " vertical and horizontal split to new buffer
