@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2015-02-03
+" fallwith's .vimrc - 2015-02-09
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -57,8 +57,16 @@ Plugin 'maxbrunsfeld/vim-yankstack'
 Plugin 'tpope/vim-endwise'
 " nerdtree: file explorer (netrw replacement)
 Plugin 'scrooloose/nerdtree'
-" vim-tmux-navigator (seamless navigation between Vim and Tmux splits)
+" vim-tmux-navigator: seamless navigation between Vim and Tmux splits
 Plugin 'christoomey/vim-tmux-navigator'
+" vim-hackernews: browse hacker news from within vim
+Plugin 'ryanss/vim-hackernews'
+" vim-reddit: browse reddit from within vim
+Plugin 'joshhartigan/vim-reddit'
+" vim-rspec: kick off rspec tests from within vim
+Plugin 'thoughtbot/vim-rspec'
+" tslime: send output to a tmux session
+Plugin 'jgdavey/tslime.vim'
 
 " themes
 Plugin 'nanotech/jellybeans.vim'
@@ -262,6 +270,13 @@ call yankstack#setup()
 nmap <leader>p <Plug>yankstack_substitute_older_paste
 nmap <leader>P <Plug>yankstack_substitute_newer_paste
 :noremap <Leader>y :Yanks<CR>
+
+" vim-rspec
+let g:rspec_command = 'call Send_to_Tmux("bundle exec rspec {spec}\n")'
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
 " }}}
 " {{{ .vimrc.last overrides
 "if filereadable($HOME . "/.vimrc.last")
