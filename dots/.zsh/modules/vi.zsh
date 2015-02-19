@@ -17,6 +17,9 @@ zle -N zle-line-init
 # ctrl-r for history searching
 bindkey -M viins '^r' history-incremental-search-backward
 bindkey -M vicmd '^r' history-incremental-search-backward
+# ctrl-p and ctrl-n for previous and next command history cycling
+bindkey -M viins '^P' up-history
+bindkey -M viins '^N' down-history
 # ctrl-a for beginning of line
 bindkey -M viins '^a' beginning-of-line
 bindkey -M vicmd '^a' beginning-of-line
