@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2015-02-09
+" fallwith's .vimrc - 2015-02-19
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -9,6 +9,7 @@
 "   timss' .vimrc:          https://github.com/timss/vimconf/blob/master/.vimrc
 "   tpope's sensibilities:  https://github.com/tpope/vim-sensible
 "   DanielFGray's guide:    https://gist.github.com/DanielFGray/6d81dbede41e93bbd803
+"   Ben Klein's tricks:     http://blog.unixphilosopher.com/2015/02/five-weird-vim-tricks.html
 " }}}
 " vundle {{{
 "
@@ -90,7 +91,7 @@ endif
 " {{{ basic configuation
 let mapleader = ","         " use a comma as the <Leader> character
 set nocompatible            " disable vi compatibilty
-let g:ruby_path='~/bin/ruby21'  " dramatically improve Ruby syntax processing time by not using the system ruby
+let g:ruby_path='~/bin/ruby22'  " dramatically improve Ruby syntax processing time by not using the system ruby
 filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
 syntax enable               " enable syntax highlighting
 set t_Co=256                " 256 colors
@@ -158,10 +159,10 @@ au BufRead,BufNewFile *.md set filetype=markdown        " treat .md files as Mar
 " {{{ custom mappings
 :noremap <Leader>i :set nolist!<CR>     " toggle display of invisibles
 map w!! %!sudo tee > /dev/null %        " force a write if vim was launched without sudo
-nmap <silent> <Leader>/ :nohlsearch<CR> " clear currently displayed search highlighting
+nmap <silent> <Leader>/ ;nohlsearch<CR> " clear currently displayed search highlighting
 
 " Leader-r reloads the vimrc -- making all changes active (have to save first)
-map <silent> <Leader>r :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+map <silent> <Leader>r ;source ~/.vimrc<CR>;filetype detect<CR>;exe ":echo 'vimrc reloaded'"<CR>
 
 " Autocompletion
 imap <S-Tab> <C-P>
@@ -172,9 +173,16 @@ nnoremap <Right> :echoe "Use l"<CR>
 nnoremap <Up> :echoe "Use k"<CR>
 nnoremap <Down> :echoe "Use j"<CR>
 
+" use jj for Esc
+imap jj <Esc>
+
 " immediately reselect text after indenting/outdenting
 vnoremap < <gv
 vnoremap > >gv
+
+" flip ; and : to enter command mode more easily
+nnoremap ; :
+nnoremap : ;
 " }}}
 " {{{ splits
 " vertical and horizontal split to new buffer
@@ -218,9 +226,8 @@ command! Mou :silent :!open -a Mou.app '%:p'
 " <leader>ag to prep a quickfix window based ag (silver searcher) search
 :command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nno <leader>ag :Ag<SPACE>
-
 " }}}
-" {{{ plugins
+" {{{ plugins / third-party tools
 " Airline
 let g:airline_theme='powerlineish'
 
@@ -237,7 +244,7 @@ vmap <Leader>a> :Tab/=><CR>
 " bypass checking if :wq (or ZZ) is used
 let g:syntastic_check_on_wq = 0
 " specify which ruby to use (enforces MRI in JRuby projects)
-let g:syntastic_ruby_mri_exec = '~/bin/ruby21'
+let g:syntastic_ruby_mri_exec = '~/bin/ruby22'
 " use mri and rubocop checkers with ruby files
 "let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
@@ -277,6 +284,33 @@ map <Leader>t :call RunCurrentSpecFile()<CR>
 map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
+"let g:rspec_command = "!bundle exec rspec --tty --color --format documentation {spec}"
+
+" Ranger
+" from: http://www.reddit.com/r/vim/comments/2va2og/ranger_the_cli_file_manager_xpost_from/cog2ley
+function! RangerChooser()
+  let temp = tempname()
+  exec 'silent !ranger --choosefiles=' . shellescape(temp)
+  if !filereadable(temp)
+    redraw!
+    " Nothing to read.
+    return
+  endif
+  let names = readfile(temp)
+  if empty(names)
+    redraw!
+    " Nothing to open.
+    return
+  endif
+  " Edit the first item.
+  exec 'edit ' . fnameescape(names[0])
+  " Add any remaning items to the arg list/buffer list.
+  for name in names[1:]
+    exec 'argadd ' . fnameescape(name)
+  endfor
+  redraw!
+endfunction
+nnoremap <leader>R :call RangerChooser()<CR>
 " }}}
 " {{{ .vimrc.last overrides
 "if filereadable($HOME . "/.vimrc.last")
