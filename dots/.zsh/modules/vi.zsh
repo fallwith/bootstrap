@@ -1,8 +1,8 @@
 # enable vi key bindings (ESC+0, ESC+$ for start/end of line)
 bindkey -v
 
-# 0.1 sec delay between switching modes
-export KEYTIMEOUT=1
+# time to wait before assuming that key input is complete (allows more time for 'jj' input)
+export KEYTIMEOUT=10
 
 # function to indicate the current vi mode (i = insert, n = normal)
 VIMODE='i'
@@ -12,6 +12,9 @@ function zle-line-init zle-keymap-select {
 }
 zle -N zle-keymap-select
 zle -N zle-line-init
+
+# use 'jj' to switch to normal/command mode from insert mode
+bindkey -M viins jj vi-cmd-mode
 
 # emacs bindings
 # ctrl-r for history searching
@@ -29,6 +32,10 @@ bindkey -M vicmd '^e' end-of-line
 # ctrl-d for forward delete
 bindkey -M viins '^d' delete-char
 bindkey -M vicmd '^d' delete-char
+# ctrl-f for forward movement
+bindkey -M viins '^f' forward-char
+# ctrl-o for backward movement (to not conflict with tmux's own ctrl-b)
+bindkey -M viins '^o' backward-char
 
 # allow ctrl-c to behave the same in normal mode as in insert mode
 bindkey -M vicmd '^c' self-insert
