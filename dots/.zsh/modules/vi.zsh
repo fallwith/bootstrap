@@ -2,7 +2,7 @@
 bindkey -v
 
 # time to wait before assuming that key input is complete (allows more time for 'jj' input)
-export KEYTIMEOUT=10
+export KEYTIMEOUT=15
 
 # function to indicate the current vi mode (i = insert, n = normal)
 VIMODE='i'
