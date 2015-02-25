@@ -88,6 +88,7 @@ declare -a desired_formulae=(awscli
                              tig
                              tmux
                              watch
+                             w3m
                              wget
                              zsh)
 
@@ -113,14 +114,12 @@ declare -a desired_casks=(adium
                           fantastical
                           firefox
                           google-chrome
-                          iterm2
                           java
                           mou
                           nvalt
                           onepassword
                           sequel-pro
                           slack
-                          spotify
                           steam
                           vagrant
                           virtualbox
