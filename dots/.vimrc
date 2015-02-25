@@ -223,6 +223,10 @@ command! Mou :silent :!open -a Mou.app '%:p'
 :command! Double :silent :set columns=252 lines=60
 :command! Single :silent :set columns=126 lines=50
 
+" :Text / :Code behavior toggle
+":command! Text :set wm=0 tw=119 fo+=walt wrap linebreak nolist
+":command! Code :set wm=0 tw=0 fo-=walt nowrap nolinebreak list
+
 " <leader>ag to prep a quickfix window based ag (silver searcher) search
 :command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nno <leader>ag :Ag<SPACE>
@@ -280,10 +284,10 @@ nmap <leader>P <Plug>yankstack_substitute_newer_paste
 
 " vim-rspec
 let g:rspec_command = 'call Send_to_Tmux("bundle exec rspec {spec}\n")'
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
+map <Leader>t ;call RunCurrentSpecFile()<CR>
+map <Leader>s ;call RunNearestSpec()<CR>
+map <Leader>l ;call RunLastSpec()<CR>
+map <Leader>a ;call RunAllSpecs()<CR>
 "let g:rspec_command = "!bundle exec rspec --tty --color --format documentation {spec}"
 
 " Ranger
