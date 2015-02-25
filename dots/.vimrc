@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2015-02-19
+" fallwith's .vimrc - 2015-02-24
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -11,82 +11,69 @@
 "   DanielFGray's guide:    https://gist.github.com/DanielFGray/6d81dbede41e93bbd803
 "   Ben Klein's tricks:     http://blog.unixphilosopher.com/2015/02/five-weird-vim-tricks.html
 " }}}
-" vundle {{{
-"
-" :PluginList          - list configured plugins
-" :PluginInstall(!)    - install (update) plugins
-" :PluginSearch(!) foo - search (or refresh cache first) for foo
-" :PluginClean(!)      - confirm (or auto-approve) removal of unused plugins
-"
-" Automatic installation logic originally from:
-"   http://www.erikzaadi.com/2012/03/19/auto-installing-vundle-from-your-vimrc/
-let pluginInstallNeeded=0
-if !filereadable(expand('~/.vim/bundle/vundle/README.md'))
-  echo 'Installing Vundle...'
-  echo ''
-  silent !mkdir -p ~/.vim/bundle
-  silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
-  let pluginInstallNeeded=1
+" vim-plug {{{
+
+" :PlugInstall [name]  - install all / specified plugins
+" :PlugUpdate          - install/update all / specified plugins
+" :PlugClean[!]        - confirm (or auto-approve) removal of unused plugins
+" :PlugUpgrade         - Upgrade vim-plug itself
+
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall
 endif
-set rtp+=~/.vim/bundle/vundle/
-call vundle#begin()
-" vundle: keep Vundle itself up to date with Vundle
-Plugin 'gmarik/vundle'
+
+call plug#begin('~/.vim/plugged')
 " airline: a lightweight provider of a fancy status line
-Plugin 'bling/vim-airline'
+Plug 'bling/vim-airline'
 " fugitive: allows for the use of Git from within Vim
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 " commentary: allows for the commenting/uncommenting of text
-Plugin 'tpope/vim-commentary'
+Plug 'tpope/vim-commentary'
 " syntastic: a linter / code syntax checker wrapper
-Plugin 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic', { 'for': 'ruby' }
 " surround: add, remove, swap surroundings like quotes or braces
-Plugin 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 " tabular: automatically align blocks of text based on a delimiter
-Plugin 'godlygeek/tabular'
+Plug 'godlygeek/tabular', { 'for': 'ruby' }
 " delimitMate: automatically provides closing quotes and braces
-Plugin 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'
 " vim-ruby: powers Vim's Ruby editing support, bundle to fetch newer code that what Vim shipped with
-Plugin 'vim-ruby/vim-ruby'
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 " ctrl-p: fast, fuzzy finder for searching filesystems, buffers, and mru items
-Plugin 'kien/ctrlp.vim'
+Plug 'kien/ctrlp.vim'
 " vim-vinegar: netrw file browsing improvements
-Plugin 'tpope/vim-vinegar'
+Plug 'tpope/vim-vinegar'
 " vim-yankstack: more easily navigate through previous yanks
-Plugin 'maxbrunsfeld/vim-yankstack'
+Plug 'maxbrunsfeld/vim-yankstack'
 " vim-endwise: add helpful closing structures (like 'end') for Ruby and others
-Plugin 'tpope/vim-endwise'
+Plug 'tpope/vim-endwise'
 " nerdtree: file explorer (netrw replacement)
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 " vim-tmux-navigator: seamless navigation between Vim and Tmux splits
-Plugin 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'
 " vim-hackernews: browse hacker news from within vim
-Plugin 'ryanss/vim-hackernews'
+Plug 'ryanss/vim-hackernews'
 " vim-reddit: browse reddit from within vim
-Plugin 'joshhartigan/vim-reddit'
+Plug 'joshhartigan/vim-reddit'
 " vim-rspec: kick off rspec tests from within vim
-Plugin 'thoughtbot/vim-rspec'
+Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 " tslime: send output to a tmux session
-Plugin 'jgdavey/tslime.vim'
+Plug 'jgdavey/tslime.vim', { 'for': 'ruby' }
 
 " themes
-Plugin 'nanotech/jellybeans.vim'
-Plugin 'morhetz/gruvbox'
-Plugin 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
-Plugin 'w0ng/vim-hybrid'
-Plugin 'vim-scripts/wombat256.vim'
-Plugin 'garybernhardt/dotfiles', {'rtp': '.vim/'}
-Plugin 'Lokaltog/vim-distinguished'
-Plugin 'noahfrederick/vim-hemisu'
-Plugin 'zeis/vim-kolor'
-Plugin 'tomasr/molokai'
-
-call vundle#end()
-if pluginInstallNeeded == 1
-  echo 'Running :PluginInstall to install plugins with Vundle...'
-  echo ''
-  :PluginInstall
-endif
+Plug 'nanotech/jellybeans.vim'
+Plug 'morhetz/gruvbox'
+Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+Plug 'w0ng/vim-hybrid'
+Plug 'vim-scripts/wombat256.vim'
+Plug 'garybernhardt/dotfiles', {'rtp': '.vim/'}
+Plug 'Lokaltog/vim-distinguished'
+Plug 'noahfrederick/vim-hemisu'
+Plug 'zeis/vim-kolor'
+Plug 'tomasr/molokai'
+call plug#end()
 " }}}
 " {{{ basic configuation
 let mapleader = ","         " use a comma as the <Leader> character
