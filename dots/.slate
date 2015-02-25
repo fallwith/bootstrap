@@ -43,8 +43,8 @@ config windowHintsIgnoreHiddenWindows false
 config windowHintsSpread true
 
 # apps
-bind i:ctrl;cmd focus 'iTerm'
-bind m:ctrl;cmd focus 'MacVim'
 bind g:ctrl;cmd focus 'Google Chrome'
 bind f:ctrl;cmd focus 'Firefox'
-bind s:ctrl;cmd focus 'Spotify'
+bind i:ctrl;cmd focus 'iTunes'
+bind t:ctrl;cmd focus 'Terminal'
+bind s:ctrl;cmd focus 'Slack'
