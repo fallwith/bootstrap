@@ -42,7 +42,7 @@ Plug 'Raimondi/delimitMate'
 " vim-ruby: powers Vim's Ruby editing support, bundle to fetch newer code that what Vim shipped with
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 " ctrl-p: fast, fuzzy finder for searching filesystems, buffers, and mru items
-Plug 'kien/ctrlp.vim'
+Plug 'kien/ctrlp.vim', { 'on': 'CtrlP' }
 " vim-vinegar: netrw file browsing improvements
 Plug 'tpope/vim-vinegar'
 " vim-yankstack: more easily navigate through previous yanks
@@ -53,10 +53,6 @@ Plug 'tpope/vim-endwise'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 " vim-tmux-navigator: seamless navigation between Vim and Tmux splits
 Plug 'christoomey/vim-tmux-navigator'
-" vim-hackernews: browse hacker news from within vim
-Plug 'ryanss/vim-hackernews'
-" vim-reddit: browse reddit from within vim
-Plug 'joshhartigan/vim-reddit'
 " vim-rspec: kick off rspec tests from within vim
 Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 " tslime: send output to a tmux session
