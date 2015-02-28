@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2015-02-24
+" fallwith's .vimrc - 2015-02-27
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -10,6 +10,8 @@
 "   tpope's sensibilities:  https://github.com/tpope/vim-sensible
 "   DanielFGray's guide:    https://gist.github.com/DanielFGray/6d81dbede41e93bbd803
 "   Ben Klein's tricks:     http://blog.unixphilosopher.com/2015/02/five-weird-vim-tricks.html
+"   Dr. Bunsen:             http://www.drbunsen.org/writing-in-vim/
+"   Luke Maciak:            http://www.terminally-incoherent.com/blog/2013/06/17/using-vim-for-writing-prose/
 " }}}
 " vim-plug {{{
 
@@ -42,7 +44,7 @@ Plug 'Raimondi/delimitMate'
 " vim-ruby: powers Vim's Ruby editing support, bundle to fetch newer code that what Vim shipped with
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 " ctrl-p: fast, fuzzy finder for searching filesystems, buffers, and mru items
-Plug 'kien/ctrlp.vim', { 'on': 'CtrlP' }
+Plug 'kien/ctrlp.vim'
 " vim-vinegar: netrw file browsing improvements
 Plug 'tpope/vim-vinegar'
 " vim-yankstack: more easily navigate through previous yanks
@@ -206,9 +208,29 @@ command! Mou :silent :!open -a Mou.app '%:p'
 :command! Double :silent :set columns=252 lines=60
 :command! Single :silent :set columns=126 lines=50
 
-" :Text / :Code behavior toggle
-":command! Text :set wm=0 tw=119 fo+=walt wrap linebreak nolist
-":command! Code :set wm=0 tw=0 fo-=walt nowrap nolinebreak list
+" prose editing mode
+func! ProseMode()
+  "setlocal formatoptions=1
+  setlocal formatoptions=ant
+  " map j gj
+  " map k gk
+  setlocal spell spelllang=en_gb
+  setlocal complete+=s
+  setlocal formatprg=par
+  setlocal wrap
+  setlocal nolist
+  setlocal linebreak
+  setlocal nonu
+  setlocal textwidth=120
+  setlocal wrapmargin=0
+  setlocal noautoindent
+  setlocal nocindent
+  setlocal nosmartindent
+  setlocal indentexpr=
+  setlocal foldcolumn=10
+  setlocal columns=120
+endfunc
+com! Prose call ProseMode()
 
 " <leader>ag to prep a quickfix window based ag (silver searcher) search
 :command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
@@ -243,6 +265,9 @@ autocmd FileType netrw nnoremap <silent> q :bd<CR>
 
 " NERDTree
 :noremap <C-n> :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1              " show hidden files
+let g:NERDTreeMapJumpNextSibling = "" " unbind <C-j>
+let g:NERDTreeMapJumpPrevSibling = "" " unbind <C-k>
 
 " CtrlP
 " list buffers
