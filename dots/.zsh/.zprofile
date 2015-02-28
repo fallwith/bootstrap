@@ -20,7 +20,7 @@ export GIT_SSL_NO_VERIFY=true
 PATH=/usr/local/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/opt/gnu-sed/libexec/gnubin:$PATH
 
 # mysql
-PATH=$PATH:/usr/local/mysql/bin
+#PATH=$PATH:/usr/local/mysql/bin
 alias mysqlstop="sudo /Library/StartupItems/MySQLCOM/MySQLCOM stop"
 alias mysqlstart="sudo /Library/StartupItems/MySQLCOM/MySQLCOM start"
 alias mysqlrestart="sudo /Library/StartupItems/MySQLCOM/MySQLCOM restart"
