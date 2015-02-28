@@ -17,9 +17,11 @@ zle -N zle-line-init
 bindkey -M viins jj vi-cmd-mode
 
 # emacs bindings
-# ctrl-r for history searching
+# ctrl-r/s for history searching
 bindkey -M viins '^r' history-incremental-search-backward
 bindkey -M vicmd '^r' history-incremental-search-backward
+bindkey -M viins '^s' history-incremental-search-forward
+bindkey -M vicmd '^s' history-incremental-search-forward
 # ctrl-p and ctrl-n for previous and next command history cycling
 bindkey -M viins '^P' up-history
 bindkey -M viins '^N' down-history
@@ -36,6 +38,13 @@ bindkey -M vicmd '^d' delete-char
 bindkey -M viins '^f' forward-char
 # ctrl-o for backward movement (to not conflict with tmux's own ctrl-b)
 bindkey -M viins '^o' backward-char
+# alt-f/b/d to move forward/backward/delete a word
+bindkey -M viins '\ef' forward-word
+bindkey -M vicmd '\ef' forward-word
+bindkey -M viins '\eb' backward-word
+bindkey -M vicmd '\eb' backward-word
+bindkey -M viins '\ed' kill-word
+bindkey -M vicmd '\ed' kill-word
 
 # allow ctrl-c to behave the same in normal mode as in insert mode
 bindkey -M vicmd '^c' self-insert
