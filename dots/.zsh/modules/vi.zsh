@@ -1,7 +1,7 @@
 # enable vi key bindings (ESC+0, ESC+$ for start/end of line)
 bindkey -v
 
-# time to wait before assuming that key input is complete (allows more time for 'jj' input)
+# time to wait before assuming that key input is complete (allows more time for 'jk' input)
 export KEYTIMEOUT=15
 
 # function to indicate the current vi mode (i = insert, n = normal)
@@ -13,8 +13,8 @@ function zle-line-init zle-keymap-select {
 zle -N zle-keymap-select
 zle -N zle-line-init
 
-# use 'jj' to switch to normal/command mode from insert mode
-bindkey -M viins jj vi-cmd-mode
+# use 'jk' to switch to normal/command mode from insert mode
+bindkey -M viins jk vi-cmd-mode
 
 # emacs bindings
 # ctrl-r/s for history searching
