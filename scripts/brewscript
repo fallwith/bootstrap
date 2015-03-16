@@ -70,6 +70,7 @@ declare -a desired_formulae=(awscli
                              coreutils
                              ctags
                              findutils
+                             git
                              gnu-sed
                              imagemagick
                              'jmeter --with-plugins'
