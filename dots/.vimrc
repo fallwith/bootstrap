@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2015-02-27
+" fallwith's .vimrc - 2015-03-16
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -59,6 +59,10 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 " tslime: send output to a tmux session
 Plug 'jgdavey/tslime.vim', { 'for': 'ruby' }
+" vim-gutentags: automatic CTags management
+Plug 'ludovicchabant/vim-gutentags'
+" vim-ags: leverage The Silver Searcher (ag) from within Vim
+Plug 'gabesoft/vim-ags'
 
 " themes
 Plug 'nanotech/jellybeans.vim'
@@ -66,11 +70,12 @@ Plug 'morhetz/gruvbox'
 Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 Plug 'w0ng/vim-hybrid'
 Plug 'vim-scripts/wombat256.vim'
-Plug 'garybernhardt/dotfiles', {'rtp': '.vim/'}
 Plug 'Lokaltog/vim-distinguished'
-Plug 'noahfrederick/vim-hemisu'
 Plug 'zeis/vim-kolor'
 Plug 'tomasr/molokai'
+Plug 'toupeira/vim-desertink'
+Plug 'ajh17/Spacegray.vim'
+Plug 'wellsjo/wells-colorscheme.vim'
 call plug#end()
 " }}}
 " {{{ basic configuation
@@ -118,31 +123,38 @@ set nrformats=              " treat all numerals as decimal (leading zeroes won'
 set pastetoggle=<F2>        " (for non gui Vim) hit F2 to toggle paste mode (which won't attempt to apply indentation)
 set cc=120                  " (ruler) colorcolumn. column 120 is visually styled
 set complete-=i             " remove 'included files' from the list of autocomplete sources
+set clipboard=unnamed       " yank to / put from the operating system clipboard
+set list                    " show invisibles
+set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
 hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
 set grepprg=ag\ --nogroup\ --nocolor      " use ag instead of grep
 set viminfo+=n~/.vim/.viminfo             " store the vim info file beneath ~/.vim
 " }}}
 " gui specific {{{
 if has('gui_running')
-  colorscheme distinguished   " set default color scheme (ir_black, desert, jellybeans) :colorscheme<tab> for list
   set transparency=10                 " transparent background
-  set list                            " show invisibles
-  set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
-
   "set guifont=Inconsolata:h14        " specify font family and size
   set guifont=Monaco:h11
   "set guifont=Menlo:h11
-else
-  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
-  " colorscheme Tomorrow-Night-Bright
   colorscheme distinguished
+else
+  " set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+
+  " colorscheme gruvbox
+  " colorscheme spacegray
+  " colorscheme hybrid
+  colorscheme distinguished
+
+  " don't allow colorschemes to set a background color
+  highlight Normal ctermbg=NONE
+  highlight nonText ctermbg=NONE
 endif
 " }}}
 " {{{ filetype specific
 au BufRead,BufNewFile *.md set filetype=markdown        " treat .md files as Markdown (not Modula)
 " }}}
 " {{{ custom mappings
-:noremap <Leader>i :set nolist!<CR>     " toggle display of invisibles
+:noremap <Leader>i :set list!<CR>       " toggle display of invisibles
 map w!! %!sudo tee > /dev/null %        " force a write if vim was launched without sudo
 nmap <silent> <Leader>/ ;nohlsearch<CR> " clear currently displayed search highlighting
 
@@ -158,8 +170,9 @@ nnoremap <Right> :echoe "Use l"<CR>
 nnoremap <Up> :echoe "Use k"<CR>
 nnoremap <Down> :echoe "Use j"<CR>
 
-" use jj for Esc
-imap jj <Esc>
+" use jk for Esc
+imap jk <Esc>
+vmap jk <Esc>
 
 " immediately reselect text after indenting/outdenting
 vnoremap < <gv
@@ -221,7 +234,7 @@ func! ProseMode()
   setlocal nolist
   setlocal linebreak
   setlocal nonu
-  setlocal textwidth=120
+  " setlocal textwidth=120
   setlocal wrapmargin=0
   setlocal noautoindent
   setlocal nocindent
@@ -233,8 +246,8 @@ endfunc
 com! Prose call ProseMode()
 
 " <leader>ag to prep a quickfix window based ag (silver searcher) search
-:command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-nno <leader>ag :Ag<SPACE>
+" :command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nno <leader>ag :Ags<SPACE>
 " }}}
 " {{{ plugins / third-party tools
 " Airline
@@ -290,6 +303,10 @@ nmap <leader>p <Plug>yankstack_substitute_older_paste
 nmap <leader>P <Plug>yankstack_substitute_newer_paste
 :noremap <Leader>y :Yanks<CR>
 
+" by default Y yanks the entire line, including the newline. have Y copy from
+" the cursor to the end of the line and exclude the newline
+nnoremap Y y$
+
 " vim-rspec
 let g:rspec_command = 'call Send_to_Tmux("bundle exec rspec {spec}\n")'
 map <Leader>t ;call RunCurrentSpecFile()<CR>
@@ -323,6 +340,9 @@ function! RangerChooser()
   redraw!
 endfunction
 nnoremap <leader>R :call RangerChooser()<CR>
+
+" vim-gutentags
+let g:gutentags_cache_dir = "/tmp"
 " }}}
 " {{{ .vimrc.last overrides
 "if filereadable($HOME . "/.vimrc.last")
@@ -331,3 +351,8 @@ nnoremap <leader>R :call RangerChooser()<CR>
 "  call system("touch $HOME/.vimrc.last")
 "endif
 " }}}
+
+
+" if filereadable($HOME . "/.vim/acolyte_to_adept.vim")
+"   source $HOME/.vim/acolyte_to_adept.vim
+" endif
