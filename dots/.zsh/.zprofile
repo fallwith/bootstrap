@@ -19,14 +19,8 @@ export GIT_SSL_NO_VERIFY=true
 # homebrew
 PATH=/usr/local/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/opt/gnu-sed/libexec/gnubin:$PATH
 
-# mysql
-#PATH=$PATH:/usr/local/mysql/bin
-alias mysqlstop="sudo /Library/StartupItems/MySQLCOM/MySQLCOM stop"
-alias mysqlstart="sudo /Library/StartupItems/MySQLCOM/MySQLCOM start"
-alias mysqlrestart="sudo /Library/StartupItems/MySQLCOM/MySQLCOM restart"
-
 # rvm
-alias rvminstall="\curl -L https://get.rvm.io | bash -s stable --autolibs=enabled"
+# alias rvminstall="\curl -L https://get.rvm.io | bash -s stable --autolibs=enabled"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # mongo
