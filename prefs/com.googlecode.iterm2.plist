@@ -769,13 +769,13 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>367 342 214 309 0 0 1680 1028 </string>
 	<key>NSWindow Frame Preferences</key>
-	<string>51 222 924 485 0 0 1920 1057 </string>
+	<string>39 210 924 485 0 0 1680 1027 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
 	<string>1476 861 400 129 0 0 1920 1058 </string>
 	<key>NSWindow Frame SUUpdateAlertFrame</key>
 	<string>672 509 575 392 0 0 1920 1058 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>541 77 1555 866 0 0 1920 1057 </string>
+	<string>705 303 760 614 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>1020 83 900 740 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1714,7 +1714,7 @@
 			<key>Close Sessions On End</key>
 			<true/>
 			<key>Columns</key>
-			<integer>125</integer>
+			<integer>256</integer>
 			<key>Command</key>
 			<string></string>
 			<key>Cursor Color</key>
@@ -2109,7 +2109,7 @@
 			<key>Right Option Key Sends</key>
 			<integer>0</integer>
 			<key>Rows</key>
-			<integer>42</integer>
+			<integer>60</integer>
 			<key>Screen</key>
 			<integer>-1</integer>
 			<key>Scrollback Lines</key>
@@ -3080,7 +3080,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2015-02-24T19:26:01Z</date>
+	<date>2015-03-09T05:00:37Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>Show Toolbelt</key>
