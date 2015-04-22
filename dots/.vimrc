@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2015-03-16
+" fallwith's .vimrc - 2015-04-20
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -63,6 +63,8 @@ Plug 'jgdavey/tslime.vim', { 'for': 'ruby' }
 Plug 'ludovicchabant/vim-gutentags'
 " vim-ags: leverage The Silver Searcher (ag) from within Vim
 Plug 'gabesoft/vim-ags'
+" vim-molasses prevent repeated hjkl input for movement
+" Plug '0x0dea/vim-molasses'
 
 " themes
 Plug 'nanotech/jellybeans.vim'
@@ -76,6 +78,7 @@ Plug 'tomasr/molokai'
 Plug 'toupeira/vim-desertink'
 Plug 'ajh17/Spacegray.vim'
 Plug 'wellsjo/wells-colorscheme.vim'
+Plug 'romainl/Apprentice'
 call plug#end()
 " }}}
 " {{{ basic configuation
@@ -110,6 +113,7 @@ set nobackup                " disable backups"
 set nowritebackup           " disable backups"
 set noswapfile              " disable the creation of .swp swap files
 set nu                      " enable line numbers
+set rnu                     " enable relative line numbers
 set numberwidth=5           " specify line numbers column width
 set vb t_vb=                " disable bell
 set tags=.tags;/            " look for a .tags ctags file and keep looking all the way up to /
@@ -136,7 +140,8 @@ if has('gui_running')
   "set guifont=Inconsolata:h14        " specify font family and size
   set guifont=Monaco:h11
   "set guifont=Menlo:h11
-  colorscheme distinguished
+  colorscheme hybrid-light
+  set lines=40 columns=120
 else
   " set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 
@@ -181,6 +186,12 @@ vnoremap > >gv
 " flip ; and : to enter command mode more easily
 nnoremap ; :
 nnoremap : ;
+
+" delete to the black hole
+nnoremap d "_d
+xnoremap d "_d"
+nnoremap x "_x
+xnoremap x "_x"
 " }}}
 " {{{ splits
 " vertical and horizontal split to new buffer
