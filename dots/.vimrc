@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2015-04-20
+" fallwith's .vimrc - 2015-06-16
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -60,11 +60,17 @@ Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 " tslime: send output to a tmux session
 Plug 'jgdavey/tslime.vim', { 'for': 'ruby' }
 " vim-gutentags: automatic CTags management
-Plug 'ludovicchabant/vim-gutentags'
+"Plug 'ludovicchabant/vim-gutentags'
 " vim-ags: leverage The Silver Searcher (ag) from within Vim
 Plug 'gabesoft/vim-ags'
 " vim-molasses prevent repeated hjkl input for movement
 " Plug '0x0dea/vim-molasses'
+" vim-markdown: development version of Vim's markdown support
+Plug 'tpope/vim-markdown'
+" vim-pencil: use Vim for writing
+" Plug 'reedes/vim-pencil'
+" tmuxline: powerline type theming of tmux with vim based integration
+Plug 'edkolev/tmuxline.vim'
 
 " themes
 Plug 'nanotech/jellybeans.vim'
@@ -79,9 +85,16 @@ Plug 'toupeira/vim-desertink'
 Plug 'ajh17/Spacegray.vim'
 Plug 'wellsjo/wells-colorscheme.vim'
 Plug 'romainl/Apprentice'
+Plug 'zenorocha/dracula-theme', {'rtp': 'vim/'}
+Plug 'fxn/vim-monochrome'
+Plug 'duythinht/inori'
+Plug 'vim-scripts/abbott.vim'
+Plug 'yantze/pt_black'
+Plug 'thewatts/wattslandia'
+Plug 'kreeger/benlight'
 call plug#end()
 " }}}
-" {{{ basic configuation
+" {{{ basic configuration
 let mapleader = ","         " use a comma as the <Leader> character
 set nocompatible            " disable vi compatibilty
 let g:ruby_path='~/bin/ruby22'  " dramatically improve Ruby syntax processing time by not using the system ruby
@@ -113,11 +126,11 @@ set nobackup                " disable backups"
 set nowritebackup           " disable backups"
 set noswapfile              " disable the creation of .swp swap files
 set nu                      " enable line numbers
-set rnu                     " enable relative line numbers
+"set rnu                     " enable relative line numbers
 set numberwidth=5           " specify line numbers column width
 set vb t_vb=                " disable bell
 set tags=.tags;/            " look for a .tags ctags file and keep looking all the way up to /
-set cursorline              " highlight the line the cursor resides on
+"set cursorline              " highlight the line the cursor resides on
 set shiftround              " round indentation to a multiple of 'shiftwidth'
 set wildmenu                " when tab completing commands, show available matches in a menu
 set display+=lastline       " display as much as possible of the last (overly long) line
@@ -129,6 +142,7 @@ set cc=120                  " (ruler) colorcolumn. column 120 is visually styled
 set complete-=i             " remove 'included files' from the list of autocomplete sources
 set clipboard=unnamed       " yank to / put from the operating system clipboard
 set list                    " show invisibles
+set ff=unix                 " unix fileformat
 set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
 hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
 set grepprg=ag\ --nogroup\ --nocolor      " use ag instead of grep
@@ -155,8 +169,13 @@ else
   highlight nonText ctermbg=NONE
 endif
 " }}}
+" {{{ custom hooks
+" automatically leave paste mode after having pasted in text
+au InsertLeave * silent! set nopaste
+" }}}
 " {{{ filetype specific
-au BufRead,BufNewFile *.md set filetype=markdown        " treat .md files as Markdown (not Modula)
+" not needed if 'tpope/vim-markdown' is present:
+"au BufRead,BufNewFile *.md set filetype=markdown        " treat .md files as Markdown (not Modula)
 " }}}
 " {{{ custom mappings
 :noremap <Leader>i :set list!<CR>       " toggle display of invisibles
@@ -186,6 +205,8 @@ vnoremap > >gv
 " flip ; and : to enter command mode more easily
 nnoremap ; :
 nnoremap : ;
+vnoremap ; :
+vnoremap : ;
 
 " delete to the black hole
 nnoremap d "_d
@@ -209,6 +230,7 @@ set splitright
 " {{{ custom commands
 " Markdown
 command! Mou :silent :!open -a Mou.app '%:p'
+command! MD :silent :!open -a MacDown.app '%:p'
 
 " Ctags
 " create a Ruby project ctags file by passing the current file's path to the
@@ -232,29 +254,29 @@ command! Mou :silent :!open -a Mou.app '%:p'
 :command! Double :silent :set columns=252 lines=60
 :command! Single :silent :set columns=126 lines=50
 
-" prose editing mode
-func! ProseMode()
-  "setlocal formatoptions=1
-  setlocal formatoptions=ant
-  " map j gj
-  " map k gk
-  setlocal spell spelllang=en_gb
-  setlocal complete+=s
-  setlocal formatprg=par
-  setlocal wrap
-  setlocal nolist
-  setlocal linebreak
-  setlocal nonu
-  " setlocal textwidth=120
-  setlocal wrapmargin=0
-  setlocal noautoindent
-  setlocal nocindent
-  setlocal nosmartindent
-  setlocal indentexpr=
-  setlocal foldcolumn=10
-  setlocal columns=120
-endfunc
-com! Prose call ProseMode()
+" " prose editing mode
+" func! ProseMode()
+"   "setlocal formatoptions=1
+"   setlocal formatoptions=ant
+"   " map j gj
+"   " map k gk
+"   setlocal spell spelllang=en_gb
+"   setlocal complete+=s
+"   setlocal formatprg=par
+"   setlocal wrap
+"   setlocal nolist
+"   setlocal linebreak
+"   setlocal nonu
+"   " setlocal textwidth=120
+"   setlocal wrapmargin=0
+"   setlocal noautoindent
+"   setlocal nocindent
+"   setlocal nosmartindent
+"   setlocal indentexpr=
+"   setlocal foldcolumn=10
+"   setlocal columns=120
+" endfunc
+" com! Prose call ProseMode()
 
 " <leader>ag to prep a quickfix window based ag (silver searcher) search
 " :command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
@@ -262,7 +284,10 @@ nno <leader>ag :Ags<SPACE>
 " }}}
 " {{{ plugins / third-party tools
 " Airline
-let g:airline_theme='powerlineish'
+" let g:airline_theme='powerlineish'
+let g:airline_theme='molokai'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tmuxline#enabled = 0 " different theme for tmux than vim
 
 " Tabular
 " use tabular to align on equals signs and on colons (ruby 1.9+ style hashes)
@@ -294,6 +319,7 @@ let g:NERDTreeMapJumpNextSibling = "" " unbind <C-j>
 let g:NERDTreeMapJumpPrevSibling = "" " unbind <C-k>
 
 " CtrlP
+let g:ctrlp_map = '<Leader>q'
 " list buffers
 :noremap <Leader>b :CtrlPBuffer<CR>
 " list mru
@@ -353,7 +379,18 @@ endfunction
 nnoremap <leader>R :call RangerChooser()<CR>
 
 " vim-gutentags
-let g:gutentags_cache_dir = "/tmp"
+"let g:gutentags_cache_dir = "/tmp"
+
+" " vim-pencil
+" let g:pencil#wrapModeDefault = 'soft'   " default is 'hard'
+" let g:pencil#textwidth = 119
+
+" augroup pencil
+"   autocmd!
+"   autocmd FileType markdown,mkd call pencil#init()
+"   autocmd FileType text         call pencil#init({'wrap': 'hard'})
+" augroup END
+
 " }}}
 " {{{ .vimrc.last overrides
 "if filereadable($HOME . "/.vimrc.last")
