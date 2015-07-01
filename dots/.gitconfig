@@ -27,6 +27,8 @@
   aliases = !git config --get-regexp 'alias.*'|colrm 1 6|sed 's/[ ]/ = /'
   # if things are really screwed up in a clone
   hard = reset --hard origin/master
+  # undo the last commit (if it hasn't been pushed yet)
+  soft = reset --soft HEAD~1
   # pretty log history
   hist = log --since=1.day --relative-date --stat
   mine = log --since=1.day --relative-date --stat --committer=fallwith
