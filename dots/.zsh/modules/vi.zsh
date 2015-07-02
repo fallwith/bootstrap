@@ -54,6 +54,6 @@ bindkey '^?' backward-delete-char
 bindkey '^h' backward-delete-char
 
 # edit the command line text in vi (as with Bash's <Ctrl-X> e)
-autoload -U edit-command-line
-zle -N edit-command-line
-bindkey -M vicmd v edit-command-line
+# autoload -U edit-command-line
+# zle -N edit-command-line
+# bindkey -M vicmd v edit-command-line
