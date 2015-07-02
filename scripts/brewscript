@@ -67,8 +67,10 @@ run_command 'Upgrading all installed formulae' 'brew upgrade --without-x11'
 declare -a desired_formulae=(awscli
                              bash
                              bash-completion
+                             chruby
                              coreutils
                              ctags
+                             'emacs --HEAD --with-cocoa'
                              findutils
                              git
                              gnu-sed
@@ -84,6 +86,7 @@ declare -a desired_formulae=(awscli
                              mysql
                              openssl
                              reattach-to-user-namespace
+                             ruby-install
                              sqlite
                              the_silver_searcher
                              tig
@@ -114,7 +117,7 @@ declare -a desired_casks=(adium
                           evernote
                           fantastical
                           firefox
-                          google-chrome
+                          #google-chrome
                           java
                           mou
                           nvalt
