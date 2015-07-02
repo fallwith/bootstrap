@@ -19,19 +19,9 @@ export GIT_SSL_NO_VERIFY=true
 # homebrew
 PATH=/usr/local/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/opt/gnu-sed/libexec/gnubin:$PATH
 
-# rvm
-# alias rvminstall="\curl -L https://get.rvm.io | bash -s stable --autolibs=enabled"
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-
 # mongo
 alias mongostart="mongod --fork --config /usr/local/etc/mongod.conf"
 alias mongostop="pkill mongod"
-#To have launchd start mongodb at login:
-#    ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents
-#Then to load mongodb now:
-#    launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
-#Or, if you don't want/need launchctl, you can just run:
-#    mongod
 
 # mysql
 alias mysqlstart="mysql.server start"
@@ -72,8 +62,8 @@ export JAVA_HOME="$(/usr/libexec/java_home)"
 # aws
 export EC2_PRIVATE_KEY=~/.ec2/pk-amazon.pem
 export EC2_CERT=~/.ec2/cert-amazon.pem
-export AWS_CREDENTIAL_FILE=~/.ec2/.aws-credentials-master
 
 # bundler
 alias bspec='bundle exec rspec'
 alias brake='noglob bundle exec rake'
+alias bcap='noglob bundle exec cap'
