@@ -733,6 +733,8 @@
 	<string></string>
 	<key>NSScrollAnimationEnabled</key>
 	<false/>
+	<key>NSScrollViewShouldScrollUnderTitlebar</key>
+	<false/>
 	<key>NSTableView Columns KeyBingingTable</key>
 	<array>
 		<data>
@@ -744,7 +746,7 @@
 		BAtzdHJlYW10eXBlZIHoA4QBQISEhAhOU1N0cmluZwGEhAhOU09iamVjdACF
 		hAErATGG
 		</data>
-		<string>307</string>
+		<string>322</string>
 	</array>
 	<key>NSTableView Hidden Columns KeyBingingTable</key>
 	<array/>
@@ -769,15 +771,17 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>367 342 214 309 0 0 1680 1028 </string>
 	<key>NSWindow Frame Preferences</key>
-	<string>39 210 924 485 0 0 1680 1027 </string>
+	<string>723 324 606 456 0 0 1680 1027 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
-	<string>1476 861 400 129 0 0 1920 1058 </string>
+	<string>1059 854 400 129 0 0 1920 1057 </string>
+	<key>NSWindow Frame SUUpdateAlert</key>
+	<string>530 484 620 392 0 0 1680 1027 </string>
 	<key>NSWindow Frame SUUpdateAlertFrame</key>
 	<string>672 509 575 392 0 0 1920 1058 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>705 303 760 614 0 0 1680 1027 </string>
+	<string>107 114 1546 867 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>1020 83 900 740 0 0 1920 1057 </string>
+	<string>159 65 1546 866 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>21 129 900 740 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -2097,11 +2101,11 @@
 			<key>Name</key>
 			<string>Fallwith</string>
 			<key>Non Ascii Font</key>
-			<string>Monaco 10</string>
+			<string>MonacoforPowerline 10</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>Monaco 10</string>
+			<string>MonacoforPowerline 10</string>
 			<key>Option Key Sends</key>
 			<integer>2</integer>
 			<key>Prompt Before Closing 2</key>
@@ -2253,7 +2257,7 @@
 			<key>Terminal Type</key>
 			<string>xterm-256color</string>
 			<key>Transparency</key>
-			<real>0.17619083821773529</real>
+			<real>0.061985032004717527</real>
 			<key>Triggers</key>
 			<array/>
 			<key>Unlimited Scrollback</key>
@@ -3012,6 +3016,10 @@
 	<true/>
 	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
 	<integer>0</integer>
+	<key>NoSyncTimeOfLastPromo</key>
+	<real>453245180.93458998</real>
+	<key>NoSyncTimeOfLastPromoDownload</key>
+	<real>453245180.93484497</real>
 	<key>OnlyWhenMoreTabs</key>
 	<true/>
 	<key>OpenArrangementAtStartup</key>
@@ -3069,18 +3077,22 @@
 	<false/>
 	<key>QuitWhenAllWindowsClosed</key>
 	<true/>
+	<key>RawCameraSupportVersion</key>
+	<string>6041</string>
 	<key>RightCommand</key>
 	<integer>8</integer>
 	<key>RightOption</key>
 	<integer>3</integer>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
+	<key>SUFeedAlternateAppNameKey</key>
+	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>http://iterm2.com/appcasts/testing.xml</string>
+	<string>https://iterm2.com/appcasts/nightly.xml</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2015-03-09T05:00:37Z</date>
+	<date>2015-07-01T05:16:40Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>Show Toolbelt</key>
@@ -3128,6 +3140,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>2.0.0.20141103</string>
+	<string>2.9.20150612-nightly</string>
 </dict>
 </plist>
