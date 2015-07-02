@@ -2,6 +2,12 @@
 
 # Homebrew brew script
 
+# from https://github.com/mathiasbynens/dotfiles/blob/master/brew.sh
+function keepalive() {
+  sudo -v
+  while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+}
+
 function install_homebrew_if_needed() {
   if ! [ -e '/usr/local/bin/brew' ]; then
     echo "Homebrew 'brew' binary not found in your PATH. Installing Homebrew..."
@@ -61,6 +67,7 @@ fi
 
 install_homebrew_if_needed
 
+keepalive
 run_command 'Updating Homebrew itself' 'brew update'
 run_command 'Upgrading all installed formulae' 'brew upgrade --without-x11'
 
@@ -85,6 +92,7 @@ declare -a desired_formulae=(awscli
                              mongodb
                              mysql
                              openssl
+                             ranger
                              reattach-to-user-namespace
                              ruby-install
                              sqlite
@@ -107,20 +115,14 @@ check_or_install_formula brew-cask
 run_command 'Tapping versions' 'brew tap caskroom/versions'
 run_command 'Upgrading brew-cask' 'brew upgrade brew-cask'
 
-declare -a desired_casks=(adium
-                          alfred
-                          appcleaner
-                          bettertouchtool
-                          caffeine
-                          chefdk
+declare -a desired_casks=(chefdk
                           dropbox
-                          evernote
                           fantastical
                           firefox
-                          #google-chrome
+                          iterm2-nightly
                           java
-                          mou
-                          nvalt
+                          kindle
+                          macdown
                           onepassword
                           sequel-pro
                           slack
