@@ -7,3 +7,4 @@ prefs/SublimeText3/Packages/User/Package Control.last-run
 dots/.zsh/.zcompdump*
 dots/.zsh/.zsh_history
 */.git
+.DS_Store
