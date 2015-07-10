@@ -771,17 +771,17 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>367 342 214 309 0 0 1680 1028 </string>
 	<key>NSWindow Frame Preferences</key>
-	<string>723 324 606 456 0 0 1680 1027 </string>
+	<string>953 579 606 456 0 0 1920 1057 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
 	<string>1059 854 400 129 0 0 1920 1057 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>530 484 620 392 0 0 1680 1027 </string>
+	<string>1182 252 620 392 0 0 1920 1057 </string>
 	<key>NSWindow Frame SUUpdateAlertFrame</key>
 	<string>672 509 575 392 0 0 1920 1058 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>107 114 1546 867 0 0 1680 1027 </string>
+	<string>316 91 1546 866 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>159 65 1546 866 0 0 1920 1057 </string>
+	<string>213 99 1546 867 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>21 129 900 740 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -3016,10 +3016,16 @@
 	<true/>
 	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
 	<integer>0</integer>
+	<key>NoSyncLastTipTime</key>
+	<real>458157574.98664999</real>
 	<key>NoSyncTimeOfLastPromo</key>
 	<real>453245180.93458998</real>
 	<key>NoSyncTimeOfLastPromoDownload</key>
 	<real>453245180.93484497</real>
+	<key>NoSyncTipsToNotShow</key>
+	<array>
+		<string>0000</string>
+	</array>
 	<key>OnlyWhenMoreTabs</key>
 	<true/>
 	<key>OpenArrangementAtStartup</key>
@@ -3036,6 +3042,8 @@
 	<false/>
 	<key>PasteFromClipboard</key>
 	<false/>
+	<key>PasteTabToStringTabStopSize</key>
+	<integer>4</integer>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>
@@ -3078,7 +3086,7 @@
 	<key>QuitWhenAllWindowsClosed</key>
 	<true/>
 	<key>RawCameraSupportVersion</key>
-	<string>6041</string>
+	<string>6050</string>
 	<key>RightCommand</key>
 	<integer>8</integer>
 	<key>RightOption</key>
@@ -3092,7 +3100,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2015-07-01T05:16:40Z</date>
+	<date>2015-07-09T17:58:03Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>Show Toolbelt</key>
@@ -3115,6 +3123,10 @@
 	<false/>
 	<key>TmuxDashboardLimit</key>
 	<integer>10</integer>
+	<key>ToolbeltTools</key>
+	<array>
+		<string>Profiles</string>
+	</array>
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<false/>
 	<key>URLHandlersByGuid</key>
@@ -3140,6 +3152,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>2.9.20150612-nightly</string>
+	<string>2.9.20150709-nightly</string>
 </dict>
 </plist>
