@@ -9,7 +9,9 @@ local ret_status="%(?:%{$green112%}%#:%{$red124%}%#%s)"
 
 setopt prompt_subst # interpolate functions within the prompt string
 
-eval emkoala=`echo -e '\xF0\x9F\x90\xA8'`
+# eval emkoala=`echo -e '\xF0\x9F\x90\xA8'`
+eval emkoala=`echo -e "\U1F428"`
+
 GIT_BRANCH_PREFIX=" %{$reset_color%}%{$fg[white]%}["
 GIT_BRANCH_SUFFIX="]%{$reset_color%}"
 
