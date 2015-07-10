@@ -92,6 +92,7 @@ Plug 'vim-scripts/abbott.vim'
 Plug 'yantze/pt_black'
 Plug 'thewatts/wattslandia'
 Plug 'kreeger/benlight'
+Plug 'NLKNguyen/papercolor-theme'
 call plug#end()
 " }}}
 " {{{ basic configuration
