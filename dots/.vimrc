@@ -71,6 +71,7 @@ Plug 'tpope/vim-markdown'
 " Plug 'reedes/vim-pencil'
 " tmuxline: powerline type theming of tmux with vim based integration
 Plug 'edkolev/tmuxline.vim'
+Plug 'elixir-lang/vim-elixir'
 
 " themes
 Plug 'nanotech/jellybeans.vim'
@@ -177,6 +178,8 @@ au InsertLeave * silent! set nopaste
 " {{{ filetype specific
 " not needed if 'tpope/vim-markdown' is present:
 "au BufRead,BufNewFile *.md set filetype=markdown        " treat .md files as Markdown (not Modula)
+
+autocmd Filetype gitcommit setlocal spell textwidth=72 cc=50,72
 " }}}
 " {{{ custom mappings
 :noremap <Leader>i :set list!<CR>       " toggle display of invisibles
