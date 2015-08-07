@@ -72,9 +72,13 @@ run_command 'Updating Homebrew itself' 'brew update'
 run_command 'Upgrading all installed formulae' 'brew upgrade --without-x11'
 
 declare -a desired_formulae=(awscli
+                             boot2docker
                              chruby
                              coreutils
                              ctags
+                             docker
+                             docker-machine
+                             elixir
                              'emacs --HEAD --with-cocoa'
                              findutils
                              git
@@ -115,7 +119,6 @@ run_command 'Upgrading brew-cask' 'brew upgrade brew-cask'
 
 declare -a desired_casks=(chefdk
                           dropbox
-                          fantastical
                           iterm2-nightly
                           java
                           kindle
