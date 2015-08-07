@@ -40,3 +40,11 @@ defaults write NSGlobalDomain AppleFontSmoothing -int 2
 # InitialKeyRepeat defaults to 15, KeyRepeat to 2
 defaults write NSGlobalDomain InitialKeyRepeat -int 10
 defaults write NSGlobalDomain KeyRepeat -int 0
+
+# Disable the start-up sound
+sudo nvram SystemAudioVolume=" "
+
+# Speed up the Dock hide/show animation
+# to restore the default: defaults delete com.apple.dock autohide-time-modifier;killall Dock
+# http://osxdaily.com/2012/03/28/change-dock-animation-speed-mac-os-x/
+defaults write com.apple.dock autohide-time-modifier -float 0.12  #;killall Dock
