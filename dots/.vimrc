@@ -308,7 +308,7 @@ let g:syntastic_check_on_wq = 0
 " specify which ruby to use (enforces MRI in JRuby projects)
 let g:syntastic_ruby_mri_exec = '~/bin/ruby22'
 " use mri and rubocop checkers with ruby files
-"let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
 " VimSneak
 let g:sneak#streak = 1
