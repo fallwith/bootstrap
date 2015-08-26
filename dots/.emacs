@@ -163,7 +163,7 @@
 (require-package 'ruby-electric)
 
 (require-package 'flycheck)
-(setq flycheck-ruby-rubocop-executable "~/.gem/ruby/2.2.2/bin/rubocop")
+(setq flycheck-ruby-rubocop-executable "~/.gem/ruby/2.2.3/bin/rubocop")
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
 (eval-after-load 'flycheck
                  '(progn
@@ -177,6 +177,7 @@
 (add-hook 'ruby-mode-hook
           '(lambda ()
              (setq flycheck-checker 'ruby-rubocop)
+             (ruby-electric-mode 1)
              (flycheck-mode 1)))
 
 ;; http://emacswiki.org/emacs/RubyMode
