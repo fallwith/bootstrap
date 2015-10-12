@@ -79,7 +79,7 @@ Plug 'morhetz/gruvbox'
 Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 Plug 'w0ng/vim-hybrid'
 Plug 'vim-scripts/wombat256.vim'
-Plug 'Lokaltog/vim-distinguished'
+Plug 'Lokaltog/vim-distinguished', {'branch': 'develop'}
 Plug 'zeis/vim-kolor'
 Plug 'tomasr/molokai'
 Plug 'toupeira/vim-desertink'
@@ -307,6 +307,7 @@ vmap <Leader>a> :Tab/=><CR>
 let g:syntastic_check_on_wq = 0
 " specify which ruby to use (enforces MRI in JRuby projects)
 let g:syntastic_ruby_mri_exec = '~/bin/ruby22'
+let g:syntastic_ruby_rubocop_exec = '~/bin/rubocop'
 " use mri and rubocop checkers with ruby files
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
