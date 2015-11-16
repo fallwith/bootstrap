@@ -178,6 +178,7 @@ au InsertLeave * silent! set nopaste
 " {{{ filetype specific
 " not needed if 'tpope/vim-markdown' is present:
 "au BufRead,BufNewFile *.md set filetype=markdown        " treat .md files as Markdown (not Modula)
+au BufRead,BufNewFile *.md set cc=80
 
 autocmd Filetype gitcommit setlocal spell textwidth=72 cc=50,72
 " }}}
