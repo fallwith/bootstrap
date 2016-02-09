@@ -72,12 +72,9 @@ run_command 'Updating Homebrew itself' 'brew update'
 run_command 'Upgrading all installed formulae' 'brew upgrade --without-x11'
 
 declare -a desired_formulae=(awscli
-                             boot2docker
                              chruby
                              coreutils
                              ctags
-                             docker
-                             docker-machine
                              elixir
                              'emacs --HEAD --with-cocoa'
                              findutils
@@ -94,6 +91,7 @@ declare -a desired_formulae=(awscli
                              mongodb
                              mysql
                              openssl
+                             python3
                              ranger
                              reattach-to-user-namespace
                              ruby-install
@@ -114,10 +112,11 @@ done
 # set up brew cask
 run_command 'Tapping homebrew-cask' 'brew tap caskroom/homebrew-cask'
 check_or_install_formula brew-cask
-run_command 'Tapping versions' 'brew tap caskroom/versions'
+# run_command 'Tapping versions' 'brew tap caskroom/versions'
 run_command 'Upgrading brew-cask' 'brew upgrade brew-cask'
 
 declare -a desired_casks=(chefdk
+                          dockertoolbox
                           dropbox
                           iterm2-nightly
                           java
