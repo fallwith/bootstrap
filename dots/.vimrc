@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2015-06-16
+" fallwith's .vimrc - 2016-02-09
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -29,6 +29,7 @@ endif
 call plug#begin('~/.vim/plugged')
 " airline: a lightweight provider of a fancy status line
 Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 " fugitive: allows for the use of Git from within Vim
 Plug 'tpope/vim-fugitive'
 " commentary: allows for the commenting/uncommenting of text
@@ -72,6 +73,7 @@ Plug 'tpope/vim-markdown'
 " tmuxline: powerline type theming of tmux with vim based integration
 Plug 'edkolev/tmuxline.vim'
 Plug 'elixir-lang/vim-elixir'
+Plug 'junegunn/goyo.vim'
 
 " themes
 Plug 'nanotech/jellybeans.vim'
@@ -94,6 +96,7 @@ Plug 'yantze/pt_black'
 Plug 'thewatts/wattslandia'
 Plug 'kreeger/benlight'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'AlessandroYorba/Alduin'
 call plug#end()
 " }}}
 " {{{ basic configuration
@@ -383,6 +386,9 @@ function! RangerChooser()
   redraw!
 endfunction
 nnoremap <leader>R :call RangerChooser()<CR>
+
+" Goyo
+let g:goyo_width = 120
 
 " vim-gutentags
 "let g:gutentags_cache_dir = "/tmp"
