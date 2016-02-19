@@ -82,7 +82,7 @@ source "$HOME/bin/set_up_os_x"
 
 if ! (command -v brew >/dev/null); then
   echo "Homebrew was not found. Installing..."
-  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
 echo "linking to brewscript in ~/bin..."
