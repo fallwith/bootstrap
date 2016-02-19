@@ -120,12 +120,12 @@ declare -a desired_casks=(chefdk
                           dropbox
                           iterm2-nightly
                           java
+                          keepingyouawake
                           kindle
                           macdown
                           1password
                           sequel-pro
                           slack
-                          steam
                           vagrant
                           virtualbox
                           vlc)
