@@ -5,6 +5,7 @@
 /stylesheets/
 /tmp/
 /vendor/
+/spec/fixtures/vcr_cassettes/
 *.sql
 *.tags*
 *.gemtags*
