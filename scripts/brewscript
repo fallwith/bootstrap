@@ -86,7 +86,6 @@ declare -a desired_formulae=(awscli
                              libxml2
                              libxslt
                              libyaml
-                             'macvim --override-system-vim'
                              maven
                              mongodb
                              mysql
@@ -99,6 +98,7 @@ declare -a desired_formulae=(awscli
                              the_silver_searcher
                              tig
                              tmux
+                             'vim --with-override-system-vi'
                              watch
                              w3m
                              wget
@@ -128,7 +128,8 @@ declare -a desired_casks=(chefdk
                           slack
                           vagrant
                           virtualbox
-                          vlc)
+                          vlc
+                          wkhtmltopdf)
 
 # install desired casks
 for cask in "${desired_casks[@]}"; do
