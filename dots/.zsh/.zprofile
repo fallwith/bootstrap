@@ -27,6 +27,10 @@ alias mongostop="pkill mongod"
 alias mysqlstart="mysql.server start"
 alias mysqlstop="mysql.server stop"
 
+# postgresql
+alias postgresqlstart="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start"
+alias postgresqlstop="pg_ctl -D /usr/local/var/postgres stop -s -m fast"
+
 # Clean up source code by converting tabs to 2 spaces, Windows newlines to
 # unix ones, and by stripping away trailing whitespace. Pass in a list of
 # files to clean, or let ag find a list of suitable candidates.
