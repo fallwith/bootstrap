@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2016-02-09
+" fallwith's .vimrc - 2016-10-10
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -88,7 +88,6 @@ Plug 'toupeira/vim-desertink'
 Plug 'ajh17/Spacegray.vim'
 Plug 'wellsjo/wells-colorscheme.vim'
 Plug 'romainl/Apprentice'
-Plug 'zenorocha/dracula-theme', {'rtp': 'vim/'}
 Plug 'fxn/vim-monochrome'
 Plug 'duythinht/inori'
 Plug 'vim-scripts/abbott.vim'
@@ -102,7 +101,7 @@ call plug#end()
 " {{{ basic configuration
 let mapleader = ","         " use a comma as the <Leader> character
 set nocompatible            " disable vi compatibilty
-let g:ruby_path='~/bin/ruby22'  " dramatically improve Ruby syntax processing time by not using the system ruby
+let g:ruby_path='~/bin/ruby23'  " dramatically improve Ruby syntax processing time by not using the system ruby
 filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
 syntax enable               " enable syntax highlighting
 set t_Co=256                " 256 colors
@@ -191,7 +190,9 @@ map w!! %!sudo tee > /dev/null %        " force a write if vim was launched with
 nmap <silent> <Leader>/ ;nohlsearch<CR> " clear currently displayed search highlighting
 
 " Leader-r reloads the vimrc -- making all changes active (have to save first)
-map <silent> <Leader>r ;source ~/.vimrc<CR>;filetype detect<CR>;exe ":echo 'vimrc reloaded'"<CR>
+"map <silent> <Leader>r ;source ~/.vimrc<CR>;filetype detect<CR>;exe ":echo 'vimrc reloaded'"<CR>
+
+map <Leader>r ;redraw!<CR>
 
 " Autocompletion
 imap <S-Tab> <C-P>
@@ -262,6 +263,21 @@ command! MD :silent :!open -a MacDown.app '%:p'
 :command! Double :silent :set columns=252 lines=60
 :command! Single :silent :set columns=126 lines=50
 
+" http://www.drbunsen.org/writing-in-vim/
+func! WordProcessorMode()
+  setlocal formatoptions=1
+  setlocal noexpandtab
+  map j gj
+  map k gk
+  setlocal spell spelllang=en_us
+  "set thesaurus+=/Users/sbrown/.vim/thesaurus/mthesaur.txt
+  set complete+=s
+  set formatprg=par
+  setlocal wrap
+  setlocal linebreak
+endfu
+com! WP call WordProcessorMode()
+
 " " prose editing mode
 " func! ProseMode()
 "   "setlocal formatoptions=1
@@ -307,11 +323,21 @@ nmap <Leader>a> :Tab/=><CR>
 vmap <Leader>a> :Tab/=><CR>
 
 " Syntastic
+
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 0
+
 " bypass checking if :wq (or ZZ) is used
 let g:syntastic_check_on_wq = 0
 " specify which ruby to use (enforces MRI in JRuby projects)
-let g:syntastic_ruby_mri_exec = '~/bin/ruby22'
+let g:syntastic_ruby_mri_exec = '~/bin/ruby23'
 let g:syntastic_ruby_rubocop_exec = '~/bin/rubocop'
+"let g:syntastic_ruby_rubocop_exec = '~/.gem/ruby/2.3.1/bin/bundle\ exec\ rubocop'
 " use mri and rubocop checkers with ruby files
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
@@ -337,7 +363,7 @@ let g:ctrlp_map = '<Leader>q'
 let g:ctrlp_use_caching = 0 " ag is fast enough for CtrlP not to have to cache
 let g:ctrlp_user_command = {
   \ 'types': {
-    \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+    \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others | grep -v vcr_cassettes'],
     \ },
   \ 'fallback': 'ag %s -l --nocolor -g ""'
   \ }
