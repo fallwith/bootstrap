@@ -39,7 +39,7 @@ defaults write NSGlobalDomain AppleFontSmoothing -int 2
 # Set a low key initial key repeat and go as fast as possible afterwards
 # InitialKeyRepeat defaults to 15, KeyRepeat to 2
 defaults write NSGlobalDomain InitialKeyRepeat -int 10
-defaults write NSGlobalDomain KeyRepeat -int 0
+defaults write NSGlobalDomain KeyRepeat -int 1
 
 # Disable the start-up sound
 sudo nvram SystemAudioVolume=" "
