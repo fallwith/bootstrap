@@ -17,3 +17,9 @@ echo 'Updating Homebrew itself'
 brew update
 echo 'Upgrading all installed formulae'
 brew upgrade --without-x11
+echo 'Cleaning up old formla versions and cache'
+brew cleanup
+echo 'Removing dead symlinks'
+brew prune
+echo 'Cleaning up old cask content'
+brew cask cleanup
