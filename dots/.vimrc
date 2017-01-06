@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2016-10-10
+" fallwith's .vimrc - 2016-12-29
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -74,6 +74,8 @@ Plug 'tpope/vim-markdown'
 Plug 'edkolev/tmuxline.vim'
 Plug 'elixir-lang/vim-elixir'
 Plug 'junegunn/goyo.vim'
+" vimwiki: personal wiki for Vim
+Plug 'vimwiki/vimwiki'
 
 " themes
 Plug 'nanotech/jellybeans.vim'
@@ -101,7 +103,7 @@ call plug#end()
 " {{{ basic configuration
 let mapleader = ","         " use a comma as the <Leader> character
 set nocompatible            " disable vi compatibilty
-let g:ruby_path='~/bin/ruby23'  " dramatically improve Ruby syntax processing time by not using the system ruby
+let g:ruby_path='~/bin/ruby24'  " dramatically improve Ruby syntax processing time by not using the system ruby
 filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
 syntax enable               " enable syntax highlighting
 set t_Co=256                " 256 colors
@@ -330,12 +332,12 @@ vmap <Leader>a> :Tab/=><CR>
 
 " let g:syntastic_always_populate_loc_list = 1
 " let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_open = 1
 
 " bypass checking if :wq (or ZZ) is used
 let g:syntastic_check_on_wq = 0
 " specify which ruby to use (enforces MRI in JRuby projects)
-let g:syntastic_ruby_mri_exec = '~/bin/ruby23'
+let g:syntastic_ruby_mri_exec = '~/bin/ruby24'
 let g:syntastic_ruby_rubocop_exec = '~/bin/rubocop'
 "let g:syntastic_ruby_rubocop_exec = '~/.gem/ruby/2.3.1/bin/bundle\ exec\ rubocop'
 " use mri and rubocop checkers with ruby files
@@ -415,6 +417,9 @@ nnoremap <leader>R :call RangerChooser()<CR>
 
 " Goyo
 let g:goyo_width = 120
+
+" VimWiki
+let g:vimwiki_list = [{'path': '~/.vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 
 " vim-gutentags
 "let g:gutentags_cache_dir = "/tmp"

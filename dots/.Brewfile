@@ -1,10 +1,11 @@
 brew 'awscli'
-brew 'chruby'
+brew 'chruby', args: ['HEAD']
 brew 'coreutils'
 brew 'ctags'
 brew 'elixir'
 brew 'emacs', args: ['HEAD', 'with-cocoa']
 brew 'findutils'
+brew 'ghostscript'
 brew 'git'
 brew 'gnu-sed'
 brew 'imagemagick'
@@ -19,7 +20,7 @@ brew 'mongodb'
 brew 'mysql'
 brew 'openssl'
 brew 'postgresql'
-brew 'python3'
+#brew 'python3'
 brew 'ranger'
 brew 'reattach-to-user-namespace'
 brew 'ruby-install'
@@ -33,12 +34,18 @@ brew 'w3m'
 brew 'wget'
 brew 'zsh'
 
-tap 'burntsushi/ripgrep'
-brew 'burntsushi/ripgrep/ripgrep-bin'
+# tap 'burntsushi/ripgrep'
+# brew 'burntsushi/ripgrep/ripgrep-bin'
+brew 'ripgrep'
+
+# tap 'homebrew/dupes'
+# brew 'gnugrep', args: ['with-default-names']
 
 tap 'caskroom/cask'
+cask 'appcleaner'
+cask 'calibre'
 cask 'chefdk'
-cask 'dockertoolbox'
+cask 'docker-toolbox'
 cask 'iterm2-nightly'
 cask 'java'
 cask 'kindle'
@@ -56,3 +63,4 @@ mas 'Xee3', id: 639764244
 mas 'iMovie', id: 408981434
 mas 'Clear', id: 504544917
 mas 'Xcode', id: 497799835
+mas 'AffinityPhoto', id: 824183456

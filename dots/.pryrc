@@ -8,6 +8,7 @@
   end
 end
 require 'awesome_print'
+AwesomePrint.pry!
 
 Pry.editor = 'vim'
 Pry.config.prompt_name = "\xF0\x9F\x90\xA8  "
