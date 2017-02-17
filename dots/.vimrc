@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2016-12-29
+" fallwith's .vimrc - 2017-02-17
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -62,8 +62,8 @@ Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 Plug 'jgdavey/tslime.vim', { 'for': 'ruby' }
 " vim-gutentags: automatic CTags management
 "Plug 'ludovicchabant/vim-gutentags'
-" vim-ags: leverage The Silver Searcher (ag) from within Vim
-Plug 'gabesoft/vim-ags'
+" vim-ripgrep: leverage ripgrep from within Vim
+Plug 'jremmen/vim-ripgrep'
 " vim-molasses prevent repeated hjkl input for movement
 " Plug '0x0dea/vim-molasses'
 " vim-markdown: development version of Vim's markdown support
@@ -246,7 +246,8 @@ command! MD :silent :!open -a MacDown.app '%:p'
 " Ctags
 " create a Ruby project ctags file by passing the current file's path to the
 " external 'rubyctags' script. (see https://gist.github.com/fallwith/9383650)
-:command! Rubyctags !rubyctags %:p<CR>
+":command! Rubyctags !rubyctags %:p<CR>
+:command! Rubyctags !rubyctags
 :command! Rtags Rubyctags
 
 " :S to quickly re-enable syntax highlighting
@@ -305,8 +306,7 @@ com! WP call WordProcessorMode()
 " com! Prose call ProseMode()
 
 " <leader>ag to prep a quickfix window based ag (silver searcher) search
-" :command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-nno <leader>ag :Ags<SPACE>
+nno <leader>rg :Rg<SPACE>
 " }}}
 " {{{ plugins / third-party tools
 " Airline
@@ -314,6 +314,7 @@ nno <leader>ag :Ags<SPACE>
 let g:airline_theme='molokai'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tmuxline#enabled = 0 " different theme for tmux than vim
+
 
 " Tabular
 " use tabular to align on equals signs and on colons (ruby 1.9+ style hashes)
