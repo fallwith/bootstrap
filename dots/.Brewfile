@@ -6,6 +6,7 @@ brew 'ctags'
 brew 'elixir'
 brew 'emacs', args: ['HEAD', 'with-cocoa']
 brew 'findutils'
+brew 'fzf', args: ['HEAD']
 brew 'ghostscript'
 brew 'git'
 brew 'gnu-sed'
