@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2017-02-17
+" fallwith's .vimrc - 2017-03-15
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -45,7 +45,7 @@ Plug 'Raimondi/delimitMate'
 " vim-ruby: powers Vim's Ruby editing support, bundle to fetch newer code that what Vim shipped with
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 " ctrl-p: fast, fuzzy finder for searching filesystems, buffers, and mru items
-Plug 'kien/ctrlp.vim'
+"Plug 'kien/ctrlp.vim'
 " vim-vinegar: netrw file browsing improvements
 Plug 'tpope/vim-vinegar'
 " vim-yankstack: more easily navigate through previous yanks
@@ -76,28 +76,20 @@ Plug 'elixir-lang/vim-elixir'
 Plug 'junegunn/goyo.vim'
 " vimwiki: personal wiki for Vim
 Plug 'vimwiki/vimwiki'
+" fzf: fuzzy finder integration for Vim
+Plug 'junegunn/fzf.vim'
 
 " themes
-Plug 'nanotech/jellybeans.vim'
 Plug 'morhetz/gruvbox'
 Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 Plug 'w0ng/vim-hybrid'
-Plug 'vim-scripts/wombat256.vim'
 Plug 'Lokaltog/vim-distinguished', {'branch': 'develop'}
-Plug 'zeis/vim-kolor'
 Plug 'tomasr/molokai'
-Plug 'toupeira/vim-desertink'
 Plug 'ajh17/Spacegray.vim'
-Plug 'wellsjo/wells-colorscheme.vim'
-Plug 'romainl/Apprentice'
-Plug 'fxn/vim-monochrome'
-Plug 'duythinht/inori'
-Plug 'vim-scripts/abbott.vim'
-Plug 'yantze/pt_black'
-Plug 'thewatts/wattslandia'
 Plug 'kreeger/benlight'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'AlessandroYorba/Alduin'
+Plug 'jacoborus/tender.vim'
 call plug#end()
 " }}}
 " {{{ basic configuration
@@ -168,11 +160,18 @@ else
   " colorscheme gruvbox
   " colorscheme spacegray
   " colorscheme hybrid
-  colorscheme distinguished
+  " colorscheme distinguished
+  colorscheme tender
 
   " don't allow colorschemes to set a background color
   highlight Normal ctermbg=NONE
   highlight nonText ctermbg=NONE
+
+  " true color support
+  set tgc
+  highlight Normal guibg=Black
+  highlight nonText guibg=Black
+
 endif
 " }}}
 " {{{ custom hooks
@@ -356,20 +355,43 @@ let NERDTreeShowHidden=1              " show hidden files
 let g:NERDTreeMapJumpNextSibling = "" " unbind <C-j>
 let g:NERDTreeMapJumpPrevSibling = "" " unbind <C-k>
 
+" fzf
+set rtp+=/usr/local/opt/fzf
+:noremap <Leader>f :FZF<CR>
+:noremap <Leader>b :Buffers<CR>
+
+"
+" https://medium.com/@crashybang/supercharge-vim-with-fzf-and-ripgrep-d4661fc853d2#.e0kqdo49d
+" --column: Show column number
+" --line-number: Show line number
+" --no-heading: Do not show file headings in results
+" --fixed-strings: Search term as a literal string
+" --ignore-case: Case insensitive search
+" --no-ignore: Do not respect .gitignore, etc...
+" --hidden: Search hidden files and folders
+" --follow: Follow symlinks
+" --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+" --color: Search color options
+"command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+
+
+
+
 " CtrlP
-let g:ctrlp_map = '<Leader>q'
+"let g:ctrlp_map = '<Leader>q'
 " list buffers
-:noremap <Leader>b :CtrlPBuffer<CR>
+":noremap <Leader>b :CtrlPBuffer<CR>
 " list mru
-:noremap <Leader>m :CtrlPMRU<CR>
+":noremap <Leader>m :CtrlPMRU<CR>
 " let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""' " use ag for CtrlP for listing files
-let g:ctrlp_use_caching = 0 " ag is fast enough for CtrlP not to have to cache
-let g:ctrlp_user_command = {
-  \ 'types': {
-    \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others | grep -v vcr_cassettes'],
-    \ },
-  \ 'fallback': 'ag %s -l --nocolor -g ""'
-  \ }
+"let g:ctrlp_use_caching = 0 " ag is fast enough for CtrlP not to have to cache
+"let g:ctrlp_user_command = {
+"  \ 'types': {
+"    \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others | grep -v vcr_cassettes'],
+"    \ },
+"  \ 'fallback': 'ag %s -l --nocolor -g ""'
+"  \ }
 
 " Yankstack
 let g:yankstack_map_keys = 0
