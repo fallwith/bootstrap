@@ -1,6 +1,5 @@
-#!/usr/bin/env zsh
 # -------------------------------------------------------------------------------------------------
-# Copyright (c) 2010-2011 zsh-syntax-highlighting contributors
+# Copyright (c) 2015 zsh-syntax-highlighting contributors
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, are permitted
@@ -28,48 +27,15 @@
 # vim: ft=zsh sw=2 ts=2 et
 # -------------------------------------------------------------------------------------------------
 
+BUFFER='tar cf - * | (cd /target; tar xfp -) | { cat }'
 
-# Check an highlighter was given as argument.
-[[ -n "$1" ]] || {
-  echo "You must provide the name of a valid highlighter as argument." >&2
-  exit 1
-}
-
-# Check the highlighter is valid.
-[[ -f ${0:h:h}/highlighters/$1/$1-highlighter.zsh ]] || {
-  echo "Could not find highlighter '$1'." >&2
-  exit 1
-}
-
-# Check the highlighter has test data.
-[[ -d ${0:h:h}/highlighters/$1/test-data ]] || {
-  echo "Highlighter '$1' has no test data." >&2
-  exit 1
-}
-
-# Load the main script.
-. ${0:h:h}/zsh-syntax-highlighting.zsh
-
-# Activate the highlighter.
-ZSH_HIGHLIGHT_HIGHLIGHTERS=($1)
-
-# Process each test data file in test data directory.
-for data_file in ${0:h:h}/highlighters/$1/test-data/*; do
-
-  # Load the data and prepare checking it.
-  BUFFER=
-  echo -n "* ${data_file:t:r}: "
-  . $data_file
-
-  # Check the data declares $BUFFER.
-  if [[ ${#BUFFER} -eq 0 ]]; then
-    echo "KO\n   - 'BUFFER' is not declared or blank."
-  else
-
-    # Measure the time taken by _zsh_highlight.
-    TIMEFMT="%*Es"
-    time ( BUFFER="$BUFFER" && _zsh_highlight)
-
-  fi
-
-done
+expected_region_highlight=(
+  "1 3 command" # tar
+  "14 14 reserved-word" # (
+  "15 16 builtin" # cd
+  "27 29 command" # tar
+  "36 36 reserved-word" # )
+  "40 40 reserved-word" # {
+  "42 44 command" # cat
+  "46 46 reserved-word" # }
+)
