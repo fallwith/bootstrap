@@ -191,12 +191,29 @@
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
 ;; multi-term
+(evil-set-initial-state 'term-mode 'emacs)  ; disable evil for term-mode
 (setq multi-term-program "/usr/local/bin/zsh")
 (evil-leader/set-key "m" 'multi-term)
 (setq multi-term-switch-after-close nil) ; do not switch to the next term on close
 
+;; map cmd-. to ctrl-c, macOS style
+(define-key key-translation-map (kbd "s-.") (kbd "C-c"))
+
 (add-hook 'term-mode-hook
           (lambda ()
+            ; extra term mode key mappings for normal shell key behavior
+            (add-to-list 'term-bind-key-alist '("C-a" . move-beginning-of-line))
+            (add-to-list 'term-bind-key-alist '("C-e" . move-end-of-line))
+            (add-to-list 'term-bind-key-alist '("C-k" . kill-line))
+            (add-to-list 'term-bind-key-alist '("C-d" . delete-char))
+            (add-to-list 'term-bind-key-alist '("C-b" . backward-char))
+            (add-to-list 'term-bind-key-alist '("C-f" . forward-char))
+            (setq term-bind-key-alist (remove* '"C-r" term-bind-key-alist :test 'equal :key 'car)) ; unmap C-r
+            (add-to-list 'term-bind-key-alist '("C-r" . term-send-reverse-search-history))
+            ; macOS paste
+            (add-to-list 'term-bind-key-alist '("s-v" . term-paste))
+            ; scroll buffer
+            (setq term-buffer-maximum-size 10240) ; default 2048, 0 for unlimited
             ; windmove
             (add-to-list 'term-unbind-key-list "M-h")
             (add-to-list 'term-unbind-key-list "M-j")
@@ -292,4 +309,9 @@
 
 ;; TODO: better term appearance
 
-;; TODO: fix vi mode in zsh in term, or conditionally switch to emacs mode within emacs term
+;; TODO: multi-term
+; figure out copying from the term buffer
+
+; (defface term-color-blue '((t (:foreground "#45B7FE" ))) "")
+; (defface term-color-red '((t (:foreground "#ff3333" ))) "")
+; (defface term-color-yellow '((t (:foreground "#FFFF00" ))) "")
