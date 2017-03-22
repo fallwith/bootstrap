@@ -71,3 +71,5 @@ export EC2_CERT=~/.ec2/cert-amazon.pem
 alias bspec='bundle exec rspec'
 alias brake='noglob bundle exec rake'
 alias bcap='noglob bundle exec cap'
+
+export ZPROFILE_LOADED=1
