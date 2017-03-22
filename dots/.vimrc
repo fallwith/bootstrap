@@ -141,6 +141,7 @@ set complete-=i             " remove 'included files' from the list of autocompl
 set clipboard=unnamed       " yank to / put from the operating system clipboard
 set list                    " show invisibles
 set ff=unix                 " unix fileformat
+set tgc                     " enable gui colors in the terminal (true 24 bit color support)
 set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
 hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
 set grepprg=ag\ --nogroup\ --nocolor      " use ag instead of grep
@@ -161,14 +162,15 @@ else
   " colorscheme spacegray
   " colorscheme hybrid
   " colorscheme distinguished
+
   colorscheme tender
+  highlight Visual guibg=#7f7f7f
+
 
   " don't allow colorschemes to set a background color
   highlight Normal ctermbg=NONE
   highlight nonText ctermbg=NONE
 
-  " true color support
-  set tgc
   highlight Normal guibg=Black
   highlight nonText guibg=Black
 
