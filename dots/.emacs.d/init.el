@@ -17,6 +17,8 @@
 (setq require-final-newline t)     ; add a final newline to files without them on write and save
 (setq echo-keystrokes 0.5)         ; shorten the time emacs displays part of an entered keybind
 (fset 'yes-or-no-p 'y-or-n-p)      ; prompt for 'y' or 'n' instead of 'yes' or 'no'
+(setq ring-bell-function #'ignore) ; disable the bell
+(setq vc-follow-symlinks t)        ; don't prompt when editing files via symlinks
 
 ;; ModeLine configuration
 (setq display-time-day-and-date t) ; display the day and date along with the time
@@ -58,14 +60,24 @@
 (use-package evil)
 (use-package helm)
 (use-package multi-term)
-(use-package distinguished-theme)
 (use-package powerline)
 (use-package evil-leader)
 (use-package key-chord)
 (use-package smartparens)
+(use-package projectile)
+(use-package helm-projectile)
+;; themes
+(use-package distinguished-theme)
+(use-package ujelly-theme)
+
+;; utf-8 everywhere
+(prefer-coding-system 'utf-8)
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8)
 
 ;; color theme
-(load-theme 'distinguished t)
+;(load-theme 'distinguished t)
+(load-theme 'ujelly t)
 
 ;; powerline
 (powerline-center-evil-theme)
@@ -80,6 +92,18 @@
 ;; j and k move the visual line in long wrapped lines
 (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
 (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+
+;; tabs
+; evil: have TAB work as it does with Vi
+(define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
+; use whitespace (soft tabs) instead of tabs
+'(indent-tabs-mode nil)
+; set a default tab width of 2
+'(tab-width 2)
+; set a default indent amount of 2
+'(tab-stop-list (number-sequence 2 120 2))
+; evil: indent 2 spaces when shifting
+'(evil-shift-width 2)
 
 ;; use evil's (vi's) search behavior for persistent highlights, repeating ssearches, etc.
 (evil-select-search-module 'evil-search-module 'evil-search)
@@ -121,18 +145,76 @@
 (evil-leader/set-key "v" 'hsplit-last-buffer
                      "h" 'vsplit-last-buffer)
 
-;; multi-term
-(setq multi-term-program "/usr/local/bin/zsh")
-
 ;; smartparens
 (require 'smartparens-config)
 (require 'smartparens-ruby)
 (add-hook 'ruby-mode-hook #'smartparens-mode)
 
+;; server
+; start the server if it is not already running
+(require 'server)
+(unless (server-running-p)
+    (server-start))
 
+;; projectile
+(projectile-global-mode)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+(evil-leader/set-key "p" `helm-projectile-switch-project)
+(evil-leader/set-key "f" `helm-projectile-find-file)
+(evil-leader/set-key "b" `helm-projectile-switch-to-buffer)
 
+;; windows
+; enable windmove's default bindings (shift + left,right,down,up) to move between windows
+; (windmove-default-keybindings)
+; alternatively, map other keys to windmove-left/right/up/down
+(global-unset-key (kbd "M-h"))
+(global-unset-key (kbd "M-j"))
+(global-unset-key (kbd "M-k"))
+(global-unset-key (kbd "M-l"))
+(global-set-key (kbd "M-h") 'windmove-left)
+(global-set-key (kbd "M-j") 'windmove-down)
+(global-set-key (kbd "M-k") 'windmove-up)
+(global-set-key (kbd "M-l") 'windmove-right)
+; window resizing
+(global-unset-key (kbd "M-H"))
+(global-unset-key (kbd "M-J"))
+(global-unset-key (kbd "M-K"))
+(global-unset-key (kbd "M-L"))
+(global-set-key (kbd "M-H") 'shrink-window-horizontally)
+(global-set-key (kbd "M-L") 'enlarge-window-horizontally)
+(global-set-key (kbd "M-J") 'shrink-window)
+(global-set-key (kbd "M-K") 'enlarge-window)
 
+;; ctrl-+ and ctrl-- for text scale increase/decrease
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
 
+;; multi-term
+(setq multi-term-program "/usr/local/bin/zsh")
+(evil-leader/set-key "m" 'multi-term)
+(setq multi-term-switch-after-close nil) ; do not switch to the next term on close
+
+(add-hook 'term-mode-hook
+          (lambda ()
+            ; windmove
+            (add-to-list 'term-unbind-key-list "M-h")
+            (add-to-list 'term-unbind-key-list "M-j")
+            (add-to-list 'term-unbind-key-list "M-k")
+            (add-to-list 'term-unbind-key-list "M-l")
+            (add-to-list 'term-bind-key-alist '("M-h" . windmove-left))
+            (add-to-list 'term-bind-key-alist '("M-j" . windmove-down))
+            (add-to-list 'term-bind-key-alist '("M-k" . windmove-up))
+            (add-to-list 'term-bind-key-alist '("M-l" . windmove-right))
+            ; window resizing
+            (add-to-list 'term-unbind-key-list "M-H")
+            (add-to-list 'term-unbind-key-list "M-J")
+            (add-to-list 'term-unbind-key-list "M-K")
+            (add-to-list 'term-unbind-key-list "M-L")
+            (add-to-list 'term-bind-key-alist '("M-H" . shrink-window-horizontally))
+            (add-to-list 'term-bind-key-alist '("M-J" . enlarge-window-horizontally))
+            (add-to-list 'term-bind-key-alist '("M-K" . shrink-window))
+            (add-to-list 'term-bind-key-alist '("M-L" . enlarge-window))))
 
 ;; TODO: any way to use any of this in 25.1+?
 ; unicode emoji support
@@ -140,10 +222,10 @@
 ; http://www.lunaryorn.com/posts/bye-bye-emojis-emacs-hates-macos.html
 ; (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)
 ; (set-fontset-font t 'unicode "Apple Color Emoji" nil 'prepend)
-
-;; TODO: needed for multi-term?
-; use emacs' own terminfo instead of ~/.terminfo
-; (setq system-uses-terminfo nil)
+;
+; (defun use-emoji-font ()
+;   (set-fontset-font t 'unicode "Apple Color Emoji" nil 'prepend))
+; (add-hook 'term-mode-hook 'use-emoji-font)
 
 ;; TODO: which of these patterns is still needed?
 ; http://emacswiki.org/emacs/RubyMode
@@ -191,13 +273,6 @@
 
 ;; TODO: helm
 
-;; TODO: projectile / helm-projectile
-; (projectile-global-mode)
-; (setq projectile-completion-system 'helm)
-; (helm-projectile-on)
-; (evil-leader/set-key "q" `helm-projectile-find-file)
-; (evil-leader/set-key "b" `helm-projectile-switch-to-buffer)
-
 ;; TODO: rg
 
 ;; TODO: evil-surround
@@ -205,3 +280,16 @@
 ;; TODO: evil-matchit
 
 ;; TODO: evil-commentary
+
+;; TODO: synchronize all multi-term windows, ala tmux sync
+
+;; TODO: powerline themes
+
+;; TODO: use frames to replace tmux windows
+; * create new frame with same dimensions as the original
+; * cycle between frames (Frame Move)
+; https://www.emacswiki.org/emacs/FrameMove
+
+;; TODO: better term appearance
+
+;; TODO: fix vi mode in zsh in term, or conditionally switch to emacs mode within emacs term
