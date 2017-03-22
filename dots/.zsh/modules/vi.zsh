@@ -5,9 +5,16 @@ bindkey -v
 export KEYTIMEOUT=15
 
 # function to indicate the current vi mode (i = insert, n = normal)
-VIMODE='i'
+# VIMODE='i'
 function zle-line-init zle-keymap-select {
- VIMODE="${${KEYMAP/vicmd/n}/(main|viins)/i}"
+ if [[ "$KEYMAP" = "vicmd" ]]; then
+   VIMODE=n
+ elif [[ "$KEYMAP" = "vivis" ]]; then
+   VIMODE=v
+ else
+   VIMODE=i
+ fi
+ # VIMODE="${${KEYMAP/vicmd/n}/(main|viins)/i}"
  zle reset-prompt
 }
 zle -N zle-keymap-select
@@ -53,7 +60,105 @@ bindkey -M vicmd '^c' self-insert
 bindkey '^?' backward-delete-char
 bindkey '^h' backward-delete-char
 
-# edit the command line text in vi (as with Bash's <Ctrl-X> e)
-# autoload -U edit-command-line
-# zle -N edit-command-line
-# bindkey -M vicmd v edit-command-line
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# visual mode support, adapted from https://github.com/b4b4r07/zsh-vimode-visual
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+bindkey -N vivis
+
+function vi-visual-highlight() {
+  integer CURSOR_HL MARK_HL
+
+  if [[ $CURSOR -gt $MARK ]];then
+    (( CURSOR_HL = CURSOR + 1 ))
+    __regstart=$MARK
+    __regend=$CURSOR_HL
+    region_highlight=("${MARK} ${CURSOR_HL} standout")
+  elif [[ $MARK -gt $CURSOR ]];then
+    (( MARK_HL = MARK + 1 ))
+    __regstart=$CURSOR
+    __regend=$MARK_HL
+    region_highlight=("${CURSOR} ${MARK_HL} standout")
+  elif [[ $MARK -eq $CURSOR ]];then
+    __regstart=$CURSOR
+    __regend=$MARK
+    region_highlight=("${CURSOR} ${MARK} standout")
+  fi
+}
+zle -N vi-visual-highlight
+
+function vi-visual-mode() {
+  zle -K vivis
+  MARK=$CURSOR
+  zle vi-visual-highlight
+}
+zle -N vi-visual-mode
+
+function vi-visual-exit() {
+  region_highlight=("0 0 standout")
+  (( CURSOR = CURSOR + 1 ))
+  MARK=0
+  __regstart=0
+  __regend=0
+  zle .vi-cmd-mode
+}
+zle -N vi-visual-exit
+
+function vi-visual-forward-word-end() {
+  zle .vi-forward-word-end
+  zle vi-visual-highlight
+}
+zle -N vi-visual-forward-word-end
+
+function vi-visual-find-next-char() {
+  zle .vi-find-next-char
+  zle vi-visual-highlight
+}
+zle -N vi-visual-find-next-char
+
+function vi-visual-backward-char() {
+  zle .vi-backward-char
+  zle vi-visual-highlight
+}
+zle -N vi-visual-backward-char
+
+function vi-visual-forward-char() {
+  zle .vi-forward-char
+  zle vi-visual-highlight
+}
+zle -N vi-visual-forward-char
+
+function vi-visual-find-next-char-skip() {
+  zle .vi-find-next-char-skip
+  zle vi-visual-highlight
+}
+zle -N vi-visual-find-next-char-skip
+
+function vi-visual-yank() {
+  if [[ $__regstart == $__regend ]]; then
+    zle .vi-yank
+    zle vi-visual-exit
+  else
+    zle .copy-region-as-kill "$BUFFER[${__regstart}+1,${__regend}]"
+    zle vi-visual-exit
+  fi
+  printf -- "$CUTBUFFER" | pbcopy
+}
+zle -N vi-visual-yank
+
+function vi-visual-eol() {
+  zle .vi-end-of-line
+  zle .vi-backward-char
+  zle vi-visual-highlight
+}
+zle -N vi-visual-eol
+
+bindkey -M vicmd 'v'  vi-visual-mode
+bindkey -M vivis '\$' vi-visual-eol
+bindkey -M vivis '^M' vi-visual-yank
+bindkey -M vivis 'f'  vi-visual-find-next-char
+bindkey -M vivis 't'  vi-visual-find-next-char-skip
+bindkey -M vivis 'h'  vi-visual-backward-char
+bindkey -M vivis 'l'  vi-visual-forward-char
+bindkey -M vivis 'e'  vi-visual-forward-word-end
+bindkey -M vivis 'y'  vi-visual-yank
