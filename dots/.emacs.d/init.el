@@ -7,18 +7,22 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+;(setq inhibit-startup-screen t)
 
 ;; behavior settings
-(setq make-backup-files nil)       ; stop creating backup~ files
-(setq auto-save-default nil)       ; stop creating #autosave# files
-(show-paren-mode 1)                ; visually indicate where the matching parentheses (or other character pair) is
-(setq default-tab-width 2)         ; set the default tab width to n spaces
-(setq show-trailing-whitespace t)  ; highlight trailing whitespace
-(setq require-final-newline t)     ; add a final newline to files without them on write and save
-(setq echo-keystrokes 0.5)         ; shorten the time emacs displays part of an entered keybind
-(fset 'yes-or-no-p 'y-or-n-p)      ; prompt for 'y' or 'n' instead of 'yes' or 'no'
-(setq ring-bell-function #'ignore) ; disable the bell
-(setq vc-follow-symlinks t)        ; don't prompt when editing files via symlinks
+(setq make-backup-files nil)               ; stop creating backup~ files
+(setq auto-save-default nil)               ; stop creating #autosave# files
+(show-paren-mode 1)                        ; indicate where the matching parentheses (or other character) is
+(setq default-tab-width 2)                 ; set the default tab width to n spaces
+(setq-default show-trailing-whitespace t)  ; highlight trailing whitespace
+(setq require-final-newline t)             ; add a final newline to files without them on write and save
+(setq echo-keystrokes 0.5)                 ; shorten the time emacs displays part of an entered keybind
+(fset 'yes-or-no-p 'y-or-n-p)              ; prompt for 'y' or 'n' instead of 'yes' or 'no'
+(setq ring-bell-function #'ignore)         ; disable the bell
+(setq vc-follow-symlinks t)                ; don't prompt when editing files via symlinks
+
+;; set the path for executables (such as ImageMagick's "convert" used for dired image thumbnails
+(setq exec-path (append exec-path '("/usr/local/bin")))
 
 ;; ModeLine configuration
 (setq display-time-day-and-date t) ; display the day and date along with the time
@@ -27,6 +31,8 @@
 
 ;; frame dimensions and position
 (setq initial-frame-alist '((width . 250) (height . 65)))
+(add-to-list 'default-frame-alist '(width . 250))
+(add-to-list 'default-frame-alist '(height . 65))
 (set-frame-position (selected-frame) 250 250)
 
 ;; transparency
@@ -57,26 +63,33 @@
   (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t)
+(use-package chruby)
 (use-package evil)
+(use-package evil-commentary)
+(use-package evil-leader)
+(use-package evil-surround)
+(use-package flycheck)
+(use-package framemove)
 (use-package helm)
+(use-package helm-projectile)
+(use-package key-chord)
 (use-package multi-term)
 (use-package powerline)
-(use-package evil-leader)
-(use-package key-chord)
-(use-package smartparens)
 (use-package projectile)
-(use-package helm-projectile)
+(use-package smartparens)
 ;; themes
-(use-package distinguished-theme)
+;(use-package distinguished-theme)
+;(use-package monokai-theme)
 (use-package ujelly-theme)
 
-;; utf-8 everywhere
+;; utf-8
 (prefer-coding-system 'utf-8)
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
 ;; color theme
 ;(load-theme 'distinguished t)
+;(load-theme 'monokai t)
 (load-theme 'ujelly t)
 
 ;; powerline
@@ -94,21 +107,45 @@
 (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
 
 ;; tabs
+(setq-default
+    ; use whitespace (soft tabs) instead of tabs
+    indent-tabs-mode nil
+    ; set a default tab width of 2
+    tab-width 2
+    ; set a default indent amount of 2
+    tab-stop-list (quote (2 4))
+)
 ; evil: have TAB work as it does with Vi
 (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
-; use whitespace (soft tabs) instead of tabs
-'(indent-tabs-mode nil)
-; set a default tab width of 2
-'(tab-width 2)
-; set a default indent amount of 2
-'(tab-stop-list (number-sequence 2 120 2))
 ; evil: indent 2 spaces when shifting
 '(evil-shift-width 2)
 
 ;; use evil's (vi's) search behavior for persistent highlights, repeating ssearches, etc.
-(evil-select-search-module 'evil-search-module 'evil-search)
+; (evil-select-search-module 'evil-search-module 'evil-search)
 ;; define a keymap for the removal of search highlighting
-(evil-leader/set-key "/" 'evil-ex-nohighlight)
+; (evil-leader/set-key "/" 'evil-ex-nohighlight)
+;
+;; OR
+;
+; use default behavior - / to search and then n/N to repeat
+
+
+;; evil visual mode - immediately reselect after indent/outdent
+; from: https://github.com/djoyner/dotfiles/blob/888a1f0d5cdd9a15a0bfe93a96cdd1fc5d7f2d57/emacs/lisp/evil-config.el#L36-L40
+(defun evil-shift-left-visual ()
+  (interactive)
+  (evil-shift-left (region-beginning) (region-end))
+  (evil-normal-state)
+  (evil-visual-restore))
+(defun evil-shift-right-visual ()
+  (interactive)
+  (evil-shift-right (region-beginning) (region-end))
+  (evil-normal-state)
+  (evil-visual-restore))
+(define-key evil-visual-state-map (kbd ">") 'evil-shift-right-visual)
+(define-key evil-visual-state-map (kbd "<") 'evil-shift-left-visual)
+(define-key evil-visual-state-map [tab] 'evil-shift-right-visual)
+(define-key evil-visual-state-map [S-tab] 'evil-shift-left-visual)
 
 ;; swap ';' and ':'
 (define-key evil-normal-state-map (kbd ";") 'evil-ex)
@@ -118,6 +155,7 @@
 (setq key-chord-two-keys-delay 0.25)
 ;; jk to escape to the normal state in evil (in addition to Esc, and C-[)
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+(key-chord-define evil-visual-state-map "jk" 'evil-normal-state)
 (key-chord-mode 1)
 
 ;; splits
@@ -186,18 +224,34 @@
 (global-set-key (kbd "M-J") 'shrink-window)
 (global-set-key (kbd "M-K") 'enlarge-window)
 
+;; frames
+(setq framemove-hook-into-windmove t)
+(evil-leader/set-key "n" 'make-frame-command)  ; new frame
+
 ;; ctrl-+ and ctrl-- for text scale increase/decrease
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
+
+;; image-mode
+(evil-set-initial-state 'image-mode 'emacs)
+(evil-set-initial-state 'image-dired-thumbnail-mode 'emacs)
+(evil-set-initial-state 'image-dired-display-image-mode 'emacs)
+(evil-leader/set-key "i" 'image-dired)
+
+;; dired
+(evil-leader/set-key "d" 'dired)
+
+;; map cmd-. to ctrl-c, macOS style
+(define-key key-translation-map (kbd "s-.") (kbd "C-c"))
+
+; blackbox
+(evil-set-initial-state 'blackbox-mode 'emacs)  ; disable evil for blackbox
 
 ;; multi-term
 (evil-set-initial-state 'term-mode 'emacs)  ; disable evil for term-mode
 (setq multi-term-program "/usr/local/bin/zsh")
 (evil-leader/set-key "m" 'multi-term)
 (setq multi-term-switch-after-close nil) ; do not switch to the next term on close
-
-;; map cmd-. to ctrl-c, macOS style
-(define-key key-translation-map (kbd "s-.") (kbd "C-c"))
 
 (add-hook 'term-mode-hook
           (lambda ()
@@ -233,10 +287,46 @@
             (add-to-list 'term-bind-key-alist '("M-K" . shrink-window))
             (add-to-list 'term-bind-key-alist '("M-L" . enlarge-window))))
 
+;; evil-commentary
+(add-hook 'prog-mode-hook 'evil-commentary-mode)
+
+;; evil-surround
+(add-hook 'prog-mode-hook 'evil-surround-mode)
+
+;; ruby
+(setq ruby-indent-level 2)
+(chruby "ruby-2.4.1")
+(setq flycheck-ruby-executable "~/bin/ruby")
+(setq flycheck-ruby-rubocop-executable "~/bin/rubocop")
+;; define additional patterns for files to be consider Ruby based
+(add-to-list 'auto-mode-alist
+             '("\\.?Brewfile" . ruby-mode))
+(add-to-list 'auto-mode-alist
+              '("\\.\\(?:irbrc\\|gemrc\\|pryrc\\)" . ruby-mode))
+(add-hook 'ruby-mode-hook
+          '(lambda ()
+             (setq flycheck-checker 'ruby-rubocop)
+             ; (set-face-attribute 'flycheck-error nil
+             ;                     :foreground "white"
+             ;                     :background "red")
+             ; (set-face-attribute 'flycheck-warning nil
+             ;                     :foreground "black"
+             ;                     :background "yellow")
+             (flycheck-mode 1)))
+
+;; style long lines to indicate which columns are out of bounds
+; http://emacsredux.com/blog/2013/05/31/highlight-lines-that-exceed-a-certain-length-limit/
+(require 'whitespace)
+(setq whitespace-line-column 120)
+(setq whitespace-style '(face lines-tail))
+(add-hook 'prog-mode-hook 'whitespace-mode)
+
+
+
+
 ;; TODO: any way to use any of this in 25.1+?
 ; unicode emoji support
 ; (deliberately removed from macOS builds since 25.1)
-; http://www.lunaryorn.com/posts/bye-bye-emojis-emacs-hates-macos.html
 ; (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)
 ; (set-fontset-font t 'unicode "Apple Color Emoji" nil 'prepend)
 ;
@@ -244,74 +334,66 @@
 ;   (set-fontset-font t 'unicode "Apple Color Emoji" nil 'prepend))
 ; (add-hook 'term-mode-hook 'use-emoji-font)
 
-;; TODO: which of these patterns is still needed?
-; http://emacswiki.org/emacs/RubyMode
-; (add-to-list 'auto-mode-alist
-;               '("\\.\\(?:gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode))
-; (add-to-list 'auto-mode-alist
-;               '("\\(Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
-
-;; TODO: flycheck / rubocop
-; (setq flycheck-ruby-rubocop-executable "~/bin/rubocop")
-; (eval-after-load 'flycheck
-;                  '(progn
-;                     (set-face-attribute 'flycheck-error nil
-;                                         :foreground "white"
-;                                         :background "red")
-;                     (set-face-attribute 'flycheck-warning nil
-;                                         :foreground "black"
-;                                         :background "yellow")))
-; (add-hook 'ruby-mode-hook
-;           '(lambda ()
-;              (setq flycheck-checker 'ruby-rubocop)
-;              (flycheck-mode 1)))
-
-;; TODO: neotree
-; (evil-leader/set-key "n" 'neotree-toggle)
-; (add-to-list 'evil-emacs-state-modes 'neotree-mode)
-; (setq neo-show-hidden-files 1)
+;; TODO: menu for blackbox, tetris, etc.?
 
 ;; TODO: magit
 
-;; TODO: dired (built-in)
-; (evil-leader/set-key "d" 'dired)
-
 ;; TODO: ctags
-
-;; TODO rulers
-; (require-package 'fill-column-indicator)
-; (require 'fill-column-indicator)
-; (setq fci-rule-width 1)
-; (setq fci-rule-column 120)
-; (setq fci-rule-character-color "darkgrey")
-; (setq fci-rule-character ?\u2758) ; light vertical bar
-; (define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
-; (global-fci-mode 1)
 
 ;; TODO: helm
 
+;; TODO: helm vs ivy
+
+;; TODO: projectile
+; whitelist/blacklist certain patterns (ignore spec cassettes)
+; how to navigate lists without the arrow keys?
+; add to the projects list
+
 ;; TODO: rg
 
-;; TODO: evil-surround
-
-;; TODO: evil-matchit
-
-;; TODO: evil-commentary
+;; TODO: evil-matchit - needed?
+; use % to jump from the one logical section to another (from if to else to end)
 
 ;; TODO: synchronize all multi-term windows, ala tmux sync
 
 ;; TODO: powerline themes
-
-;; TODO: use frames to replace tmux windows
-; * create new frame with same dimensions as the original
-; * cycle between frames (Frame Move)
-; https://www.emacswiki.org/emacs/FrameMove
-
-;; TODO: better term appearance
+; curves no longer work?
+; ; (setq powerline-arrow-shape 'slant)   ; not working?
+; milky's version is the one that comes from elpa? https://github.com/milkypostman/powerline
 
 ;; TODO: multi-term
-; figure out copying from the term buffer
+; how to output more than 8 colors
+; how to set term specific faces (term-color-cyan)
 
 ; (defface term-color-blue '((t (:foreground "#45B7FE" ))) "")
 ; (defface term-color-red '((t (:foreground "#ff3333" ))) "")
 ; (defface term-color-yellow '((t (:foreground "#FFFF00" ))) "")
+
+
+; ; term colors
+; (defface term-color-black
+;   '((t (:foreground "#3f3f3f" :background "#272822")))
+;   "Unhelpful docstring.")
+; (defface term-color-red
+;   '((t (:foreground "#cc9393" :background "#272822")))
+;   "Unhelpful docstring.")
+; (defface term-color-green
+;   '((t (:foreground "#7f9f7f" :background "#272822")))
+;   "Unhelpful docstring.")
+; (defface term-color-yellow
+;   '((t (:foreground "#f0dfaf" :background "#272822")))
+;   "Unhelpful docstring.")
+; (defface term-color-blue
+;   '((t (:foreground "#6d85ba" :background "#272822")))
+;   "Unhelpful docstring.")
+; (defface term-color-magenta
+;   '((t (:foreground "#dc8cc3" :background "#272822")))
+;   "Unhelpful docstring.")
+; (defface term-color-cyan
+;   '((t (:foreground "#93e0e3" :background "#272822")))
+;   "Unhelpful docstring.")
+; (defface term-color-white
+;   '((t (:foreground "#dcdccc" :background "#272822")))
+;   "Unhelpful docstring.")
+; '(term-default-fg-color ((t (:inherit term-color-white))))
+; '(term-default-bg-color ((t (:inherit term-color-black))))
