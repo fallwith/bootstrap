@@ -77,7 +77,7 @@
 (use-package key-chord)
 (use-package multi-term)
 (use-package powerline)
-; (use-package projectile)
+(use-package projectile)
 (use-package smartparens)
 ;; themes
 ;(use-package distinguished-theme)
