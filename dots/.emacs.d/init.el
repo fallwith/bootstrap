@@ -55,7 +55,7 @@
   (package-initialize))
 
 (custom-set-variables
- '(package-selected-packages (quote (multi-term helm evil use-package))))
+ '(package-selected-packages (quote (multi-term evil use-package))))
 (custom-set-faces)
 
 (unless (package-installed-p 'use-package)
@@ -70,12 +70,14 @@
 (use-package evil-surround)
 (use-package flycheck)
 (use-package framemove)
-(use-package helm)
-(use-package helm-projectile)
+(use-package counsel-projectile)
+(use-package ivy)
+(use-package counsel)
+(use-package swiper)
 (use-package key-chord)
 (use-package multi-term)
 (use-package powerline)
-(use-package projectile)
+; (use-package projectile)
 (use-package smartparens)
 ;; themes
 ;(use-package distinguished-theme)
@@ -194,13 +196,29 @@
 (unless (server-running-p)
     (server-start))
 
+;; ivy
+(setq-default counsel-ag-base-command "/usr/local/bin/ag --vimgrep --nocolor --nogroup %s")
+(setq-default counsel-rg-base-command "/usr/local/bin/rg -i --no-heading --line-number %s")
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq enable-recursive-minibuffers t)
+(global-set-key "\C-s" 'swiper)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "C-c g") 'counsel-git)
+(global-set-key (kbd "C-c j") 'counsel-git-grep)
+(global-set-key (kbd "C-c k") 'counsel-rg)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+
 ;; projectile
 (projectile-global-mode)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
-(evil-leader/set-key "p" `helm-projectile-switch-project)
-(evil-leader/set-key "f" `helm-projectile-find-file)
-(evil-leader/set-key "b" `helm-projectile-switch-to-buffer)
+(setq projectile-completion-system 'ivy)
+(counsel-projectile-on)
+(evil-leader/set-key "p" `counsel-projectile-switch-project)
+(evil-leader/set-key "f" `counsel-projectile-find-file)
+(evil-leader/set-key "b" `counsel-projectile-switch-to-buffer)
 
 ;; windows
 ; enable windmove's default bindings (shift + left,right,down,up) to move between windows
@@ -255,6 +273,7 @@
 
 (add-hook 'term-mode-hook
           (lambda ()
+            (setq show-trailing-whitespace nil)
             ; extra term mode key mappings for normal shell key behavior
             (add-to-list 'term-bind-key-alist '("C-a" . move-beginning-of-line))
             (add-to-list 'term-bind-key-alist '("C-e" . move-end-of-line))
@@ -340,16 +359,12 @@
 
 ;; TODO: ctags
 
-;; TODO: helm
-
-;; TODO: helm vs ivy
+;; TODO: ivy-avy - needed?
 
 ;; TODO: projectile
 ; whitelist/blacklist certain patterns (ignore spec cassettes)
 ; how to navigate lists without the arrow keys?
 ; add to the projects list
-
-;; TODO: rg
 
 ;; TODO: evil-matchit - needed?
 ; use % to jump from the one logical section to another (from if to else to end)
