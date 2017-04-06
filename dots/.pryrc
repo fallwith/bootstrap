@@ -1,16 +1,9 @@
 # see https://github.com/pry/pry/wiki/Customization-and-configuration
-
-%w{active_support/all interactive_editor}.each do |gem|
-  begin
-    require gem
-  rescue LoadError => e
-    puts "#{e.message}"
-  end
-end
-require 'awesome_print'
+require "active_support/all"
+require "awesome_print"
 AwesomePrint.pry!
 
-Pry.editor = 'vim'
+Pry.editor = "vim"
 Pry.config.prompt_name = "\xF0\x9F\x90\xA8  "
 Pry.print = proc { |output, value| output.puts value.ai(indent: 2) }
 
