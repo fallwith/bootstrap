@@ -14,7 +14,7 @@
 (setq auto-save-default nil)               ; stop creating #autosave# files
 (show-paren-mode 1)                        ; indicate where the matching parentheses (or other character) is
 (setq default-tab-width 2)                 ; set the default tab width to n spaces
-(setq-default show-trailing-whitespace t)  ; highlight trailing whitespace
+;; (setq-default show-trailing-whitespace t)  ; highlight trailing whitespace
 (setq require-final-newline t)             ; add a final newline to files without them on write and save
 (setq echo-keystrokes 0.5)                 ; shorten the time emacs displays part of an entered keybind
 (fset 'yes-or-no-p 'y-or-n-p)              ; prompt for 'y' or 'n' instead of 'yes' or 'no'
@@ -23,6 +23,7 @@
 
 ;; set the path for executables (such as ImageMagick's "convert" used for dired image thumbnails
 (setq exec-path (append exec-path '("/usr/local/bin")))
+
 
 ;; ModeLine configuration
 (setq display-time-day-and-date t) ; display the day and date along with the time
@@ -71,6 +72,7 @@
 (use-package flycheck)
 (use-package framemove)
 (use-package counsel-projectile)
+(use-package hydra)
 (use-package ivy)
 (use-package counsel)
 (use-package swiper)
@@ -265,6 +267,12 @@
 ; blackbox
 (evil-set-initial-state 'blackbox-mode 'emacs)  ; disable evil for blackbox
 
+;; prog-mode
+(add-hook 'prog-mode-hook
+          (lambda()
+            (setq show-trailing-whitespace 1)))
+
+
 ;; multi-term
 (evil-set-initial-state 'term-mode 'emacs)  ; disable evil for term-mode
 (setq multi-term-program "/usr/local/bin/zsh")
@@ -273,7 +281,7 @@
 
 (add-hook 'term-mode-hook
           (lambda ()
-            (setq show-trailing-whitespace nil)
+            ;; (setq show-trailing-whitespace nil)
             ; extra term mode key mappings for normal shell key behavior
             (add-to-list 'term-bind-key-alist '("C-a" . move-beginning-of-line))
             (add-to-list 'term-bind-key-alist '("C-e" . move-end-of-line))
@@ -331,6 +339,9 @@
              ; (set-face-attribute 'flycheck-warning nil
              ;                     :foreground "black"
              ;                     :background "yellow")
+             ; treat snake case words as one single word
+             (global-superword-mode 1)
+             ; enable syntax checking / linting
              (flycheck-mode 1)))
 
 ;; style long lines to indicate which columns are out of bounds
@@ -340,8 +351,62 @@
 (setq whitespace-style '(face lines-tail))
 (add-hook 'prog-mode-hook 'whitespace-mode)
 
+;; switch to iTerm2
+(defun focus-iterm ()
+  (interactive)
+  (shell-command "open -a iTerm"))
+(evil-leader/set-key "t" 'focus-iterm)
 
 
+(evil-leader/set-key "z" 'zone)
+
+;; cookie / fortune paths
+(setq fortune-dir "/usr/local/opt/fortune/share/games/fortunes")
+(setq fortune-file "/usr/local/opt/fortune/share/games/fortunes/fortunes")
+(setq cookie-dir "/usr/local/opt/fortune/share/games/fortunes")
+(setq cookie-file "/usr/local/opt/fortune/share/games/fortunes/fortunes")
+
+;; expose fun and games via a hydra menu
+(defhydra amusements (nil nil :foreign-keys nil :hint nil :exit t)
+  "
+Amusements
+----------
+_a_ animate_bday
+_b_ bubbles
+_c_ cookie
+_d_ doctor
+_g_ gomoku
+_h_ hanoi
+_k_ snake
+_l_ life
+_n_ dunnet
+_o_ pong
+_p_ dissassociated_press
+_s_ solitaire
+_t_ tetris
+_x_ blackbox
+_y_ butterfly
+_z_ zone
+
+_q_ quit"
+  ("q" nil)
+  ("a" animate-birthday-present)
+  ("b" bubbles)
+  ("c" cookie)
+  ("d" doctor)
+  ("g" gomoku)
+  ("h" hanoi)
+  ("k" snake)
+  ("l" life)
+  ("n" dunnet)
+  ("o" pong)
+  ("p", dissassociated_press)
+  ("s" solitaire)
+  ("t" tetris)
+  ("x" blackbox)
+  ("y" butterfly)
+  ("z" zone))
+(evil-leader/set-key "a" 'amusements/body)
 
 ;; TODO: any way to use any of this in 25.1+?
 ; unicode emoji support
@@ -353,9 +418,10 @@
 ;   (set-fontset-font t 'unicode "Apple Color Emoji" nil 'prepend))
 ; (add-hook 'term-mode-hook 'use-emoji-font)
 
-;; TODO: menu for blackbox, tetris, etc.?
+;; TODO: tramp with tunneling
 
 ;; TODO: magit
+; then change EDITOR to emacsclient
 
 ;; TODO: ctags
 
@@ -375,6 +441,11 @@
 ; curves no longer work?
 ; ; (setq powerline-arrow-shape 'slant)   ; not working?
 ; milky's version is the one that comes from elpa? https://github.com/milkypostman/powerline
+
+;; TODO: ewww
+
+;; TODO: mu4e (and el feed)
+;; http://irreal.org/blog/?p=6115
 
 ;; TODO: multi-term
 ; how to output more than 8 colors
