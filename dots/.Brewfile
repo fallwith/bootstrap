@@ -5,7 +5,9 @@ brew 'coreutils'
 brew 'ctags'
 brew 'elixir'
 brew 'emacs', args: ['HEAD', 'with-cocoa']
+brew 'figlet'
 brew 'findutils'
+brew 'fortune'
 brew 'fzf', args: ['HEAD']
 brew 'ghostscript'
 brew 'git'
