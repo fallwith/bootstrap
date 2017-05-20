@@ -439,8 +439,6 @@ _q_ quit"
 ;   (set-fontset-font t 'unicode "Apple Color Emoji" nil 'prepend))
 ; (add-hook 'term-mode-hook 'use-emoji-font)
 
-;; TODO: underscores disrupt ivy's fuzzy finding
-
 ;; TODO: tramp with tunneling
 
 ;; TODO: magit
@@ -449,10 +447,6 @@ _q_ quit"
 ;; TODO: ctags
 
 ;; TODO: ivy-avy - needed?
-
-;; TODO: counsel-projectile-find-file trips on underscores
-;; filename = "this_is_a_test_filename"
-;; input of "thisi" results in 0 matches
 
 ;; TODO: projectile
 ; whitelist/blacklist certain patterns (ignore spec cassettes)
