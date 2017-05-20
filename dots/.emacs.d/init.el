@@ -215,17 +215,13 @@
 (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
 
 ;; projectile
+; projects are bookmarked at ~/.emacs.d/projectile-bookmarks.eld
 (projectile-global-mode)
 (setq projectile-completion-system 'ivy)
 (counsel-projectile-on)
 (evil-leader/set-key "p" `counsel-projectile-switch-project)
 (evil-leader/set-key "f" `counsel-projectile-find-file)
 (evil-leader/set-key "b" `counsel-projectile-switch-to-buffer)
-
-
-;; don't allow underscores to behave as word boundaries
-;; helps with fuzzy finding of filenames with underscores
-;; (modify-syntax-entry ?_ "w" text-mode-syntax-table)
 
 ;; windows
 ; enable windmove's default bindings (shift + left,right,down,up) to move between windows
@@ -275,8 +271,17 @@
 ;; prog-mode
 (add-hook 'prog-mode-hook
           (lambda()
-            (setq show-trailing-whitespace 1)))
-
+            ;; alter the way underscores behave as word boundaries
+            (modify-syntax-entry ?_ "w")
+            ;; highlight trailing whitespace
+            (setq show-trailing-whitespace 1)
+            ;; evil-commentary
+            'evil-commentary-mode
+            ;; evil-surround
+            'evil-surround-mode
+            ;; two space indent level for evil mode for all programming languages
+            (setq evil-shift-width 2)
+            'whitespace-mode))
 
 ;; multi-term
 (evil-set-initial-state 'term-mode 'emacs)  ; disable evil for term-mode
@@ -319,11 +324,6 @@
             (add-to-list 'term-bind-key-alist '("M-K" . shrink-window))
             (add-to-list 'term-bind-key-alist '("M-L" . enlarge-window))))
 
-;; evil-commentary
-(add-hook 'prog-mode-hook 'evil-commentary-mode)
-
-;; evil-surround
-(add-hook 'prog-mode-hook 'evil-surround-mode)
 
 ;; ruby
 (setq ruby-indent-level 2)
@@ -350,17 +350,11 @@
              ; enable syntax checking / linting
              (flycheck-mode 1)))
 
-;; two space indent level for evil mode for all programming languages
-(add-hook 'prog-mode-hook
-          '(lambda ()
-             (setq evil-shift-width 2)))
-
 ;; style long lines to indicate which columns are out of bounds
 ; http://emacsredux.com/blog/2013/05/31/highlight-lines-that-exceed-a-certain-length-limit/
 (require 'whitespace)
 (setq whitespace-line-column 120)
 (setq whitespace-style '(face lines-tail))
-(add-hook 'prog-mode-hook 'whitespace-mode)
 
 ;; switch to iTerm2
 (defun focus-iterm ()
