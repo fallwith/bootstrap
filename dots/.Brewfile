@@ -5,8 +5,8 @@ brew 'chruby', args: ['HEAD']
 brew 'coreutils'
 brew 'ctags'
 brew 'elixir'
-# brew 'emacs', args: ['HEAD', 'with-cocoa']
-brew 'emacs', args: ['with-cocoa']
+ brew 'emacs', args: ['HEAD', 'with-cocoa']
+# brew 'emacs', args: ['with-cocoa']
 brew 'figlet'
 brew 'findutils'
 brew 'fortune'
