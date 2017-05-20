@@ -286,6 +286,7 @@
 ;; multi-term
 (evil-set-initial-state 'term-mode 'emacs)  ; disable evil for term-mode
 (setq multi-term-program "/usr/local/bin/zsh")
+(setq multi-term-program-switches "--login")
 (evil-leader/set-key "m" 'multi-term)
 (setq multi-term-switch-after-close nil) ; do not switch to the next term on close
 
