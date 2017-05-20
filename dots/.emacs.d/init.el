@@ -213,6 +213,15 @@
 (global-set-key (kbd "C-c k") 'counsel-rg)
 (global-set-key (kbd "C-x l") 'counsel-locate)
 (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+;; use no regex inputs (//) instead of the default of "^" (/^/)
+(setq ivy-initial-inputs-alist nil)
+;; use fuzzy finding (a*n*e*x*a*m*p*l*e instead of an*example)
+(setq ivy-re-builders-alist
+      '((t . ivy--regex-fuzzy)))
+;; use ignore order if the default regex-plus can be made to ignore underscores
+;       '((t . ivy--regex-ignore-order)))
+
+
 
 ;; projectile
 ; projects are bookmarked at ~/.emacs.d/projectile-bookmarks.eld
