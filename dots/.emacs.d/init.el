@@ -337,6 +337,7 @@
               '("\\.\\(?:irbrc\\|gemrc\\|pryrc\\)" . ruby-mode))
 (add-hook 'ruby-mode-hook
           '(lambda ()
+             ; (setq evil-shift-width ruby-indent-level)
              (setq flycheck-checker 'ruby-rubocop)
              ; (set-face-attribute 'flycheck-error nil
              ;                     :foreground "white"
@@ -348,6 +349,11 @@
              (global-superword-mode 1)
              ; enable syntax checking / linting
              (flycheck-mode 1)))
+
+;; two space indent level for evil mode for all programming languages
+(add-hook 'prog-mode-hook
+          '(lambda ()
+             (setq evil-shift-width 2)))
 
 ;; style long lines to indicate which columns are out of bounds
 ; http://emacsredux.com/blog/2013/05/31/highlight-lines-that-exceed-a-certain-length-limit/
