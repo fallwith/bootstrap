@@ -222,6 +222,11 @@
 (evil-leader/set-key "f" `counsel-projectile-find-file)
 (evil-leader/set-key "b" `counsel-projectile-switch-to-buffer)
 
+
+;; don't allow underscores to behave as word boundaries
+;; helps with fuzzy finding of filenames with underscores
+;; (modify-syntax-entry ?_ "w" text-mode-syntax-table)
+
 ;; windows
 ; enable windmove's default bindings (shift + left,right,down,up) to move between windows
 ; (windmove-default-keybindings)
@@ -367,6 +372,7 @@
 (setq cookie-file "/usr/local/opt/fortune/share/games/fortunes/fortunes")
 
 ;; expose fun and games via a hydra menu
+;; not listed: mpuz, landmark (not available?), 5x5
 (defhydra amusements (nil nil :foreign-keys nil :hint nil :exit t)
   "
 Amusements
@@ -408,6 +414,11 @@ _q_ quit"
   ("z" zone))
 (evil-leader/set-key "a" 'amusements/body)
 
+;; org
+; (evil-leader/set-key "o" (lambda () (interactive) (find-file "~/.emacs/organizer.org")))
+; (setq org-default-notes-file "~/.emacs/organizer.org")
+
+
 ;; TODO: any way to use any of this in 25.1+?
 ; unicode emoji support
 ; (deliberately removed from macOS builds since 25.1)
@@ -418,6 +429,8 @@ _q_ quit"
 ;   (set-fontset-font t 'unicode "Apple Color Emoji" nil 'prepend))
 ; (add-hook 'term-mode-hook 'use-emoji-font)
 
+;; TODO: underscores disrupt ivy's fuzzy finding
+
 ;; TODO: tramp with tunneling
 
 ;; TODO: magit
@@ -426,6 +439,10 @@ _q_ quit"
 ;; TODO: ctags
 
 ;; TODO: ivy-avy - needed?
+
+;; TODO: counsel-projectile-find-file trips on underscores
+;; filename = "this_is_a_test_filename"
+;; input of "thisi" results in 0 matches
 
 ;; TODO: projectile
 ; whitelist/blacklist certain patterns (ignore spec cassettes)
@@ -446,6 +463,9 @@ _q_ quit"
 
 ;; TODO: mu4e (and el feed)
 ;; http://irreal.org/blog/?p=6115
+
+;; TODO: multi-term
+; toggle between terminal and evil mode (for scrolling up, selecting text)
 
 ;; TODO: multi-term
 ; how to output more than 8 colors
