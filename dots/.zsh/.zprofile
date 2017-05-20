@@ -72,4 +72,4 @@ alias bspec='bundle exec rspec'
 alias brake='noglob bundle exec rake'
 alias bcap='noglob bundle exec cap'
 
-export ZPROFILE_LOADED=1
+# export ZPROFILE_LOADED=1
