@@ -7,7 +7,10 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-;(setq inhibit-startup-screen t)
+; (setq inhibit-startup-screen t
+;       initial-major-mode 'fundamental-mode
+;       initial-scratch-message nil)
+; (setq fancy-splash-image "/path/to/2qPGuvD.jpg")
 
 ;; behavior settings
 (setq make-backup-files nil)               ; stop creating backup~ files
@@ -57,7 +60,18 @@
 
 (custom-set-variables
  '(package-selected-packages (quote (multi-term evil use-package))))
-(custom-set-faces)
+(custom-set-faces
+   ;; term
+   `(term-color-black ((t (:foreground ,"#686a66" :background ,"#000000"))))
+   `(term-color-red ((t (:foreground ,"#f54235" :background ,"#d81e00"))))
+   `(term-color-green ((t (:foreground ,"#99e343" :background ,"#5ea702"))))
+   `(term-color-yellow ((t (:foreground ,"#fdeb61" :background ,"#cfae00"))))
+   `(term-color-blue ((t (:foreground ,"#84b0d8" :background ,"#427ab3"))))
+   `(term-color-magenta ((t (:foreground ,"#bc94b7" :background ,"#89658e"))))
+   `(term-color-cyan ((t (:foreground ,"#37e6e8" :background ,"#00a7aa"))))
+   `(term-color-white ((t (:foreground ,"#f1f1f0" :background ,"#dbded8"))))
+   '(term-default-fg-color ((t (:inherit term-color-white))))
+   '(term-default-bg-color ((t (:inherit term-color-black)))))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -218,10 +232,6 @@
 ;; use fuzzy finding (a*n*e*x*a*m*p*l*e instead of an*example)
 (setq ivy-re-builders-alist
       '((t . ivy--regex-fuzzy)))
-;; use ignore order if the default regex-plus can be made to ignore underscores
-;       '((t . ivy--regex-ignore-order)))
-
-
 
 ;; projectile
 ; projects are bookmarked at ~/.emacs.d/projectile-bookmarks.eld
@@ -301,16 +311,19 @@
 
 (add-hook 'term-mode-hook
           (lambda ()
+            (setq compilation-environment '("TERM=xterm-256color"))
+            (setq system-uses-terminfo nil)
             ;; (setq show-trailing-whitespace nil)
             ; extra term mode key mappings for normal shell key behavior
-            (add-to-list 'term-bind-key-alist '("C-a" . move-beginning-of-line))
-            (add-to-list 'term-bind-key-alist '("C-e" . move-end-of-line))
-            (add-to-list 'term-bind-key-alist '("C-k" . kill-line))
-            (add-to-list 'term-bind-key-alist '("C-d" . delete-char))
-            (add-to-list 'term-bind-key-alist '("C-b" . backward-char))
-            (add-to-list 'term-bind-key-alist '("C-f" . forward-char))
+            ; (add-to-list 'term-bind-key-alist '("C-a" . move-beginning-of-line))
+            ; (add-to-list 'term-bind-key-alist '("C-e" . move-end-of-line))
+            ; (add-to-list 'term-bind-key-alist '("C-k" . kill-line))
+            ; (add-to-list 'term-bind-key-alist '("C-d" . delete-char))
+            ; (add-to-list 'term-bind-key-alist '("C-b" . backward-char))
+            ; (add-to-list 'term-bind-key-alist '("C-f" . forward-char))
             (setq term-bind-key-alist (remove* '"C-r" term-bind-key-alist :test 'equal :key 'car)) ; unmap C-r
-            (add-to-list 'term-bind-key-alist '("C-r" . term-send-reverse-search-history))
+            ; (add-to-list 'term-bind-key-alist '("C-r" . term-send-reverse-search-history))
+
             ; macOS paste
             (add-to-list 'term-bind-key-alist '("s-v" . term-paste))
             ; scroll buffer
@@ -333,7 +346,6 @@
             (add-to-list 'term-bind-key-alist '("M-J" . enlarge-window-horizontally))
             (add-to-list 'term-bind-key-alist '("M-K" . shrink-window))
             (add-to-list 'term-bind-key-alist '("M-L" . enlarge-window))))
-
 
 ;; ruby
 (setq ruby-indent-level 2)
@@ -371,7 +383,6 @@
   (interactive)
   (shell-command "open -a iTerm"))
 (evil-leader/set-key "t" 'focus-iterm)
-
 
 (evil-leader/set-key "z" 'zone)
 
@@ -428,7 +439,6 @@ _q_ quit"
 ; (evil-leader/set-key "o" (lambda () (interactive) (find-file "~/.emacs/organizer.org")))
 ; (setq org-default-notes-file "~/.emacs/organizer.org")
 
-
 ;; TODO: any way to use any of this in 25.1+?
 ; unicode emoji support
 ; (deliberately removed from macOS builds since 25.1)
@@ -467,43 +477,3 @@ _q_ quit"
 
 ;; TODO: mu4e (and el feed)
 ;; http://irreal.org/blog/?p=6115
-
-;; TODO: multi-term
-; toggle between terminal and evil mode (for scrolling up, selecting text)
-
-;; TODO: multi-term
-; how to output more than 8 colors
-; how to set term specific faces (term-color-cyan)
-
-; (defface term-color-blue '((t (:foreground "#45B7FE" ))) "")
-; (defface term-color-red '((t (:foreground "#ff3333" ))) "")
-; (defface term-color-yellow '((t (:foreground "#FFFF00" ))) "")
-
-
-; ; term colors
-; (defface term-color-black
-;   '((t (:foreground "#3f3f3f" :background "#272822")))
-;   "Unhelpful docstring.")
-; (defface term-color-red
-;   '((t (:foreground "#cc9393" :background "#272822")))
-;   "Unhelpful docstring.")
-; (defface term-color-green
-;   '((t (:foreground "#7f9f7f" :background "#272822")))
-;   "Unhelpful docstring.")
-; (defface term-color-yellow
-;   '((t (:foreground "#f0dfaf" :background "#272822")))
-;   "Unhelpful docstring.")
-; (defface term-color-blue
-;   '((t (:foreground "#6d85ba" :background "#272822")))
-;   "Unhelpful docstring.")
-; (defface term-color-magenta
-;   '((t (:foreground "#dc8cc3" :background "#272822")))
-;   "Unhelpful docstring.")
-; (defface term-color-cyan
-;   '((t (:foreground "#93e0e3" :background "#272822")))
-;   "Unhelpful docstring.")
-; (defface term-color-white
-;   '((t (:foreground "#dcdccc" :background "#272822")))
-;   "Unhelpful docstring.")
-; '(term-default-fg-color ((t (:inherit term-color-white))))
-; '(term-default-bg-color ((t (:inherit term-color-black))))
