@@ -8,3 +8,8 @@ if [[ -e "$zsh_modules_dir/init.zsh" ]]; then
 fi
 
 # [[ -z $ZPROFILE_LOADED ]] && source "${ZDOTDIR:-$HOME}/.zprofile"
+
+# TODO: how to supply `--login` to neovim's zsh instances?
+if [[ -n $MYVIMRC ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprofile"
+fi
