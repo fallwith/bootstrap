@@ -27,7 +27,6 @@
 ;; set the path for executables (such as ImageMagick's "convert" used for dired image thumbnails
 (setq exec-path (append exec-path '("/usr/local/bin")))
 
-
 ;; ModeLine configuration
 (setq display-time-day-and-date t) ; display the day and date along with the time
 (display-time)                     ; display the time
@@ -61,17 +60,17 @@
 (custom-set-variables
  '(package-selected-packages (quote (multi-term evil use-package))))
 (custom-set-faces
-   ;; term
-   `(term-color-black ((t (:foreground ,"#686a66" :background ,"#000000"))))
-   `(term-color-red ((t (:foreground ,"#f54235" :background ,"#d81e00"))))
-   `(term-color-green ((t (:foreground ,"#99e343" :background ,"#5ea702"))))
-   `(term-color-yellow ((t (:foreground ,"#fdeb61" :background ,"#cfae00"))))
-   `(term-color-blue ((t (:foreground ,"#84b0d8" :background ,"#427ab3"))))
-   `(term-color-magenta ((t (:foreground ,"#bc94b7" :background ,"#89658e"))))
-   `(term-color-cyan ((t (:foreground ,"#37e6e8" :background ,"#00a7aa"))))
-   `(term-color-white ((t (:foreground ,"#f1f1f0" :background ,"#dbded8"))))
-   '(term-default-fg-color ((t (:inherit term-color-white))))
-   '(term-default-bg-color ((t (:inherit term-color-black)))))
+  ;; term
+  '(term-color-black ((t (:foreground "#686a66" :background "#000000"))))
+  '(term-color-blue ((t (:foreground "#84b0d8" :background "#427ab3"))))
+  '(term-color-cyan ((t (:foreground "#37e6e8" :background "#00a7aa"))))
+  '(term-color-green ((t (:foreground "#99e343" :background "#5ea702"))))
+  '(term-color-magenta ((t (:foreground "#bc94b7" :background "#89658e"))))
+  '(term-color-red ((t (:foreground "#f54235" :background "#d81e00"))))
+  '(term-color-white ((t (:foreground "#f1f1f0" :background "#dbded8"))))
+  '(term-color-yellow ((t (:foreground "#fdeb61" :background "#cfae00"))))
+  '(term-default-bg-color ((t (:inherit term-color-black))))
+  '(term-default-fg-color ((t (:inherit term-color-white)))))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -95,6 +94,9 @@
 (use-package powerline)
 (use-package projectile)
 (use-package smartparens)
+(use-package magit)
+(use-package yaml-mode)
+
 ;; themes
 ;(use-package distinguished-theme)
 ;(use-package monokai-theme)
@@ -267,6 +269,7 @@
 ;; frames
 (setq framemove-hook-into-windmove t)
 (evil-leader/set-key "n" 'make-frame-command)  ; new frame
+(evil-leader/set-key "o" 'other-frame)         ; cycle through frames
 
 ;; ctrl-+ and ctrl-- for text scale increase/decrease
 (global-set-key (kbd "C-+") 'text-scale-increase)
@@ -295,12 +298,19 @@
             ;; highlight trailing whitespace
             (setq show-trailing-whitespace 1)
             ;; evil-commentary
-            'evil-commentary-mode
+            ;; 'evil-commentary-mode
             ;; evil-surround
-            'evil-surround-mode
+            ;; 'evil-surround-mode
             ;; two space indent level for evil mode for all programming languages
             (setq evil-shift-width 2)
             'whitespace-mode))
+
+;; globally enable evil-surround and evil-commentary
+(global-evil-surround-mode 1)
+(evil-commentary-mode)
+
+;; javascript
+(setq js-indent-level 2)
 
 ;; multi-term
 (evil-set-initial-state 'term-mode 'emacs)  ; disable evil for term-mode
@@ -324,6 +334,9 @@
             (setq term-bind-key-alist (remove* '"C-r" term-bind-key-alist :test 'equal :key 'car)) ; unmap C-r
             ; (add-to-list 'term-bind-key-alist '("C-r" . term-send-reverse-search-history))
 
+            ; (setq term-bind-key-alist (remove* '"C-[" term-bind-key-alist :test 'equal :key 'car)) ; unmap C-[
+            ; (add-to-list 'term-bind-key-alist '("C-[" . term-send-esc))
+
             ; macOS paste
             (add-to-list 'term-bind-key-alist '("s-v" . term-paste))
             ; scroll buffer
@@ -346,6 +359,32 @@
             (add-to-list 'term-bind-key-alist '("M-J" . enlarge-window-horizontally))
             (add-to-list 'term-bind-key-alist '("M-K" . shrink-window))
             (add-to-list 'term-bind-key-alist '("M-L" . enlarge-window))))
+
+;; eshell
+(evil-leader/set-key "e" 'eshell)
+;; http://www.howardism.org/Technical/Emacs/eshell-fun.html
+;; (defun eshell-here ()
+;;   "Opens up a new shell in the directory associated with the
+;; current buffer's file. The eshell is renamed to match that
+;; directory to make multiple eshell windows easier."
+;;   (interactive)
+;;   (let* ((parent (if (buffer-file-name)
+;;                      (file-name-directory (buffer-file-name))
+;;                    default-directory))
+;;          (height (/ (window-total-height) 3))
+;;          (name   (car (last (split-string parent "/" t)))))
+;;     (split-window-vertically (- height))
+;;     (other-window 1)
+;;     (eshell "new")
+;;     (rename-buffer (concat "*eshell: " name "*"))
+;;     (insert (concat "ls"))
+;;     (eshell-send-input)))
+;; (evil-leader/set-key "e" 'eshell-here)
+
+;; (defun eshell/x ()
+;;   (insert "exit")
+;;   (eshell-send-input)
+;;   (delete-window))
 
 ;; ruby
 (setq ruby-indent-level 2)
