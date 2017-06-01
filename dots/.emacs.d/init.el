@@ -10,7 +10,7 @@
 ; (setq inhibit-startup-screen t
 ;       initial-major-mode 'fundamental-mode
 ;       initial-scratch-message nil)
-; (setq fancy-splash-image "/path/to/2qPGuvD.jpg")
+(setq fancy-splash-image "~/.emacs.d/logo.png")
 
 ;; behavior settings
 (setq make-backup-files nil)               ; stop creating backup~ files
