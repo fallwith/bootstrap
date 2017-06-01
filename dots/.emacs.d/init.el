@@ -23,6 +23,8 @@
 (fset 'yes-or-no-p 'y-or-n-p)              ; prompt for 'y' or 'n' instead of 'yes' or 'no'
 (setq ring-bell-function #'ignore)         ; disable the bell
 (setq vc-follow-symlinks t)                ; don't prompt when editing files via symlinks
+(setq truncate-lines t)                    ; don't fold lines
+
 
 ;; set the path for executables (such as ImageMagick's "convert" used for dired image thumbnails
 (setq exec-path (append exec-path '("/usr/local/bin")))
@@ -362,6 +364,7 @@
 
 ;; eshell
 (evil-leader/set-key "e" 'eshell)
+(setenv "PATH" (concat (getenv "PATH") ":" (getenv "HOME") "/bin"))
 ;; http://www.howardism.org/Technical/Emacs/eshell-fun.html
 ;; (defun eshell-here ()
 ;;   "Opens up a new shell in the directory associated with the
@@ -475,8 +478,21 @@ _q_ quit"
 (evil-leader/set-key "a" 'amusements/body)
 
 ;; org
-; (evil-leader/set-key "o" (lambda () (interactive) (find-file "~/.emacs/organizer.org")))
-; (setq org-default-notes-file "~/.emacs/organizer.org")
+(evil-leader/set-key "o" (lambda () (interactive) (find-file "~/.emacs.d/organizer.org")))
+(setq org-default-notes-file "~/.emacs.d/organizer.org")
+(setq org-log-done 'time) ;; log a timestamp with each completed item
+;; format / theme source code aa it would look natively
+;; https://github.com/larstvei/dot-emacs
+(setq org-src-fontify-natively t
+      org-src-tab-acts-natively t
+      org-confirm-babel-evaluate nil
+      org-edit-src-content-indentation 0)
+
+
+; (add-hook 'org-mode-hook
+;           (lambda()
+;             ;; two space indent level for evil mode for all programming languages
+;             (setq evil-shift-width 2)))
 
 ;; TODO: any way to use any of this in 25.1+?
 ; unicode emoji support
