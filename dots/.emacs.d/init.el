@@ -477,6 +477,12 @@ _q_ quit"
   ("z" zone))
 (evil-leader/set-key "a" 'amusements/body)
 
+;; toggle line numbers
+(evil-leader/set-key "l" 'global-linum-mode)
+
+;; magit
+(evil-leader/set-key "g" 'magit-status)
+
 ;; org
 (evil-leader/set-key "o" (lambda () (interactive) (find-file "~/.emacs.d/organizer.org")))
 (setq org-default-notes-file "~/.emacs.d/organizer.org")
@@ -487,12 +493,38 @@ _q_ quit"
       org-src-tab-acts-natively t
       org-confirm-babel-evaluate nil
       org-edit-src-content-indentation 0)
+(setq org-hide-leading-stars t)
 
+(add-hook 'org-mode-hook
+          (lambda()
+            (require 'ox-md nil t)
+            ;; highlight trailing whitespace
+            (setq show-trailing-whitespace 1)
+            (setq evil-shift-width 2)
+            'whitespace-mode))
 
 ; (add-hook 'org-mode-hook
 ;           (lambda()
 ;             ;; two space indent level for evil mode for all programming languages
 ;             (setq evil-shift-width 2)))
+
+
+
+;; TODO: is there a way to map this behavior to :q!, :q, and :wq ?
+;; from: https://www.emacswiki.org/emacs/KillingBuffers
+;; (defun close-and-kill-this-pane ()
+;;   "If there are multiple windows, then close this pane and kill the buffer in it also."
+;;   (interactive)
+;;   (kill-this-buffer)
+;;   (if (not (one-window-p))
+;;       (delete-window)))
+;; (evil-leader/set-key "q" 'close-and-kill-this-pane)
+
+
+
+
+
+
 
 ;; TODO: any way to use any of this in 25.1+?
 ; unicode emoji support
@@ -505,9 +537,6 @@ _q_ quit"
 ; (add-hook 'term-mode-hook 'use-emoji-font)
 
 ;; TODO: tramp with tunneling
-
-;; TODO: magit
-; then change EDITOR to emacsclient
 
 ;; TODO: ctags
 
