@@ -2,6 +2,11 @@
 if [[ -e "$HOME/.bootstrap_private" ]]; then source "$HOME/.bootstrap_private"; fi
 
 export EDITOR=vi
+
+# https://www.emacswiki.org/emacs/EmacsClient
+export ALTERNATE_EDITOR=emacs EDITOR="emacsclient -c" VISUAL="emacsclient -c"
+
+
 export TERM=xterm-256color
 
 PATH=$HOME/bin:$PATH
