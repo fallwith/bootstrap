@@ -35,9 +35,9 @@
 (column-number-mode 1)             ; display the current column number
 
 ;; frame dimensions and position
-(setq initial-frame-alist '((width . 250) (height . 65)))
+(setq initial-frame-alist '((width . 250) (height . 80)))
 (add-to-list 'default-frame-alist '(width . 250))
-(add-to-list 'default-frame-alist '(height . 65))
+(add-to-list 'default-frame-alist '(height . 80))
 (set-frame-position (selected-frame) 250 250)
 
 ;; transparency
@@ -60,19 +60,26 @@
   (package-initialize))
 
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(package-selected-packages (quote (multi-term evil use-package))))
 (custom-set-faces
-  ;; term
-  '(term-color-black ((t (:foreground "#686a66" :background "#000000"))))
-  '(term-color-blue ((t (:foreground "#84b0d8" :background "#427ab3"))))
-  '(term-color-cyan ((t (:foreground "#37e6e8" :background "#00a7aa"))))
-  '(term-color-green ((t (:foreground "#99e343" :background "#5ea702"))))
-  '(term-color-magenta ((t (:foreground "#bc94b7" :background "#89658e"))))
-  '(term-color-red ((t (:foreground "#f54235" :background "#d81e00"))))
-  '(term-color-white ((t (:foreground "#f1f1f0" :background "#dbded8"))))
-  '(term-color-yellow ((t (:foreground "#fdeb61" :background "#cfae00"))))
-  '(term-default-bg-color ((t (:inherit term-color-black))))
-  '(term-default-fg-color ((t (:inherit term-color-white)))))
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(term-color-black ((t (:foreground "#686a66" :background "#000000"))))
+ '(term-color-blue ((t (:foreground "#84b0d8" :background "#427ab3"))))
+ '(term-color-cyan ((t (:foreground "#37e6e8" :background "#00a7aa"))))
+ '(term-color-green ((t (:foreground "#99e343" :background "#5ea702"))))
+ '(term-color-magenta ((t (:foreground "#bc94b7" :background "#89658e"))))
+ '(term-color-red ((t (:foreground "#f54235" :background "#d81e00"))))
+ '(term-color-white ((t (:foreground "#f1f1f0" :background "#dbded8"))))
+ '(term-color-yellow ((t (:foreground "#fdeb61" :background "#cfae00"))))
+ '(term-default-bg-color ((t (:inherit term-color-black))))
+ '(term-default-fg-color ((t (:inherit term-color-white)))))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -132,6 +139,8 @@
 (setq-default
     ; use whitespace (soft tabs) instead of tabs
     indent-tabs-mode nil
+    ; tab key is always used for indentation
+    tab-always-indent t
     ; set a default tab width of 2
     tab-width 2
     ; set a default indent amount of 2
@@ -205,11 +214,6 @@
 (evil-leader/set-key "v" 'hsplit-last-buffer
                      "h" 'vsplit-last-buffer)
 
-;; smartparens
-(require 'smartparens-config)
-(require 'smartparens-ruby)
-(add-hook 'ruby-mode-hook #'smartparens-mode)
-
 ;; server
 ; start the server if it is not already running
 (require 'server)
@@ -271,7 +275,16 @@
 ;; frames
 (setq framemove-hook-into-windmove t)
 (evil-leader/set-key "n" 'make-frame-command)  ; new frame
-(evil-leader/set-key "o" 'other-frame)         ; cycle through frames
+(defun new-scratch-frame ()
+  (interactive)
+  (setq frame (make-frame))
+  (select-frame-set-input-focus frame)
+  (setq bname (generate-new-buffer-name "scratch"))
+  (get-buffer-create bname)
+  (switch-to-buffer bname))
+(global-set-key (kbd "M-n") 'new-scratch-frame)
+(evil-leader/set-key "u" 'other-frame)         ; cycle through frames
+(global-set-key (kbd "M-u") 'other-frame)
 
 ;; ctrl-+ and ctrl-- for text scale increase/decrease
 (global-set-key (kbd "C-+") 'text-scale-increase)
@@ -292,20 +305,21 @@
 ; blackbox
 (evil-set-initial-state 'blackbox-mode 'emacs)  ; disable evil for blackbox
 
-;; prog-mode
-(add-hook 'prog-mode-hook
-          (lambda()
+;; code editing settings shared by multiple modes
+(defun code-editing-mode ()
             ;; alter the way underscores behave as word boundaries
             (modify-syntax-entry ?_ "w")
             ;; highlight trailing whitespace
             (setq show-trailing-whitespace 1)
-            ;; evil-commentary
-            ;; 'evil-commentary-mode
-            ;; evil-surround
-            ;; 'evil-surround-mode
-            ;; two space indent level for evil mode for all programming languages
+            ;; two space indent level for evil
             (setq evil-shift-width 2)
-            'whitespace-mode))
+            'whitespace-mode)
+
+;; prog-mode
+(add-hook 'prog-mode-hook 'code-editing-mode)
+
+;; yaml-mode
+(add-hook 'yaml-mode-hook 'code-editing-mode)
 
 ;; globally enable evil-surround and evil-commentary
 (global-evil-surround-mode 1)
@@ -324,6 +338,11 @@
 (add-hook 'term-mode-hook
           (lambda ()
             (setq compilation-environment '("TERM=xterm-256color"))
+
+            ;; (global-set-key [(control ?h)] 'delete-backward-char)
+            ;; have the delete key behave as desired
+            (keyboard-translate ?\C-h ?\C-?)
+
             (setq system-uses-terminfo nil)
             ;; (setq show-trailing-whitespace nil)
             ; extra term mode key mappings for normal shell key behavior
@@ -333,11 +352,20 @@
             ; (add-to-list 'term-bind-key-alist '("C-d" . delete-char))
             ; (add-to-list 'term-bind-key-alist '("C-b" . backward-char))
             ; (add-to-list 'term-bind-key-alist '("C-f" . forward-char))
-            (setq term-bind-key-alist (remove* '"C-r" term-bind-key-alist :test 'equal :key 'car)) ; unmap C-r
             ; (add-to-list 'term-bind-key-alist '("C-r" . term-send-reverse-search-history))
 
             ; (setq term-bind-key-alist (remove* '"C-[" term-bind-key-alist :test 'equal :key 'car)) ; unmap C-[
             ; (add-to-list 'term-bind-key-alist '("C-[" . term-send-esc))
+
+            ; unbind these keys so that the shell can receive them raw
+            (setq term-bind-key-alist (remove* '"C-r" term-bind-key-alist :test 'equal :key 'car)) ; unmap C-r
+            (setq term-bind-key-alist (remove* '"C-p" term-bind-key-alist :test 'equal :key 'car)) ; unmap C-p
+            (setq term-bind-key-alist (remove* '"C-n" term-bind-key-alist :test 'equal :key 'car)) ; unmap C-n
+
+            ; unbind these so that emacs can still use them
+            (setq term-bind-key-alist (remove* '"M-n" term-bind-key-alist :test 'equal :key 'car)) ; unmap M-n
+            (setq term-bind-key-alist (remove* '"M-u" term-bind-key-alist :test 'equal :key 'car)) ; unmap M-u
+
 
             ; macOS paste
             (add-to-list 'term-bind-key-alist '("s-v" . term-paste))
@@ -389,9 +417,17 @@
 ;;   (eshell-send-input)
 ;;   (delete-window))
 
+;; style long lines to indicate which columns are out of bounds
+; http://emacsredux.com/blog/2013/05/31/highlight-lines-that-exceed-a-certain-length-limit/
+(require 'whitespace)
+;; (setq whitespace-line-column 120)
+;; (setq whitespace-style '(face lines-tail))
+
 ;; ruby
 (setq ruby-indent-level 2)
 (chruby "ruby-2.4.1")
+(require 'smartparens-config)
+(require 'smartparens-ruby)
 (setq flycheck-ruby-executable "~/bin/ruby")
 (setq flycheck-ruby-rubocop-executable "~/bin/rubocop")
 ;; define additional patterns for files to be consider Ruby based
@@ -400,25 +436,25 @@
 (add-to-list 'auto-mode-alist
               '("\\.\\(?:irbrc\\|gemrc\\|pryrc\\)" . ruby-mode))
 (add-hook 'ruby-mode-hook
-          '(lambda ()
-             ; (setq evil-shift-width ruby-indent-level)
-             (setq flycheck-checker 'ruby-rubocop)
-             ; (set-face-attribute 'flycheck-error nil
-             ;                     :foreground "white"
-             ;                     :background "red")
-             ; (set-face-attribute 'flycheck-warning nil
-             ;                     :foreground "black"
-             ;                     :background "yellow")
-             ; treat snake case words as one single word
-             (global-superword-mode 1)
-             ; enable syntax checking / linting
-             (flycheck-mode 1)))
+          (lambda()
+            'whitespace-mode
+            'smartparens-mode
+            ; lines over 120 columns in width are highlighted
+            (highlight-lines-matching-regexp ".\\{121\\}" 'hi-yellow)
+            ; (setq evil-shift-width ruby-indent-level)
+            (setq flycheck-checker 'ruby-rubocop)
+            ; (set-face-attribute 'flycheck-error nil
+            ;                     :foreground "white"
+            ;                     :background "red")
+            ; (set-face-attribute 'flycheck-warning nil
+            ;                     :foreground "black"
+            ;                     :background "yellow")
+            ; treat snake case words as one single word
+            (global-superword-mode 1)
 
-;; style long lines to indicate which columns are out of bounds
-; http://emacsredux.com/blog/2013/05/31/highlight-lines-that-exceed-a-certain-length-limit/
-(require 'whitespace)
-(setq whitespace-line-column 120)
-(setq whitespace-style '(face lines-tail))
+            ; enable syntax checking / linting
+            (flycheck-mode 1)))
+
 
 ;; switch to iTerm2
 (defun focus-iterm ()
@@ -561,3 +597,6 @@ _q_ quit"
 
 ;; TODO: mu4e (and el feed)
 ;; http://irreal.org/blog/?p=6115
+
+;; TODO: with multi-term, at least over ssh, delete and escape and ctrl-[ don't work properly
+;;       also, $PS1 looks bad
