@@ -6,45 +6,56 @@
 config defaultToCurrentScreen true
 config nudgePercentOf screenSize
 config resizePercentOf screenSize
+config secondsBeforeRepeat 0.1
 config secondsBetweenRepeat 0.1
 
-# make window fullscreen
-bind `:ctrl move screenOriginX;screenOriginY screenSizeX;screenSizeY
-# make window centered
-bind 1:ctrl move screenOriginX+screenSizeX/8;screenOriginY+screenSizeY/8 screenSizeX/8*6;screenSizeY/8*6
-
-# resize
-bind right:ctrl resize +1% +0
-bind left:ctrl  resize -1% +0
-bind up:ctrl    resize +0   -1%
-bind down:ctrl  resize +0   +1%
-bind right:alt  resize -1% +0 bottom-right
-bind left:alt   resize +1% +0 bottom-right
-bind up:alt     resize +0   +1% bottom-right
-bind down:alt   resize +0   -1% bottom-right
-
-# push
-bind right:ctrl;shift push right bar-resize:screenSizeX/3
-bind left:ctrl;shift  push left  bar-resize:screenSizeX/3
-bind up:ctrl;shift    push up    bar-resize:screenSizeY/2
-bind down:ctrl;shift  push down  bar-resize:screenSizeY/2
-
-# nudge
-bind right:ctrl;alt nudge +1% +0
-bind left:ctrl;alt  nudge -1% +0
-bind up:ctrl;alt    nudge +0   -1%
-bind down:ctrl;alt  nudge +0   +1%
-
-# grid and hint
-bind esc:ctrl grid
-bind esc:cmd hint ASDFGHJKLQWERTYUIOPCVBN
+# hints
 config windowHintsShowIcons true
 config windowHintsIgnoreHiddenWindows false
 config windowHintsSpread true
+config windowHintsFontColor 255;147;219;1.0
+config windowHintsHeight 150
+config windowHintsWidth 150
+config windowHintsFontSize 60
+config windowHintsDuration 6
+
+# make window fullscreen
+bind `:ctrl move screenOriginX;screenOriginY screenSizeX;screenSizeY
+
+# center window
+bind 1:ctrl move screenOriginX+screenSizeX/8;screenOriginY+screenSizeY/8 screenSizeX/8*6;screenSizeY/8*6
+
+# nudging
+bind right:ctrl;alt nudge +5% +0
+bind left:ctrl;alt  nudge -5% +0
+bind up:ctrl;alt    nudge +0 -5%
+bind down:ctrl;alt  nudge +0 +5%
+bind right:ctrl;alt;cmd nudge +0.1% +0
+bind left:ctrl;alt;cmd  nudge -0.1% +0
+bind up:ctrl;alt;cmd    nudge +0 -0.1%
+bind down:ctrl;alt;cmd  nudge +0 +0.1%
+
+# hints
+bind esc:cmd hint ABCDEFGHIJKLMNOPQRSTUVWXYZ
+
+# resize
+bind =:ctrl;alt;cmd       resize +1% +0
+bind -:ctrl;alt;cmd       resize -1% +0
+bind =:ctrl;alt;cmd;shift resize +0 +1%
+bind -:ctrl;alt;cmd;shift resize +0 -1%
+
+# push
+bind l:ctrl;alt;cmd push right bar-resize:screenSizeX/3
+bind h:ctrl;alt;cmd push left bar-resize:screenSizeX/3
+bind k:ctrl;alt;cmd push up bar-resize:screenSizeY/2
+bind j:ctrl;alt;cmd push down bar-resize:screenSizeY/2
+
+# move the window to the bottom right / left
+bind .:ctrl;alt;cmd corner bottom-right
+bind ,:ctrl;alt;cmd corner top-left
 
 # apps
-bind g:ctrl;cmd focus 'Google Chrome'
-bind f:ctrl;cmd focus 'Firefox'
-bind i:ctrl;cmd focus 'iTunes'
-bind t:ctrl;cmd focus 'Terminal'
-bind s:ctrl;cmd focus 'Slack'
+bind s:ctrl;alt;cmd focus 'Slack'
+bind c:ctrl;alt;cmd focus 'Google Chrome'
+bind e:ctrl;alt;cmd focus 'Emacs'
+bind i:ctrl;alt;cmd focus 'iTunes'
