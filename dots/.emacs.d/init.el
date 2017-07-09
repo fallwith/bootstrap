@@ -3,6 +3,17 @@
 (setq gc-cons-threshold 100000000)
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000)))
 
+
+(setq-default
+  ;; disable bidirectional display reordering for a performance boost
+  bidi-display-reordering nil
+  ;; just in time fontification
+  jit-lock-defer-time nil
+  jit-lock-stealth-nice 0.1
+  jit-lock-stealth-time 0.2
+  jit-lock-stealth-verbose nil)
+
+
 ;; disable the menu, tool, and scroll bars
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -46,9 +57,9 @@
 
 ;; fonts
 ;; initial-frame = first window
-(add-to-list 'initial-frame-alist '(font . "DejaVu Sans Mono-11"))
+(add-to-list 'initial-frame-alist '(font . "DejaVu Sans Mono-12"))
 ;; default-frame = subsequent windows
-(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-11"))
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-12"))
 
 ;; packages
 (eval-and-compile
@@ -214,6 +225,60 @@
 (evil-leader/set-key "v" 'hsplit-last-buffer
                      "h" 'vsplit-last-buffer)
 
+
+
+
+
+
+
+
+
+;; move the frame
+; (setq initial-frame-alist '((width . 250) (height . 80)))
+; (add-to-list 'default-frame-alist '(width . 250))
+; (add-to-list 'default-frame-alist '(height . 80))
+
+
+
+
+; (defun set-frame-size-according-to-resolution ()
+;   (interactive)
+;   (if window-system
+;   (progn
+;     ;; use 120 char wide window for largeish displays
+;     ;; and smaller 80 column windows for smaller displays
+;     ;; pick whatever numbers make sense for you
+;     (if (> (x-display-pixel-width) 1280)
+;            (add-to-list 'default-frame-alist (cons 'width 120))
+;            (add-to-list 'default-frame-alist (cons 'width 80)))
+;     ;; for the height, subtract a couple hundred pixels
+;     ;; from the screen height (for panels, menubars and
+;     ;; whatnot), then divide by the height of a char to
+;     ;; get the height we want
+;     (add-to-list 'default-frame-alist 
+;          (cons 'height (/ (- (x-display-pixel-height) 200)
+;                              (frame-char-height)))))))
+
+; (set-frame-size-according-to-resolution)
+
+
+(defun moveit ()
+  (interactive)
+  (setq xpos (x-display-pixel-width) * 0.55)
+  (setq ypos (x-display-pixel-height) * 0.50)
+  (set-frame-position (selected-frame) xpos ypos)
+  ; (set-frame-position (selected-frame) 1000 500)
+)
+(evil-leader/set-key "w" 'moveit)
+
+
+
+
+
+
+
+
+
 ;; server
 ; start the server if it is not already running
 (require 'server)
@@ -246,6 +311,7 @@
 (projectile-global-mode)
 (setq projectile-completion-system 'ivy)
 (counsel-projectile-on)
+(add-to-list 'projectile-globally-ignored-directories "spec/fixtures/vcr_cassettes")
 (evil-leader/set-key "p" `counsel-projectile-switch-project)
 (evil-leader/set-key "f" `counsel-projectile-find-file)
 (evil-leader/set-key "b" `counsel-projectile-switch-to-buffer)
@@ -285,6 +351,32 @@
 (global-set-key (kbd "M-n") 'new-scratch-frame)
 (evil-leader/set-key "u" 'other-frame)         ; cycle through frames
 (global-set-key (kbd "M-u") 'other-frame)
+
+
+; ;; evil ex commands
+; ;; redefine :q so that it kills the buffer as well as closing the window
+; (evil-define-command evil-quit-and-kill-buffer (&optional force)
+;   "Performs evil-quit but also kills the buffer"
+;   :repeat nil
+;   (interactive "<!>")
+;   (condition-case nil
+;       ; (delete-window)          ; removed
+;       (kill-buffer-and-window)   ; added
+;     (error
+;      (if (and (boundp 'server-buffer-clients)
+;               (fboundp 'server-edit)
+;               (fboundp 'server-buffer-done)
+;               server-buffer-clients)
+;          (if force
+;              (server-buffer-done (current-buffer))
+;            (server-edit))
+;        (condition-case nil
+;            (delete-frame)
+;          (error
+;           (if force
+;               (kill-emacs)
+;             (save-buffers-kill-emacs))))))))
+; (evil-ex-define-cmd "q[uit]" 'evil-quit-and-kill-buffer)
 
 ;; ctrl-+ and ctrl-- for text scale increase/decrease
 (global-set-key (kbd "C-+") 'text-scale-increase)
@@ -390,9 +482,46 @@
             (add-to-list 'term-bind-key-alist '("M-K" . shrink-window))
             (add-to-list 'term-bind-key-alist '("M-L" . enlarge-window))))
 
+;; tramp
+;; cd /ssh:<ip>:/path
+;; cd /sudo:<ip>:/path
+(require 'tramp)
+(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+(setq tramp-default-method "ssh")
+(add-to-list 'backup-directory-alist
+             (cons tramp-file-name-regexp nil))
+(setq tramp-auto-save-directory temporary-file-directory)
+(setq tramp-verbose 10)
+(setq projectile-mode-line "Projectile")
+; (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+(set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+
+
+
 ;; eshell
 (evil-leader/set-key "e" 'eshell)
 (setenv "PATH" (concat (getenv "PATH") ":" (getenv "HOME") "/bin"))
+
+
+; (setq eshell-prompt-function
+; (lambda ()
+; (concat
+; (propertize "┌─[" 'face `(:foreground "green"))
+; (propertize (user-login-name) 'face `(:foreground "red"))
+; (propertize "@" 'face `(:foreground "green"))
+; (propertize (system-name) 'face `(:foreground "blue"))
+; (propertize "]──[" 'face `(:foreground "green"))
+; (propertize (format-time-string "%H:%M" (current-time)) 'face `(:foreground "yellow"))
+; (propertize "]──[" 'face `(:foreground "green"))
+; (propertize (concat (eshell/pwd)) 'face `(:foreground "white"))
+; (propertize "]\n" 'face `(:foreground "green"))
+; (propertize "└─>" 'face `(:foreground "green"))
+; (propertize (if (= (user-uid) 0) " # " " $ ") 'face `(:foreground "green"))
+; )))
+
+
+
+
 ;; http://www.howardism.org/Technical/Emacs/eshell-fun.html
 ;; (defun eshell-here ()
 ;;   "Opens up a new shell in the directory associated with the
@@ -537,6 +666,8 @@ _q_ quit"
             ;; highlight trailing whitespace
             (setq show-trailing-whitespace 1)
             (setq evil-shift-width 2)
+            ;; don't split the current line on M-RET
+            (setq org-M-RET-may-split-line '((item . nil)))
             'whitespace-mode))
 
 ; (add-hook 'org-mode-hook
@@ -593,7 +724,13 @@ _q_ quit"
 ; ; (setq powerline-arrow-shape 'slant)   ; not working?
 ; milky's version is the one that comes from elpa? https://github.com/milkypostman/powerline
 
-;; TODO: ewww
+;; TODO: eww
+
+;; (defun eww-render-current-buffer ()
+;;   "Render HTML in the current buffer with EWW"
+;;   (interactive)
+;;   (beginning-of-buffer)
+;;   (eww-display-html 'utf8 (buffer-name)))
 
 ;; TODO: mu4e (and el feed)
 ;; http://irreal.org/blog/?p=6115
