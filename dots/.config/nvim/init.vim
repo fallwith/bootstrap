@@ -34,7 +34,9 @@ Plug 'tpope/vim-fugitive'
 " commentary: allows for the commenting/uncommenting of text
 Plug 'tpope/vim-commentary'
 " syntastic: a linter / code syntax checker wrapper
-Plug 'scrooloose/syntastic', { 'for': 'ruby' }
+" Plug 'scrooloose/syntastic', { 'for': 'ruby' }
+" ale: async linter
+Plug 'w0rp/ale'
 " surround: add, remove, swap surroundings like quotes or braces
 Plug 'tpope/vim-surround'
 " tabular: automatically align blocks of text based on a delimiter
@@ -161,6 +163,8 @@ highlight nonText guibg=Black
 :nnoremap <A-j> <C-w>j
 :nnoremap <A-k> <C-w>k
 :nnoremap <A-l> <C-w>l
+:tnoremap jk <C-\><C-n>
+:noremap <Leader>t :terminal<CR>
 " }}}
 " {{{ custom hooks
 " automatically leave paste mode after having pasted in text
@@ -267,6 +271,9 @@ vmap <Leader>a: :Tab/:\zs<CR>
 nmap <Leader>a> :Tab/=><CR>
 vmap <Leader>a> :Tab/=><CR>
 
+" ale
+let g:ale_ruby_rubocop_executable = '~/.gem/ruby/2.4.1/bin/rubocop'
+
 " Syntastic
 
 " set statusline+=%#warningmsg#
@@ -275,16 +282,16 @@ vmap <Leader>a> :Tab/=><CR>
 
 " let g:syntastic_always_populate_loc_list = 1
 " let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_open = 1
 
 " bypass checking if :wq (or ZZ) is used
-let g:syntastic_check_on_wq = 0
+" let g:syntastic_check_on_wq = 0
 " specify which ruby to use (enforces MRI in JRuby projects)
-let g:syntastic_ruby_mri_exec = '~/bin/ruby24'
-let g:syntastic_ruby_rubocop_exec = '~/bin/rubocop'
+" let g:syntastic_ruby_mri_exec = '~/bin/ruby24'
+" let g:syntastic_ruby_rubocop_exec = '~/bin/rubocop'
 "let g:syntastic_ruby_rubocop_exec = '~/.gem/ruby/2.3.1/bin/bundle\ exec\ rubocop'
 " use mri and rubocop checkers with ruby files
-let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+" let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
 " VimSneak
 let g:sneak#streak = 1
@@ -345,11 +352,11 @@ nmap <leader>P <Plug>yankstack_substitute_newer_paste
 nnoremap Y y$
 
 " vim-rspec
-let g:rspec_command = 'call Send_to_Tmux("bundle exec rspec {spec}\n")'
-map <Leader>t ;call RunCurrentSpecFile()<CR>
-map <Leader>s ;call RunNearestSpec()<CR>
-map <Leader>l ;call RunLastSpec()<CR>
-map <Leader>a ;call RunAllSpecs()<CR>
+" let g:rspec_command = 'call Send_to_Tmux("bundle exec rspec {spec}\n")'
+" map <Leader>t ;call RunCurrentSpecFile()<CR>
+" map <Leader>s ;call RunNearestSpec()<CR>
+" map <Leader>l ;call RunLastSpec()<CR>
+" map <Leader>a ;call RunAllSpecs()<CR>
 "let g:rspec_command = "!bundle exec rspec --tty --color --format documentation {spec}"
 
 " Ranger
