@@ -7,7 +7,7 @@ brew 'coreutils'
 brew 'ctags'
 brew 'elinks'
 brew 'elixir'
- brew 'emacs', args: ['HEAD', 'with-cocoa']
+# brew 'emacs', args: ['HEAD', 'with-cocoa']
 # brew 'emacs', args: ['with-cocoa']
 brew 'exiftool'
 brew 'figlet'
@@ -50,6 +50,12 @@ brew 'watch'
 brew 'w3m'
 brew 'wget'
 brew 'zsh'
+
+tap 'bd12frosted/emacs-plus'
+brew 'emacs-plus', args: ['HEAD', 'without-spacemacs-icon']
+
+tap 'tavianator/tap'
+brew 'bfs'
 
 # tap 'burntsushi/ripgrep'
 # brew 'burntsushi/ripgrep/ripgrep-bin'
