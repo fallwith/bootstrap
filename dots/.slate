@@ -22,8 +22,9 @@ config windowHintsDuration 6
 # make window fullscreen
 bind `:ctrl move screenOriginX;screenOriginY screenSizeX;screenSizeY
 
-# center window
-bind 1:ctrl move screenOriginX+screenSizeX/8;screenOriginY+screenSizeY/8 screenSizeX/8*6;screenSizeY/8*6
+# center a window, resize it
+bind 1:ctrl move screenOriginX+50;screenOriginY+50 screenSizeX-100;screenSizeY-100
+bind 2:ctrl move screenOriginX+screenSizeX/8;screenOriginY+screenSizeY/8 screenSizeX/8*6;screenSizeY/8*6
 
 # nudging
 bind right:ctrl;alt nudge +5% +0
@@ -45,10 +46,10 @@ bind =:ctrl;alt;cmd;shift resize +0 +1%
 bind -:ctrl;alt;cmd;shift resize +0 -1%
 
 # push
-bind l:ctrl;alt;cmd push right bar-resize:screenSizeX/3
-bind h:ctrl;alt;cmd push left bar-resize:screenSizeX/3
-bind k:ctrl;alt;cmd push up bar-resize:screenSizeY/2
-bind j:ctrl;alt;cmd push down bar-resize:screenSizeY/2
+bind l:ctrl;alt;cmd push right bar-resize:screenSizeX/2.5
+bind h:ctrl;alt;cmd push left bar-resize:screenSizeX/1.9
+bind k:ctrl;alt;cmd push up bar-resize:screenSizeY/2.5
+bind j:ctrl;alt;cmd push down bar-resize:screenSizeY/2.5
 
 # move the window to the bottom right / left
 bind .:ctrl;alt;cmd corner bottom-right
