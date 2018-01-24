@@ -16,7 +16,7 @@ PATH=$HOME/bin:$PATH
 #   -p = mark directories with a trailing slash ('/')
 #   -G = colorized output
 #   --color=always = for times when -G isn't sufficient
-alias ll='ls -lApG --color=always'
+alias ll='ls -lAp --color=always'
 
 # git
 export GIT_SSL_NO_VERIFY=true
