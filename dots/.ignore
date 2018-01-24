@@ -23,3 +23,5 @@
 *.pdf
 *.md
 *.log
+!.zshrc
+!.zprofile
