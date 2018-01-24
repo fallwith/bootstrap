@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2017-03-15
+" fallwith's .vimrc - 2017-10-12
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -19,7 +19,6 @@
 " :PlugUpdate          - install/update all / specified plugins
 " :PlugClean[!]        - confirm (or auto-approve) removal of unused plugins
 " :PlugUpgrade         - Upgrade vim-plug itself
-
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -35,15 +34,13 @@ Plug 'tpope/vim-fugitive'
 " commentary: allows for the commenting/uncommenting of text
 Plug 'tpope/vim-commentary'
 " syntastic: a linter / code syntax checker wrapper
-Plug 'scrooloose/syntastic', { 'for': 'ruby' }
+Plug 'scrooloose/syntastic' ", { 'for': 'ruby' }
 " surround: add, remove, swap surroundings like quotes or braces
 Plug 'tpope/vim-surround'
-" tabular: automatically align blocks of text based on a delimiter
-Plug 'godlygeek/tabular', { 'for': 'ruby' }
 " delimitMate: automatically provides closing quotes and braces
 Plug 'Raimondi/delimitMate'
 " vim-ruby: powers Vim's Ruby editing support, bundle to fetch newer code that what Vim shipped with
-Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+Plug 'vim-ruby/vim-ruby' ", { 'for': 'ruby' }
 " ctrl-p: fast, fuzzy finder for searching filesystems, buffers, and mru items
 "Plug 'kien/ctrlp.vim'
 " vim-vinegar: netrw file browsing improvements
@@ -53,26 +50,18 @@ Plug 'maxbrunsfeld/vim-yankstack'
 " vim-endwise: add helpful closing structures (like 'end') for Ruby and others
 Plug 'tpope/vim-endwise'
 " nerdtree: file explorer (netrw replacement)
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree' ", { 'on':  'NERDTreeToggle' }
 " vim-tmux-navigator: seamless navigation between Vim and Tmux splits
 Plug 'christoomey/vim-tmux-navigator'
-" vim-rspec: kick off rspec tests from within vim
-Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
-" tslime: send output to a tmux session
-Plug 'jgdavey/tslime.vim', { 'for': 'ruby' }
-" vim-gutentags: automatic CTags management
-"Plug 'ludovicchabant/vim-gutentags'
 " vim-ripgrep: leverage ripgrep from within Vim
 Plug 'jremmen/vim-ripgrep'
-" vim-molasses prevent repeated hjkl input for movement
-" Plug '0x0dea/vim-molasses'
 " vim-markdown: development version of Vim's markdown support
 Plug 'tpope/vim-markdown'
-" vim-pencil: use Vim for writing
-" Plug 'reedes/vim-pencil'
 " tmuxline: powerline type theming of tmux with vim based integration
 Plug 'edkolev/tmuxline.vim'
+" vim-elixir: elixir language suppoer for Vim
 Plug 'elixir-lang/vim-elixir'
+" goyo: a distraction free writing environment
 Plug 'junegunn/goyo.vim'
 " vimwiki: personal wiki for Vim
 Plug 'vimwiki/vimwiki'
@@ -80,16 +69,7 @@ Plug 'vimwiki/vimwiki'
 Plug 'junegunn/fzf.vim'
 
 " themes
-Plug 'morhetz/gruvbox'
-Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
-Plug 'w0ng/vim-hybrid'
 Plug 'Lokaltog/vim-distinguished', {'branch': 'develop'}
-Plug 'tomasr/molokai'
-Plug 'ajh17/Spacegray.vim'
-Plug 'kreeger/benlight'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'AlessandroYorba/Alduin'
-Plug 'jacoborus/tender.vim'
 call plug#end()
 " }}}
 " {{{ basic configuration
@@ -124,7 +104,7 @@ set nobackup                " disable backups"
 set nowritebackup           " disable backups"
 set noswapfile              " disable the creation of .swp swap files
 set nu                      " enable line numbers
-"set rnu                     " enable relative line numbers
+" set rnu                     " enable relative line numbers
 set numberwidth=5           " specify line numbers column width
 set vb t_vb=                " disable bell
 set tags=.tags;/            " look for a .tags ctags file and keep looking all the way up to /
@@ -147,34 +127,18 @@ hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to t
 set grepprg=ag\ --nogroup\ --nocolor      " use ag instead of grep
 set viminfo+=n~/.vim/.viminfo             " store the vim info file beneath ~/.vim
 " }}}
-" gui specific {{{
-if has('gui_running')
-  set transparency=10                 " transparent background
-  "set guifont=Inconsolata:h14        " specify font family and size
-  set guifont=Monaco:h11
-  "set guifont=Menlo:h11
-  colorscheme hybrid-light
-  set lines=40 columns=120
-else
-  " set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+" colorscheme {{{
+" set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+colorscheme distinguished
 
-  " colorscheme gruvbox
-  " colorscheme spacegray
-  " colorscheme hybrid
-  " colorscheme distinguished
+" override the colorscheme's highlight
+" highlight Visual guibg=#7f7f7f
 
-  colorscheme tender
-  highlight Visual guibg=#7f7f7f
-
-
-  " don't allow colorschemes to set a background color
-  highlight Normal ctermbg=NONE
-  highlight nonText ctermbg=NONE
-
-  highlight Normal guibg=Black
-  highlight nonText guibg=Black
-
-endif
+" don't allow colorschemes to set a background color
+highlight Normal ctermbg=NONE
+highlight nonText ctermbg=NONE
+highlight Normal guibg=Black
+highlight nonText guibg=Black
 " }}}
 " {{{ custom hooks
 " automatically leave paste mode after having pasted in text
@@ -184,6 +148,9 @@ au InsertLeave * silent! set nopaste
 " not needed if 'tpope/vim-markdown' is present:
 "au BufRead,BufNewFile *.md set filetype=markdown        " treat .md files as Markdown (not Modula)
 au BufRead,BufNewFile *.md set cc=80
+
+"au BufRead,BufNewFile *.erb set noautoindent
+"au BufRead,BufNewFile *.erb set nosmartindent
 
 autocmd Filetype gitcommit setlocal spell textwidth=72 cc=50,72
 " }}}
@@ -260,53 +227,11 @@ command! MD :silent :!open -a MacDown.app '%:p'
 " :Vimrc to open ~/.vimrc
 :command! Vimrc :silent :e ~/.vimrc
 
-" :Slate to open ~/.slate
-:command! Slate :silent :e ~/.slate
-
 " :Double and :Single to resize the window in gvim
 :command! Double :silent :set columns=252 lines=60
 :command! Single :silent :set columns=126 lines=50
 
-" http://www.drbunsen.org/writing-in-vim/
-func! WordProcessorMode()
-  setlocal formatoptions=1
-  setlocal noexpandtab
-  map j gj
-  map k gk
-  setlocal spell spelllang=en_us
-  "set thesaurus+=/Users/sbrown/.vim/thesaurus/mthesaur.txt
-  set complete+=s
-  set formatprg=par
-  setlocal wrap
-  setlocal linebreak
-endfu
-com! WP call WordProcessorMode()
-
-" " prose editing mode
-" func! ProseMode()
-"   "setlocal formatoptions=1
-"   setlocal formatoptions=ant
-"   " map j gj
-"   " map k gk
-"   setlocal spell spelllang=en_gb
-"   setlocal complete+=s
-"   setlocal formatprg=par
-"   setlocal wrap
-"   setlocal nolist
-"   setlocal linebreak
-"   setlocal nonu
-"   " setlocal textwidth=120
-"   setlocal wrapmargin=0
-"   setlocal noautoindent
-"   setlocal nocindent
-"   setlocal nosmartindent
-"   setlocal indentexpr=
-"   setlocal foldcolumn=10
-"   setlocal columns=120
-" endfunc
-" com! Prose call ProseMode()
-
-" <leader>ag to prep a quickfix window based ag (silver searcher) search
+" <leader>ag to prep a quickfix window based ripgrep search
 nno <leader>rg :Rg<SPACE>
 " }}}
 " {{{ plugins / third-party tools
@@ -316,37 +241,27 @@ let g:airline_theme='molokai'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tmuxline#enabled = 0 " different theme for tmux than vim
 
-
-" Tabular
-" use tabular to align on equals signs and on colons (ruby 1.9+ style hashes)
-nmap <Leader>a= :Tab/=<CR>
-vmap <Leader>a= :Tab/=<CR>
-nmap <Leader>a: :Tab/:\zs<CR>
-vmap <Leader>a: :Tab/:\zs<CR>
-nmap <Leader>a> :Tab/=><CR>
-vmap <Leader>a> :Tab/=><CR>
-
 " Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 
 " bypass checking if :wq (or ZZ) is used
 let g:syntastic_check_on_wq = 0
 " specify which ruby to use (enforces MRI in JRuby projects)
-let g:syntastic_ruby_mri_exec = '~/bin/ruby24'
+let g:syntastic_ruby_mri_exec = '~/bin/ruby'
 let g:syntastic_ruby_rubocop_exec = '~/bin/rubocop'
-"let g:syntastic_ruby_rubocop_exec = '~/.gem/ruby/2.3.1/bin/bundle\ exec\ rubocop'
 " use mri and rubocop checkers with ruby files
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
-" VimSneak
-let g:sneak#streak = 1
+let g:syntastic_mode_map = {
+    \ "mode": "active",
+    \ "passive_filetypes": ["eruby"] }
+
 
 " Vinegar
 autocmd FileType netrw nnoremap <silent> q :bd<CR>
@@ -361,6 +276,20 @@ let g:NERDTreeMapJumpPrevSibling = "" " unbind <C-k>
 set rtp+=/usr/local/opt/fzf
 :noremap <Leader>f :FZF<CR>
 :noremap <Leader>b :Buffers<CR>
+let g:fzf_layout = { 'down': '~20%' }
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
 "
 " https://medium.com/@crashybang/supercharge-vim-with-fzf-and-ripgrep-d4661fc853d2#.e0kqdo49d
@@ -376,9 +305,6 @@ set rtp+=/usr/local/opt/fzf
 " --color: Search color options
 "command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
-
-
-
 
 " CtrlP
 "let g:ctrlp_map = '<Leader>q'
@@ -406,69 +332,8 @@ nmap <leader>P <Plug>yankstack_substitute_newer_paste
 " the cursor to the end of the line and exclude the newline
 nnoremap Y y$
 
-" vim-rspec
-let g:rspec_command = 'call Send_to_Tmux("bundle exec rspec {spec}\n")'
-map <Leader>t ;call RunCurrentSpecFile()<CR>
-map <Leader>s ;call RunNearestSpec()<CR>
-map <Leader>l ;call RunLastSpec()<CR>
-map <Leader>a ;call RunAllSpecs()<CR>
-"let g:rspec_command = "!bundle exec rspec --tty --color --format documentation {spec}"
-
-" Ranger
-" from: http://www.reddit.com/r/vim/comments/2va2og/ranger_the_cli_file_manager_xpost_from/cog2ley
-function! RangerChooser()
-  let temp = tempname()
-  exec 'silent !ranger --choosefiles=' . shellescape(temp)
-  if !filereadable(temp)
-    redraw!
-    " Nothing to read.
-    return
-  endif
-  let names = readfile(temp)
-  if empty(names)
-    redraw!
-    " Nothing to open.
-    return
-  endif
-  " Edit the first item.
-  exec 'edit ' . fnameescape(names[0])
-  " Add any remaning items to the arg list/buffer list.
-  for name in names[1:]
-    exec 'argadd ' . fnameescape(name)
-  endfor
-  redraw!
-endfunction
-nnoremap <leader>R :call RangerChooser()<CR>
-
 " Goyo
 let g:goyo_width = 120
 
 " VimWiki
 let g:vimwiki_list = [{'path': '~/.vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
-
-" vim-gutentags
-"let g:gutentags_cache_dir = "/tmp"
-
-" " vim-pencil
-" let g:pencil#wrapModeDefault = 'soft'   " default is 'hard'
-" let g:pencil#textwidth = 119
-
-" augroup pencil
-"   autocmd!
-"   autocmd FileType markdown,mkd call pencil#init()
-"   autocmd FileType text         call pencil#init({'wrap': 'hard'})
-" augroup END
-
-" }}}
-" {{{ .vimrc.last overrides
-"if filereadable($HOME . "/.vimrc.last")
-"  source $HOME/.vimrc.last
-"else
-"  call system("touch $HOME/.vimrc.last")
-"endif
-" }}}
-
-
-" if filereadable($HOME . "/.vim/acolyte_to_adept.vim")
-"   source $HOME/.vim/acolyte_to_adept.vim
-" endif

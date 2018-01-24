@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .nvimrc - 2017-05-28
+" fallwith's .nvimrc - 2017-10-12
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -33,18 +33,14 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 " commentary: allows for the commenting/uncommenting of text
 Plug 'tpope/vim-commentary'
-" syntastic: a linter / code syntax checker wrapper
-" Plug 'scrooloose/syntastic', { 'for': 'ruby' }
 " ale: async linter
 Plug 'w0rp/ale'
 " surround: add, remove, swap surroundings like quotes or braces
 Plug 'tpope/vim-surround'
-" tabular: automatically align blocks of text based on a delimiter
-Plug 'godlygeek/tabular', { 'for': 'ruby' }
 " delimitMate: automatically provides closing quotes and braces
 Plug 'Raimondi/delimitMate'
 " vim-ruby: powers Vim's Ruby editing support, bundle to fetch newer code that what Vim shipped with
-Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+Plug 'vim-ruby/vim-ruby' ", { 'for': 'ruby' }
 " ctrl-p: fast, fuzzy finder for searching filesystems, buffers, and mru items
 "Plug 'kien/ctrlp.vim'
 " vim-vinegar: netrw file browsing improvements
@@ -54,13 +50,15 @@ Plug 'maxbrunsfeld/vim-yankstack'
 " vim-endwise: add helpful closing structures (like 'end') for Ruby and others
 Plug 'tpope/vim-endwise'
 " nerdtree: file explorer (netrw replacement)
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-" vim-rspec: kick off rspec tests from within vim
-Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
+Plug 'scrooloose/nerdtree' ", { 'on':  'NERDTreeToggle' }
+" vim-tmux-navigator: seamless navigation between Vim and Tmux splits
+Plug 'christoomey/vim-tmux-navigator'
 " vim-ripgrep: leverage ripgrep from within Vim
 Plug 'jremmen/vim-ripgrep'
 " vim-markdown: development version of Vim's markdown support
 Plug 'tpope/vim-markdown'
+" tmuxline: powerline type theming of tmux with vim based integration
+Plug 'edkolev/tmuxline.vim'
 " vim-elixir: elixir language related support
 Plug 'elixir-lang/vim-elixir'
 " goyo: distraction-free writing
@@ -71,16 +69,7 @@ Plug 'vimwiki/vimwiki'
 Plug 'junegunn/fzf.vim'
 
 " themes
-Plug 'morhetz/gruvbox'
-Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
-Plug 'w0ng/vim-hybrid'
 Plug 'Lokaltog/vim-distinguished', {'branch': 'develop'}
-Plug 'tomasr/molokai'
-Plug 'ajh17/Spacegray.vim'
-Plug 'kreeger/benlight'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'AlessandroYorba/Alduin'
-Plug 'jacoborus/tender.vim'
 call plug#end()
 " }}}
 " {{{ basic configuration
@@ -140,9 +129,7 @@ set viminfo+=n~/.nvim/.viminfo            " store the vim info file beneath ~/.n
 set sh=zsh
 " }}}
 " colorscheme {{{
-" colorscheme distinguished
-colorscheme tender
-highlight Visual guibg=#7f7f7f   " override tender
+colorscheme distinguished
 
 " force a black background regardless of what the colorscheme does
 highlight Normal ctermbg=NONE
@@ -261,18 +248,16 @@ nno <leader>rg :Rg<SPACE>
 " let g:airline_theme='powerlineish'
 let g:airline_theme='molokai'
 let g:airline_powerline_fonts = 1
-
-" Tabular
-" use tabular to align on equals signs and on colons (ruby 1.9+ style hashes)
-nmap <Leader>a= :Tab/=<CR>
-vmap <Leader>a= :Tab/=<CR>
-nmap <Leader>a: :Tab/:\zs<CR>
-vmap <Leader>a: :Tab/:\zs<CR>
-nmap <Leader>a> :Tab/=><CR>
-vmap <Leader>a> :Tab/=><CR>
+let g:airline#extensions#tmuxline#enabled = 0 " different theme for tmux than vim
 
 " ale
-let g:ale_ruby_rubocop_executable = '~/.gem/ruby/2.4.1/bin/rubocop'
+let g:airline#extensions#ale#enabled = 1
+let g:ale_ruby_rubocop_executable = '~/.gem/ruby/2.4.2/bin/rubocop'
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 1
+let g:ale_lint_on_enter = 1
+let g:ale_sign_column_always = 1 
+
 
 " Syntastic
 
@@ -309,6 +294,20 @@ let g:NERDTreeMapJumpPrevSibling = "" " unbind <C-k>
 set rtp+=/usr/local/opt/fzf
 :noremap <Leader>f :FZF<CR>
 :noremap <Leader>b :Buffers<CR>
+let g:fzf_layout = { 'down': '~20%' }
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
 "
 " https://medium.com/@crashybang/supercharge-vim-with-fzf-and-ripgrep-d4661fc853d2#.e0kqdo49d
