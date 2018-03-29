@@ -25,6 +25,7 @@ bind `:ctrl move screenOriginX;screenOriginY screenSizeX;screenSizeY
 # center a window, resize it
 bind 1:ctrl move screenOriginX+50;screenOriginY+50 screenSizeX-100;screenSizeY-100
 bind 2:ctrl move screenOriginX+screenSizeX/8;screenOriginY+screenSizeY/8 screenSizeX/8*6;screenSizeY/8*6
+bind 3:ctrl move screenOriginX+screenSizeX/4;screenOriginY+screenSizeY/4 screenSizeX/12*6;screenSizeY/12*6
 
 # nudging
 bind right:ctrl;alt nudge +5% +0
