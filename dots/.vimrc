@@ -1,5 +1,5 @@
 " vim:fdm=marker
-" fallwith's .vimrc - 2017-10-12
+" fallwith's .vimrc - 2018-03-05
 
 " references {{{
 "   twerth's .vimrc:        https://github.com/twerth/dotfiles/blob/master/etc/vim/vimrc
@@ -67,6 +67,8 @@ Plug 'junegunn/goyo.vim'
 Plug 'vimwiki/vimwiki'
 " fzf: fuzzy finder integration for Vim
 Plug 'junegunn/fzf.vim'
+" vim-go: go programming related assistance
+Plug 'fatih/vim-go'
 
 " themes
 Plug 'Lokaltog/vim-distinguished', {'branch': 'develop'}
@@ -75,7 +77,8 @@ call plug#end()
 " {{{ basic configuration
 let mapleader = ","         " use a comma as the <Leader> character
 set nocompatible            " disable vi compatibilty
-let g:ruby_path='~/bin/ruby24'  " dramatically improve Ruby syntax processing time by not using the system ruby
+let g:ruby_path='~/bin/ruby25'  " dramatically improve Ruby syntax processing time by not using the system ruby
+let g:python_path='python3' " use a non-system python
 filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
 syntax enable               " enable syntax highlighting
 set t_Co=256                " 256 colors
@@ -126,6 +129,12 @@ set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing in
 hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
 set grepprg=ag\ --nogroup\ --nocolor      " use ag instead of grep
 set viminfo+=n~/.vim/.viminfo             " store the vim info file beneath ~/.vim
+
+" attempt to fix iterm2/tmux/vim redraw issues
+" https://forum.upcase.com/t/performance-issues-with-vim-tmux-and-iterm/5197/8
+set ttyfast
+set lazyredraw
+
 " }}}
 " colorscheme {{{
 " set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
@@ -246,7 +255,8 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
+" always populating conflicts with vim-go
+" let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 
@@ -257,6 +267,13 @@ let g:syntastic_ruby_mri_exec = '~/bin/ruby'
 let g:syntastic_ruby_rubocop_exec = '~/bin/rubocop'
 " use mri and rubocop checkers with ruby files
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+
+let g:syntastic_javascript_checkers=['eslint']
+let g:syntastic_javascript_eslint_exe='$(npm bin)/eslint'
+
+let g:syntastic_python_exec = 'python3'
+
+let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
 
 let g:syntastic_mode_map = {
     \ "mode": "active",
@@ -304,7 +321,8 @@ let g:fzf_colors =
 " --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 " --color: Search color options
 "command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
-command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+" command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
 
 " CtrlP
 "let g:ctrlp_map = '<Leader>q'
