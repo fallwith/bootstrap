@@ -25,3 +25,4 @@
 *.log
 !.zshrc
 !.zprofile
+*vcr_cassettes*
