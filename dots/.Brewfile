@@ -85,7 +85,6 @@ cask 'steam'
 cask 'vagrant'
 cask 'virtualbox'
 cask 'vlc'
-cask 'wkhtmltopdf'
 
 brew 'mas'
 mas 'Xee3', id: 639764244
