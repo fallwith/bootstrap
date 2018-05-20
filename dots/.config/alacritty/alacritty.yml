@@ -87,90 +87,121 @@ render_timer: false
 
 # Use custom cursor colors. If true, display the cursor in the cursor.foreground
 # and cursor.background colors, otherwise invert the colors of the cursor.
+# custom_cursor_colors: false
 custom_cursor_colors: true
 
-# Colors (seagull)
-colors:
-  # Default colors
-  primary:
-    background: '0xffffff'
-    foreground: '0x6d767d'
-
-  # Colors the cursor will use if `custom_cursor_colors` is true
-  cursor:
-    text: '0xffffff'
-    cursor: '0x6d767d'
-
-  # Normal colors
-  normal:
-    black:   '0x1d252b'
-    red:     '0xff4053'
-    green:   '0x11ab00'
-    yellow:  '0xbf8c00'
-    blue:    '0x0099ff'
-    magenta: '0xff549b'
-    cyan:    '0x00a5ab'
-    white:   '0xe6eaed'
-
-  # Bright colors
-  bright:
-    black:   '0x0b141a'
-    red:     '0xff6200'
-    green:   '0x61707a'
-    yellow:  '0x6d767d'
-    blue:    '0x787e82'
-    magenta: '0x9854ff'
-    cyan:    '0x808487'
-    white:   '0xffffff'
-
-# # Use custom cursor colors. If true, display the cursor in the cursor.foreground
-# # and cursor.background colors, otherwise invert the colors of the cursor.
-# custom_cursor_colors: false
-
-# # Colors (Tomorrow Night Bright)
+# # Colors (seagull)
 # colors:
 #   # Default colors
 #   primary:
-#     background: '0x000000'
-#     foreground: '0xeaeaea'
+#     background: '0xffffff'
+#     foreground: '0x6d767d'
 
 #   # Colors the cursor will use if `custom_cursor_colors` is true
 #   cursor:
-#     text: '0x000000'
-#     cursor: '0xffffff'
+#     text: '0xffffff'
+#     cursor: '0x6d767d'
 
 #   # Normal colors
 #   normal:
-#     black:   '0x000000'
-#     red:     '0xd54e53'
-#     green:   '0xb9ca4a'
-#     yellow:  '0xe6c547'
-#     blue:    '0x7aa6da'
-#     magenta: '0xc397d8'
-#     cyan:    '0x70c0ba'
-#     white:   '0xffffff'
+#     black:   '0x1d252b'
+#     red:     '0xff4053'
+#     green:   '0x11ab00'
+#     yellow:  '0xbf8c00'
+#     blue:    '0x0099ff'
+#     magenta: '0xff549b'
+#     cyan:    '0x00a5ab'
+#     white:   '0xe6eaed'
 
 #   # Bright colors
 #   bright:
-#     black:   '0x666666'
-#     red:     '0xff3334'
-#     green:   '0x9ec400'
-#     yellow:  '0xe7c547'
-#     blue:    '0x7aa6da'
-#     magenta: '0xb77ee0'
-#     cyan:    '0x54ced6'
+#     black:   '0x0b141a'
+#     red:     '0xff6200'
+#     green:   '0x61707a'
+#     yellow:  '0x6d767d'
+#     blue:    '0x787e82'
+#     magenta: '0x9854ff'
+#     cyan:    '0x808487'
 #     white:   '0xffffff'
 
-#   # Dim colors (Optional)
-#   dim:
-#     black:   '0x333333'
-#     red:     '0xf2777a'
-#     green:   '0x99cc99'
-#     yellow:  '0xffcc66'
-#     blue:    '0x6699cc'
-#     magenta: '0xcc99cc'
-#     cyan:    '0x66cccc'
-#     white:   '0xdddddd'
+# # Colors (petrel)
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0x0b141a'
+#     foreground: '0x787e82'
+
+#   # Colors the cursor will use if `custom_cursor_colors` is true
+#   cursor:
+#     text: '0x0b141a'
+#     cursor: '0x787e82'
+
+#   # Normal colors
+#   normal:
+#     black:   '0x1d252b'
+#     red:     '0xba656d'
+#     green:   '0x3f8f36'
+#     yellow:  '0x947b38'
+#     blue:    '0x4384b0'
+#     magenta: '0xb06886'
+#     cyan:    '0x35898c'
+#     white:   '0xe6eaed'
+
+#   # Bright colors
+#   bright:
+#     black:   '0x0b141a'
+#     red:     '0xb06d43'
+#     green:   '0x61707a'
+#     yellow:  '0x6d767d'
+#     blue:    '0x787e82'
+#     magenta: '0x8e6fbd'
+#     cyan:    '0x808487'
+#     white:   '0xffffff'
+
+# Colors (Tomorrow Night Bright)
+colors:
+  # Default colors
+  primary:
+    background: '0x000000'
+    foreground: '0xeaeaea'
+
+  # Colors the cursor will use if `custom_cursor_colors` is true
+  cursor:
+    text: '0x000000'
+    cursor: '0xffffff'
+
+  # Normal colors
+  normal:
+    black:   '0x000000'
+    red:     '0xd54e53'
+    green:   '0xb9ca4a'
+    yellow:  '0xe6c547'
+    blue:    '0x7aa6da'
+    magenta: '0xc397d8'
+    cyan:    '0x70c0ba'
+    white:   '0xffffff'
+
+  # Bright colors
+  bright:
+    black:   '0x666666'
+    red:     '0xff3334'
+    green:   '0x9ec400'
+    yellow:  '0xe7c547'
+    blue:    '0x7aa6da'
+    magenta: '0xb77ee0'
+    cyan:    '0x54ced6'
+    white:   '0xffffff'
+
+  # Dim colors (Optional)
+  dim:
+    black:   '0x333333'
+    red:     '0xf2777a'
+    green:   '0x99cc99'
+    yellow:  '0xffcc66'
+    blue:    '0x6699cc'
+    magenta: '0xcc99cc'
+    cyan:    '0x66cccc'
+    white:   '0xdddddd'
 
 
 # Visual Bell
@@ -200,8 +231,8 @@ visual_bell:
   duration: 0
 
 # Background opacity
-# background_opacity: 1.0
-background_opacity: 0.8
+background_opacity: 1.0
+# background_opacity: 0.8
 
 # Mouse bindings
 #
@@ -311,6 +342,13 @@ shell:
 #     - { ... , command: { program: "alacritty", args: ["-e", "vttest"] } }
 key_bindings:
   - { key: Period,   mods: Command, chars: "\x03"                        }
+  - { key: F,        mods: Alt,     chars: "\x1bf"                       }
+  - { key: B,        mods: Alt,     chars: "\x1bb"                       }
+  - { key: D,        mods: Alt,     chars: "\x1bd"                       }
+  - { key: H,        mods: Alt,     chars: "\x1bh"                       }
+  - { key: J,        mods: Alt,     chars: "\x1bj"                       }
+  - { key: K,        mods: Alt,     chars: "\x1bk"                       }
+  - { key: L,        mods: Alt,     chars: "\x1bl"                       }
     # end custom bindings
   - { key: V,        mods: Command, action: Paste                        }
   - { key: C,        mods: Command, action: Copy                         }
