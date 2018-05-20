@@ -27,13 +27,23 @@ call minpac#add('w0rp/ale')
 call minpac#add('mhinz/vim-grepper')
 " vim-test: run unit tests
 call minpac#add('janko-m/vim-test')
+" vim-wiki: offline wiki system for notes
+call minpac#add('vimwiki/vimwiki')
+" vim-vinegar: enhanced netrw file browsing
+call minpac#add('tpope/vim-vinegar')
 
 " themes
 call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
 call minpac#add('challenger-deep-theme/vim', { 'as': 'challenger-deep'})
 " TODO: minpac can't yet handle subdirectories
 " call minpac#add('sonph/onehalf', {'rtp': 'vim/'})
+" call minpac#add('chriskempson/tomorrow-theme, {'rtp': 'vim/colors', 'as': 'tomorrow-theme'})
+call minpac#add('felipesousa/rupza')
+call minpac#add('TroyFletcher/vim-colors-synthwave')
 call minpac#add('nightsense/seabird')
+call minpac#add('morhetz/gruvbox')
+call minpac#add('NLKNguyen/papercolor-theme')
+call minpac#add('chriskempson/base16-vim')
 
 call minpac#update()
 " remove packages with :call minpac#clean()
@@ -89,9 +99,11 @@ set tgc                     " enable gui colors in the terminal (true 24 bit col
 set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
 hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
 " colorscheme challenger_deep
-colorscheme seagull
+" colorscheme seagull
+colorscheme gruvbox
+let g:gruvbox_contrast_dark = "hard"
 
-" disable the colorscheme's background
+" disable the colorscheme's background (permits opacity with alacritty)
 " highlight Normal ctermbg=NONE
 " highlight nonText ctermbg=NONE
 " highlight Normal guibg=NONE
@@ -130,19 +142,32 @@ cabbrev rg Grepper -tool rg -highlight <CR>
 let g:test#runner_commands = ['RSpec']
 
 " Lightline
-let g:lightline = { 'colorscheme': 'challenger_deep' }
+" let g:lightline = { 'colorscheme': 'challenger_deep' }
+let g:lightline = { 'colorscheme': 'wombat' }
 
 " ale
 " check health with :ALEInfo
 let g:ale_linters = {
 \ 'javascript': ['eslint'],
 \ 'ruby': ['ruby', 'rubocop'],
+\ 'go': [],
 \}
+" \ 'go': ['gofmt', 'golint', 'go vet']
 let g:ale_ruby_rubocop_executable = 'bundle'
 let g:ale_ruby_ruby_executable = expand("<sfile>:p:h").'/../../bin/ruby'
+" let g:ale_java_javac_classpath = expand("<sfile>:p:h").'/../../.m2/repository'
+
+" let g:ale_go_metalinter_executable = expand("<sfile>:p:h").'/../../.go/bin/gometalinter'
+" let g:ale_go_golint_executable = expand("<sfile>:p:h").'/../../.go/bin/golint'
+" let g:ale_go_gofmt_executable = '/usr/local/bin/gofmt'
+" let g:ale_go_govet_executable = expand("<sfile>:p:h").'/../../.go/bin/govet'
+" let g:ale_go_fmt_options = '-s'
 
 " vim-go
 let g:go_fmt_options = '-s'
+
+" vimwiki
+let g:vimwiki_list = [{'path': '~/.vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 
 " }}}
 "
@@ -153,7 +178,7 @@ map w!! %!sudo tee > /dev/null %        " force a write if vim was launched with
 nmap <silent> <Leader>/ ;nohlsearch<CR> " clear currently displayed search highlighting
 map <Leader>r ;redraw!<CR>              " re-render the current window
 " alias ctrl-p to shift-tab for autocompletion
-imap <S-Tab> <C-P><CR>
+imap <S-Tab> <C-P>
 
 " TODO: use the arrow keys for something useful
 " nnoremap <Left> :echoe "Use h"<CR>
@@ -175,6 +200,11 @@ nnoremap : ;
 vnoremap ; :
 vnoremap : ;
 
+" splits resizing
+nnoremap <Right> :vertical resize +2<CR>
+nnoremap <Left> :vertical resize -2<CR>
+nnoremap <Up> :resize +2<CR>
+nnoremap <Down> :resize -2<CR>
 
 " terminal
 if has('nvim')
@@ -195,13 +225,46 @@ nnoremap <Leader>n :tabnew<CR>
 :noremap <Leader>h :below new<CR>
 
 " instead of ctrl+w, letter, just do ctrl+letter
+nnoremap <C-H> <C-W><C-H>
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+
+" navigate away from a terminal window, escaping (C-O) first
+" tnoremap <M-h> <C-O><C-W><C-H>
+" tnoremap <M-j> <C-O><C-W><C-J>
+" tnoremap <M-k> <C-O><C-W><C-K>
+" tnoremap <M-l> <C-O><C-W><C-L>
+" tnoremap <A-h> <C-O><C-W><C-H>
+" tnoremap <A-j> <C-O><C-W><C-J>
+" tnoremap <A-k> <C-O><C-W><C-K>
+" tnoremap <A-l> <C-O><C-W><C-L>
 
 " open new horizonal split panes to the bottom and vertical panes to the right
 set splitbelow
 set splitright
 
 " }}}
+
+
+" Z - cd to recent / frequent directories {{{
+command! -nargs=* Z :call Z(<f-args>)
+function! Z(...)
+  if a:0 == 0
+    let list = split(system('fasd -dlR'), '\n')
+    let path = tlib#input#List('s', 'Select one', list)
+  else
+    let cmd = 'fasd -d -e printf'
+    for arg in a:000
+      let cmd = cmd . ' ' . arg
+    endfor
+    let path = system(cmd)
+  endif
+  if isdirectory(path)
+    echo path
+    exec 'cd ' . path
+  endif
+endfunction " }}}
+
+" set pwd to the dir path for the file in the current buffer
+" autocmd BufEnter * if expand('%:p:h') !~ '^/tmp' && expand('%:p:h') !~ '^scp://' | lcd %:p:h | endif
