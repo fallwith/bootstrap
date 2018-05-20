@@ -13,3 +13,6 @@ fi
 # if [[ -n $MYVIMRC ]]; then
 #   source "${ZDOTDIR:-$HOME}/.zprofile"
 # fi
+if [[ -v VIMRUNTIME ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprofile"
+fi
