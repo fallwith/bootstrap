@@ -1,7 +1,7 @@
 # keep everything private/personal in a separate file
 if [[ -e "$HOME/.bootstrap_private" ]]; then source "$HOME/.bootstrap_private"; fi
 
-export EDITOR=vi
+# export EDITOR=vi
 
 # https://www.emacswiki.org/emacs/EmacsClient
 #export ALTERNATE_EDITOR=emacs EDITOR="emacsclient -c" VISUAL="emacsclient -c"
