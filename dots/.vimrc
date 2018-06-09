@@ -109,6 +109,17 @@ hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to t
 colorscheme gruvbox
 let g:gruvbox_contrast_dark = "hard"
 
+" nvim colors the terminal with colorscheme values
+" vim needs terminal_ansi_colors
+if !has('nvim')
+  let g:terminal_ansi_colors = [
+              \ "#000000", "#d54e53", "#b9ca4a", "#e6c547",
+              \ "#7aa6da", "#c397d8", "#70c0ba", "#ffffff",
+              \ "#666666", "#ff3334", "#9ec400", "#e7c547",
+              \ "#7aa6da", "#b77ee0", "#54ced6", "#ffffff"
+              \]
+endif
+
 " disable the colorscheme's background (permits opacity with alacritty)
 " highlight Normal ctermbg=NONE
 " highlight nonText ctermbg=NONE
@@ -160,6 +171,7 @@ let g:ale_linters = {
 " \ 'go': ['gofmt', 'golint', 'go vet']
 " \ 'go': [],
 let g:ale_ruby_rubocop_executable = 'bundle'
+let g:ale_ruby_rubocop_options = '--parallel 4'
 let g:ale_ruby_ruby_executable = expand("<sfile>:p:h").'/../../bin/ruby'
 " let g:ale_java_javac_classpath = expand("<sfile>:p:h").'/../../.m2/repository'
 
