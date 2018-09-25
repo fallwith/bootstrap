@@ -26,6 +26,8 @@ bind `:ctrl move screenOriginX;screenOriginY screenSizeX;screenSizeY
 bind 1:ctrl move screenOriginX+50;screenOriginY+50 screenSizeX-100;screenSizeY-100
 bind 2:ctrl move screenOriginX+screenSizeX/8;screenOriginY+screenSizeY/8 screenSizeX/8*6;screenSizeY/8*6
 bind 3:ctrl move screenOriginX+screenSizeX/4;screenOriginY+screenSizeY/4 screenSizeX/12*6;screenSizeY/12*6
+bind 4:ctrl move screenOriginX+screenSizeX/4;screenOriginY+screenSizeY/4 screenSizeX/16*6;screenSizeY/16*6
+bind 5:ctrl move screenOriginX+screenSizeX/4;screenOriginY+screenSizeY/4 screenSizeX/20*6;screenSizeY/20*6
 
 # nudging
 bind right:ctrl;alt nudge +5% +0
@@ -61,3 +63,15 @@ bind s:ctrl;alt;cmd focus 'Slack'
 bind c:ctrl;alt;cmd focus 'Google Chrome'
 bind e:ctrl;alt;cmd focus 'Emacs'
 bind i:ctrl;alt;cmd focus 'iTunes'
+
+# layout
+# default 4kLayout resolutions:5120x2880;2560x1600
+# default mbLayout resolutions:2560x1600
+layout defaultLayout 'Slack' corner top-right
+layout defaultLayout 'Mail' corner bottom-right
+layout defaultLayout 'iTunes' corner bottom-left
+layout defaultLayout 'Safari' corner top-left
+layout defaultLayout 'iTerm2' move screenOriginX+((screenSizeX-windowSizeX)/2);screenOriginY+((screenSizeY-windowSizeY)/2) windowSizeX;windowSizeY
+default defaultLayout
+bind d:ctrl;alt;cmd layout defaultLayout
+
