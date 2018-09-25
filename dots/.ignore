@@ -21,7 +21,6 @@
 *.html
 *.plist
 *.pdf
-*.md
 *.log
 !.zshrc
 !.zprofile
