@@ -37,6 +37,8 @@ call minpac#add('janko-m/vim-test')
 call minpac#add('vimwiki/vimwiki')
 " vim-vinegar: enhanced netrw file browsing
 call minpac#add('tpope/vim-vinegar')
+" vim-diminactive: dim inactive windows
+call minpac#add('blueyed/vim-diminactive')
 
 " themes
 call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
@@ -172,53 +174,7 @@ let g:ale_linters = {
 " \ 'go': [],
 let g:ale_ruby_rubocop_executable = 'bundle'
 let g:ale_ruby_rubocop_options = '--parallel 4'
-let g:ale_ruby_ruby_executable = expand("<sfile>:p:h").'/../../bin/ruby'
-" let g:ale_java_javac_classpath = expand("<sfile>:p:h").'/../../.m2/repository'
-
-" let g:ale_go_metalinter_executable = expand("<sfile>:p:h").'/../../.go/bin/gometalinter'
-" let g:ale_go_golint_executable = expand("<sfile>:p:h").'/../../.go/bin/golint'
-" let g:ale_go_gofmt_executable = '/usr/local/bin/gofmt'
-" let g:ale_go_govet_executable = expand("<sfile>:p:h").'/../../.go/bin/govet'
-" let g:ale_go_fmt_options = '-s'
-
-" vim-go
-let g:go_fmt_options = '-s'
-
-" vimwiki
-let g:vimwiki_list = [{'path': '~/.vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
-
-" }}}
-" packages {{{
-" fzf
-set rtp+=/usr/local/opt/fzf
-:noremap <Leader>f :FZF<CR>
-:noremap <Leader>b :Buffers<CR>
-
-" vim-grepper
-let g:grepper = {}
-let g:grepper.tools = ['rg']
-nno <leader>g :Grepper -tool rg -highlight <CR>
-cabbrev rg Grepper -tool rg -highlight <CR>
-
-" vim-test
-let g:test#runner_commands = ['RSpec']
-
-" Lightline
-" let g:lightline = { 'colorscheme': 'challenger_deep' }
-let g:lightline = { 'colorscheme': 'wombat' }
-
-" ale
-" check health with :ALEInfo
-let g:ale_linters = {
-\ 'javascript': ['eslint'],
-\ 'ruby': ['ruby', 'rubocop'],
-\ 'go': ['gofmt', 'golint', 'go vet']
-\}
-" \ 'go': ['gofmt', 'golint', 'go vet']
-" \ 'go': [],
-let g:ale_ruby_rubocop_executable = 'bundle'
 let g:ale_ruby_ruby_executable = $HOME.'/bin/ruby'
-" let g:ale_ruby_ruby_executable = expand("<sfile>:p:h").'/../../bin/ruby'
 " let g:ale_java_javac_classpath = expand("<sfile>:p:h").'/../../.m2/repository'
 
 " let g:ale_go_metalinter_executable = expand("<sfile>:p:h").'/../../.go/bin/gometalinter'
@@ -232,6 +188,10 @@ let g:go_fmt_options = '-s'
 
 " vimwiki
 let g:vimwiki_list = [{'path': '~/.vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+
+" vim-diminactive
+let g:diminactive_use_syntax = 1
+
 " }}}
 " {{{ custom mappings
 :noremap <Leader>i :set list!<CR>       " toggle display of invisibles
