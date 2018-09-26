@@ -1,0 +1,13 @@
+accept_all_cookies=on
+bookmark_file=~/.lynx_bookmarks.html
+show_color=always
+show_cursor=on
+show_dotfiles=on
+vi_keys=on
+user_mode=ADVANCED
+
+# H = help
+# G = go
+# Q = quit
+# /<string> = search
+# delete = history
