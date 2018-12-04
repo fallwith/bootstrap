@@ -90,7 +90,7 @@ set nu                      " enable line numbers
 set numberwidth=5           " specify line numbers column width
 set vb t_vb=                " disable bell
 "set tags=.tags;/            " look for a .tags ctags file and keep looking all the way up to /
-set cursorline              " highlight the line the cursor resides on
+"set cursorline              " highlight the line the cursor resides on
 set shiftround              " round indentation to a multiple of 'shiftwidth'
 set wildmenu                " when tab completing commands, show available matches in a menu
 set display+=lastline       " display as much as possible of the last (overly long) line
@@ -105,6 +105,8 @@ set list                    " show invisibles
 set ff=unix                 " unix fileformat
 set tgc                     " enable gui colors in the terminal (true 24 bit color support)
 set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
+setglobal commentstring=#\ %s
+
 hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
 " colorscheme challenger_deep
 " colorscheme seagull
@@ -136,6 +138,9 @@ au InsertLeave * silent! set nopaste
 
 " Markdown files
 au BufRead,BufNewFile *.md set cc=80
+
+" Terraform templates
+autocmd FileType tf setlocal commentstring=#\ %s
 
 " Git commit messages
 autocmd Filetype gitcommit setlocal spell textwidth=72 cc=50,72
