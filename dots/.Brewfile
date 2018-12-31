@@ -13,6 +13,8 @@ brew 'elixir'
 brew 'exa'
 brew 'exiftool'
 brew 'fasd'
+brew 'fd'
+brew 'ffmpeg'
 brew 'figlet'
 brew 'findutils'
 brew 'fortune'
@@ -24,7 +26,7 @@ brew 'go'
 brew 'grip'
 brew 'highlight'
 brew 'imagemagick'
-brew 'jmeter', args: ['with-plugins']
+#brew 'jmeter', args: ['with-plugins']
 brew 'jq'
 brew 'kubernetes-cli'
 brew 'kubernetes-helm'
@@ -39,6 +41,7 @@ brew 'mediainfo'
 brew 'mongodb'
 brew 'mysql'
 brew 'ncdu'
+brew 'neovim'
 brew 'npm'
 brew 'openssl'
 brew 'poppler'
@@ -49,10 +52,12 @@ brew 'ruby-install'
 brew 'rustup'
 brew 'sqlite'
 #brew 'the_silver_searcher'
+brew 'terraform'
 brew 'tig'
 brew 'tmux'
 brew 'transmission'
 brew 'unrar'
+brew 'vault'
 brew 'vim', args: ['with-override-system-vi']
 brew 'watch'
 brew 'w3m'
@@ -75,29 +80,32 @@ brew 'ripgrep'
 tap 'caskroom/cask'
 cask 'appcleaner'
 #cask 'calibre'
-cask 'chefdk'
+#cask 'chefdk'
 cask 'docker'
 #cask 'docker-toolbox'
+cask 'handbrake'
 #cask 'iterm2-nightly'
 cask 'iterm2'
-# cask 'java'
-cask 'java8'
+cask 'java'
+# cask 'java8'
 cask 'karabiner-elements'
 cask 'kindle'
 cask 'macdown'
+cask 'makemkv'
 cask '1password'
 cask 'sequel-pro'
 cask 'slack'
+# cask 'slate'
 cask 'steam'
-cask 'vagrant'
-cask 'virtualbox'
+#cask 'vagrant'
+#cask 'virtualbox'
 cask 'vlc'
 
-brew 'mas'
-mas 'Xee3', id: 639764244
-mas 'iMovie', id: 408981434
-mas 'Clear', id: 504544917
-mas 'Xcode', id: 497799835
-mas 'AffinityPhoto', id: 824183456
+# brew 'mas'
+# mas 'Xee3', id: 639764244
+# mas 'iMovie', id: 408981434
+# mas 'Clear', id: 504544917
+# mas 'Xcode', id: 497799835
+# mas 'AffinityPhoto', id: 824183456
 
 # brew bundle exec -- "pip3 install neovim-remote"
