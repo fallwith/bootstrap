@@ -39,6 +39,8 @@ call minpac#add('vimwiki/vimwiki')
 call minpac#add('tpope/vim-vinegar')
 " vim-diminactive: dim inactive windows
 call minpac#add('blueyed/vim-diminactive')
+" typescript-vim: functionality for TypeScript development
+call minpac#add('leafgarland/typescript-vim')
 
 " themes
 call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
@@ -53,13 +55,14 @@ call minpac#add('morhetz/gruvbox')
 call minpac#add('NLKNguyen/papercolor-theme')
 call minpac#add('chriskempson/base16-vim')
 
-call minpac#update()
+"call minpac#update()
+
 " remove packages with :call minpac#clean()
 " }}}
 " {{{ configuration
 let mapleader = ","         " use a comma as the <Leader> character
 set nocompatible            " disable vi compatibilty
-let g:ruby_path='~/bin/ruby25'
+let g:ruby_path='~/bin/ruby'
 let g:python_path='python3'
 filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
 syntax enable               " enable syntax highlighting
@@ -106,6 +109,20 @@ set ff=unix                 " unix fileformat
 set tgc                     " enable gui colors in the terminal (true 24 bit color support)
 set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
 setglobal commentstring=#\ %s
+
+" https://www.reddit.com/r/neovim/comments/ab01n8/improve_neovim_startup_by_60ms_for_free_on_macos/
+let g:clipboard = {
+  \ 'name': 'pbcopy',
+  \ 'copy': {
+  \    '+': 'pbcopy',
+  \    '*': 'pbcopy',
+  \  },
+  \ 'paste': {
+  \    '+': 'pbpaste',
+  \    '*': 'pbpaste',
+  \ },
+  \ 'cache_enabled': 0,
+  \ }
 
 hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
 " colorscheme challenger_deep
@@ -155,6 +172,9 @@ set rtp+=/usr/local/opt/fzf
 :noremap <Leader>f :FZF<CR>
 :noremap <Leader>b :Buffers<CR>
 
+" minpac
+:noremap <Leader>m :call minpac#update()<CR>
+
 " vim-grepper
 let g:grepper = {}
 let g:grepper.tools = ['rg']
@@ -175,6 +195,10 @@ let g:ale_linters = {
 \ 'ruby': ['ruby', 'rubocop'],
 \ 'go': ['gofmt', 'golint', 'go vet']
 \}
+let b:ale_fixers = {'javascript': ['prettier', 'eslint'],
+\                   'typescript': ['prettier', 'eslint']}
+let g:ale_fix_on_save = 1
+
 " \ 'go': ['gofmt', 'golint', 'go vet']
 " \ 'go': [],
 let g:ale_ruby_rubocop_executable = 'bundle'
