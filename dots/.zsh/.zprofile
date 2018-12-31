@@ -9,8 +9,6 @@ if [[ -e "$HOME/.bootstrap_private" ]]; then source "$HOME/.bootstrap_private"; 
 
 export TERM=xterm-256color
 
-PATH=$HOME/bin:$PATH
-
 #   -l = long format
 #   -A = include hidden (.*) files except '.' and '..'
 #   -p = mark directories with a trailing slash ('/')
@@ -21,8 +19,8 @@ PATH=$HOME/bin:$PATH
 # git
 export GIT_SSL_NO_VERIFY=true
 
-# homebrew
-PATH=/usr/local/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/opt/gnu-sed/libexec/gnubin:$PATH
+# look in ~/bin, then homebrew paths, then default PATH
+PATH=$HOME/bin:/usr/local/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/opt/gnu-sed/libexec/gnubin:$PATH
 
 # # mongo
 # alias mongostart="mongod --fork --config /usr/local/etc/mongod.conf"
