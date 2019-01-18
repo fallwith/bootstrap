@@ -471,6 +471,7 @@ live_config_reload: true
 #   - AppKeypad
 key_bindings:
     # custom
+    # cmd+n for new window: https://github.com/jwilm/alacritty/issues/607
   - { key: N,        mods: Command, command: { program: "open", args: ["-nb", "io.alacritty"] } }
   - { key: Period,   mods: Command, chars: "\x03"                        }
   - { key: F,        mods: Alt,     chars: "\x1bf"                       }
