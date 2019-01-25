@@ -93,24 +93,25 @@ font:
   # Normal (roman) font face
   normal:
     # family: Menlo
-    family: 'DejaVu Sans Mono for Powerline'
+    # family: DejaVu Sans Mono for Powerline
+    family: Fira Code Retina
 
     # The `style` can be specified to pick a specific face.
     #style: Regular
 
-  # Bold font face
-  bold:
-    # family: Menlo
-    family: DejaVu Sans Mono for Powerline
-    # The `style` can be specified to pick a specific face.
-    #style: Bold
+  ## Bold font face
+  #bold:
+  #  # family: Menlo
+  #  family: DejaVu Sans Mono for Powerline
+  #  # The `style` can be specified to pick a specific face.
+  #  #style: Bold
 
-  # Italic font face
-  italic:
-    # family: Menlo
-    family: DejaVu Sans Mono for Powerline
-    # The `style` can be specified to pick a specific face.
-    #style: Italic
+  ## Italic font face
+  #italic:
+  #  # family: Menlo
+  #  family: DejaVu Sans Mono for Powerline
+  #  # The `style` can be specified to pick a specific face.
+  #  #style: Italic
 
   # Point size
   size: 12.0
@@ -243,36 +244,94 @@ draw_bold_text_with_bright_colors: true
 #     white:   '0xfcf7e2'
 
 
-# Colors (Seagull)
+# # Colors (Seagull)
+# colors:
+#   # Default colors
+#   primary:
+#     background: '0xffffff'
+#     # foreground: '0x61707a'
+#     foreground: '0x6d767d'
+
+#   normal:
+#     black: '0x1d252b'
+#     red:   '0xff4053'
+#     green:  '0x11ab00'
+#     yellow:  '0xbf8c00'
+#     blue:   '0x0099ff'
+#     magenta:  '0xff549b'
+#     cyan:   '0x00a5ab'
+#     white:  '0xe6eaed'
+
+#   bright:
+#     black:  '0x0b141a'
+#     red:  '0xff6200'
+#     green: '0x61707a'
+#     yellow: '0x6d767d'
+#     blue: '0x787e82'
+#     magenta: '0x9854ff'
+#     cyan: '0x808487'
+#     white: '0xffffff'
+
+
+  # # Normal colors
+  # normal:
+  #   black:   '0x0b141a'
+  #   red:     '0xff4053'
+  #   green:   '0x11ab00'
+  #   yellow:  '0xbf8c00'
+  #   blue:    '0x0099ff'
+  #   magenta: '0x9854ff'
+  #   cyan:    '0x00a5ab'
+  #   white:   '0xffffff'
+
+  # # Bright colors
+  # bright:
+  #   black:   '0x0b141a'
+  #   red:     '0xff4053'
+  #   green:   '0x11ab00'
+  #   yellow:  '0xbf8c00'
+  #   blue:    '0x0099ff'
+  #   magenta: '0x9854ff'
+  #   cyan:    '0x00a5ab'
+  #   white:   '0xffffff'
+
+
+
+
+# begin neodark
+#
 colors:
-  # Default colors
   primary:
-    background: '0xffffff'
-    foreground: '0x61707a'
+    background: '0x000000'
+    foreground: '0x8a8a8a'
 
-  # Normal colors
+  cursor:
+    text:    '0x000000'
+    cursor:  '0xbcbcbc'
+
+  # normal
   normal:
-    black:   '0x0b141a'
-    red:     '0xff4053'
-    green:   '0x11ab00'
-    yellow:  '0xbf8c00'
-    blue:    '0x0099ff'
-    magenta: '0x9854ff'
-    cyan:    '0x00a5ab'
-    white:   '0xffffff'
+    black:   '0x303030'
+    red:     '0xd75f87'
+    green:   '0x87af87'
+    yellow:  '0xd7af5f'
+    blue:    '0x5fafd7'
+    magenta: '0xaf87d7'
+    cyan:    '0xd7875f'
+    white:   '0x8a8a8a'
 
-  # Bright colors
+  # bright
   bright:
-    black:   '0x0b141a'
-    red:     '0xff4053'
-    green:   '0x11ab00'
-    yellow:  '0xbf8c00'
-    blue:    '0x0099ff'
-    magenta: '0x9854ff'
-    cyan:    '0x00a5ab'
-    white:   '0xffffff'
-
-
+    black:   '0x3a3a3a'
+    red:     '0xd7afaf'
+    green:   '0x5fafaf'
+    yellow:  '0xd7af87'
+    blue:    '0x5fd7d7'
+    magenta: '0x5f5f5f'
+    cyan:    '0xaf8787'
+    white:   '0xbcbcbc'
+#
+# end neodark
 
 
 
