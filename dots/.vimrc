@@ -44,17 +44,20 @@ call minpac#add('leafgarland/typescript-vim')
 
 " themes
 call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
-call minpac#add('challenger-deep-theme/vim', { 'as': 'challenger-deep'})
+" call minpac#add('challenger-deep-theme/vim', { 'as': 'challenger-deep'})
 " TODO: minpac can't yet handle subdirectories
 " call minpac#add('sonph/onehalf', {'rtp': 'vim/'})
 " call minpac#add('chriskempson/tomorrow-theme, {'rtp': 'vim/colors', 'as': 'tomorrow-theme'})
-call minpac#add('felipesousa/rupza')
-call minpac#add('TroyFletcher/vim-colors-synthwave')
+" call minpac#add('felipesousa/rupza')
 call minpac#add('nightsense/seabird')
 call minpac#add('morhetz/gruvbox')
 call minpac#add('NLKNguyen/papercolor-theme')
-call minpac#add('chriskempson/base16-vim')
+" call minpac#add('chriskempson/base16-vim')
+" call minpac#add('arcticicestudio/nord-vim')
+" call minpac#add('w0ng/vim-hybrid')
+call minpac#add('KeitaNakamura/neodark.vim')
 
+" nvim -c "call minpac#update('', {'do': 'quit'})"
 "call minpac#update()
 
 " remove packages with :call minpac#clean()
@@ -124,11 +127,22 @@ let g:clipboard = {
   \ 'cache_enabled': 0,
   \ }
 
-hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
+" hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
 " colorscheme challenger_deep
-" colorscheme seagull
-colorscheme gruvbox
-let g:gruvbox_contrast_dark = "hard"
+colorscheme seagull
+" colorscheme gruvbox
+" let g:gruvbox_contrast_dark = "hard"
+" colorscheme hybrid
+
+" colorscheme neodark
+" let g:neodark#background = '#202020'
+" let g:neodark#use_256color = 1
+" let g:neodark#terminal_transparent = 1
+
+
+" alacritty fix https://github.com/jwilm/alacritty/issues/1082
+hi Normal ctermbg=NONE guibg=NONE
+
 
 " nvim colors the terminal with colorscheme values
 " vim needs terminal_ansi_colors
@@ -185,8 +199,12 @@ cabbrev rg Grepper -tool rg -highlight <CR>
 let g:test#runner_commands = ['RSpec']
 
 " Lightline
+" scheme list: https://github.com/itchyny/lightline.vim/tree/master/autoload/lightline/colorscheme
 " let g:lightline = { 'colorscheme': 'challenger_deep' }
-let g:lightline = { 'colorscheme': 'wombat' }
+" let g:lightline = { 'colorscheme': 'wombat' }
+" let g:lightline = { 'colorscheme': 'PaperColor_light' }
+" let g:lightline = { 'colorscheme': 'nord' }
+let g:lightline = { 'colorscheme': 'one' }
 
 " ale
 " check health with :ALEInfo
@@ -198,6 +216,13 @@ let g:ale_linters = {
 let b:ale_fixers = {'javascript': ['prettier', 'eslint'],
 \                   'typescript': ['prettier', 'eslint']}
 let g:ale_fix_on_save = 1
+" desmap/ale-sensible
+let g:ale_set_signs = 0
+hi link ALEErrorLine ErrorMsg
+hi link ALEWarningLine WarningMsg
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_delay = 0
 
 " \ 'go': ['gofmt', 'golint', 'go vet']
 " \ 'go': [],
@@ -219,7 +244,7 @@ let g:go_fmt_options = '-s'
 let g:vimwiki_list = [{'path': '~/.vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 
 " vim-diminactive
-let g:diminactive_use_syntax = 1
+let g:diminactive_use_syntax = 0
 
 " }}}
 " {{{ custom mappings
