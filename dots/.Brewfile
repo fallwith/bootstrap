@@ -66,6 +66,10 @@ brew 'w3m'
 brew 'wget'
 brew 'zsh'
 
+# brew install heroku/brew/heroku
+tap 'heroku/brew'
+brew 'heroku'
+
 # tap 'd12frosted/emacs-plus'
 # brew 'emacs-plus', args: ['HEAD', 'without-spacemacs-icon']
 
@@ -79,11 +83,12 @@ brew 'zsh'
 # brew 'gnugrep', args: ['with-default-names']
 
 tap 'caskroom/cask'
+cask 'alacritty'
 cask 'appcleaner'
+cask 'avibrazil-rdm'
 # cask 'calibre'
 # cask 'chefdk'
 cask 'docker'
-# cask 'docker-toolbox'
 cask 'handbrake'
 # cask 'iterm2-nightly'
 # cask 'iterm2'
@@ -110,11 +115,17 @@ cask 'font-hack'
 cask 'font-dejavusansmono-nerd-font-mono'
 cask 'font-liberationmono-nerd-font-mono'
 
-# brew 'mas'
-# mas 'Xee3', id: 639764244
-# mas 'iMovie', id: 408981434
-# mas 'Clear', id: 504544917
-# mas 'Xcode', id: 497799835
+# tap 'homebrew/cask-drivers'
+# cask 'yubico-authenticator'
+
+brew 'mas'
+mas 'Xee3', id: 639764244
+mas 'Things3', id: 904280696
+mas 'GarageBand', id: 682658836
+mas 'iMovie', id: 408981434
+mas 'Pages', id: 409201541
+mas 'Keynote', id: 409183694
+mas 'Numbers', id: 409203825
 # mas 'AffinityPhoto', id: 824183456
 
 # brew bundle exec -- "pip3 install neovim-remote"

@@ -1,0 +1,147 @@
+# vim:fileencoding=utf-8:ft=conf:foldmethod=marker
+
+# Shell Behavior {{{
+HISTFILE="$HOME/.mksh_history"
+HISTSIZE=20000
+export VISUAL="nvim"
+export EDITOR="$VISUAL"
+export TERM=xterm-256color
+set -o emacs
+set -o noclobber
+# }}}
+
+# Aliases {{{
+alias usage='du -sch .[!.]* * |sort -h'
+# prevent cp/mv overwrites
+alias copy='cp -i'
+alias move='mv -i'
+alias m='cmatrix -absu 4 -C magenta'
+# }}}
+
+# Functions {{{
+function pidrunning() {
+  ps -p $1 >/dev/null
+}
+
+function 15() {
+  pid=$1
+  for signal in 15 2 1 9; do
+    cmd="kill -$signal $pid"
+    echo $cmd
+    eval $cmd
+    for i in $(seq 20); do
+      if ! (pidrunning $pid); then
+        echo "pid $pid no longer exists"
+        return 0
+      fi
+      sleep 0.1
+    done
+  done
+  if (pidrunning $pid); then
+    echo "pid $pid still exists"
+  fi
+}
+
+gitidentity() {
+  gitusername=$1
+  gitemail=$2
+  gitsshkey=$3
+  if [[ ! "$gitusername" = "" && ! "$gitemail" = "" ]]; then
+    git config --global user.name "$gitusername"
+    git config --global user.email "$gitemail"
+    if [[ ! "$gitsshkey" == "" && -e "$gitsshkey" ]]; then
+      ssh-add -D
+      ssh-add "$gitsshkey"
+    fi
+  else
+    echo "Usage: gitidentify <user> <email> (/path/to/ssh/key)"
+  fi
+}
+
+# usage: upload <IP ADDRESS> <LOCAL PATH> <REMOTE PATH>
+function upload() {
+  rsync --progress -avhLe ssh "$2" $1:"$3"
+}
+
+# usage: download <IP ADDRESS> <REMOTE PATH> <LOCAL PATH>
+function download() {
+  rsync --progress --rsync-path="sudo rsync" -avhLe ssh $1:"$2" "$3"
+}
+# }}}
+
+# Ruby {{{
+alias ruby-install="\ruby-install --rubies-dir ~/.rubies"   # ruby-install ruby 2.2.2
+if [ -e /usr/local/opt/chruby/share/chruby ]; then
+  source /usr/local/opt/chruby/share/chruby/chruby.sh
+  source /usr/local/opt/chruby/share/chruby/auto.sh
+fi
+[ -e ~/.ruby-version ] && chruby $(cat ~/.ruby-version)
+# }}}
+
+# Go {{{
+export GOPATH=~/.go
+export PATH=$GOPATH/bin:$PATH
+alias gom="gometalinter --enable-all --line-length=120 --deadline=180s ./..."
+alias got='go test -v ./...'
+# }}}
+
+# FZF {{{
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+# }}}}
+
+# Rust {{{
+# export PATH="$HOME/.cargo/bin:$PATH"
+# }}}
+
+# Node {{{
+# export PATH="./node_modules/.bin:$PATH"
+# }}}
+
+# exa {{{
+# -l = long (table) format
+# -a = display all (including hidden) files
+# -g = display each file's group
+# -F = display a type indicator by files (dirs have a trailing slash, like ls -p)
+# --group-directories-first = does what it says on the tin
+# --git = provides a git status for each file (if under revision control)
+# --time-style long-iso = use a long iso format for date/time info
+alias ll="exa -lagF --group-directories-first --git --time-style long-iso"
+# }}}
+
+# fasd {{{
+# eval "$(fasd --init auto)"
+# alias v='f -t -e vim -b viminfo'
+# eval "$(fasd --init posix-alias posix-hook)"
+# }}}
+
+# Vim / Neovim {{{
+if [ -n "$NVIM_LISTEN_ADDRESS" ]; then
+  nvim_target=nvr
+else
+  nvim_target=nvim
+fi
+function nvim_launch() {
+  if [[ -n $NVIM_LISTEN_ADDRESS && "$#" -eq 0 ]]; then
+    $nvim_target .
+  else
+    $nvim_target "$@"
+  fi
+}
+alias nvim=nvim_launch
+alias n=nvim_launch
+alias vi=nvim_launch
+alias vim=nvim_launch
+alias vimwiki="$nvim_target ~/.vimwiki/index.md"
+alias guide='$nvim_target ~/git/public/vim_guide/vim_guide.md'
+alias fn="f -e $nvim_target"
+alias no="nvr -o"
+# }}}
+
+# Postgresql {{{
+# alias pgstart='pg_ctl -D /usr/local/var/postgres start'
+# alias pgstop='pg_ctl -D /usr/local/var/postgres stop'
+# }}}
+
+# Private rc content {{{
+[ -e ~/.mkshrc_private ] && source ~/.mkshrc_private
+# }}}

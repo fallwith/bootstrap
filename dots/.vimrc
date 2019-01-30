@@ -110,6 +110,7 @@ set clipboard=unnamed       " yank to / put from the operating system clipboard
 set list                    " show invisibles
 set ff=unix                 " unix fileformat
 set tgc                     " enable gui colors in the terminal (true 24 bit color support)
+set shell=/usr/local/bin/mksh
 set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
 setglobal commentstring=#\ %s
 
