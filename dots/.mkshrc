@@ -1,6 +1,20 @@
 # vim:fileencoding=utf-8:ft=conf:foldmethod=marker
 
-# Shell Behavior {{{
+# Color {{{
+# color  - bg - fg
+# =
+# black  - 40 - 30
+# red    - 41 - 31
+# green  - 42 - 32
+# yellow - 43 - 33
+# blue   - 44 - 34
+# purple - 45 - 35
+# cyan   - 46 - 36
+# grey   - 47 - 37
+# }}}
+
+# Basics {{{
+export PS1=$'\E[35m${PWD##*/} \E[36m$ \E[0m'
 HISTFILE="$HOME/.mksh_history"
 HISTSIZE=20000
 export VISUAL="nvim"
@@ -16,6 +30,7 @@ alias usage='du -sch .[!.]* * |sort -h'
 alias copy='cp -i'
 alias move='mv -i'
 alias m='cmatrix -absu 4 -C magenta'
+alias ranger='TERM=xterm-kitty \ranger'
 # }}}
 
 # Functions {{{
@@ -42,22 +57,6 @@ function 15() {
   fi
 }
 
-gitidentity() {
-  gitusername=$1
-  gitemail=$2
-  gitsshkey=$3
-  if [[ ! "$gitusername" = "" && ! "$gitemail" = "" ]]; then
-    git config --global user.name "$gitusername"
-    git config --global user.email "$gitemail"
-    if [[ ! "$gitsshkey" == "" && -e "$gitsshkey" ]]; then
-      ssh-add -D
-      ssh-add "$gitsshkey"
-    fi
-  else
-    echo "Usage: gitidentify <user> <email> (/path/to/ssh/key)"
-  fi
-}
-
 # usage: upload <IP ADDRESS> <LOCAL PATH> <REMOTE PATH>
 function upload() {
   rsync --progress -avhLe ssh "$2" $1:"$3"
@@ -75,7 +74,7 @@ if [ -e /usr/local/opt/chruby/share/chruby ]; then
   source /usr/local/opt/chruby/share/chruby/chruby.sh
   source /usr/local/opt/chruby/share/chruby/auto.sh
 fi
-[ -e ~/.ruby-version ] && chruby $(cat ~/.ruby-version)
+[ -e ~/.ruby-version ] && chruby $(<~/.ruby-version)
 # }}}
 
 # Go {{{
@@ -109,9 +108,7 @@ alias ll="exa -lagF --group-directories-first --git --time-style long-iso"
 # }}}
 
 # fasd {{{
-# eval "$(fasd --init auto)"
-# alias v='f -t -e vim -b viminfo'
-# eval "$(fasd --init posix-alias posix-hook)"
+eval "$(fasd --init posix-alias posix-hook)"
 # }}}
 
 # Vim / Neovim {{{
@@ -145,3 +142,5 @@ alias no="nvr -o"
 # Private rc content {{{
 [ -e ~/.mkshrc_private ] && source ~/.mkshrc_private
 # }}}
+
+export PATH=~/bin:$PATH
