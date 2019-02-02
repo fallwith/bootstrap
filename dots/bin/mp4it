@@ -1,0 +1,373 @@
+#!/usr/bin/env bash
+set -euo pipefail
+NAME=mp4it
+VERSION=0.0.12
+
+#
+# mp4it
+#
+#  ffmpeg front-end to take an input source (likely in mkv or m2ts format)
+#    and produce an h.265 formatted mp4 output file at the given location
+#
+#  settings used represent a sweet spot between quality and file size based
+#    on testing with 1080p input
+#
+
+function show_usage_and_exit() {
+  code=$1
+  msg=${2:-}
+  if [ "$msg" != "" ]; then
+    echo "$msg"
+    echo
+  fi
+  echo "Playlist Info: $0 playlists /path/to/blu-ray/root"
+  echo
+  echo "Encoding: $0 -i source [-o destination] [--no-crop] [--no-subs] [--subtrack TRACK]"
+  echo
+  echo "  -i|--input source          - (required) path to input source file"
+  echo "  -o|--output destination    - (optional) path to the output file,"
+  echo "                                defaults to source path with an .mp4 extension"
+  echo "  -h|--help                  - show usage info"
+  echo "  --no-crop                  - do not crop the image (do not remove the black bars)"
+  echo "  --no-grain                 - do not leverage the 'grain' x265 preset"
+  echo "  --no-subs                  - do not seek the first subtitle track and overlay it (burn it in)"
+  echo "  -ss <START SECS>           - set the start time offset (passed directly as -ss to ffmpeg)"
+  echo "  -t <DURATION SECS>         - set the duration (passed directly as -t to ffmpeg)"
+  echo "  --audio-stream STREAM      - specify the audio stream to use (ex: 0:2)"
+  echo "  --subtitle-stream STREAM   - specify the subtitle stream to burn in (ex: 0:5)"
+  echo "  -v|--version               - show version info"
+  echo
+  exit $code
+}
+
+function process_cli_args() {
+  if [ $# == 0 ]; then
+    show_usage_and_exit -1
+  fi
+  audio_bitrate=320
+  subtitles=1
+  subrips=0
+  subtrack=""
+  audtrack=""
+  crop=1
+  crop_dimensions=""
+  min_height_for_grain=481
+  grain=1
+  ss=""
+  t=""
+  batch=0
+  declare -a input_files
+  while (( "$#" )); do
+    case "$1" in
+      playlists|p)
+        show_playlists $2
+        exit
+        ;;
+      -h|--help)
+        show_usage_and_exit 0
+        ;;
+      -i|--input)
+        input=$2
+        shift 2
+        ;;
+      -o|--output)
+        output=$2
+        shift 2
+        ;;
+      --no-crop)
+        crop=0
+        shift
+        ;;
+      --no-grain)
+        grain=0
+        shift;
+        ;;
+      --no-subs)
+        subtitles=0
+        shift
+        ;;
+      --audio-stream)
+        audtrack=$2
+        shift 2
+        ;;
+      --subtitle-stream)
+        subtrack=$2
+        shift 2
+        ;;
+      -ss)
+        ss=$2
+        shift 2
+        ;;
+      -t)
+        t=$2
+        shift 2
+        ;;
+      -v|--version)
+        echo "$NAME v${VERSION}"
+        exit 0
+        ;;
+      -*|--*)
+        echo "Unknown argument $1"
+        exit -1
+        ;;
+      *)
+        echo "Unexpected string $1"
+        exit -1
+        ;;
+    esac
+  done
+  output=${output:-"${input%.*}.mp4"}
+  if [ "$input" == "" ]; then
+    echo "No '-i <input>' input argument provided!"
+    exit -1
+  fi
+  if [[ ${input:0:7} == "concat:" ]]; then
+    for path in ${input//\|/ }; do
+      path=${path//concat:/}
+      if [ ! -f "$path" ]; then
+        "Concatenated input path '$path' does not exist!"
+        exit -1
+      fi
+    done
+  elif [ ! -f "$input" ]; then
+    echo "Input '$input' does not exist!"
+    exit -1
+  fi
+}
+
+function check_prereqs() {
+  for prereq in ffmpeg ffprobe sed awk grep head; do
+    set +e
+    result=$(hash $prereq 2>&1 >/dev/null)
+    set -e
+    if [ "$result" != "" ]; then
+      echo "Unable to locate the prerequisite '$prereq' tool."
+      echo "Please either install it or ensure that it's in your PATH and try again."
+      exit -1
+    fi
+  done
+}
+
+function determine_playlist_info() {
+  if [[ ! $input == *.mpls ]]; then
+    return
+  fi
+  echo "Determining playlist info for ${input}..."
+
+  batch=1
+  largest_input=''
+  largest_input_size=0
+  dirname=${input%/*}
+
+  while read -r m2ts_file; do
+    len=$(echo $m2ts_file | wc -c)
+    if [ $len -eq 12 ]; then
+      m2ts_file=$(echo $m2ts_file | cut -c2-11)
+    elif [ $len -ne 11 ]; then
+      echo "Error gleaning m2ts filename from mpls input, got '$m2ts_file'"
+      exit -1
+    fi
+    full_path="$dirname/../STREAM/$m2ts_file"
+    input_files+=($full_path)
+    size=$(stat -c %s $full_path)
+    if [ $size -gt $largest_input_size ]; then
+      largest_input_size=$size
+      largest_input=$full_path
+    fi
+  done <<< $(mpls_to_m2ts $input)
+
+  input=$largest_input
+}
+
+function mpls_to_m2ts() {
+  mpls=$1
+  cat -v $mpls | grep -oE '\d+M2TS' | sed 's/M2TS/.m2ts/g'
+}
+
+function show_playlists() {
+  path="$1"
+  playlist_subdir="BDMV/PLAYLIST"
+  if [ ! -e "$path/$playlist_subdir" ]; then
+    echo "Error: could not locate a $playlist_subdir dir beneath $path - path is not a Blu-ray root?"
+    exit -1
+  fi
+  playlists=$(ffprobe -analyzeduration 300M -probesize 100M "bluray:$path" 2>&1 | grep -Eo '\d+.mpls \(\d+:\d+:\d+\)')
+
+  while read -r playlist; do
+    echo "PLAYLIST: $playlist"
+    file=$(echo $playlist | awk '{ print $1 }')
+    mpls_to_m2ts $path/$playlist_subdir/$file
+    echo
+  done <<< "$playlists"
+}
+
+function determine_crop() {
+  if [ $crop -ne 1 ]; then
+    return
+  fi
+  echo "Determining cropping info..."
+
+  # duration in secs divided by 10, to detect dimensions for cropping in multiple spots
+  duration_slice=$(ffprobe "$input" 2>&1 | grep Duration | awk '{print $2}' | awk -F: '{print (($1 * 3600) + ($2 * 60) + $3)/10}' | sed 's/\..*$//')
+
+  # detect the input source's dimensions
+  input_dimensions=$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 "$input" | head -1)
+
+  # determine the max detected dimensions
+  max_width=0
+  max_height=0
+  for i in {1..9}; do
+    read -r width height <<<$(ffmpeg -ss $((duration_slice * $i)) -t 1 -i "$input" -vf cropdetect -map 0:0 -f null - 2>&1 | awk '/crop/ { print $NF }' | tail -1 | cut -c6- | awk -F: '{print $1 " " $2}')
+    if [ "$width" == "" ]; then
+      continue
+    fi
+    if [ $height == "" ]; then
+      continue
+    fi
+    if [ $width -gt $max_width ]; then
+      max_width=$width
+    fi
+    if [ $height -gt $max_height ]; then
+      max_height=$height
+    fi
+  done
+  if [ "${max_width}x${max_height}" != "$input_dimensions" ]; then
+    echo "Will crop from $input_dimensions to ${max_width}x${max_height}"
+    crop_dimensions="$max_width:$max_height"
+  else
+    echo "Cropping will not be performed. Dimensions will remain as $input_dimensions"
+  fi
+  if [ $max_height -lt $min_height_for_grain ]; then
+    echo "Input height of $max_height is below the minimum required for grain preservation (${min_height_for_grain}). Disabling grain."
+    grain=0
+  fi
+}
+
+function determine_subtitle_track() {
+  if [ $subtitles -eq 1 ]; then
+    if [ "$subtrack" == "" ]; then
+      set +e
+      subinfo=$(ffprobe "$input" 2>&1 | grep "Stream.*Subtitle" | head -1)
+      set -e
+      if [ "$subinfo" == "" ]; then
+        echo "No subtitle tracks found - subtitles will not be burned in"
+      else
+        subtrack=$(echo "$subinfo" | awk '{print $2}' | sed 's/\[.*//' | cut -c2- | sed -e 's/(.*):$//g')
+        echo "Using first discovered subtitle track $subtrack"
+        if ( echo "$subinfo" | grep -q subrip ); then
+          echo "subrips subtitles detected"
+          subrips=1
+        fi
+      fi
+    else
+      echo "Using user-specified subtitle track $subtrack"
+    fi
+  fi
+}
+
+function determine_audio() {
+  info_cmd="ffprobe \"$input\" 2>&1 | grep Audio"
+  if [ ! "$audtrack" == "" ]; then
+    info_cmd="$info_cmd | grep $audtrack"
+  else
+    info_cmd="$info_cmd | head -1"
+  fi
+  info=$(eval $info_cmd)
+
+  if (echo $info | grep -q mono); then
+    mono=1
+  else
+    mono=0
+  fi
+
+  set +e
+  bitrate=$(echo $info | sed 's/ (default)//' | grep "kb/s$" |awk '{ print $(NF-1) }')
+  set -e
+  if [ "$bitrate" == "" ]; then
+    echo "Couldn't determine source audio bitrate - will use $audio_bitrate for the output"
+  elif [[ $bitrate =~ ^[0-9]+$ ]] && [[ $bitrate -lt $audio_bitrate ]]; then
+    echo "Source audio bitrate is only $bitrate kb/s - using that rate for the output as well"
+    audio_bitrate=$bitrate
+  fi
+}
+
+function formulate_command() {
+  cmd="ffmpeg"
+
+  if [ "$t" != "" ]; then
+    cmd="$cmd -t $t"
+  fi
+  if [ "$ss" != "" ]; then
+    cmd="$cmd -ss $ss"
+  fi
+
+  # -i <input file>   - specify an input file
+  cmd="$cmd -i"
+  if [ $batch -eq 1 ]; then
+    sources=$(IFS="|" && echo "${input_files[*]}")
+    cmd="$cmd \"concat:$sources\""
+  else
+    cmd="$cmd \"$input\""
+  fi
+
+  if [ "$audtrack" != "" ]; then
+    cmd="$cmd -map 0:0 -map $audtrack"
+  fi
+
+  # -b:a <bitrate>k   - remux audio into <bitrate> kbps AAC format (first audio track)
+  # -vcodec libx265   - use the x265 video codec for video encoding (first video track)
+  # -preset veryfast  - set the x265 video encoding preset (default = medium)
+  # -crf 22           - constant rate factor - 0 = lossless, 51 = worst, 28 = default
+  # -pix_fmt yuv420p  - use 8 bit video encoding
+  # -tag:v hvc1       - tag the file as being hvc1 (instead of hev1) for Apple compatibility
+  # -x265-params      - pass params to x265
+  #    no-strong-intra-smoothing=true   - disable strong intra smoothing for 32x32 blocks
+  cmd="$cmd -b:a ${audio_bitrate}k -vcodec libx265 -preset veryfast -crf 22 -pix_fmt yuv420p -tag:v hvc1 -x265-params no-strong-intra-smoothing=true"
+
+  if [ $grain -eq 1 ]; then
+    # -tune grain - work to preserve film grain
+    cmd="$cmd -tune grain"
+  fi
+
+  # force 2 channels for all non-mono audio
+  # -ac 2             - 2 audio channels
+  if [ $mono -ne 1 ]; then
+    cmd="$cmd -ac 2"
+  fi
+
+  if [ "$subtrack" != "" ]; then
+    cmd="$cmd -probesize 100M -analyzeduration 300M"
+    if [ $subrips -eq 1 ]; then
+      # -c:s mov_text   - glean the subtitles from the input source and copy them over to the output
+      cmd="$cmd -c:s mov_text"
+    else
+      # -probesize 100M        - when searching for subtitle info, stop if nothing is found at the 100 megabyte mark
+      # -analyzeduration 300M  - when searching for subtitle info, stop if nothing is found at the 300 minute mark
+      # -filter_complex "[<vid track>][<sub track>]overlay" - burn in the subtitle track on top of the video track
+      cmd="$cmd -filter_complex \"[0:0][${subtrack}]overlay"
+      if [ "$crop_dimensions" != "" ]; then
+        cmd="$cmd,crop=$crop_dimensions"
+      fi
+      cmd="$cmd\""
+    fi
+  elif [ "$crop_dimensions" != "" ]; then
+    cmd="$cmd -filter:v \"crop=$crop_dimensions\""
+  fi
+
+  cmd="$cmd \"$output\""
+  echo $cmd
+}
+
+function run_command() {
+  echo ""
+  eval $cmd
+}
+
+process_cli_args "$@"
+check_prereqs
+determine_playlist_info
+determine_crop
+determine_subtitle_track
+determine_audio
+formulate_command
+run_command

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+name="$1"
+pid=$(ps auwx | grep "$name" | grep -v grep | tail -1 | awk '{print $2}')
+echo "Caffeinating pid $pid for process '$name'..."
+caffeinate -imsw $pid

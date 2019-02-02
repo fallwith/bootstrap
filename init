@@ -1,116 +1,95 @@
 #!/bin/bash
+set -euo pipefail
+
+#
+# bootstrap init script
+#
+# Usage:
+#   * For a brand new machine, clone the bootstrap repo and launch this script
+#   * Any time the clone is updated, re-run this script
+#
+# If you'd like to symlink the dot files to a location other than $HOME,
+# export the variable BOOTSTRAP_TARGET_DIR before calling this script.
+#
+# If you'd like to use a shell other than the /usr/local/bin/mksh,
+# export the variable DESIRED_SHELL before calling this script.
+#
 
 bootstrap_dir=$(dirname "${BASH_SOURCE}")
 cd $bootstrap_dir
 bootstrap_dir=$(pwd)
 target_dir=${BOOTSTRAP_TARGET_DIR:-$HOME}
 
-# Place any user specific / private defaults or overrides in $HOME/.bootstrap_private
-if [[ -e "$HOME/.bootstrap_private" ]]; then source "$HOME/.bootstrap_private"; fi
-
-# a BSD/OS X version is expected
-READLINK=${READLINK:-/usr/bin/readlink}
 # this shell will be added to /etc/shells and set as the default
-DESIRED_SHELL=${DESIRED_SHELL:-/usr/local/bin/zsh}
+DESIRED_SHELL=${DESIRED_SHELL:-/usr/local/bin/mksh}
+
 
 # --- --- --- --- --- --- ---
 # create dot file symlinks
 # --- --- --- --- --- --- ---
 
-shopt -s dotglob
-for f in "$bootstrap_dir/dots"/*; do
-  dotbasename=${f##*/}
-  if [[ "$dotbasename" = "README.md" ]]; then continue; fi
-  target_instance="$target_dir/$dotbasename"
-  create_symlink=1
-  create_backup=1
-  if [[ -e $target_instance ]]; then
-    if [[ -h $target_instance ]]; then
-      target_linkval=$(READLINK "$target_instance")
-      if [[ "$target_linkval" = "$f" ]]; then
-        create_symlink=0
-        create_backup=0
-        echo "dot file $dotbasename is already set up correctly"
+echo "Symlinking dot files..."
+function process_dot_dir() {
+  dir=$1
+  shopt -s dotglob
+  for f in "$dir"/*; do
+    if [[ -d "$f" ]]; then
+      process_dot_dir "$f"
+      continue
+    fi
+    target="$target_dir/${f//$bootstrap_dir\/dots\//}"
+    if [[ -e "$target" ]]; then
+      echo "$target already exists - skipping"
+      continue
+    else
+      if [[ "${target%/*}" != "$target_dir" ]]; then
+        cmd="mkdir -p ${target%/*}"
+        echo "$cmd"
+        eval "$cmd"
       fi
+      cmd="ln -s \"$f\" \"$target\""
+      echo "$cmd"
+      eval "$cmd"
     fi
-  else
-    create_backup=0
-  fi
-  if [[ $create_symlink -eq 1 ]]; then
-    if [[ $create_backup -eq 1 ]]; then
-      backup="$target_instance.bak"
-      echo "mv \"$target_instance\" \"$backup\""
-      mv "$target_instance" "$backup"
-    fi
-    mkdir -p "${target_instance%/*}"
-    echo "ln -s \"$f\" \"$target_instance\""
-    ln -s "$f" "$target_instance"
-  fi
-done
-shopt -u dotglob
+  done
+  shopt -u dotglob
+}
+process_dot_dir "$bootstrap_dir/dots"
 
-
-# --- --- --- --- --- --- ---
-# configure git
-# --- --- --- --- --- --- ---
-
-if [[ ! "$GIT_AUTHOR_NAME" = "" && ! "$GIT_AUTHOR_EMAIL" = "" ]]; then
-  git config --global user.name "$GIT_AUTHOR_NAME"
-  git config --global user.email "$GIT_AUTHOR_EMAIL"
-fi
-
-# --- --- --- --- --- --- ---
-# create ~/bin
-# --- --- --- --- --- --- ---
-mkdir -p "$HOME/bin"
 
 # --- --- --- --- --- --- ---
 # set desired os x behavior
 # --- --- --- --- --- --- ---
 
-echo "setting up OS X behavior preferences"
-echo "linking to set_up_os_x in ~/bin..."
-rm -f "$HOME/bin/set_up_os_x"
-ln -s "$bootstrap_dir/scripts/set_up_os_x" "$HOME/bin/set_up_os_x"
-echo "sourcing set_up_os_x..."
-source "$HOME/bin/set_up_os_x"
+echo "Setting up macOS behavior preferences..."
+$target_dir/bin/macos_settings
 
 
 # --- --- --- --- --- --- ---
-# install and run homebrew
+# install and run Homebrew
 # --- --- --- --- --- --- ---
 
-if ! (command -v brew >/dev/null); then
-  echo "Homebrew was not found. Installing..."
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-fi
-
-echo "linking to brewscript in ~/bin..."
-rm -f "$HOME/bin/brewscript"
-ln -s "$bootstrap_dir/scripts/brewscript" "$HOME/bin/brewscript"
-echo "running brewscript from ~/bin..."
-brewcmd="$HOME/bin/./brewscript"
-echo "$brewcmd"
-$brewcmd
-
-
-# --- --- --- --- --- --- ---
-# set up iTerm 2
-# --- --- --- --- --- --- ---
-
-link_location="$HOME/Library/Preferences/com.googlecode.iterm2.plist"
-mkdir -p "$(dirname $link_location)"
-rm -f "$link_location"
-ln -s "$bootstrap_dir/prefs/com.googlecode.iterm2.plist" "$link_location"
+echo "Installing and running Homebrew..."
+$target_dir/bin/brewupdate
 
 
 # --- --- --- --- --- --- ---
 # set the desired shell
 # --- --- --- --- --- --- ---
 
-if ! $(grep -q $DESIRED_SHELL /etc/shells); then
+if [[ ! -f "$DESIRED_SHELL" ]]; then
+  echo "Error: desired shell $DESIRED_SHELL does not exist!"
+  exit -1
+fi
+if $(grep -q $DESIRED_SHELL /etc/shells); then
+  echo "Desired shell $DESIRED_SHELL already exists in /etc/shells"
+else
+  echo "Appending $DESIRED_SHELL to /etc/shells..."
   echo $DESIRED_SHELL|sudo tee -a /etc/shells>/dev/null;
 fi
-if ! [[ "$(finger $USER|grep -o 'Shell: .*')" = "Shell: $DESIRED_SHELL" ]]; then
+if [[ "$(finger $USER|grep -o 'Shell: .*')" = "Shell: $DESIRED_SHELL" ]]; then
+  echo "User $USER is already set to use desired shell $DESIRED_SHELL"
+else
+  echo "Changing shell for user $USER to $DESIRED_SHELL..."
   chsh -s $DESIRED_SHELL;
 fi

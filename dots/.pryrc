@@ -1,5 +1,4 @@
 # see https://github.com/pry/pry/wiki/Customization-and-configuration
-require "active_support/all"
 require "awesome_print"
 AwesomePrint.pry!
 

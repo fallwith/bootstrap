@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+version=$(<~/.ruby-version)
+~/.rubies/ruby-$version/bin/ruby "$@"

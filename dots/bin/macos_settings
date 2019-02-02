@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# for more settings, see: https://github.com/mathiasbynens/dotfiles/blob/master/.macos
+# reboot after application
+
+# Set a low key initial key repeat and go as fast as possible afterwards
+# InitialKeyRepeat defaults to 15, KeyRepeat to 2
+defaults write NSGlobalDomain InitialKeyRepeat -int 10
+defaults write NSGlobalDomain KeyRepeat -int 1

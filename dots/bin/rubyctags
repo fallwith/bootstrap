@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Generate an Exuberant Ctags file for a Ruby project
+#
+# - Accepts an optional argument of the starting search directory or file.
+# - The starting path will be walked up until either a tags file or other
+#   project root indicating file/dir can be found.
+
+tags_file=.tags
+declare -a root_markers=(.git .hg .svn .bzr _darcs)
+
+! [ -z "$1" ] && cd "${1%/*}"
+starting_dir=$PWD
+
+root_markers[${#root_markers[@]}]=$tags_file
+while [[ $PWD != '/' ]]; do
+  for marker in ${root_markers[@]}; do
+    if [ -e "${PWD}/${marker}" ]; then
+      ctags_dir=$PWD
+      break
+    fi
+  done
+  cd ..
+done
+
+if [ -z "$ctags_dir" ]; then
+  echo "Unable to locate a $tags_file file or suitable project root at or above $starting_dir"
+else
+  find "$ctags_dir" -name '*.rb'|ctags -f "$ctags_dir/$tags_file" -L -
+  echo "Updated $ctags_dir/$tags_file"
+fi
+
+cd $starting_dir

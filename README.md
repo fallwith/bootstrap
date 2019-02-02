@@ -1,32 +1,54 @@
 bootstrap
 =========
 
-This repository includes my dotfiles and scripts for setting things up.
+bootstrap is intended to help prep a new macOS based machine.
+
+The following actions are performed:
+
+* All files found in the `dots` subdirectory are symlinked
+  beneath the user's home directory
+* Desired macOS behavior settings (such as keyboard repeat rate)
+  are configured
+* Homebrew is installed and used to install CLI apps, casks,
+  fonts, App Store apps, etc.
+* A desired shell is installed by Homebrew and configured to
+  be the user's default shell
 
 
-installation
-------------
-Clone the repository, place any private/personal values and overrides at
-`~/.bootstrap_private`, and kick off the `init` script.
+### Prerequisites
 
-1. Clone the repository
+Do these things before using bootstrap:
 
-  ```bash
-  git clone https://github.com/fallwith/bootstrap.git && cd bootstrap
-  ```
+* Sign in to the App Store app with your iCloud account
 
-1. Create a `~/.bootstrap_private` file
 
-  ```bash
-  cp .bootstrap_private.template ~/.bootstrap_private
-  vi ~/.bootstrap_private
-  ```
+### Usage
 
-1. Run the `init` script
+Clone the repo and run the included init script:
 
-  ```bash
-  ./init
-  ```
+```shell
+git clone https://github.com/fallwith/bootstrap.git
+cd bootstrap
+./init
+```
 
-Then update the clone and re-run the `init` script periodically to pick
-up changes.
+Then periodically have one machine push a change to the
+repo and the others update their clones and re-run `init`.
+
+
+### Personalization
+
+It is extremely unlikely that you'll want to set up
+a macOS system in the exact same manner that I like to,
+and bootstrap does not make much effort to accomodate
+personalization.
+
+My intention is that you will use bootstrap as a template
+to borrow some ideas from or to fork entirely and make your
+own. You are quite welcome to use it as you see fit.
+
+I recommend that you use bootstrap for non-sensitive
+content and that it remain publicly accessible via
+Git so that the `git` which ships with macOS can be
+used to clone bootstrap without authentication.
+
