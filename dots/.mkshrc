@@ -101,7 +101,7 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 # }}}}
 
 # Rust {{{
-# export PATH="$HOME/.cargo/bin:$PATH"
+[[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 # }}}
 
 # Node {{{

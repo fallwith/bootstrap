@@ -54,7 +54,7 @@ brew 'ranger', args: ['HEAD']
 # brew 'reattach-to-user-namespace'
 brew 'ripgrep'
 brew 'ruby-install'
-brew 'rustup'
+brew 'rustup-init'
 # brew 'sqlite'
 # brew 'the_silver_searcher'
 # brew 'terraform'
