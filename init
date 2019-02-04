@@ -123,3 +123,34 @@ else
   echo "Installing neovim-remote..."
   pip3 install neovim-remote
 fi
+
+
+# --- --- --- --- --- --- ---
+# ruby enhancements
+# --- --- --- --- --- --- ---
+
+ruby_version=$(<~/.ruby-version)
+if [[ -e "$HOME/.rubies/ruby-$ruby_version" ]]; then
+  echo "Desited Ruby version $ruby_version is already installed"
+else
+  echo "Installing desired Ruby version $ruby_version"
+  ruby-install --rubies-dir $HOME/.rubies ruby $ruby_version
+fi
+
+
+# --- --- --- --- --- --- ---
+# Neovim plugins
+# --- --- --- --- --- --- ---
+
+# install minpac
+pacpath="$HOME/.config/nvim/pack/minpac/opt/minpac"
+if [[ -e "$pacpath" ]]; then
+  echo "Neovim has minpac installed already"
+else
+  echo "Installing minpac for Neovim..."
+  git clone https://github.com/k-takata/minpac.git $pacpath
+fi
+
+# install or update Neovim plugins
+echo "Installing / updating Neovim plugins..."
+nvim -c "call minpac#update('', {'do': 'quit'})"
