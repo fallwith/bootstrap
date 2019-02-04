@@ -7,3 +7,16 @@
 # InitialKeyRepeat defaults to 15, KeyRepeat to 2
 defaults write NSGlobalDomain InitialKeyRepeat -int 10
 defaults write NSGlobalDomain KeyRepeat -int 1
+
+# use classic (not "Natural") trackpad scrolling
+defaults irite NSGlobalDomain com.apple.swipescrolldirection -bool false
+
+# accessibility: use ctrl + trackpad scroll for zooming in/out
+defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
+
+# 25 pixel dock height / 59 pixel magnified
+defaults write com.apple.dock tilesize -int 25
+defaults write com.apple.dock largesize -int 59
+
+# minimize to dock with 'scale' effect (faster than the 'genie' default
+defaults write com.apple.dock mineffect -string 'scale'
