@@ -93,3 +93,33 @@ else
   echo "Changing shell for user $USER to $DESIRED_SHELL..."
   chsh -s $DESIRED_SHELL;
 fi
+
+
+# --- --- --- --- --- --- ---
+# python enhancements
+# --- --- --- --- --- --- ---
+
+# install pip
+if (command -v pip >/dev/null); then
+  echo "Python pip already exists"
+else
+  echo "installing Python pip..."
+  sudo easy_install pip
+fi
+
+# install PIL via Pillow - needed for Ranger image previews
+python -c "import PIL" 2>/dev/null
+if [[ $? -ne 0 ]]; then
+  echo "Install Python module PIL (via pillow)..."
+  sudo pip install pillow
+else
+  echo "Python module pillow already exists"
+fi
+
+# install neovim-remote
+if (command -v nvr >/dev/null); then
+  echo "neovim-remote already installed"
+else
+  echo "Installing neovim-remote..."
+  pip3 install neovim-remote
+fi
