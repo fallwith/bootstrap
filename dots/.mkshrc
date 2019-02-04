@@ -14,12 +14,25 @@
 # }}}
 
 # Basics {{{
-export PS1=$'\E[35m${PWD##*/} \E[36m$ \E[0m'
+function _prompt_pwd() {
+  if [[ "$PWD" == "$HOME" ]]; then
+    p='~'
+  else
+    p=${PWD##*/}
+    p=${p:-/}
+  fi
+  echo $p
+}
+export PS1=$'\E[35m$(_prompt_pwd) \E[32m$(date +%H:%M:%S) \E[36m$ \E[0m'
 HISTFILE="$HOME/.mksh_history"
 HISTSIZE=20000
 export VISUAL="nvim"
 export EDITOR="$VISUAL"
-export TERM=xterm-256color
+if (command -v kitty >/dev/null); then
+  export TERM=xterm-kitty
+else
+  export TERM=xterm-256color
+fi
 set -o emacs
 set -o noclobber
 # }}}
@@ -27,10 +40,9 @@ set -o noclobber
 # Aliases {{{
 alias usage='du -sch .[!.]* * |sort -h'
 # prevent cp/mv overwrites
-alias copy='cp -i'
-alias move='mv -i'
+alias cp='cp -i'
+alias mv='mv -i'
 alias m='cmatrix -absu 4 -C magenta'
-alias ranger='TERM=xterm-kitty \ranger'
 # }}}
 
 # Functions {{{
@@ -108,7 +120,8 @@ alias ll="exa -lagF --group-directories-first --git --time-style long-iso"
 # }}}
 
 # fasd {{{
-eval "$(fasd --init posix-alias posix-hook)"
+# eval "$(fasd --init posix-alias posix-hook)"
+# eval "$(fasd --init posix-alias)"
 # }}}
 
 # Vim / Neovim {{{
