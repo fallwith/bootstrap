@@ -1,7 +1,7 @@
 # brew 'ansible'
 # brew 'atool'
 # brew 'awscli'
-brew 'bash'
+# brew 'bash'
 brew 'chruby', args: ['HEAD']
 brew 'cmatrix'
 brew 'coreutils'
@@ -14,7 +14,7 @@ brew 'exa'
 # brew 'exiftool'
 brew 'fasd'
 brew 'fd'
-brew 'ffmpeg', args: ['with-libbluray']
+brew 'ffmpeg'
 # brew 'figlet'
 brew 'findutils'
 # brew 'fortune'
@@ -47,6 +47,7 @@ brew 'ncdu'
 brew 'neovim'
 brew 'npm'
 brew 'openssl'
+brew 'parallel'
 # brew 'poppler'
 # brew 'postgresql'
 brew 'ranger', args: ['HEAD']
@@ -62,11 +63,11 @@ brew 'tig'
 # brew 'transmission'
 # brew 'unrar'
 # brew 'vault'
-brew 'vim', args: ['with-override-system-vi']
+brew 'vim'
 brew 'watch'
 brew 'w3m'
 brew 'wget'
-brew 'zsh'
+# brew 'zsh'
 
 # brew install heroku/brew/heroku
 tap 'heroku/brew'
@@ -111,18 +112,18 @@ cask 'slack'
 cask 'vlc'
 
 # fonts
-tap 'caskroom/fonts'
-cask 'font-mononoki'
-cask 'font-hack'
-cask 'font-dejavusansmono-nerd-font-mono'
-cask 'font-liberationmono-nerd-font-mono'
+# tap 'caskroom/fonts'
+# cask 'font-mononoki'
+# cask 'font-hack'
+# cask 'font-dejavusansmono-nerd-font-mono'
+# cask 'font-liberationmono-nerd-font-mono'
 
 # tap 'homebrew/cask-drivers'
 # cask 'yubico-authenticator'
 
 brew 'mas'
 mas 'Xee3', id: 639764244
-mas 'Things3', id: 904280696
+# mas 'Things3', id: 904280696
 mas 'GarageBand', id: 682658836
 mas 'iMovie', id: 408981434
 mas 'Pages', id: 409201541
