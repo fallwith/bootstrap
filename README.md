@@ -10,7 +10,7 @@ The following actions are performed:
 * Desired macOS behavior settings (such as keyboard repeat rate)
   are configured
 * Homebrew is installed and used to install CLI apps, casks,
-  fonts, App Store apps, etc.
+  App Store apps, etc.
 * A desired shell is installed by Homebrew and configured to
   be the user's default shell
 
