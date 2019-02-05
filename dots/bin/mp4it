@@ -181,7 +181,7 @@ function determine_playlist_info() {
 
 function mpls_to_m2ts() {
   mpls=$1
-  cat -v $mpls | grep -oE '\d+M2TS' | sed 's/M2TS/.m2ts/g'
+  strings $mpls | grep -oE '\d+M2TS' | sed 's/M2TS/.m2ts/g'
 }
 
 function show_playlists() {
