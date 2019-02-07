@@ -121,7 +121,7 @@ if (command -v nvr >/dev/null); then
   echo "neovim-remote already installed"
 else
   echo "Installing neovim-remote..."
-  /usr/local/bin/pip3 install neovim-remote
+  /usr/local/bin/pip3 install --user --upgrade neovim-remote
 fi
 
 
