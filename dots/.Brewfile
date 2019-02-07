@@ -12,7 +12,7 @@ brew 'ctags'
 # brew 'emacs', args: ['with-cocoa']
 brew 'exa'
 # brew 'exiftool'
-brew 'fasd'
+# brew 'fasd'
 brew 'fd'
 brew 'ffmpeg'
 # brew 'figlet'
