@@ -152,6 +152,9 @@ alias no="nvr -o"
 # Postgresql {{{
 # alias pgstart='pg_ctl -D /usr/local/var/postgres start'
 # alias pgstop='pg_ctl -D /usr/local/var/postgres stop'
+export PGUSER=postgres
+export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/10/bin
+export PGHOST=localhost
 # }}}
 
 # Private rc content {{{
