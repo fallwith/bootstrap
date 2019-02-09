@@ -50,7 +50,7 @@ alias m='cmatrix -absu 4 -C magenta'
 # alias dirs='find . -type d -not -name .'
 alias dirs='fd -td'
 alias cls='\\builtin print -n \\ec'
-alias cdg='cd $(fd -td -d2 . ~/git | sed "s!$HOME!~!" | fzf --no-mouse --color=light +s --bind=ctrl-p:up,ctrl-n:down --header=Directory)'
+alias cdg='cd ~/git && cd $(fd -td -d2 . | fzf --no-mouse --color=light +s --bind=ctrl-p:up,ctrl-n:down --header=Directory)'
 # }}}
 
 # Functions {{{
