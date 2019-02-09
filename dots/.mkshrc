@@ -28,6 +28,10 @@ HISTFILE="$HOME/.mksh_history"
 HISTSIZE=20000
 export VISUAL="nvim"
 export EDITOR="$VISUAL"
+# constrain manpages to 80 columns
+export MANWIDTH=80
+# disable history for less
+export LESSHISTFILE=-
 if (command -v kitty >/dev/null); then
   export TERM=xterm-kitty
 else
@@ -43,8 +47,10 @@ alias usage='du -sch .[!.]* * |sort -h'
 alias cp='cp -i'
 alias mv='mv -i'
 alias m='cmatrix -absu 4 -C magenta'
-#alias dirs='find . -type d -not -name .'
+# alias dirs='find . -type d -not -name .'
 alias dirs='fd -td'
+alias cls='\\builtin print -n \\ec'
+alias cdg='cd $(fd -td -d2 . ~/git | sed "s!$HOME!~!" | fzf --no-mouse --color=light +s --bind=ctrl-p:up,ctrl-n:down --header=Directory)'
 # }}}
 
 # Functions {{{
@@ -119,11 +125,6 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 # --git = provides a git status for each file (if under revision control)
 # --time-style long-iso = use a long iso format for date/time info
 alias ll="exa -lagF --group-directories-first --git --time-style long-iso"
-# }}}
-
-# fasd {{{
-# eval "$(fasd --init posix-alias posix-hook)"
-# eval "$(fasd --init posix-alias)"
 # }}}
 
 # Vim / Neovim {{{
