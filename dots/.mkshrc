@@ -50,7 +50,7 @@ alias m='cmatrix -absu 4 -C magenta'
 # alias dirs='find . -type d -not -name .'
 alias dirs='fd -td'
 alias cls='\\builtin print -n \\ec'
-alias cdg='cd ~/git && cd $(fd -td -d2 . | fzf --no-mouse --color=light +s --bind=ctrl-p:up,ctrl-n:down --header=Directory)'
+# alias cdg='cd ~/git && cd $(fd -td -d2 . | fzf --no-mouse --color=light +s --bind=ctrl-p:up,ctrl-n:down --header=Directory)'
 # }}}
 
 # Functions {{{
@@ -86,6 +86,15 @@ function upload() {
 function download() {
   rsync --progress --rsync-path="sudo rsync" -avhLe ssh $1:"$2" "$3"
 }
+
+function z() {
+  path=$(echo "$(cd ~ && fd -td -d1 -L)$(cd ~/git && fd -td -d2 .)" | fzf)
+  case $path in
+    public*|private*) cd ~/git/$path ;;
+    *) cd ~/$path ;;
+  esac
+}
+
 # }}}
 
 # Ruby {{{
@@ -106,6 +115,7 @@ alias got='go test -v ./...'
 
 # FZF {{{
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+export FZF_DEFAULT_OPTS='--no-mouse --color=light --bind=ctrl-p:up,ctrl-n:down'
 # }}}}
 
 # Rust {{{
