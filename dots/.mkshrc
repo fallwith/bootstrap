@@ -11,6 +11,32 @@
 # purple - 45 - 35
 # cyan   - 46 - 36
 # grey   - 47 - 37
+# =
+# use '\E[xxm' where xx is a foreground color, use '\E[0m' to reset
+# echo '\E[35mpurple \E[32mgreen \E[36mcyan \E[0m'
+
+# use tput setaf to access the base 16 colors
+# RED=$(tput setaf 1)
+# GRN=$(tput setaf 2)
+# YLW=$(tput setaf 3)
+# BLU=$(tput setaf 4)
+# MGT=$(tput setaf 5)
+# CYN=$(tput setaf 6)
+# GRE=$(tput setaf 7)
+# WHT=$(tput setaf 8)
+# =
+# REDBOLD=$(tput setaf 9)
+# GRNBOLD=$(tput setaf 10)
+# YLWBOLD=$(tput setaf 11)
+# BLUBOLD=$(tput setaf 12)
+# MGTBOLD=$(tput setaf 13)
+# CYNBOLD=$(tput setaf 14)
+# WHTBOLD=$(tput setaf 15)
+# BLK=$(tput setaf 16)
+# =
+# RESET=$(tput sgr0)
+# =
+# echo "${MGT}magenta ${GRN}green ${CYN}cyan ${RESET}"
 # }}}
 
 # Basics {{{
@@ -23,7 +49,12 @@ function _prompt_pwd() {
   fi
   echo $p
 }
-export PS1=$'\E[35m$(_prompt_pwd) \E[32m$(date +%H:%M:%S) \E[36m$ \E[0m'
+# export PS1=$'\E[35m$(_prompt_pwd) \E[32m$(date +%H:%M:%S) \E[36m$ \E[0m'
+BLU=$(tput setaf 39)
+PNK=$(tput setaf 201)
+PRP=$(tput setaf 105)
+RESET=$(tput sgr0)
+export PS1=$'${PNK}$(_prompt_pwd) ${PRP}$(date +%H:%M:%S) ${BLU}$ ${RESET}'
 HISTFILE="$HOME/.mksh_history"
 HISTSIZE=20000
 export VISUAL="nvim"
