@@ -128,7 +128,6 @@ function z() {
 
 function v() {
   file=$(\nvim --headless --noplugin -co +q 2>&1 | grep -v 'term://' | cut -d" " -f2- | tr -d '\r' | fzf)
-  echo "nvim_launc \"$file\""
   nvim_launch "$file"
 }
 # }}}
