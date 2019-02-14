@@ -126,6 +126,11 @@ function z() {
   esac
 }
 
+function v() {
+  file=$(\nvim --headless --noplugin -co +q 2>&1 | grep -v 'term://' | cut -d" " -f2- | tr -d '\r' | fzf)
+  echo "nvim_launc \"$file\""
+  nvim_launch "$file"
+}
 # }}}
 
 # Ruby {{{
@@ -170,13 +175,13 @@ alias ll="exa -lagF --group-directories-first --git --time-style long-iso"
 
 # Vim / Neovim {{{
 if [ -n "$NVIM_LISTEN_ADDRESS" ]; then
-  nvim_target=nvr
+  nvim_target='nvr -o'
 else
-  nvim_target=nvim
+  nvim_target=\nvim
 fi
 function nvim_launch() {
   if [[ -n $NVIM_LISTEN_ADDRESS && "$#" -eq 0 ]]; then
-    $nvim_target .
+    echo "you're already in neovim..."
   else
     $nvim_target "$@"
   fi
@@ -187,7 +192,6 @@ alias vi=nvim_launch
 alias vim=nvim_launch
 alias vimwiki="$nvim_target ~/.vimwiki/index.md"
 alias guide='$nvim_target ~/git/public/vim_guide/vim_guide.md'
-alias fn="f -e $nvim_target"
 alias no="nvr -o"
 # }}}
 
