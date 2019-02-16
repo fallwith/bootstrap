@@ -58,6 +58,25 @@ process_dot_dir "$bootstrap_dir/dots"
 
 
 # --- --- --- --- --- --- ---
+# fonts
+# --- --- --- --- --- --- ---
+
+echo "Installing fonts..."
+for f in "$bootstrap_dir/fonts"/*; do
+  target="$target_dir/Library/Fonts/${f//$bootstrap_dir\/fonts\//}"
+  if [[ -e "$target" ]]; then
+    echo "$target already exists - skipping"
+    continue
+  else
+    echo "Installing font $f..."
+    cmd="cp \"$f\" \"$target\""
+    echo "$cmd"
+    eval "$cmd"
+  fi
+done
+
+
+# --- --- --- --- --- --- ---
 # set desired os x behavior
 # --- --- --- --- --- --- ---
 
