@@ -81,7 +81,9 @@ alias m='cmatrix -absu 4 -C magenta'
 # alias dirs='find . -type d -not -name .'
 alias dirs='fd -td'
 alias cls='\\builtin print -n \\ec'
-# alias cdg='cd ~/git && cd $(fd -td -d2 . | fzf --no-mouse --color=light +s --bind=ctrl-p:up,ctrl-n:down --header=Directory)'
+alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g" | fzf)'
+alias v='nvim_launch $(\nvim --headless --noplugin -co +q 2>&1 | grep -v "term://" | cut -d" " -f2- | tr -d "\r" | fzf)'
+
 # }}}
 
 # Functions {{{
@@ -118,18 +120,6 @@ function download() {
   rsync --progress --rsync-path="sudo rsync" -avhLe ssh $1:"$2" "$3"
 }
 
-function z() {
-  path=$(echo "$(cd ~ && fd -td -d1 -L)$(cd ~/git && fd -td -d2 .)" | fzf)
-  case $path in
-    public*|private*) cd ~/git/$path ;;
-    *) cd ~/$path ;;
-  esac
-}
-
-function v() {
-  file=$(\nvim --headless --noplugin -co +q 2>&1 | grep -v 'term://' | cut -d" " -f2- | tr -d '\r' | fzf)
-  nvim_launch "$file"
-}
 # }}}
 
 # Ruby {{{
