@@ -52,6 +52,7 @@ call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
 call minpac#add('nightsense/seabird')
 call minpac#add('morhetz/gruvbox')
 call minpac#add('NLKNguyen/papercolor-theme')
+call minpac#add('nightsense/snow')
 " call minpac#add('chriskempson/base16-vim')
 " call minpac#add('arcticicestudio/nord-vim')
 " call minpac#add('w0ng/vim-hybrid')
@@ -70,7 +71,7 @@ let g:python_path='python3'
 filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
 syntax enable               " enable syntax highlighting
 set t_Co=256                " 256 colors
-set bg=dark                 " use dark background
+" set bg=dark                 " use dark background
 set autowrite               " save on shell commands
 set noerrorbells            " don't make noise
 set showcmd                 " always display the status line
@@ -130,7 +131,10 @@ let g:clipboard = {
 
 " hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
 " colorscheme challenger_deep
+
+set bg=light
 colorscheme seagull
+
 " colorscheme gruvbox
 " let g:gruvbox_contrast_dark = "hard"
 " colorscheme hybrid
