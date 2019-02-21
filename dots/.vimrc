@@ -326,24 +326,12 @@ set splitright
 
 " }}}
 
-" Z - cd to recent / frequent directories {{{
-command! -nargs=* Z :call Z(<f-args>)
-function! Z(...)
-  if a:0 == 0
-    let list = split(system('fasd -dlR'), '\n')
-    let path = tlib#input#List('s', 'Select one', list)
-  else
-    let cmd = 'fasd -d -e printf'
-    for arg in a:000
-      let cmd = cmd . ' ' . arg
-    endfor
-    let path = system(cmd)
-  endif
-  if isdirectory(path)
-    echo path
-    exec 'cd ' . path
-  endif
-endfunction " }}}
+" Z - cd to an fzf selected dir
+function Zdir(path)
+  exec 'cd ' . "$HOME/" . a:path
+endfunction
+let Zfunc = function('Zdir')
+command! -bang Z :call fzf#run({'source': 'fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g"', 'sink': Zfunc})
 
 " set pwd to the dir path for the file in the current buffer
 " autocmd BufEnter * if expand('%:p:h') !~ '^/tmp' && expand('%:p:h') !~ '^scp://' | lcd %:p:h | endif
