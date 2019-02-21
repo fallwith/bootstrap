@@ -70,6 +70,7 @@ else
 fi
 set -o emacs
 set -o noclobber
+export PATH=~/bin:$PATH
 # }}}
 
 # Aliases {{{
@@ -81,6 +82,7 @@ alias m='cmatrix -absu 4 -C magenta'
 # alias dirs='find . -type d -not -name .'
 alias dirs='fd -td'
 alias cls='\\builtin print -n \\ec'
+alias sudo!!='sudo mksh -c "$(\\builtin fc -ln -1)"'
 alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g" | fzf)'
 alias v='nvim_launch $(\nvim --headless --noplugin -co +q 2>&1 | grep -v "term://" | cut -d" " -f2- | tr -d "\r" | fzf)'
 
@@ -120,15 +122,21 @@ function download() {
   rsync --progress --rsync-path="sudo rsync" -avhLe ssh $1:"$2" "$3"
 }
 
+# which process is using a port
+function port() {
+  p=$1
+  if [ "$p" == "" ]; then
+    echo "port() - determine which process is using a port"
+    echo "Usage: port <port number>"
+    return
+  fi
+  lsof -i :$p
+}
+
 # }}}
 
-# Ruby {{{
-alias ruby-install="\ruby-install --rubies-dir ~/.rubies"   # ruby-install ruby 2.2.2
-if [ -e /usr/local/opt/chruby/share/chruby ]; then
-  source /usr/local/opt/chruby/share/chruby/chruby.sh
-  source /usr/local/opt/chruby/share/chruby/auto.sh
-fi
-[ -e ~/.ruby-version ] && chruby $(<~/.ruby-version)
+# asdf {{{
+source ~/.asdf/asdf.sh
 # }}}
 
 # Go {{{
@@ -180,6 +188,7 @@ alias n=nvim_launch
 alias vi=nvim_launch
 alias vim=nvim_launch
 alias vimwiki="$nvim_target ~/.vimwiki/index.md"
+alias vw=vimwiki
 alias guide='$nvim_target ~/git/public/vim_guide/vim_guide.md'
 alias no="nvr -o"
 # }}}
@@ -192,8 +201,7 @@ export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/10/bin
 export PGHOST=localhost
 # }}}
 
-# Private rc content {{{
-[ -e ~/.mkshrc_private ] && source ~/.mkshrc_private
+# Redis {{{
+alias redisstart='redis-server /usr/local/etc/redis.conf &'
+alias redisstop='pkill redis-server'
 # }}}
-
-export PATH=~/bin:$PATH

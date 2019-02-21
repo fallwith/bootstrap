@@ -2,7 +2,9 @@
 # brew 'atool'
 # brew 'awscli'
 # brew 'bash'
-brew 'chruby', args: ['HEAD']
+# brew 'chruby', args: ['HEAD']
+# proj
+brew 'cmake'
 brew 'cmatrix'
 brew 'coreutils'
 brew 'ctags'
@@ -23,6 +25,8 @@ brew 'ghostscript'
 brew 'git'
 brew 'gnu-sed'
 brew 'go'
+# proj
+brew 'graphicsmagick'
 brew 'grip'
 # brew 'highlight'
 brew 'hugo'
@@ -50,10 +54,14 @@ brew 'openssl'
 brew 'parallel'
 # brew 'poppler'
 # brew 'postgresql'
+# proj
+brew 'pkg-config'
 brew 'ranger', args: ['HEAD']
 # brew 'reattach-to-user-namespace'
+# proj
+brew 'redis'
 brew 'ripgrep'
-brew 'ruby-install'
+# brew 'ruby-install'
 brew 'rustup-init'
 # brew 'sqlite'
 # brew 'the_silver_searcher'
@@ -67,8 +75,11 @@ brew 'vim'
 brew 'watch'
 brew 'w3m'
 brew 'wget'
+# proj
+brew 'yarn'
 # brew 'zsh'
 
+# proj
 # brew install heroku/brew/heroku
 tap 'heroku/brew'
 brew 'heroku'
