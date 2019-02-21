@@ -145,15 +145,27 @@ fi
 
 
 # --- --- --- --- --- --- ---
-# ruby enhancements
+# asdf
 # --- --- --- --- --- --- ---
 
-ruby_version=$(<~/.ruby-version)
-if [[ -e "$HOME/.rubies/ruby-$ruby_version" ]]; then
-  echo "Desited Ruby version $ruby_version is already installed"
+if [ -e "$target_dir/.asdf" ]; then
+  echo "asdf is already installed"
 else
-  echo "Installing desired Ruby version $ruby_version"
-  /usr/local/bin/ruby-install --rubies-dir $HOME/.rubies ruby $ruby_version
+  echo "Installing asdf..."
+  git clone https://github.com/asdf-vm/asdf.git "$target_dir/.asdf"
+fi
+source "$target_dir/.asdf/asdf.sh"
+for p in ruby nodejs; do
+  if $(asdf plugin-list | grep -q "^$p$"); then
+    echo "Adding '$p' plugin to asdf..."
+    asdf plugin-add $p
+  else
+    echo "asdf '$p' plugin already installed"
+  fi
+done
+if ! $(gpg -k | grep -q 94AE36675C464D64BAFA68DD7434390BDBE9B9C5); then
+  echo "Importing GPG keys for the nodejs release team..."
+  bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
 fi
 
 

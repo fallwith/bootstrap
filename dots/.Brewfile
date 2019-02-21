@@ -25,6 +25,8 @@ brew 'ghostscript'
 brew 'git'
 brew 'gnu-sed'
 brew 'go'
+# needed for asdf nodejs
+brew 'gpg'
 # proj
 brew 'graphicsmagick'
 brew 'grip'
