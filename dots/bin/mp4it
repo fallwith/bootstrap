@@ -169,7 +169,10 @@ function determine_playlist_info() {
     fi
     full_path="$dirname/../STREAM/$m2ts_file"
     input_files+=($full_path)
-    size=$(stat -c %s $full_path)
+    # GNU stat
+    # size=$(stat -c %s $full_path)
+    # BSD stat
+    size=$(stat -f%z $full_path)
     if [ $size -gt $largest_input_size ]; then
       largest_input_size=$size
       largest_input=$full_path
