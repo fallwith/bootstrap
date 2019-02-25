@@ -142,6 +142,12 @@ else
   echo "Installing neovim-remote..."
   /usr/local/bin/pip3 install --user --upgrade neovim-remote
 fi
+if (command -v vint >/dev/null); then
+  echo "vint already installed"
+else
+  echo "Installing vint..."
+  /usr/local/bin/pip3 install --user --upgrade vint
+fi
 
 
 # --- --- --- --- --- --- ---
