@@ -154,19 +154,23 @@ else
   echo "Installing asdf..."
   git clone https://github.com/asdf-vm/asdf.git "$target_dir/.asdf"
 fi
+set +eu
 source "$target_dir/.asdf/asdf.sh"
 for p in ruby nodejs; do
-  if $(asdf plugin-list | grep -q "^$p$"); then
+  if $(asdf plugin-list | grep -qE "^${p}$"); then
+    echo "asdf '$p' plugin already installed"
+  else
     echo "Adding '$p' plugin to asdf..."
     asdf plugin-add $p
-  else
-    echo "asdf '$p' plugin already installed"
   fi
 done
-if ! $(gpg -k | grep -q 94AE36675C464D64BAFA68DD7434390BDBE9B9C5); then
+if $(gpg -k | grep -q 94AE36675C464D64BAFA68DD7434390BDBE9B9C5); then
+  echo "nodejs release team GPG keys already imported"
+else
   echo "Importing GPG keys for the nodejs release team..."
   bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
 fi
+set -eu
 
 
 # --- --- --- --- --- --- ---
