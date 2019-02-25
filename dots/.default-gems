@@ -2,3 +2,4 @@ bundler
 pry
 awesome_print
 neovim
+rubocop
