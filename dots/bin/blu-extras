@@ -1,0 +1,56 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+
+# ExtrasProcessor - process Blu-ray extras
+class ExtrasProcessor
+  FOLDER_IMAGE_FILENAME = 'folder.jpg'.freeze
+
+  def initialize(path)
+    @path = path
+    @movie_root = File.expand_path('..', path)
+    @movie_name = File.basename(@movie_root)
+    @extras_movies = Dir.glob(File.join(path, '*.mp4'))
+    @extras_bases = @extras_movies.map { |em| em.sub(/\.mp4$/, '') }
+    @folder_image = File.join(@movie_root, FOLDER_IMAGE_FILENAME)
+  end
+
+  def process
+    copy_folder_image
+    write_xml_files
+  end
+
+  def self.usage
+    puts "Usage:\n\t#{$PROGRAM_NAME} </path/to/extras/dir>"
+  end
+
+  private
+
+  def copy_folder_image
+    raise "'#{@folder_image}' doesn't exist!" unless File.exist?(@folder_image)
+
+    @extras_bases.each do |base|
+      target = base + '.jpg'
+      FileUtils.cp_r(@folder_image, target) unless File.exist?(target)
+    end
+  end
+
+  def write_xml_files
+    @extras_bases.each do |base|
+      target = base + '.xml'
+      next if File.exist?(target)
+
+      File.open(target, 'w') do |f|
+        f.puts %(<media type="Extras">\n<title>#{@movie_name} Extras - ) +
+               %(#{base.split('/').last}</title>\n</media>)
+      end
+    end
+  end
+end
+
+if $PROGRAM_NAME == __FILE__
+  if ARGV.size != 1
+    ExtrasProcessor.usage
+    exit
+  end
+  ExtrasProcessor.new(ARGV[0]).process
+end
