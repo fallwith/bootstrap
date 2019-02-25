@@ -65,7 +65,6 @@ call minpac#add('KeitaNakamura/neodark.vim')
 " }}}
 " {{{ configuration
 let mapleader = ","         " use a comma as the <Leader> character
-set nocompatible            " disable vi compatibilty
 let g:ruby_path='~/bin/ruby'
 let g:python_path='python3'
 filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
@@ -78,12 +77,11 @@ set showcmd                 " always display the status line
 set ruler                   " enable the ruler
 set timeoutlen=250          " time to wait after ESC
 set expandtab               " expand tabs to spaces
-set ts=2                    " tabs are 2 spaces
-set bs=2                    " backspace over everything in insert mode
+set tabstop=2                    " tabs are 2 spaces
+set backspace=2                    " backspace over everything in insert mode
 set shiftwidth=2            " tabs under smart indent
 set laststatus=2            " always show status line
 set autoindent              " a new line is indented as far as the previous one
-set smartindent             " enable intelligent indenting behavior
 set hlsearch                " highlight located values being searched for
 set ignorecase              " case insensitive searching
 set smartcase               " trigger case sensitivity when an upper case char is used
@@ -92,10 +90,10 @@ set nocindent               " disable c style indenting
 set nobackup                " disable backups"
 set nowritebackup           " disable backups"
 set noswapfile              " disable the creation of .swp swap files
-set nu                      " enable line numbers
-" set rnu                     " enable relative line numbers
+set number                  " enable line numbers
+" set relativenumber          " enable relative line numbers
 set numberwidth=5           " specify line numbers column width
-set vb t_vb=                " disable bell
+set visualbell t_vb=        " disable bell
 "set tags=.tags;/            " look for a .tags ctags file and keep looking all the way up to /
 "set cursorline              " highlight the line the cursor resides on
 set shiftround              " round indentation to a multiple of 'shiftwidth'
@@ -105,12 +103,12 @@ set history=1000            " increase the default number of remembered items fr
 set nojoinspaces            " don't use extra space when joining lines (with J)
 set nrformats=              " treat all numerals as decimal (leading zeroes won't signify octal)
 set pastetoggle=<F2>        " set a key to toggle paste mode
-set cc=120                  " (ruler) colorcolumn. column 120 is visually styled
+set colorcolumn=80,120      " (ruler) colorcolumn - (comma delimited) list of columns to visually style
 set complete-=i             " remove 'included files' from the list of autocomplete sources
 set clipboard=unnamed       " yank to / put from the operating system clipboard
 set list                    " show invisibles
-set ff=unix                 " unix fileformat
-set tgc                     " enable gui colors in the terminal (true 24 bit color support)
+set fileformat=unix         " unix fileformat
+set termguicolors           " enable gui colors in the terminal (true 24 bit color support)
 set shell=/usr/local/bin/mksh
 set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
 setglobal commentstring=#\ %s
@@ -132,7 +130,7 @@ let g:clipboard = {
 " hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
 " colorscheme challenger_deep
 
-set bg=light
+set background=light
 colorscheme seagull
 
 " colorscheme gruvbox
@@ -145,8 +143,9 @@ colorscheme seagull
 " let g:neodark#terminal_transparent = 1
 
 
-" alacritty fix https://github.com/jwilm/alacritty/issues/1082
-hi Normal ctermbg=NONE guibg=NONE
+" allow alacritty/kitty to retain transparency with (n)vim
+" https://github.com/jwilm/alacritty/issues/1082
+highlight Normal ctermbg=NONE guibg=NONE
 
 
 " nvim colors the terminal with colorscheme values
@@ -160,26 +159,20 @@ if !has('nvim')
               \]
 endif
 
-" disable the colorscheme's background (permits opacity with alacritty)
-" highlight Normal ctermbg=NONE
-" highlight nonText ctermbg=NONE
-" highlight Normal guibg=NONE
-" highlight nonText guibg=NONE
-
 " }}}
 " hooks / filetype specific {{{
 
 " automatically leave paste mode after having pasted in text
-au InsertLeave * silent! set nopaste
+autocmd InsertLeave * silent! set nopaste
 
 " Markdown files
-au BufRead,BufNewFile *.md set cc=80
+autocmd BufRead,BufNewFile *.md set colorcolumn=80
 
 " Terraform templates
 autocmd FileType tf setlocal commentstring=#\ %s
 
 " Git commit messages
-autocmd Filetype gitcommit setlocal spell textwidth=72 cc=50,72
+autocmd Filetype gitcommit setlocal spell textwidth=72 colorcolumn=50,72
 if has('nvim') && executable('nvr')
   let $VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
 endif
@@ -257,9 +250,9 @@ let g:diminactive_use_syntax = 0
 " }}}
 " {{{ custom mappings
 :noremap <Leader>i :set list!<CR>       " toggle display of invisibles
-map w!! %!sudo tee > /dev/null %        " force a write if vim was launched without sudo
+:noremap w!! %!sudo tee > /dev/null %        " force a write if vim was launched without sudo
 nmap <silent> <Leader>/ ;nohlsearch<CR> " clear currently displayed search highlighting
-map <Leader>r ;redraw!<CR>              " re-render the current window
+:noremap <Leader>r ;redraw!<CR>              " re-render the current window
 " alias ctrl-p to shift-tab for autocompletion
 imap <S-Tab> <C-P>
 
@@ -292,7 +285,6 @@ nnoremap <Down> :resize -2<CR>
 " terminal
 " C-o to switch to normal mode
 tmap <C-o> <C-\><C-n>
-" map <Leader>t ;split\|terminal<CR>
 map <Leader>t ;terminal<CR>
 " }}}
 " {{{ tabs and splits
@@ -327,11 +319,8 @@ set splitright
 " }}}
 
 " Z - cd to an fzf selected dir
-function Zdir(path)
+function Zdir(path) abort
   exec 'cd ' . "$HOME/" . a:path
 endfunction
 let Zfunc = function('Zdir')
 command! -bang Z :call fzf#run({'source': 'fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g"', 'sink': Zfunc})
-
-" set pwd to the dir path for the file in the current buffer
-" autocmd BufEnter * if expand('%:p:h') !~ '^/tmp' && expand('%:p:h') !~ '^scp://' | lcd %:p:h | endif
