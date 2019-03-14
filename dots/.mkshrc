@@ -85,6 +85,8 @@ alias cls='\\builtin print -n \\ec'
 alias sudo!!='sudo mksh -c "$(\\builtin fc -ln -1)"'
 alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g" | fzf)'
 alias v='nvim_launch $(\nvim --headless --noplugin -co +q 2>&1 | grep -v "term://" | cut -d" " -f2- | tr -d "\r" | fzf)'
+# BSD ls
+alias ll='ls -lGAFT'
 
 # }}}
 
@@ -135,6 +137,10 @@ function port() {
 
 # }}}
 
+# python {{{
+export PATH=~/Library/Python/3.7/bin:$PATH
+# }}}
+
 # asdf {{{
 source ~/.asdf/asdf.sh
 # }}}
@@ -167,7 +173,7 @@ export FZF_DEFAULT_OPTS='--no-mouse --color=light --bind=ctrl-p:up,ctrl-n:down'
 # --group-directories-first = does what it says on the tin
 # --git = provides a git status for each file (if under revision control)
 # --time-style long-iso = use a long iso format for date/time info
-alias ll="exa -lagF --group-directories-first --git --time-style long-iso"
+# alias ll="exa -lagF --group-directories-first --git --time-style long-iso"
 # }}}
 
 # Vim / Neovim {{{
@@ -204,4 +210,10 @@ export PGHOST=localhost
 # Redis {{{
 alias redisstart='redis-server /usr/local/etc/redis.conf &'
 alias redisstop='pkill redis-server'
+# }}}
+
+# .mkshrc_private {{{
+  if [ -e ~/.mkshrc_private ]; then
+    source ~/.mkshrc_private
+  fi
 # }}}

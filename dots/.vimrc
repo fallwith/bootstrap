@@ -43,7 +43,7 @@ call minpac#add('blueyed/vim-diminactive')
 " typescript-vim: functionality for TypeScript development
 call minpac#add('leafgarland/typescript-vim')
 
-" themes
+" colorschemes
 call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
 " call minpac#add('challenger-deep-theme/vim', { 'as': 'challenger-deep'})
 " TODO: minpac can't yet handle subdirectories
@@ -58,6 +58,11 @@ call minpac#add('nightsense/snow')
 " call minpac#add('arcticicestudio/nord-vim')
 " call minpac#add('w0ng/vim-hybrid')
 call minpac#add('KeitaNakamura/neodark.vim')
+call minpac#add('joshdick/onedark.vim')
+call minpac#add('drewtempelmeyer/palenight.vim')
+call minpac#add('ayu-theme/ayu-vim')
+call minpac#add('tssm/fairyfloss.vim')
+
 
 " nvim -c "call minpac#update('', {'do': 'quit'})"
 "call minpac#update()
@@ -72,15 +77,14 @@ let g:python_path='python3'
 filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
 syntax enable               " enable syntax highlighting
 set t_Co=256                " 256 colors
-" set bg=dark                 " use dark background
 set autowrite               " save on shell commands
 set noerrorbells            " don't make noise
 set showcmd                 " always display the status line
 set ruler                   " enable the ruler
 set timeoutlen=250          " time to wait after ESC
 set expandtab               " expand tabs to spaces
-set tabstop=2                    " tabs are 2 spaces
-set backspace=2                    " backspace over everything in insert mode
+set tabstop=2               " tabs are 2 spaces
+set backspace=2             " backspace over everything in insert mode
 set shiftwidth=2            " tabs under smart indent
 set laststatus=2            " always show status line
 set autoindent              " a new line is indented as far as the previous one
@@ -129,26 +133,26 @@ let g:clipboard = {
   \ 'cache_enabled': 0,
   \ }
 
-" hi ColorColumn guibg=grey13 ctermbg=246  " apply the desired visual styling to the colorcolumn
-" colorscheme challenger_deep
+" time changing colorscheme experiment...
+" if strftime("%H") < 19
+"   let ayucolor="light"
+" else
+"   let ayucolor="dark"
+" endif
+" colorscheme ayu
+" highlight Normal ctermbg=NONE guibg=NONE
+" if strftime("%H") < 19
+"   set background=light
+" else
+"   set background=dark
+" endif
 
 set background=light
 colorscheme seagull
 
-" colorscheme gruvbox
-" let g:gruvbox_contrast_dark = "hard"
-" colorscheme hybrid
-
-" colorscheme neodark
-" let g:neodark#background = '#202020'
-" let g:neodark#use_256color = 1
-" let g:neodark#terminal_transparent = 1
-
-
 " allow alacritty/kitty to retain transparency with (n)vim
 " https://github.com/jwilm/alacritty/issues/1082
 highlight Normal ctermbg=NONE guibg=NONE
-
 
 " nvim colors the terminal with colorscheme values
 " vim needs terminal_ansi_colors
@@ -193,6 +197,8 @@ set runtimepath+=/usr/local/opt/fzf
 
 " minpac
 :noremap <Leader>m :call minpac#update()<CR>
+command! Minpacupdate :call minpac#update()
+command! Minpacclean :call minpac#clean()
 
 " vim-grepper
 let g:grepper = {}
