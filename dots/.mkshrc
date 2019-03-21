@@ -212,6 +212,32 @@ alias redisstart='redis-server /usr/local/etc/redis.conf &'
 alias redisstop='pkill redis-server'
 # }}}
 
+# colorschemes {{{
+
+function setvcs() {
+  vimcontent="$1"
+  kittycolors="$2"
+  vcs=~/.config/kitty/vimcolorscheme
+  rm -f $vcs
+  echo -e "$vimcontent" > $vcs
+  ln -sf "$HOME/.config/kitty/$kittycolors" "$HOME/.config/kitty/colorscheme.conf"
+  kitty @ set-colors --all --configured "~/.config/kitty/$kittycolors"
+}
+
+function dark() {
+  setvcs "let g:lightline={'colorscheme': 'gruvbox'}\nset bg=dark\ncolorscheme gruvbox" gruvbox-dark.conf
+}
+
+function yellow() {
+  setvcs "let g:lightline={'colorscheme': 'gruvbox'}\nset bg=light\ncolorscheme gruvbox" gruvbox-light.conf
+}
+
+function light() {
+  setvcs "let g:lightline={'colorscheme': 'one'}\nset bg=light\ncolorscheme seagull" seagull.conf
+}
+
+# }}}
+
 # .mkshrc_private {{{
   if [ -e ~/.mkshrc_private ]; then
     source ~/.mkshrc_private

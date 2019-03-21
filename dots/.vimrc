@@ -1,11 +1,13 @@
 " vim:fdm=marker
-scriptencoding utf-8        " encoding
+scriptencoding utf-8
+
+" {{{ VIMHOME
 if has('nvim')
   let $VIMHOME = $HOME.'/.config/nvim'
 else
   let $VIMHOME = $HOME.'/.vim'
 endif
-
+" }}}
 " minpac {{{
 let $pacpath = $VIMHOME.'/pack/minpac/opt/minpac'
 if empty(glob($pacpath))
@@ -136,22 +138,38 @@ let g:clipboard = {
   \ 'cache_enabled': 0,
   \ }
 
+" }}}
+" {{{ colorscheme settings
+
 " time changing colorscheme experiment...
-" if strftime("%H") < 19
-"   let ayucolor="light"
-" else
-"   let ayucolor="dark"
-" endif
-" colorscheme ayu
-" highlight Normal ctermbg=NONE guibg=NONE
-" if strftime("%H") < 19
-"   set background=light
-" else
+" let thehour = strftime("%H")
+" if thehour < 6 || thehour > 19
 "   set background=dark
+"   colorscheme gruvbox
+" elseif thehour >= 5 && thehour < 17
+"   set background=light
+"   colorscheme seagull
+" else
+"   set background=light
+"   colorscheme gruvbox
 " endif
 
-set background=light
-colorscheme seagull
+" set background=light
+" colorscheme seagull
+
+" gruvbox
+" let g:gruvbox_contrast_dark='soft'
+let g:gruvbox_improved_strings=1
+let g:gruvbox_improved_warnings=1
+let g:gruvbox_italic=1
+
+if filereadable($HOME.'/.config/kitty/vimcolorscheme')
+  source ~/.config/kitty/vimcolorscheme
+else
+  set background=dark
+  colorscheme gruvbox
+  let g:lightline = { 'colorscheme': 'gruvbox' }
+end
 
 " allow alacritty/kitty to retain transparency with (n)vim
 " https://github.com/jwilm/alacritty/issues/1082
@@ -167,7 +185,6 @@ if !has('nvim')
               \ '#7aa6da', '#b77ee0', '#54ced6', '#ffffff'
               \]
 endif
-
 " }}}
 " hooks / filetype specific {{{
 
@@ -211,14 +228,6 @@ cabbrev rg Grepper -tool rg -highlight <CR>
 
 " vim-test
 let g:test#runner_commands = ['RSpec']
-
-" Lightline
-" scheme list: https://github.com/itchyny/lightline.vim/tree/master/autoload/lightline/colorscheme
-" let g:lightline = { 'colorscheme': 'challenger_deep' }
-" let g:lightline = { 'colorscheme': 'wombat' }
-" let g:lightline = { 'colorscheme': 'PaperColor_light' }
-" let g:lightline = { 'colorscheme': 'nord' }
-let g:lightline = { 'colorscheme': 'one' }
 
 " ale
 " check health with :ALEInfo
@@ -337,10 +346,11 @@ set splitbelow
 set splitright
 
 " }}}
-
+" {{{ function
 " Z - cd to an fzf selected dir
 function Zdir(path) abort
   exec 'cd ' . $HOME . '/' . a:path
 endfunction
 let Zfunc = function('Zdir')
 command! -bang Z :call fzf#run({'source': 'fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g"', 'sink': Zfunc})
+" }}}
