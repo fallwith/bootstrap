@@ -27,6 +27,7 @@ class ExtrasProcessor
 
   def copy_folder_image
     raise "'#{@folder_image}' doesn't exist!" unless File.exist?(@folder_image)
+    FileUtils.cp(@folder_image, File.join(@path, FOLDER_IMAGE_FILENAME))
 
     @extras_bases.each do |base|
       target = base + '.jpg'
