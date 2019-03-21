@@ -91,7 +91,10 @@ set autoindent              " a new line is indented as far as the previous one
 set hlsearch                " highlight located values being searched for
 set ignorecase              " case insensitive searching
 set smartcase               " trigger case sensitivity when an upper case char is used
-set incsearch               " as-you-type searching
+set incsearch               " show incremental matches while searching ( /<pattern> )
+if has('nvim')
+  set inccommand=nosplit    " show incremental results during a command ( :%s/<pattern> )
+end
 set nocindent               " disable c style indenting
 set nobackup                " disable backups"
 set nowritebackup           " disable backups"
