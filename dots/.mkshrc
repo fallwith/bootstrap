@@ -220,7 +220,7 @@ function setcolorscheme() {
   vcs=~/.config/kitty/vimcolorscheme
   rm -f $vcs
   echo -e "$vimcontent" > $vcs
-  ln -sf "$HOME/.config/kitty/$kittycolors" "$HOME/.config/kitty/colorscheme.conf"
+  ln -sf "$HOME/.config/kitty/${kittycolors}.conf" "$HOME/.config/kitty/colorscheme.conf"
   kitty @ set-colors --all --configured "~/.config/kitty/${kittycolors}.conf"
 }
 function cs() {
