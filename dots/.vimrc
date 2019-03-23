@@ -63,6 +63,7 @@ call minpac#add('drewtempelmeyer/palenight.vim')
 call minpac#add('ayu-theme/ayu-vim')
 call minpac#add('tssm/fairyfloss.vim')
 call minpac#add('jacoborus/tender.vim')
+call minpac#add('cocopon/iceberg.vim')
 
 
 " nvim -c "call minpac#update('', {'do': 'quit'})"
