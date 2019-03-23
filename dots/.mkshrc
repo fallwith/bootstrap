@@ -214,26 +214,35 @@ alias redisstop='pkill redis-server'
 
 # colorschemes {{{
 
-function setvcs() {
+function setcolorscheme() {
   vimcontent="$1"
   kittycolors="$2"
   vcs=~/.config/kitty/vimcolorscheme
   rm -f $vcs
   echo -e "$vimcontent" > $vcs
   ln -sf "$HOME/.config/kitty/$kittycolors" "$HOME/.config/kitty/colorscheme.conf"
-  kitty @ set-colors --all --configured "~/.config/kitty/$kittycolors"
+  kitty @ set-colors --all --configured "~/.config/kitty/${kittycolors}.conf"
 }
-
-function dark() {
-  setvcs "let g:lightline={'colorscheme': 'gruvbox'}\nset bg=dark\ncolorscheme gruvbox" gruvbox-dark.conf
-}
-
-function yellow() {
-  setvcs "let g:lightline={'colorscheme': 'gruvbox'}\nset bg=light\ncolorscheme gruvbox" gruvbox-light.conf
-}
-
-function light() {
-  setvcs "let g:lightline={'colorscheme': 'one'}\nset bg=light\ncolorscheme seagull" seagull.conf
+function cs() {
+  choices='Gruvbox Dark\nGruvbox Light\nFairy Floss\nSeagull\nTender'
+  choice=$(echo "$choices" | fzf)
+  case "$choice" in
+    "Gruvbox Dark" )
+      setcolorscheme "let g:lightline={'colorscheme': 'gruvbox'}\nset bg=dark\ncolorscheme gruvbox" gruvbox-dark
+      ;;
+    "Gruvbox Light" )
+      setcolorscheme "let g:lightline={'colorscheme': 'gruvbox'}\nset bg=light\ncolorscheme gruvbox" gruvbox-light
+      ;;
+    "Fairy Floss" )
+      setcolorscheme "let g:lightline={'colorscheme': 'wombat'}\nset bg=dark\ncolorscheme fairyfloss" fairyfloss
+      ;;
+    "Seagull" )
+      setcolorscheme "let g:lightline={'colorscheme': 'one'}\nset bg=light\ncolorscheme seagull" seagull
+      ;;
+    "Tender" )
+      setcolorscheme "let g:lightline={'colorscheme': 'powerline'}\nset bg=dark\ncolorscheme tender" tender
+      ;;
+  esac
 }
 
 # }}}
