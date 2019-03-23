@@ -18,8 +18,6 @@ packadd minpac
 call minpac#init()
 " minpac: minimal package manager
 call minpac#add('k-takata/minpac', {'type': 'opt'})
-" lightline: a lightweight provider of a fancy status line
-call minpac#add('itchyny/lightline.vim')
 " vim-commentary: allows for the commenting/uncommenting of text
 call minpac#add('tpope/vim-commentary')
 " vim-surround: add, remove, swap surroundings like quotes or braces
@@ -169,7 +167,6 @@ if filereadable($HOME.'/.config/kitty/vimcolorscheme')
 else
   set background=dark
   colorscheme gruvbox
-  let g:lightline = { 'colorscheme': 'gruvbox' }
 end
 
 " allow alacritty/kitty to retain transparency with (n)vim
