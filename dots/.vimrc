@@ -159,8 +159,8 @@ let g:clipboard = {
 
 " gruvbox
 " let g:gruvbox_contrast_dark='soft'
-let g:gruvbox_improved_strings=1
-let g:gruvbox_improved_warnings=1
+" let g:gruvbox_improved_strings=1
+" let g:gruvbox_improved_warnings=1
 let g:gruvbox_italic=1
 
 if filereadable($HOME.'/.config/kitty/vimcolorscheme')
