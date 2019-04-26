@@ -87,6 +87,7 @@ alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s
 alias v='nvim_launch $(\nvim --headless --noplugin -co +q 2>&1 | grep -v "term://" | cut -d" " -f2- | tr -d "\r" | fzf)'
 # BSD ls
 alias ll='ls -lGAFT'
+alias font="kitty @ set-font-size"
 
 # }}}
 
