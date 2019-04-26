@@ -1,10 +1,10 @@
 # see https://github.com/pry/pry/wiki/Customization-and-configuration
-require "awesome_print"
-AwesomePrint.pry!
+# require "awesome_print"
+# AwesomePrint.pry!
 
 Pry.editor = "vim"
 #Pry.config.prompt_name = "\xF0\x9F\x90\xA8  "
-Pry.print = proc { |output, value| output.puts value.ai(indent: 2) }
+#Pry.print = proc { |output, value| output.puts value.ai(indent: 2) }
 
 # tips
 # ----
