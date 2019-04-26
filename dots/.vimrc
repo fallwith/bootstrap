@@ -38,10 +38,10 @@ call minpac#add('janko-m/vim-test')
 call minpac#add('vimwiki/vimwiki')
 " vim-vinegar: enhanced netrw file browsing
 call minpac#add('tpope/vim-vinegar')
-" vim-diminactive: dim inactive windows
-call minpac#add('blueyed/vim-diminactive')
 " typescript-vim: functionality for TypeScript development
 call minpac#add('leafgarland/typescript-vim')
+" vim-hexokinase: display color previews inline
+call minpac#add('RRethy/vim-hexokinase')
 
 " colorschemes
 call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
@@ -272,8 +272,8 @@ let g:go_fmt_options = '-s'
 " vimwiki
 let g:vimwiki_list = [{'path': '~/.vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 
-" vim-diminactive
-let g:diminactive_use_syntax = 0
+" vim-hexokinase
+let g:Hexokinase_virtualText = '██████'
 
 " }}}
 " {{{ custom mappings
