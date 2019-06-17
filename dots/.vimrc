@@ -39,9 +39,11 @@ call minpac#add('vimwiki/vimwiki')
 " vim-vinegar: enhanced netrw file browsing
 call minpac#add('tpope/vim-vinegar')
 " typescript-vim: functionality for TypeScript development
-call minpac#add('leafgarland/typescript-vim')
+" call minpac#add('leafgarland/typescript-vim')
 " vim-hexokinase: display color previews inline
 call minpac#add('RRethy/vim-hexokinase')
+" vim-fugitive: 'may very well be the best Git wrapper of all time'
+call minpac#add('tpope/vim-fugitive')
 
 " colorschemes
 call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
@@ -64,7 +66,6 @@ call minpac#add('ayu-theme/ayu-vim')
 call minpac#add('tssm/fairyfloss.vim')
 call minpac#add('jacoborus/tender.vim')
 call minpac#add('cocopon/iceberg.vim')
-
 
 " nvim -c "call minpac#update('', {'do': 'quit'})"
 "call minpac#update()
@@ -205,7 +206,8 @@ augroup gitcommit
 augroup END
 
 " Terminal - close buffer on exit
-autocmd TermClose * bd!
+" prevents vim-test from working
+" autocmd TermClose * bd!
 
 " }}}
 " packages {{{
@@ -226,7 +228,14 @@ nno <leader>g :Grepper -tool rg -highlight <CR>
 cabbrev rg Grepper -tool rg -highlight <CR>
 
 " vim-test
+" by default all test tools are loaded. load only these:
 let g:test#runner_commands = ['RSpec']
+" mappings
+nno <leader>n :TestNearest<CR>
+nno <leader>r :TestFile<CR>
+nno <leader>l :TestLast<CR>
+nno <leader>a :TestSuite<CR>
+nno <leader>o :TestVisit<CR>
 
 " ale
 " check health with :ALEInfo
@@ -280,7 +289,7 @@ let g:Hexokinase_virtualText = '██████'
 :noremap <Leader>i :set list!<CR>       " toggle display of invisibles
 :noremap w!! %!sudo tee > /dev/null %        " force a write if vim was launched without sudo
 nmap <silent> <Leader>/ ;nohlsearch<CR> " clear currently displayed search highlighting
-:noremap <Leader>r ;redraw!<CR>              " re-render the current window
+" :noremap <Leader>r ;redraw!<CR>              " re-render the current window
 " alias ctrl-p to shift-tab for autocompletion
 imap <S-Tab> <C-P>
 
@@ -317,8 +326,8 @@ map <Leader>t ;terminal<CR>
 " }}}
 " {{{ tabs and splits
 
-" tn to open a new tab
-nnoremap <Leader>n :tabnew<CR>
+" open a new tab
+" nnoremap <Leader>n :tabnew<CR>
 
 " vertical and horizontal split to new buffer
 :noremap <Leader>v :below vnew<CR>
