@@ -224,7 +224,7 @@ function setcolorscheme() {
   kitty @ set-colors --all --configured "~/.config/kitty/${kittycolors}.conf"
 }
 function cs() {
-  choices='Fairy Floss\nGruvbox Dark\nGruvbox Light\nIceberg\nSeagull\nTender'
+  choices='Fairy Floss\nGruvbox Dark\nGruvbox Light\nSolarized8 Flat\nIceberg\nSeagull\nTender'
   choice=$(echo "$choices" | fzf)
   case "$choice" in
     "Fairy Floss" )
@@ -235,6 +235,9 @@ function cs() {
       ;;
     "Gruvbox Light" )
       setcolorscheme "set bg=light\ncolorscheme gruvbox" gruvbox-light
+      ;;
+    "Solarized8 Flat" )
+      setcolorscheme "set bg=light\ncolorscheme solarized8_flat" solarized8_flat
       ;;
     "Iceberg" )
       setcolorscheme "set bg=dark\ncolorscheme iceberg" iceberg
