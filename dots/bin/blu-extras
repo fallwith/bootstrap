@@ -6,10 +6,10 @@ class ExtrasProcessor
   FOLDER_IMAGE_FILENAME = 'folder.jpg'.freeze
 
   def initialize(path)
-    @path = path
-    @movie_root = File.expand_path('..', path)
+    @path = path || './Extras'
+    @movie_root = File.expand_path('..', @path)
     @movie_name = File.basename(@movie_root)
-    @extras_movies = Dir.glob(File.join(path, '*.mp4'))
+    @extras_movies = Dir.glob(File.join(@path, '*.mp4'))
     @extras_bases = @extras_movies.map { |em| em.sub(/\.mp4$/, '') }
     @folder_image = File.join(@movie_root, FOLDER_IMAGE_FILENAME)
   end
@@ -27,6 +27,7 @@ class ExtrasProcessor
 
   def copy_folder_image
     raise "'#{@folder_image}' doesn't exist!" unless File.exist?(@folder_image)
+
     FileUtils.cp(@folder_image, File.join(@path, FOLDER_IMAGE_FILENAME))
 
     @extras_bases.each do |base|
@@ -49,7 +50,7 @@ class ExtrasProcessor
 end
 
 if $PROGRAM_NAME == __FILE__
-  if ARGV.size != 1
+  unless [0, 1].include?(ARGV.size)
     ExtrasProcessor.usage
     exit
   end
