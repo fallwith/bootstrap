@@ -275,14 +275,18 @@ function determine_audio() {
   else
     info_cmd="$info_cmd | head -1"
   fi
+  set +e
   info=$(eval $info_cmd)
-
+  set -e
   if (echo $info | grep -q mono); then
     mono=1
   else
     mono=0
   fi
-
+  if [ "$info" == "" ]; then
+    echo "No audio tracks found - audio will not be included in the output"
+    return
+  fi
   set +e
   bitrate=$(echo $info | sed 's/ (default)//' | grep "kb/s$" |awk '{ print $(NF-1) }')
   set -e
