@@ -284,7 +284,6 @@ let g:vimwiki_list = [{'path': '~/.vimwiki/', 'syntax': 'markdown', 'ext': '.md'
 
 " vim-hexokinase
 let g:Hexokinase_virtualText = '██████'
-
 " }}}
 " {{{ custom mappings
 :noremap <Leader>i :set list!<CR>       " toggle display of invisibles
