@@ -83,8 +83,8 @@ alias m='cmatrix -absu 4 -C magenta'
 alias dirs='fd -td'
 alias cls='\\builtin print -n \\ec'
 alias sudo!!='sudo mksh -c "$(\\builtin fc -ln -1)"'
-alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g" | fzf)'
-alias v='nvim_launch $(\nvim --headless --noplugin -co +q 2>&1 | grep -v "term://" | cut -d" " -f2- | tr -d "\r" | fzf)'
+alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g" | sk)'
+alias v='nvim_launch $(\nvim --headless --noplugin -co +q 2>&1 | grep -v "term://" | cut -d" " -f2- | tr -d "\r" | sk)'
 # BSD ls
 alias ll='ls -lGAFTh'
 alias font="kitty @ set-font-size"
@@ -135,6 +135,10 @@ function port() {
   lsof -i :$p
 }
 
+function fail() {
+  while "$@"; do :; done
+}
+
 # }}}
 
 # python {{{
@@ -174,6 +178,11 @@ export FZF_DEFAULT_OPTS='--no-mouse --color=light --bind=ctrl-p:up,ctrl-n:down'
 # --git = provides a git status for each file (if under revision control)
 # --time-style long-iso = use a long iso format for date/time info
 # alias ll="exa -lagF --group-directories-first --git --time-style long-iso"
+# }}}
+
+# Skim {{{
+export SKIM_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+export SKIM_DEFAULT_OPTIONS='--color=light,fg:0,bg:231,current_bg:225,info:199,hl:124,current_match:93'
 # }}}
 
 # Vim / Neovim {{{
@@ -224,8 +233,8 @@ function setcolorscheme() {
   kitty @ set-colors --all --configured "~/.config/kitty/${kittycolors}.conf"
 }
 function cs() {
-  choices='Fairy Floss\nGruvbox Dark\nGruvbox Light\nSolarized8 Flat\nIceberg\nSeagull\nTender'
-  choice=$(echo "$choices" | fzf)
+  choices='Fairy Floss\nGruvbox Dark\nGruvbox Light\nTomorrowBox\nSolarized8 Flat\nIceberg\nSeagull\nTender'
+  choice=$(echo "$choices" | skim)
   case "$choice" in
     "Fairy Floss" )
       setcolorscheme "set bg=dark\ncolorscheme fairyfloss" fairyfloss
@@ -235,6 +244,9 @@ function cs() {
       ;;
     "Gruvbox Light" )
       setcolorscheme "set bg=light\ncolorscheme gruvbox" gruvbox-light
+      ;;
+    "TomorrowBox" )
+      setcolorscheme "set bg=dark\ncolorscheme gruvbox" tomorrow-night-bright
       ;;
     "Solarized8 Flat" )
       setcolorscheme "set bg=light\ncolorscheme solarized8_flat" solarized8_flat

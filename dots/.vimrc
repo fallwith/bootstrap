@@ -25,9 +25,11 @@ call minpac#add('tpope/vim-surround')
 " vim-endwise: add helpful closing structures (like 'end') for Ruby and others
 call minpac#add('tpope/vim-endwise')
 " vim-go: functionality for go programming development
-call minpac#add('fatih/vim-go')
+" call minpac#add('fatih/vim-go')
 " fzf: fuzzy finder integration for Vim
-call minpac#add('junegunn/fzf.vim')
+" call minpac#add('junegunn/fzf.vim')
+" skim: fuzzy finder integration for Vim
+call minpac#add('lotabout/skim')
 " ale is an async linter
 call minpac#add('w0rp/ale')
 " vim-grepper provides async grepping
@@ -41,7 +43,7 @@ call minpac#add('tpope/vim-vinegar')
 " typescript-vim: functionality for TypeScript development
 " call minpac#add('leafgarland/typescript-vim')
 " vim-hexokinase: display color previews inline
-call minpac#add('RRethy/vim-hexokinase')
+" call minpac#add('RRethy/vim-hexokinase')
 " vim-fugitive: 'may very well be the best Git wrapper of all time'
 call minpac#add('tpope/vim-fugitive')
 
@@ -122,7 +124,7 @@ set clipboard=unnamed       " yank to / put from the operating system clipboard
 set list                    " show invisibles
 set fileformat=unix         " unix fileformat
 set termguicolors           " enable gui colors in the terminal (true 24 bit color support)
-set shell=/usr/local/bin/mksh
+set shell=/usr/local/bin/mksh\ -l
 set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
 setglobal commentstring=#\ %s
 
@@ -206,6 +208,11 @@ augroup gitcommit
   endif
 augroup END
 
+" Terminal - disable line numbers
+"   this allows nested Vim sessions to have the correct column count line up
+"   with the color column
+autocmd TermOpen * setlocal nonumber norelativenumber
+
 " Terminal - close buffer on exit
 " prevents vim-test from working
 " autocmd TermClose * bd!
@@ -213,9 +220,15 @@ augroup END
 " }}}
 " packages {{{
 " fzf
+" set runtimepath+=/usr/local/opt/fzf
+" :noremap <Leader>f :FZF<CR>
+" :noremap <Leader>b :Buffers<CR>
+
+" skim
 set runtimepath+=/usr/local/opt/fzf
-:noremap <Leader>f :FZF<CR>
-:noremap <Leader>b :Buffers<CR>
+:noremap <Leader>f :SK<CR>
+:noremap <Leader>b :buffers<CR>
+
 
 " minpac
 :noremap <Leader>m :call minpac#update()<CR>
@@ -276,14 +289,14 @@ let g:ale_ruby_rubocop_executable = $HOME.'/.asdf/shims/rubocop'
 " let g:ale_go_govet_executable = expand("<sfile>:p:h").'/../../.go/bin/govet'
 " let g:ale_go_fmt_options = '-s'
 
-" vim-go
-let g:go_fmt_options = '-s'
+" " vim-go
+" let g:go_fmt_options = '-s'
 
 " vimwiki
 let g:vimwiki_list = [{'path': '~/.vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 
-" vim-hexokinase
-let g:Hexokinase_virtualText = '██████'
+" " vim-hexokinase
+" let g:Hexokinase_virtualText = '██████'
 " }}}
 " {{{ custom mappings
 :noremap <Leader>i :set list!<CR>       " toggle display of invisibles
@@ -356,9 +369,9 @@ set splitright
 " }}}
 " {{{ function
 " Z - cd to an fzf selected dir
-function Zdir(path) abort
-  exec 'cd ' . $HOME . '/' . a:path
-endfunction
-let Zfunc = function('Zdir')
-command! -bang Z :call fzf#run({'source': 'fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g"', 'sink': Zfunc})
+" function Zdir(path) abort
+"   exec 'cd ' . $HOME . '/' . a:path
+" endfunction
+" let Zfunc = function('Zdir')
+" command! -bang Z :call fzf#run({'source': 'fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g"', 'sink': Zfunc})
 " }}}
