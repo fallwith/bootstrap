@@ -394,13 +394,17 @@ function! ChangeDirectoryToProjectRoot()
   if empty(b:path) | let b:path = getcwd() | endif
   let root_path = getbufvar('%', 'rootPath')
   if !empty(root_path)
-    execute 'lcd ' . fnameescape(root_path)
+    execute 'lcd ' . root_path
     return
   endif
   let root_path = finddir('.git', escape(b:path, ' ').';')
   if empty(root_path) | return | endif
   let root_path = fnamemodify(root_path, ':p:h:h')
+  if empty(root_path) | return | endif
+  if root_path =~? '^term' | return | endif
+  let root_path = fnameescape(root_path)
   call setbufvar('%', 'rootPath', root_path)
+  execute 'lcd ' . root_path
 endfunction
 autocmd BufEnter * :call ChangeDirectoryToProjectRoot()
 " }}}
