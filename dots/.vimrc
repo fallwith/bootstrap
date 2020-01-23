@@ -248,7 +248,7 @@ let g:test#runner_commands = ['RSpec']
 nno <leader>n :TestNearest<CR>
 nno <leader>r :TestFile<CR>
 nno <leader>l :TestLast<CR>
-nno <leader>a :TestSuite<CR>
+" nno <leader>a :TestSuite<CR>
 nno <leader>o :TestVisit<CR>
 
 " ale
@@ -267,7 +267,9 @@ let g:ale_lint_on_insert_leave = 1
 " lint immediately
 let g:ale_lint_delay = 0
 " rubocop config
-let g:ale_ruby_rubocop_executable = $HOME.'/.asdf/shims/rubocop'
+" let g:ale_ruby_rubocop_executable = $HOME.'/.asdf/shims/rubocop'
+" let g:ale_ruby_rubocop_executable = $HOME.'/.asdf/shims/bundle exec rubocop'
+let g:ale_ruby_rubocop_executable = $HOME.'/.asdf/shims/bundle'
 
 " let g:ale_ruby_rubocop_options = '--parallel 4'
 " \ 'javascript': ['eslint'],
@@ -367,11 +369,38 @@ set splitbelow
 set splitright
 
 " }}}
-" {{{ function
+" {{{ functions
 " Z - cd to an fzf selected dir
 " function Zdir(path) abort
 "   exec 'cd ' . $HOME . '/' . a:path
 " endfunction
 " let Zfunc = function('Zdir')
 " command! -bang Z :call fzf#run({'source': 'fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g"', 'sink': Zfunc})
+
+" alt
+function! AltCommand(path, vim_command)
+  let l:alternate = system("alt " . a:path)
+  if empty(l:alternate)
+    echo "No alternate file found for " . a:path
+  else
+    exec a:vim_command . " " . l:alternate
+  endif
+endfunction
+nnoremap <leader>a :call AltCommand(expand('%'), ':e')<CR>
+
+" adapted from vim-rooter
+function! ChangeDirectoryToProjectRoot()
+  let b:path = expand('%:p')
+  if empty(b:path) | let b:path = getcwd() | endif
+  let root_path = getbufvar('%', 'rootPath')
+  if !empty(root_path)
+    execute 'lcd ' . fnameescape(root_path)
+    return
+  endif
+  let root_path = finddir('.git', escape(b:path, ' ').';')
+  if empty(root_path) | return | endif
+  let root_path = fnamemodify(root_path, ':p:h:h')
+  call setbufvar('%', 'rootPath', root_path)
+endfunction
+autocmd BufEnter * :call ChangeDirectoryToProjectRoot()
 " }}}

@@ -88,6 +88,8 @@ alias v='nvim_launch $(\nvim --headless --noplugin -co +q 2>&1 | grep -v "term:/
 # BSD ls
 alias ll='ls -lGAFTh'
 alias font="kitty @ set-font-size"
+alias b='bundle exec'
+alias brake='b rake'
 # }}}
 
 # Functions {{{
@@ -183,6 +185,8 @@ export FZF_DEFAULT_OPTS='--no-mouse --color=light --bind=ctrl-p:up,ctrl-n:down'
 # Skim {{{
 export SKIM_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export SKIM_DEFAULT_OPTIONS='--color=light,fg:0,bg:231,current_bg:225,info:199,hl:124,current_match:93'
+# export SKIM_DEFAULT_OPTIONS='--color=light,fg:0,bg:231,current_bg:225,info:199,hl:124,current_match:93 -tiebreak=length'
+# export SKIM_DEFAULT_OPTIONS='--color=light,fg:0,bg:231,current_bg:225,info:199,hl:124,current_match:93 -tiebreak=score,index,begin,end'
 # }}}
 
 # Vim / Neovim {{{
@@ -234,7 +238,7 @@ function setcolorscheme() {
 }
 function cs() {
   choices='Fairy Floss\nGruvbox Dark\nGruvbox Light\nTomorrowBox\nSolarized8 Flat\nIceberg\nSeagull\nTender'
-  choice=$(echo "$choices" | skim)
+  choice=$(echo "$choices" | sk)
   case "$choice" in
     "Fairy Floss" )
       setcolorscheme "set bg=dark\ncolorscheme fairyfloss" fairyfloss

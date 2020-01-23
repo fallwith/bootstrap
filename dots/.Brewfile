@@ -101,6 +101,9 @@ brew 'heroku'
 # tap 'homebrew/dupes'
 # brew 'gnugrep', args: ['with-default-names']
 
+tap 'uptech/homebrew-oss'
+brew 'uptech/oss/alt'
+
 tap 'caskroom/cask'
 cask 'alacritty'
 cask 'appcleaner'
