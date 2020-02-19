@@ -16,7 +16,8 @@
   sa = stash apply
   sc = stash clear
   st = status
-  bname = !sh -c 'git branch | sed -e "/^[^*]/d" | tr -d "^*\\ "'
+  ; bname = !sh -c 'git branch | sed -e "/^[^*]/d" | tr -d "^*\\ "'
+  bname = rev-parse --abbrev-ref HEAD
   bpush = !sh -c '_branch_name=`git bname` && git push -u origin $_branch_name'
   bpull = !sh -c '_branch_name=`git bname` && git pull origin $_branch_name'
   bpullr = !sh -c '_branch_name=`git bname` && git pull --rebase origin $_branch_name'
