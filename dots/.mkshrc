@@ -184,7 +184,8 @@ export FZF_DEFAULT_OPTS='--no-mouse --color=light --bind=ctrl-p:up,ctrl-n:down'
 
 # Skim {{{
 export SKIM_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-export SKIM_DEFAULT_OPTIONS='--color=light,fg:0,bg:231,current_bg:225,info:199,hl:124,current_match:93'
+# export SKIM_DEFAULT_OPTIONS='--color=light,fg:0,bg:231,current_bg:225,info:199,hl:124,current_match:93'
+#
 # export SKIM_DEFAULT_OPTIONS='--color=light,fg:0,bg:231,current_bg:225,info:199,hl:124,current_match:93 -tiebreak=length'
 # export SKIM_DEFAULT_OPTIONS='--color=light,fg:0,bg:231,current_bg:225,info:199,hl:124,current_match:93 -tiebreak=score,index,begin,end'
 # }}}
