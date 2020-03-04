@@ -49,26 +49,15 @@ call minpac#add('tpope/vim-fugitive')
 
 " colorschemes
 call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
-" call minpac#add('challenger-deep-theme/vim', { 'as': 'challenger-deep'})
-" TODO: minpac can't yet handle subdirectories
-" call minpac#add('sonph/onehalf', {'rtp': 'vim/'})
-" call minpac#add('chriskempson/tomorrow-theme, {'rtp': 'vim/colors', 'as': 'tomorrow-theme'})
-" call minpac#add('felipesousa/rupza')
 call minpac#add('nightsense/seabird')
 call minpac#add('morhetz/gruvbox')
-call minpac#add('NLKNguyen/papercolor-theme')
-call minpac#add('nightsense/snow')
-" call minpac#add('chriskempson/base16-vim')
-" call minpac#add('arcticicestudio/nord-vim')
-" call minpac#add('w0ng/vim-hybrid')
 call minpac#add('KeitaNakamura/neodark.vim')
-call minpac#add('joshdick/onedark.vim')
-call minpac#add('drewtempelmeyer/palenight.vim')
 call minpac#add('ayu-theme/ayu-vim')
 call minpac#add('tssm/fairyfloss.vim')
 call minpac#add('jacoborus/tender.vim')
 call minpac#add('cocopon/iceberg.vim')
 call minpac#add('lifepillar/vim-solarized8')
+call minpac#add('bluz71/vim-nightfly-guicolors')
 
 " nvim -c "call minpac#update('', {'do': 'quit'})"
 "call minpac#update()
@@ -165,14 +154,18 @@ let g:clipboard = {
 " let g:gruvbox_contrast_dark='soft'
 " let g:gruvbox_improved_strings=1
 " let g:gruvbox_improved_warnings=1
-let g:gruvbox_italic=1
+" let g:gruvbox_italic=1
 
-if filereadable($HOME.'/.config/kitty/vimcolorscheme')
-  source ~/.config/kitty/vimcolorscheme
-else
-  set background=dark
-  colorscheme gruvbox
-end
+colorscheme tender
+
+" set guifont=menonoki:h5
+
+" if filereadable($HOME.'/.config/kitty/vimcolorscheme')
+"   source ~/.config/kitty/vimcolorscheme
+" else
+"   set background=dark
+"   colorscheme gruvbox
+" end
 
 " allow alacritty/kitty to retain transparency with (n)vim
 " https://github.com/jwilm/alacritty/issues/1082
@@ -244,6 +237,12 @@ cabbrev rg Grepper -tool rg -highlight <CR>
 " vim-test
 " by default all test tools are loaded. load only these:
 let g:test#runner_commands = ['RSpec']
+if filereadable($HOME.'/.asdf/shims/bundle')
+  let g:test#ruby#rspec#executable = $HOME.'/.asdf/shims/bundle exec rspec'
+endif
+if has('nvim')
+  let g:test#strategy = "neovim"
+endif
 " mappings
 nno <leader>n :TestNearest<CR>
 nno <leader>r :TestFile<CR>
