@@ -1,12 +1,15 @@
 [user]
   editor = vi
-[color] diff = auto
-  status = auto
-  branch = auto
 [alias]
   c = commit
-  ; co = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
-  co = "!f() { if [ \"$1\" == \"\" ]; then git checkout $(git branch | sk); else git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; fi }; f"
+  ; checkout the given branch, using fuzzy finding if a branch is not given.
+  co = "!f() { \
+    declare branch=\"$1\"; \
+    if [ \"$branch\" == \"\" ]; then \
+      branch=$(git branch | sk | tr -d '^* '); \
+    fi; \
+    git checkout \"$branch\"; \
+  }; f"
   b = branch
   ba = branch -a
   d = checkout --
@@ -16,34 +19,38 @@
   sa = stash apply
   sc = stash clear
   st = status
-  ; bname = !sh -c 'git branch | sed -e "/^[^*]/d" | tr -d "^*\\ "'
   bname = rev-parse --abbrev-ref HEAD
-  bpush = !sh -c '_branch_name=`git bname` && git push -u origin $_branch_name'
+  protected = "!f() { \
+    declare branch=\"$(git bname)\"; \
+    if [[ \"$branch\" == \"develop\" || \"$branch\" == \"master\" ]]; then \
+      echo \"no. branch '$branch' is protected.\"; \
+    fi \
+  }; f"
+  bpush = "!f() { \
+    declare protected=$(git protected); \
+    if [ \"$protected\" == \"\" ]; then \
+      declare branch=$(git bname); \
+      git push -u origin $branch; \
+    else \
+      echo \"$protected\"; \
+    fi \
+  }; f"
   bpull = !sh -c '_branch_name=`git bname` && git pull origin $_branch_name'
   bpullr = !sh -c '_branch_name=`git bname` && git pull --rebase origin $_branch_name'
   revision = !git show|head -1|cut -c8-
   rev = revision
-  # delete a local branch that has been merged to master and not pushed to remote
+  ; delete a local branch that has been merged to master and not pushed to remote
   bdel = branch -d
-  # delete a local branch that has not been merged and not pushed to remote
+  ; delete a local branch that has not been merged and not pushed to remote
   bdelf = branch -D
-  # delete a remote branch that has been merged
+  ; delete a remote branch that has been merged
   bdelr = !sh -c 'git branch -d -r origin/$0'
-  # delete a remote branch that has not been merged
+  ; delete a remote branch that has not been merged
   bdelrf = !sh -c 'git branch -D -r origin/$0'
-  # wipe (remove) a remote branch from origin (remove the branch from GitHub)
-  bwipe = !sh -c 'git push origin :$0'
-  # cleanup local copies of branches that have already been merged
+  ; wipe (remove) a remote branch from origin (remove the branch from GitHub)
+  bwipe = !sh -c 'git push origin --delete $0'
+  ; cleanup local copies of branches that have already been merged
   bclean = !git branch --merged | grep -vE '\\*|master|develop' | xargs -n1 git branch -d
-  ; p = add -p
-  ; h = cherry-pick
-  ; # recommended undo for git
-  ; # if things are really screwed up in a clone
-  ; hard = reset --hard origin/master
-  ; # undo the last commit (if it hasn't been pushed yet)
-  ; soft = reset --soft HEAD~1
-  ; bpush = !sh -c '_branch_name=`git bname` && git push origin $_branch_name'
-  ; forceclean = clean -fx
 [commit]
   template = ~/.gitmessage
 [merge]
@@ -52,16 +59,3 @@
   prompt = true
 [mergetool "vimdiff"]
   cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
-#
-# NOTES:
-#
-# to tag:
-# $> git tag -a <tag name> -m "<message>"
-# $> git push --tags
-#
-# which revision does a tag point to?
-# $> git rev-list sdod_20121103 | head -n 1
-#
-# which branch does a commit point to?
-# $> git branch --contains a698ffa9aa26c3f4512144072db63a635860e01f
-#
