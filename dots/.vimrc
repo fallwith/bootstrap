@@ -27,13 +27,9 @@ call minpac#add('tpope/vim-endwise')
 " vim-go: functionality for go programming development
 " call minpac#add('fatih/vim-go')
 " fzf: fuzzy finder integration for Vim
-" call minpac#add('junegunn/fzf.vim')
-" skim: fuzzy finder integration for Vim
-call minpac#add('lotabout/skim')
+call minpac#add('junegunn/fzf.vim')
 " ale is an async linter
 call minpac#add('w0rp/ale')
-" vim-grepper provides async grepping
-call minpac#add('mhinz/vim-grepper')
 " vim-test: run unit tests
 call minpac#add('janko-m/vim-test')
 " vim-wiki: offline wiki system for notes
@@ -156,7 +152,12 @@ let g:clipboard = {
 " let g:gruvbox_improved_warnings=1
 " let g:gruvbox_italic=1
 
+set bg=dark
 colorscheme tender
+
+" gui
+" set guifont=mononoki:h13
+" set guioptions=
 
 " set guifont=menonoki:h5
 
@@ -169,7 +170,8 @@ colorscheme tender
 
 " allow alacritty/kitty to retain transparency with (n)vim
 " https://github.com/jwilm/alacritty/issues/1082
-highlight Normal ctermbg=NONE guibg=NONE
+" highlight Normal ctermbg=NONE guibg=NONE
+highlight Normal ctermbg=NONE guibg=black
 
 " nvim colors the terminal with colorscheme values
 " vim needs terminal_ansi_colors
@@ -204,7 +206,9 @@ augroup END
 " Terminal - disable line numbers
 "   this allows nested Vim sessions to have the correct column count line up
 "   with the color column
-autocmd TermOpen * setlocal nonumber norelativenumber
+if has('nvim')
+  autocmd TermOpen * setlocal nonumber norelativenumber
+endif
 
 " Terminal - close buffer on exit
 " prevents vim-test from working
@@ -213,26 +217,15 @@ autocmd TermOpen * setlocal nonumber norelativenumber
 " }}}
 " packages {{{
 " fzf
-" set runtimepath+=/usr/local/opt/fzf
-" :noremap <Leader>f :FZF<CR>
-" :noremap <Leader>b :Buffers<CR>
-
-" skim
 set runtimepath+=/usr/local/opt/fzf
-:noremap <Leader>f :SK<CR>
-:noremap <Leader>b :buffers<CR>
-
+:noremap <Leader>f :FZF<CR>
+:noremap <Leader>b :Buffers<CR>
+:noremap <Leader>g :Rg 
 
 " minpac
 :noremap <Leader>m :call minpac#update()<CR>
 command! Minpacupdate :call minpac#update()
 command! Minpacclean :call minpac#clean()
-
-" vim-grepper
-let g:grepper = {}
-let g:grepper.tools = ['rg']
-nno <leader>g :Grepper -tool rg -highlight <CR>
-cabbrev rg Grepper -tool rg -highlight <CR>
 
 " vim-test
 " by default all test tools are loaded. load only these:
