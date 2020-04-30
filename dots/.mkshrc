@@ -83,13 +83,18 @@ alias m='cmatrix -absu 4 -C magenta'
 alias dirs='fd -td'
 alias cls='\\builtin print -n \\ec'
 alias sudo!!='sudo mksh -c "$(\\builtin fc -ln -1)"'
-alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g" | sk)'
-alias v='nvim_launch $(\nvim --headless --noplugin -co +q 2>&1 | grep -v "term://" | cut -d" " -f2- | tr -d "\r" | sk)'
+alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g" | fzf +m)'
+alias v='nvim_launch $(\nvim --headless --noplugin -co +q 2>&1 | grep -v "term://" | cut -d" " -f2- | tr -d "\r" | fzf +m)'
 # BSD ls
 alias ll='ls -lGAFTh'
 alias font="kitty @ set-font-size"
 alias b='bundle exec'
 alias brake='b rake'
+alias history='echo $(builtin fc -ln 1 $HISTSIZE|strings|sort|uniq|fzf +m)'
+# }}}
+
+# Bindings {{{
+bind -m '^R'='^uhistory^[^e^a^e'
 # }}}
 
 # Functions {{{
@@ -160,7 +165,11 @@ alias got='go test -v ./...'
 
 # FZF {{{
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-export FZF_DEFAULT_OPTS='--no-mouse --color=light --bind=ctrl-p:up,ctrl-n:down'
+export FZF_DEFAULT_OPTS='
+  --no-mouse --bind=ctrl-p:up,ctrl-n:down
+  --color fg:-1,bg:-1,hl:230,fg+:3,bg+:233,hl+:229
+  --color info:150,prompt:110,spinner:150,pointer:167,marker:174
+'
 # }}}}
 
 # Rust {{{
@@ -180,14 +189,6 @@ export FZF_DEFAULT_OPTS='--no-mouse --color=light --bind=ctrl-p:up,ctrl-n:down'
 # --git = provides a git status for each file (if under revision control)
 # --time-style long-iso = use a long iso format for date/time info
 # alias ll="exa -lagF --group-directories-first --git --time-style long-iso"
-# }}}
-
-# Skim {{{
-export SKIM_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-# export SKIM_DEFAULT_OPTIONS='--color=light,fg:0,bg:231,current_bg:225,info:199,hl:124,current_match:93'
-#
-# export SKIM_DEFAULT_OPTIONS='--color=light,fg:0,bg:231,current_bg:225,info:199,hl:124,current_match:93 -tiebreak=length'
-# export SKIM_DEFAULT_OPTIONS='--color=light,fg:0,bg:231,current_bg:225,info:199,hl:124,current_match:93 -tiebreak=score,index,begin,end'
 # }}}
 
 # Vim / Neovim {{{
@@ -239,7 +240,7 @@ function setcolorscheme() {
 }
 function cs() {
   choices='Fairy Floss\nGruvbox Dark\nGruvbox Light\nTomorrowBox\nSolarized8 Flat\nIceberg\nSeagull\nTender'
-  choice=$(echo "$choices" | sk)
+  choice=$(echo "$choices" | fzf)
   case "$choice" in
     "Fairy Floss" )
       setcolorscheme "set bg=dark\ncolorscheme fairyfloss" fairyfloss
