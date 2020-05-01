@@ -90,7 +90,8 @@ alias ll='ls -lGAFTh'
 alias font="kitty @ set-font-size"
 alias b='bundle exec'
 alias brake='b rake'
-alias history='echo $(builtin fc -ln 1 $HISTSIZE|strings|sort|uniq|fzf +m)'
+alias history='echo $(export FZF_DEFAULT_OPTS="--height 40% $FZF_DEFAULT_OPTS -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort +m"; builtin fc -rnl 1 | perl -ne '\''print "$1\n" if!$u{/\s+(.*)/, $1}++'\'' | fzf)'
+
 # }}}
 
 # Bindings {{{
