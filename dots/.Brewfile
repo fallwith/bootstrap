@@ -1,6 +1,6 @@
 # brew 'ansible'
 # brew 'atool'
-# brew 'awscli'
+brew 'awscli'
 # brew 'bash'
 # brew 'chruby', args: ['HEAD']
 # proj
@@ -70,7 +70,7 @@ brew 'rustup-init'
 brew 'sk'
 # brew 'sqlite'
 # brew 'the_silver_searcher'
-# brew 'terraform'
+brew 'terraform'
 brew 'tig'
 # brew 'tmux'
 # brew 'transmission'
