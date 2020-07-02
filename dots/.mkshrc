@@ -50,11 +50,16 @@ function _prompt_pwd() {
   echo $p
 }
 # export PS1=$'\E[35m$(_prompt_pwd) \E[32m$(date +%H:%M:%S) \E[36m$ \E[0m'
-BLU=$(tput setaf 39)
-PNK=$(tput setaf 201)
-PRP=$(tput setaf 105)
-RESET=$(tput sgr0)
+# BLU=$(tput setaf 39)
+BLU='[38;5;39m'
+# PNK=$(tput setaf 201)
+PNK='[38;5;201m'
+# PRP=$(tput setaf 105)
+PRP='[38;5;105m'
+# RESET=$(tput sgr0)
+RESET='(B[m'
 export PS1=$'${PNK}$(_prompt_pwd) ${PRP}$(date +%H:%M:%S) ${BLU}$ ${RESET}'
+
 HISTFILE="$HOME/.mksh_history"
 HISTSIZE=20000
 export VISUAL="nvim"
@@ -65,6 +70,7 @@ export MANWIDTH=80
 export LESSHISTFILE=-
 if (command -v kitty >/dev/null); then
   export TERM=xterm-kitty
+  export TERMINFO=/Applications/kitty.app/Contents/Resources/terminfo
 else
   export TERM=xterm-256color
 fi
@@ -91,6 +97,7 @@ alias font="kitty @ set-font-size"
 alias b='bundle exec'
 alias brake='b rake'
 alias history='echo $(export FZF_DEFAULT_OPTS="--height 40% $FZF_DEFAULT_OPTS -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort +m"; builtin fc -rnl 1 | perl -ne '\''print "$1\n" if!$u{/\s+(.*)/, $1}++'\'' | fzf)'
+alias reload='. ~/.mkshrc'
 
 # }}}
 
@@ -166,11 +173,8 @@ alias got='go test -v ./...'
 
 # FZF {{{
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-export FZF_DEFAULT_OPTS='
-  --no-mouse --bind=ctrl-p:up,ctrl-n:down
-  --color fg:-1,bg:-1,hl:230,fg+:3,bg+:233,hl+:229
-  --color info:150,prompt:110,spinner:150,pointer:167,marker:174
-'
+export FZF_DEFAULT_OPTS='--color=light --no-mouse'
+
 # }}}}
 
 # Rust {{{
