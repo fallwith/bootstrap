@@ -44,16 +44,17 @@ call minpac#add('tpope/vim-vinegar')
 call minpac#add('tpope/vim-fugitive')
 
 " colorschemes
-call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
+" call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
 call minpac#add('nightsense/seabird')
-call minpac#add('morhetz/gruvbox')
-call minpac#add('KeitaNakamura/neodark.vim')
-call minpac#add('ayu-theme/ayu-vim')
-call minpac#add('tssm/fairyfloss.vim')
-call minpac#add('jacoborus/tender.vim')
-call minpac#add('cocopon/iceberg.vim')
-call minpac#add('lifepillar/vim-solarized8')
-call minpac#add('bluz71/vim-nightfly-guicolors')
+" call minpac#add('morhetz/gruvbox')
+" call minpac#add('KeitaNakamura/neodark.vim')
+" call minpac#add('ayu-theme/ayu-vim')
+" call minpac#add('tssm/fairyfloss.vim')
+" call minpac#add('jacoborus/tender.vim')
+" call minpac#add('cocopon/iceberg.vim')
+" call minpac#add('lifepillar/vim-solarized8')
+" call minpac#add('bluz71/vim-nightfly-guicolors')
+" call minpac#add('nightsense/cosmic_latte')
 
 " nvim -c "call minpac#update('', {'do': 'quit'})"
 "call minpac#update()
@@ -152,8 +153,11 @@ let g:clipboard = {
 " let g:gruvbox_improved_warnings=1
 " let g:gruvbox_italic=1
 
-set bg=dark
-colorscheme tender
+" set bg=dark
+" colorscheme tender
+set bg:light
+" colorscheme cosmic_latte
+colorscheme greygull
 
 " gui
 " set guifont=mononoki:h13
@@ -171,7 +175,8 @@ colorscheme tender
 " allow alacritty/kitty to retain transparency with (n)vim
 " https://github.com/jwilm/alacritty/issues/1082
 " highlight Normal ctermbg=NONE guibg=NONE
-highlight Normal ctermbg=NONE guibg=black
+" highlight Normal ctermbg=NONE guibg=black
+highlight Normal ctermbg=NONE guibg=NONE
 
 " nvim colors the terminal with colorscheme values
 " vim needs terminal_ansi_colors
@@ -321,10 +326,10 @@ vnoremap ; :
 vnoremap : ;
 
 " splits resizing
-nnoremap <Right> :vertical resize +2<CR>
-nnoremap <Left> :vertical resize -2<CR>
-nnoremap <Up> :resize +2<CR>
-nnoremap <Down> :resize -2<CR>
+nnoremap <Leader><Right> :vertical resize +2<CR>
+nnoremap <Leader><Left> :vertical resize -2<CR>
+nnoremap <Leader><Up> :resize +2<CR>
+nnoremap <Leader><Down> :resize -2<CR>
 
 " terminal
 " C-o to switch to normal mode
