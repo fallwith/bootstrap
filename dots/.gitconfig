@@ -6,7 +6,7 @@
   co = "!f() { \
     declare branch=\"$1\"; \
     if [ \"$branch\" == \"\" ]; then \
-      branch=$(git branch | sk | tr -d '^* '); \
+      branch=$(git branch -a | sed 's|remotes/origin/||' | grep -v 'HEAD ->' | fzf | tr -d '^* '); \
     fi; \
     git checkout \"$branch\"; \
   }; f"
@@ -36,7 +36,7 @@
     fi \
   }; f"
   bpull = !sh -c '_branch_name=`git bname` && git pull origin $_branch_name'
-  bpullr = !sh -c '_branch_name=`git bname` && git pull --rebase origin $_branch_name'
+  ; bpullr = !sh -c '_branch_name=`git bname` && git pull --rebase origin $_branch_name'
   revision = !git show|head -1|cut -c8-
   rev = revision
   ; delete a local branch that has been merged to master and not pushed to remote
@@ -50,7 +50,8 @@
   ; wipe (remove) a remote branch from origin (remove the branch from GitHub)
   bwipe = !sh -c 'git push origin --delete $0'
   ; cleanup local copies of branches that have already been merged
-  bclean = !git branch --merged | grep -vE '\\*|master|develop' | xargs -n1 git branch -d
+  bclean = !git branch --merged | grep -vE '\\*|main|master|develop' | xargs -n1 git branch -d
+  mainclean = !git co main && git bpull && git bclean
 [commit]
   template = ~/.gitmessage
 [merge]
@@ -59,3 +60,7 @@
   prompt = true
 [mergetool "vimdiff"]
   cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[pull]
+	ff = only
+[init]
+	defaultBranch = main
