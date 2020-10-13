@@ -70,7 +70,6 @@ export MANWIDTH=80
 export LESSHISTFILE=-
 if (command -v kitty >/dev/null); then
   export TERM=xterm-kitty
-  export TERMINFO=/Applications/kitty.app/Contents/Resources/terminfo
 else
   export TERM=xterm-256color
 fi
@@ -173,7 +172,12 @@ alias got='go test -v ./...'
 
 # FZF {{{
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-export FZF_DEFAULT_OPTS='--color=light --no-mouse'
+# paper color with an #eeeeee -> #ffffff bg swap
+export FZF_DEFAULT_OPTS='--no-mouse
+    --color=fg:#4d4d4c,bg:#ffffff,hl:#d7005f
+    --color=fg+:#4d4d4c,bg+:#e8e8e8,hl+:#d7005f
+    --color=info:#4271ae,prompt:#8959a8,pointer:#d7005f
+    --color=marker:#4271ae,spinner:#4271ae,header:#4271ae'
 
 # }}}}
 
