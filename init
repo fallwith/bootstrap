@@ -122,7 +122,7 @@ fi
 # --- --- --- --- --- --- --- ---
 
 if running_debian; then
-  sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip
+  sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip xclip mksh
 fi
 
 # --- --- --- --- --- --- ---
@@ -228,18 +228,34 @@ for p in ruby nodejs; do
     asdf plugin-add $p
   fi
 done
-if $(gpg -k | grep -q 94AE36675C464D64BAFA68DD7434390BDBE9B9C5); then
-  echo "nodejs release team GPG keys already imported"
-else
-  echo "Importing GPG keys for the nodejs release team..."
-  bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+if running_mac_os; then
+  if $(gpg -k | grep -q 94AE36675C464D64BAFA68DD7434390BDBE9B9C5); then
+    echo "nodejs release team GPG keys already imported"
+  else
+    echo "Importing GPG keys for the nodejs release team..."
+    bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+  fi
 fi
 set -eu
 
 
 # --- --- --- --- --- --- ---
-# Neovim plugins
+# Neovim
 # --- --- --- --- --- --- ---
+
+if running_debian; then
+  if (command -v nvim >/dev/null); then
+    echo "Neovim is already installed"
+  else
+    echo 'Building and installing Neovim...'
+    rm -rf neovim
+    git clone https://github.com/neovim/neovim
+    cd neovim
+    make CMAKE_BUILD_TYPE=Release
+    sudo make install
+    cd "$bootstrap_dir"
+  fi
+fi
 
 # install minpac
 pacpath="$HOME/.config/nvim/pack/minpac/opt/minpac"
@@ -259,12 +275,69 @@ echo "Installing / updating Neovim plugins..."
 # Rust
 # --- --- --- --- --- --- ---
 
-if running_mac_os; then
-  if (command -v rustup >/dev/null); then
-    echo "rustup is already installed"
-  else
-    echo "Installing rustup and a rust..."
-    /usr/local/bin/rustup-init -y
-    [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
-  fi
+if (command -v cargo >/dev/null); then
+  echo "rust is already installed"
+else
+  echo "Installing rust..."
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |sh --no-modify-path
+  wget https://sh.rustup.rs -O rustup-init.sh
+  sh rustup-init.sh --no-modify-path -y
+  [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+fi
+
+
+# --- --- --- --- --- --- ---
+# Debian only from here on out
+# --- --- --- --- --- --- ---
+! running_debian && exit
+
+
+# --- --- --- --- --- --- ---
+# FZF
+# --- --- --- --- --- --- ---
+
+if (command -v fzf >/dev/null); then
+  echo "fzf is already installed"
+else
+  echo 'Installing fzf...'
+  rm -rf fzf
+  git clone --depth 1 https://github.com/junegunn/fzf.git
+  cd fzf
+  ./install --bin
+  sudo cp bin/fzf /usr/local/bin/fzf
+  cd "$bootstrap_dir"
+fi
+
+
+# --- --- --- --- --- --- ---
+# Ripgrep
+# --- --- --- --- --- --- ---
+
+if (command -v rg >/dev/null); then
+  echo "Ripgrep is already installed"
+else
+  echo 'Installing ripgrep...'
+  rm -rf ripgrep
+  git clone https://github.com/BurntSushi/ripgrep
+  cd ripgrep
+  cargo build --release
+  sudo cp target/release/rg /usr/local/bin/rg
+  cd "$bootstrap_dir"
+fi
+
+
+# --- --- --- --- --- --- ---
+# fd
+# --- --- --- --- --- --- ---
+
+if (command -v fd >/dev/null); then
+  echo "fd is already installed"
+else
+  echo 'Installing fd...'
+  rm -rf fd
+  git clone https://github.com/sharkdp/fd
+  cd fd
+  cargo build --release
+  sudo cp target/release/fd /usr/local/bin/fd
+  cd "$bootstrap_dir"
 fi
