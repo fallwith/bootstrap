@@ -280,6 +280,20 @@ function cs() {
 
 # }}}
 
+# Crostini {{{
+if (grep -q "^PRETTY_NAME=\"Debian" /etc/os-release 2>/dev/null); then
+  # Linux ls
+  alias ll='ls -lAFh --color --full-time'
+
+  # https://snugug.com/musings/developing-on-chrome-os/
+  open() {
+    setsid nohup xdg-open $1 >/dev/null 2>/dev/null
+  }
+  alias pbcopy='xclip -selection clipboard'
+  alias pbpaste='xclip -selection clipboard -o'
+fi
+# }}}
+
 # .mkshrc_private {{{
   if [ -e ~/.mkshrc_private ]; then
     source ~/.mkshrc_private
