@@ -152,7 +152,11 @@ if [[ "$(existing_shell)" == "$DESIRED_SHELL" ]]; then
   echo "User $USER is already set to use desired shell $DESIRED_SHELL"
 else
   echo "Changing shell for user $USER to $DESIRED_SHELL..."
-  chsh -s $DESIRED_SHELL;
+  if running_debian; then
+    sudo chsh -s $DESIRED_SHELL $USER
+  else
+    chsh -s $DESIRED_SHELL
+  fi
 fi
 
 
