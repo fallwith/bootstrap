@@ -19,9 +19,29 @@ bootstrap_dir=$(dirname "${BASH_SOURCE}")
 cd $bootstrap_dir
 bootstrap_dir=$(pwd)
 target_dir=${BOOTSTRAP_TARGET_DIR:-$HOME}
+DESIRED_SHELL=${DESIRED_SHELL:-}
 
-# this shell will be added to /etc/shells and set as the default
-DESIRED_SHELL=${DESIRED_SHELL:-/usr/local/bin/mksh}
+# this shell will be added to /etc/shells if absent and set as the default
+if [[ -z "$DESIRED_SHELL" ]]; then
+  if [[ -e "/bin/mksh" ]]; then
+    DESIRED_SHELL=/bin/mksh
+  elif [[ -e "/usr/local/bin/mksh" ]]; then
+    DESIRED_SHELL=/usr/local/bin/mksh
+  else
+    echo 'Cannot locate mksh and DESIRED_SHELL is not set!'
+    exit -1
+  fi
+fi
+
+function running_mac_os() {
+  [[ "$OSTYPE" == "darwin"* ]] && return
+  false
+}
+
+function running_debian() {
+  (command -v apt-get >/dev/null) && return
+  false
+}
 
 
 # --- --- --- --- --- --- ---
@@ -61,40 +81,61 @@ process_dot_dir "$bootstrap_dir/dots"
 # fonts
 # --- --- --- --- --- --- ---
 
-echo "Installing fonts..."
-for f in "$bootstrap_dir/fonts"/*; do
-  target="$target_dir/Library/Fonts/${f//$bootstrap_dir\/fonts\//}"
-  if [[ -e "$target" ]]; then
-    echo "$target already exists - skipping"
-    continue
-  else
-    echo "Installing font $f..."
-    cmd="cp \"$f\" \"$target\""
-    echo "$cmd"
-    eval "$cmd"
-  fi
-done
-
+if running_mac_os; then
+  echo "Installing fonts..."
+  for f in "$bootstrap_dir/fonts"/*; do
+    target="$target_dir/Library/Fonts/${f//$bootstrap_dir\/fonts\//}"
+    if [[ -e "$target" ]]; then
+      echo "$target already exists - skipping"
+      continue
+    else
+      echo "Installing font $f..."
+      cmd="cp \"$f\" \"$target\""
+      echo "$cmd"
+      eval "$cmd"
+    fi
+  done
+fi
 
 # --- --- --- --- --- --- ---
 # set desired os x behavior
 # --- --- --- --- --- --- ---
 
-echo "Setting up macOS behavior preferences..."
-$target_dir/bin/macos_settings
+if running_mac_os; then
+  echo "Setting up macOS behavior preferences..."
+  $target_dir/bin/macos_settings
+fi
 
 
 # --- --- --- --- --- --- ---
 # install and run Homebrew
 # --- --- --- --- --- --- ---
 
-echo "Installing and running Homebrew..."
-$target_dir/bin/brewupdate
+if running_mac_os; then
+  echo "Installing and running Homebrew..."
+  $target_dir/bin/brewupdate
+fi
 
+
+# --- --- --- --- --- --- --- ---
+# install desired Linux packages
+# --- --- --- --- --- --- --- ---
+
+if running_debian; then
+  sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip
+fi
 
 # --- --- --- --- --- --- ---
 # set the desired shell
 # --- --- --- --- --- --- ---
+
+function existing_shell() {
+  if running_mac_os; then
+    finger $USER|grep -o 'Shell: .*'|cut -c 8-
+  elif running_debian; then
+    cat /etc/passwd|grep "^$USER:"|sed 's/^.*:\(.*\)/\1/'
+  fi
+}
 
 if [[ ! -f "$DESIRED_SHELL" ]]; then
   echo "Error: desired shell $DESIRED_SHELL does not exist!"
@@ -106,7 +147,8 @@ else
   echo "Appending $DESIRED_SHELL to /etc/shells..."
   echo $DESIRED_SHELL|sudo tee -a /etc/shells>/dev/null;
 fi
-if [[ "$(finger $USER|grep -o 'Shell: .*')" = "Shell: $DESIRED_SHELL" ]]; then
+
+if [[ "$(existing_shell)" == "$DESIRED_SHELL" ]]; then
   echo "User $USER is already set to use desired shell $DESIRED_SHELL"
 else
   echo "Changing shell for user $USER to $DESIRED_SHELL..."
@@ -118,36 +160,48 @@ fi
 # python enhancements
 # --- --- --- --- --- --- ---
 
-# install pip
-if (command -v pip >/dev/null); then
-  echo "Python pip already exists"
+# install pip3
+if (command -v pip3 >/dev/null); then
+  echo "Python pip3 already exists"
 else
   echo "installing Python pip..."
-  sudo easy_install pip
+  if running_debian; then
+    sudo apt-get install python3-pip
+  else
+    echo "Error: don't know how to install pip3 on this OS!"
+    exit -1
+  fi
 fi
 
+# TODO: python3 only solution?
 # install PIL via Pillow - needed for Ranger image previews
-python -c "import PIL" 2>/dev/null
-if [[ $? -ne 0 ]]; then
-  echo "Install Python module PIL (via pillow)..."
-  sudo /usr/local/bin/pip install pillow
-else
-  echo "Python module pillow already exists"
-fi
+# python -c "import PIL" 2>/dev/null
+# if [[ $? -ne 0 ]]; then
+#   echo "Install Python module PIL (via pillow)..."
+#   sudo /usr/local/bin/pip install pillow
+# else
+#   echo "Python module pillow already exists"
+# fi
 
 # install neovim-remote
 if (command -v nvr >/dev/null); then
   echo "neovim-remote already installed"
 else
   echo "Installing neovim-remote..."
-  /usr/local/bin/pip3 install --user --upgrade neovim-remote
+  if running_mac_os; then
+    pip3 install --user --upgrade neovim-remote
+  else
+    sudo pip3 install --upgrade neovim-remote
+  fi
 fi
-if (command -v vint >/dev/null); then
-  echo "vint already installed"
-else
-  echo "Installing vint..."
-  /usr/local/bin/pip3 install --user --upgrade vint
-fi
+
+# broken. should be vim-vint?
+# if (command -v vint >/dev/null); then
+#   echo "vint already installed"
+# else
+#   echo "Installing vint..."
+#   /usr/local/bin/pip3 install --user --upgrade vint
+# fi
 
 
 # --- --- --- --- --- --- ---
@@ -194,17 +248,19 @@ fi
 
 # install or update Neovim plugins
 echo "Installing / updating Neovim plugins..."
-/usr/local/bin/nvim -c "call minpac#update('', {'do': 'quit'})"
+\nvim -c "call minpac#update('', {'do': 'quit'}) | exit"
 
 
 # --- --- --- --- --- --- ---
 # Rust
 # --- --- --- --- --- --- ---
 
-if (command -v rustup >/dev/null); then
-  echo "rustup is already installed"
-else
-  echo "Installing rustup and a rust..."
-  /usr/local/bin/rustup-init -y
-  [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+if running_mac_os; then
+  if (command -v rustup >/dev/null); then
+    echo "rustup is already installed"
+  else
+    echo "Installing rustup and a rust..."
+    /usr/local/bin/rustup-init -y
+    [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+  fi
 fi
