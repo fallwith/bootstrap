@@ -1,0 +1,10 @@
+#!/bin/bash
+export IFS=
+input=''
+newline=$'\n'
+while read -r line; do
+  input="${input}${newline}${line}"
+done
+# ${input:1} trims off the leading newline
+# printf "\033]52;c;$(echo "${input:1}" | base64)\a"
+printf "\033]52;c;$(printf ${input:1} "" | base64)\a"
