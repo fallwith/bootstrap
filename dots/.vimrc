@@ -61,6 +61,16 @@ call minpac#add('nightsense/seabird')
 
 " remove packages with :call minpac#clean()
 " }}}
+" OS detection {{{
+" let s:os = 'unknown'
+" let s:osfile = '/etc/os-release'
+" if filereadable(s:osfile)
+"   let s:osidline = readfile(s:osfile)[5]
+"   if s:osidline == 'ID=debian'
+"     let s:os = 'debian'
+"   endif
+" endif
+" }}}
 " {{{ configuration
 let mapleader = ','         " use a comma as the <Leader> character
 " let g:ruby_path='~/bin/ruby'
@@ -115,19 +125,18 @@ set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing in
 setglobal commentstring=#\ %s
 
 " https://www.reddit.com/r/neovim/comments/ab01n8/improve_neovim_startup_by_60ms_for_free_on_macos/
-let g:clipboard = {
-  \ 'name': 'pbcopy',
-  \ 'copy': {
-  \    '+': 'pbcopy',
-  \    '*': 'pbcopy',
-  \  },
-  \ 'paste': {
-  \    '+': 'pbpaste',
-  \    '*': 'pbpaste',
-  \ },
-  \ 'cache_enabled': 0,
-  \ }
-
+" let g:clipboard = {
+"   \ 'name': 'pbcopy',
+"   \ 'copy': {
+"   \    '+': 'pbcopy',
+"   \    '*': 'pbcopy',
+"   \  },
+"   \ 'paste': {
+"   \    '+': 'pbpaste',
+"   \    '*': 'pbpaste',
+"   \ },
+"   \ 'cache_enabled': 0,
+"   \ }
 " }}}
 " {{{ colorscheme settings
 
@@ -155,9 +164,29 @@ let g:clipboard = {
 
 " set bg=dark
 " colorscheme tender
-set bg:light
-" colorscheme cosmic_latte
-colorscheme greygull
+" set bg:light
+
+" * check if ~/.bgmode exists, default to dark
+" * if exists and 'light', use light
+let s:bgmodefile = $HOME.'/.bgmode'
+if filereadable(s:bgmodefile)
+  let s:bgmode = readfile(s:bgmodefile)[0]
+else
+  let s:bgmode = "dark"
+endif
+if s:bgmode == "light"
+  set bg:light
+  colorscheme greygull
+else
+  set bg:dark
+  colorscheme petrel
+endif
+
+
+" set bg:dark
+" " colorscheme cosmic_latte
+" " colorscheme greygull
+" colorscheme petrel
 
 " gui
 " set guifont=mononoki:h13
