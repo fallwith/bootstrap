@@ -122,8 +122,9 @@ fi
 # --- --- --- --- --- --- --- ---
 
 if running_debian; then
-  sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip xclip mksh rclone
+  sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip xclip mksh rclone kitty
 fi
+
 
 # --- --- --- --- --- --- ---
 # set the desired shell
@@ -283,6 +284,21 @@ else
   wget https://sh.rustup.rs -O rustup-init.sh
   sh rustup-init.sh --no-modify-path -y
   [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+fi
+
+
+# --- --- --- --- --- --- ---
+# Kitty
+# --- --- --- --- --- --- ---
+if [[ ! -e "${target_dir}/.config/kitty/kitty.conf" ]]; then
+  if running_debian; then
+    ln -s "${target_dir}/.config/kitty/kitty_debian.conf" "${target_dir}/.config/kitty/kitty.conf"
+  elif running_mac_os; then
+    ln -s "${target_dir}/.config/kitty/kitty_macos.conf" "${target_dir}/.config/kitty/kitty.conf"
+  else
+    echo "Error: unable to prep Kitty for this operating system!"
+    exit -1
+  fi
 fi
 
 
