@@ -1,5 +1,12 @@
 # vim:fileencoding=utf-8:ft=conf:foldmethod=marker
 
+# OS detection {{{
+function running_debian() {
+  (command -v apt-get >/dev/null) && return
+  false
+}
+# }}}
+
 # Color {{{
 # color  - bg - fg
 # =
@@ -37,6 +44,10 @@
 # RESET=$(tput sgr0)
 # =
 # echo "${MGT}magenta ${GRN}green ${CYN}cyan ${RESET}"
+bgmode=dark
+if [[ -e "$HOME/.bgmode" ]]; then
+  bgmode=$(<~/.bgmode)
+fi
 # }}}
 
 # Basics {{{
@@ -88,7 +99,11 @@ alias m='cmatrix -absu 4 -C magenta'
 alias dirs='fd -td'
 alias cls='\\builtin print -n \\ec'
 alias sudo!!='sudo mksh -c "$(\\builtin fc -ln -1)"'
-alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g" | fzf +m)'
+if running_debian; then
+  alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git | sed "s|$HOME/||g" | fzf +m)'
+else
+  alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g" | fzf +m)'
+fi
 alias v='nvim_launch $(\nvim --headless --noplugin -co +q 2>&1 | grep -v "term://" | cut -d" " -f2- | tr -d "\r" | fzf +m)'
 # BSD ls
 alias ll='ls -lGAFTh'
@@ -172,13 +187,17 @@ alias got='go test -v ./...'
 
 # FZF {{{
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-# paper color with an #eeeeee -> #ffffff bg swap
-export FZF_DEFAULT_OPTS='--no-mouse
-    --color=fg:#4d4d4c,bg:#ffffff,hl:#d7005f
-    --color=fg+:#4d4d4c,bg+:#e8e8e8,hl+:#d7005f
-    --color=info:#4271ae,prompt:#8959a8,pointer:#d7005f
-    --color=marker:#4271ae,spinner:#4271ae,header:#4271ae'
-
+if [[ "$bgmode" == "light" ]]; then
+  # paper color with an #eeeeee -> #ffffff bg swap
+  export FZF_DEFAULT_OPTS='--no-mouse
+      --color=fg:#4d4d4c,bg:#ffffff,hl:#d7005f
+      --color=fg+:#4d4d4c,bg+:#e8e8e8,hl+:#d7005f
+      --color=info:#4271ae,prompt:#8959a8,pointer:#d7005f
+      --color=marker:#4271ae,spinner:#4271ae,header:#4271ae'
+else
+  export FZF_DEFAULT_OPTS='--no-mouse --color fg:-1,bg:-1,hl:230,fg+:3,bg+:233,hl+:229
+      --color info:150,prompt:110,spinner:150,pointer:167,marker:174'
+fi
 # }}}}
 
 # Rust {{{
@@ -281,16 +300,17 @@ function cs() {
 # }}}
 
 # Crostini {{{
-if (grep -q "^PRETTY_NAME=\"Debian" /etc/os-release 2>/dev/null); then
+# if (grep -q "^PRETTY_NAME=\"Debian" /etc/os-release 2>/dev/null); then
+if running_debian; then
   # Linux ls
   alias ll='ls -lAFh --color --full-time'
 
   # https://snugug.com/musings/developing-on-chrome-os/
-  open() {
-    setsid nohup xdg-open $1 >/dev/null 2>/dev/null
-  }
-  alias pbcopy='xclip -selection clipboard'
-  alias pbpaste='xclip -selection clipboard -o'
+  # open() {
+  #   setsid nohup xdg-open $1 >/dev/null 2>/dev/null
+  # }
+  # alias pbcopy='xclip -selection clipboard'
+  # alias pbpaste='xclip -selection clipboard -o'
 fi
 # }}}
 
