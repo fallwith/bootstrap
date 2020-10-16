@@ -116,27 +116,13 @@ set nrformats=              " treat all numerals as decimal (leading zeroes won'
 set pastetoggle=<F2>        " set a key to toggle paste mode
 set colorcolumn=80,120      " (ruler) colorcolumn - (comma delimited) list of columns to visually style
 set complete-=i             " remove 'included files' from the list of autocomplete sources
-set clipboard=unnamed       " yank to / put from the operating system clipboard
+set clipboard^=unnamed,unnamedplus  " cross-platform selection + system clipboard support
 set list                    " show invisibles
 set fileformat=unix         " unix fileformat
 set termguicolors           " enable gui colors in the terminal (true 24 bit color support)
 set shell=mksh\ -l
 set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
 setglobal commentstring=#\ %s
-
-" https://www.reddit.com/r/neovim/comments/ab01n8/improve_neovim_startup_by_60ms_for_free_on_macos/
-" let g:clipboard = {
-"   \ 'name': 'pbcopy',
-"   \ 'copy': {
-"   \    '+': 'pbcopy',
-"   \    '*': 'pbcopy',
-"   \  },
-"   \ 'paste': {
-"   \    '+': 'pbpaste',
-"   \    '*': 'pbpaste',
-"   \ },
-"   \ 'cache_enabled': 0,
-"   \ }
 " }}}
 " {{{ colorscheme settings
 
