@@ -61,6 +61,7 @@ brew 'parallel'
 # proj
 brew 'pkg-config'
 brew 'ranger', args: ['HEAD']
+brew 'rclone'
 # brew 'reattach-to-user-namespace'
 # proj
 brew 'redis'
