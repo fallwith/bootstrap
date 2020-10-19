@@ -122,7 +122,7 @@ fi
 # --- --- --- --- --- --- --- ---
 
 if running_debian; then
-  sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip xclip mksh rclone kitty
+  sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip xclip mksh rclone kitty cros-guest-tools x11-apps
 fi
 
 
