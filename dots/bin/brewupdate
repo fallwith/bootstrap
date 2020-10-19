@@ -5,4 +5,4 @@ if ! (command -v brew >/dev/null); then
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-brew update && brew bundle --global && brew upgrade && brew cask upgrade && brew cleanup
+brew update && brew bundle --global && brew upgrade && brew upgrade --cask && brew cleanup
