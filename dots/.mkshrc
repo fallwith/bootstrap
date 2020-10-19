@@ -306,9 +306,9 @@ if running_debian; then
   alias ll='ls -lAFh --color --full-time'
 
   # https://snugug.com/musings/developing-on-chrome-os/
-  # open() {
-  #   setsid nohup xdg-open $1 >/dev/null 2>/dev/null
-  # }
+  function open() {
+    setsid nohup xdg-open $1 >/dev/null 2>/dev/null
+  }
   # alias pbcopy='xclip -selection clipboard'
   # alias pbpaste='xclip -selection clipboard -o'
 fi
