@@ -1,4 +1,5 @@
 fd/
+fonts/.uuid
 fzf/
 ripgrep/
 rustup-init.sh

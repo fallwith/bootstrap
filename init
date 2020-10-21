@@ -95,6 +95,16 @@ if running_mac_os; then
       eval "$cmd"
     fi
   done
+elif running_debian; then
+  fonts_link="$target_dir/.fonts"
+  if [[ -e "$fonts_link" ]]; then
+    echo "Fonts already linked to at $fonts_link - skipping"
+  else
+    ln -s "$bootstrap_dir/fonts" "$fonts_link"
+    echo "Fonts linked to at $fonts_link"
+    fc-cache
+    echo "Font cache cleared"
+  fi
 fi
 
 # --- --- --- --- --- --- ---
