@@ -65,4 +65,4 @@
 [init]
 	defaultBranch = main
 [core]
-	attributesfile = /Users/james.bunch/.gitattributes
+	attributesfile = ~/.gitattributes
