@@ -357,3 +357,20 @@ else
   sudo cp target/release/fd /usr/local/bin/fd
   cd "$bootstrap_dir"
 fi
+
+
+# --- --- --- --- --- --- ---
+# Google Drive
+# --- --- --- --- --- --- ---
+
+gdrive='/mnt/chromeos/GoogleDrive/MyDrive/private'
+gdrive_link="$target_dir/.gdrive"
+if [[ -e "$gdrive_link" ]]; then
+  echo "$gdrive_link already exists - skipping"
+elif [[ -e "$gdrive" ]]; then
+  ln -s "$gdrive" "$gdrive_link"
+  ln -s "${gdrive_link}/.netrc" ~/.netrc
+  ln -s "${gdrive_link}/.mkshrc_private" ~/.mkshrc_private
+else
+  echo "WARNING: Google Drive private share not found at ${gdrive}!"
+fi
