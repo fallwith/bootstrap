@@ -313,6 +313,21 @@ fi
 
 
 # --- --- --- --- --- --- ---
+# C++ Matrix
+# --- --- --- --- --- --- ---
+
+cxxmatrix_location="${target_dir}/bin/cxxmatrix"
+if [[ -e "$cxxmatrix_location" ]]; then
+  echo "C++ Matrix already installed"
+else
+  git clone https://github.com/akinomyoga/cxxmatrix.git
+  cd cxxmatrix
+  make
+  mv cxxmatrix "$cxxmatrix_location"
+fi
+
+
+# --- --- --- --- --- --- ---
 # Debian only from here on out
 # --- --- --- --- --- --- ---
 ! running_debian && exit

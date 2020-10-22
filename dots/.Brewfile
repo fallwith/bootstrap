@@ -5,7 +5,7 @@ brew 'awscli'
 # brew 'chruby', args: ['HEAD']
 # proj
 brew 'cmake'
-brew 'cmatrix'
+# brew 'cmatrix'
 brew 'coreutils'
 brew 'ctags'
 brew 'dust'

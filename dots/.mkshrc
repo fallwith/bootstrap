@@ -94,7 +94,6 @@ alias usage='du -sch .[!.]* * |sort -h'
 # prevent cp/mv overwrites
 alias cp='cp -i'
 alias mv='mv -i'
-alias m='cmatrix -absu 4 -C magenta'
 # alias dirs='find . -type d -not -name .'
 alias dirs='fd -td'
 alias cls='\\builtin print -n \\ec'
@@ -166,6 +165,11 @@ function port() {
 
 function fail() {
   while "$@"; do :; done
+}
+
+function matrix() {
+  color=$(shuf -i 1-255 -n 1)
+  cxxmatrix -s rain-forever -c $color
 }
 
 # }}}
