@@ -42,19 +42,25 @@ call minpac#add('tpope/vim-vinegar')
 " call minpac#add('RRethy/vim-hexokinase')
 " vim-fugitive: 'may very well be the best Git wrapper of all time'
 call minpac#add('tpope/vim-fugitive')
+" rust.vim: rust language support
+call minpac#add('rust-lang/rust.vim')
 
 " colorschemes
 " call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
 call minpac#add('nightsense/seabird')
-" call minpac#add('morhetz/gruvbox')
+call minpac#add('morhetz/gruvbox')
 " call minpac#add('KeitaNakamura/neodark.vim')
-" call minpac#add('ayu-theme/ayu-vim')
+call minpac#add('ayu-theme/ayu-vim')
 " call minpac#add('tssm/fairyfloss.vim')
 " call minpac#add('jacoborus/tender.vim')
 " call minpac#add('cocopon/iceberg.vim')
-" call minpac#add('lifepillar/vim-solarized8')
+call minpac#add('lifepillar/vim-solarized8')
 " call minpac#add('bluz71/vim-nightfly-guicolors')
-" call minpac#add('nightsense/cosmic_latte')
+call minpac#add('nightsense/cosmic_latte')
+call minpac#add('jaredgorski/fogbell.vim')
+call minpac#add('jsit/toast.vim')
+call minpac#add('chriskempson/base16-vim')
+call minpac#add('aonemd/kuroi.vim')
 
 " nvim -c "call minpac#update('', {'do': 'quit'})"
 "call minpac#update()
@@ -78,7 +84,7 @@ let g:ruby_path='~/.asdf/shims/ruby'
 let g:python_path='python3'
 filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
 syntax enable               " enable syntax highlighting
-set t_Co=256                " 256 colors
+" set t_Co=256                " 256 colors
 set autowrite               " save on shell commands
 set noerrorbells            " don't make noise
 set showcmd                 " always display the status line
@@ -122,6 +128,7 @@ set fileformat=unix         " unix fileformat
 set termguicolors           " enable gui colors in the terminal (true 24 bit color support)
 set shell=mksh\ -l
 set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
+set spell                   " enable the spell checker
 setglobal commentstring=#\ %s
 " }}}
 " {{{ colorscheme settings
@@ -158,14 +165,22 @@ let s:bgmodefile = $HOME.'/.bgmode'
 if filereadable(s:bgmodefile)
   let s:bgmode = readfile(s:bgmodefile)[0]
 else
-  let s:bgmode = "dark"
+  let s:bgmode = 'dark'
 endif
-if s:bgmode == "light"
-  set bg:light
+if s:bgmode ==# 'light'
+  set background:light
   colorscheme greygull
 else
-  set bg:dark
-  colorscheme petrel
+  set background:dark
+  " colorscheme petrel
+  " colorscheme cosmic_latte
+  " colorscheme fogbell
+  " colorscheme base16-grayscale-dark
+  colorscheme base16-chalk
+
+
+  " packadd! dracula
+  " colorscheme dracula
 endif
 
 
@@ -227,7 +242,7 @@ augroup END
 "   this allows nested Vim sessions to have the correct column count line up
 "   with the color column
 if has('nvim')
-  autocmd TermOpen * setlocal nonumber norelativenumber
+  autocmd TermOpen * setlocal nonumber norelativenumber nospell
 endif
 
 " Terminal - close buffer on exit
@@ -391,11 +406,11 @@ set splitright
 
 " alt
 function! AltCommand(path, vim_command)
-  let l:alternate = system("alt " . a:path)
+  let l:alternate = system('alt ' . a:path)
   if empty(l:alternate)
-    echo "No alternate file found for " . a:path
+    echo 'No alternate file found for ' . a:path
   else
-    exec a:vim_command . " " . l:alternate
+    exec a:vim_command . ' ' . l:alternate
   endif
 endfunction
 nnoremap <leader>a :call AltCommand(expand('%'), ':e')<CR>
