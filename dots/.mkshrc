@@ -62,14 +62,17 @@ function _prompt_pwd() {
 }
 # export PS1=$'\E[35m$(_prompt_pwd) \E[32m$(date +%H:%M:%S) \E[36m$ \E[0m'
 # BLU=$(tput setaf 39)
-BLU='[38;5;39m'
+# BLU='[38;5;39m'
+BLU='[38;5;6m'
 # PNK=$(tput setaf 201)
-PNK='[38;5;201m'
+# PNK='[38;5;201m'
+PNK='[38;5;1m'
 # PRP=$(tput setaf 105)
-PRP='[38;5;105m'
+# PRP='[38;5;105m'
+GRN='[38;5;2m'
 # RESET=$(tput sgr0)
 RESET='(B[m'
-export PS1=$'${PNK}$(_prompt_pwd) ${PRP}$(date +%H:%M:%S) ${BLU}$ ${RESET}'
+export PS1=$'${PNK}$(_prompt_pwd) ${GRN}$(date +%H:%M:%S) ${BLU}$ ${RESET}'
 
 HISTFILE="$HOME/.mksh_history"
 HISTSIZE=20000
@@ -174,6 +177,13 @@ function matrix() {
 
 # }}}
 
+# Ruby {{{
+function gemcd() {
+  cd `bundle info --path $1`
+}
+alias cdgem=gemcd
+# }}}
+
 # python {{{
 export PATH=~/Library/Python/3.7/bin:$PATH
 # }}}
@@ -193,11 +203,62 @@ alias got='go test -v ./...'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 if [[ "$bgmode" == "light" ]]; then
   # paper color with an #eeeeee -> #ffffff bg swap
-  export FZF_DEFAULT_OPTS='--no-mouse
-      --color=fg:#4d4d4c,bg:#ffffff,hl:#d7005f
-      --color=fg+:#4d4d4c,bg+:#e8e8e8,hl+:#d7005f
-      --color=info:#4271ae,prompt:#8959a8,pointer:#d7005f
-      --color=marker:#4271ae,spinner:#4271ae,header:#4271ae'
+  # export FZF_DEFAULT_OPTS='--no-mouse
+  #     --color=fg:#4d4d4c,bg:#ffffff,hl:#d7005f
+  #     --color=fg+:#4d4d4c,bg+:#e8e8e8,hl+:#d7005f
+  #     --color=info:#4271ae,prompt:#8959a8,pointer:#d7005f
+  #     --color=marker:#4271ae,spinner:#4271ae,header:#4271ae'
+
+  # base-16 black metal immortal
+  # export FZF_DEFAULT_OPTS='--no-mouse
+  #     --color=bg+:$#121212,bg:$#000000,spinner:$#aaaaaa,hl:$#888888
+  #     --color=fg:$#999999,header:$#888888,info:$#556677,pointer:$#aaaaaa
+  #     --color=marker:$#aaaaaa,fg+:$#999999,prompt:$#556677,hl+:$#888888'
+
+  # base16 grayscale-dark
+  # local color00='#101010'
+  # local color01='#252525'
+  # local color02='#464646'
+  # local color03='#525252'
+  # local color04='#ababab'
+  # local color05='#b9b9b9'
+  # local color06='#e3e3e3'
+  # local color07='#f7f7f7'
+  # local color08='#7c7c7c'
+  # local color09='#999999'
+  # local color0A='#a0a0a0'
+  # local color0B='#8e8e8e'
+  # local color0C='#868686'
+  # local color0D='#686868'
+  # local color0E='#747474'
+  # local color0F='#5e5e5e'
+  # export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS"\
+  # " --color=bg+:$color01,bg:$color00,spinner:$color0C,hl:$color0D"\
+  # " --color=fg:$color04,header:$color0D,info:$color0A,pointer:$color0C"\
+  # " --color=marker:$color0C,fg+:$color06,prompt:$color0A,hl+:$color0D"
+
+  # base16 chalk
+  local color00='#151515'
+  local color01='#202020'
+  local color02='#303030'
+  local color03='#505050'
+  local color04='#b0b0b0'
+  local color05='#d0d0d0'
+  local color06='#e0e0e0'
+  local color07='#f5f5f5'
+  local color08='#fb9fb1'
+  local color09='#eda987'
+  local color0A='#ddb26f'
+  local color0B='#acc267'
+  local color0C='#12cfc0'
+  local color0D='#6fc2ef'
+  local color0E='#e1a3ee'
+  local color0F='#deaf8f'
+
+  export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS"\
+  " --color=bg+:$color01,bg:$color00,spinner:$color0C,hl:$color0D"\
+  " --color=fg:$color04,header:$color0D,info:$color0A,pointer:$color0C"\
+  " --color=marker:$color0C,fg+:$color06,prompt:$color0A,hl+:$color0D"
 else
   export FZF_DEFAULT_OPTS='--no-mouse --color fg:-1,bg:-1,hl:230,fg+:3,bg+:233,hl+:229
       --color info:150,prompt:110,spinner:150,pointer:167,marker:174'
