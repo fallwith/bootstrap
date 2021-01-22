@@ -29,7 +29,7 @@ call minpac#add('tpope/vim-endwise')
 " fzf: fuzzy finder integration for Vim
 call minpac#add('junegunn/fzf.vim')
 " ale is an async linter
-call minpac#add('w0rp/ale')
+call minpac#add('dense-analysis/ale')
 " vim-test: run unit tests
 call minpac#add('janko-m/vim-test')
 " vim-wiki: offline wiki system for notes
