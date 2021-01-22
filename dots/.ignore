@@ -1,11 +1,13 @@
-*log/
-*logs/
+*assets/
 *images/
 *javascripts/
+*log/
+*logs/
+*spec/fixtures/vcr_cassettes/
 *stylesheets/
 *tmp/
+*target/
 *vendor/
-*spec/fixtures/vcr_cassettes/
 *.sql
 *.tags*
 *.gemtags*
