@@ -2,8 +2,8 @@
 # brew 'atool'
 brew 'awscli'
 # brew 'bash'
+brew 'bat'
 # brew 'chruby', args: ['HEAD']
-# proj
 brew 'cmake'
 # brew 'cmatrix'
 brew 'coreutils'
@@ -12,7 +12,7 @@ brew 'dust'
 # brew 'elinks'
 # brew 'elixir'
 # brew 'emacs', args: ['HEAD', 'with-cocoa']
-# brew 'emacs', args: ['with-cocoa']
+# brew 'emacs', args:['with-cocoa', 'srgb']
 brew 'exa'
 # brew 'exiftool'
 # brew 'fasd'
@@ -22,13 +22,13 @@ brew 'ffmpeg'
 brew 'findutils'
 # brew 'fortune'
 # brew 'fzf', args: ['HEAD']
+brew 'gdb'
 brew 'ghostscript'
 brew 'git'
 brew 'gnu-sed'
 brew 'go'
 # needed for asdf nodejs
 brew 'gpg'
-# proj
 brew 'graphicsmagick'
 brew 'grip'
 # brew 'highlight'
@@ -58,12 +58,11 @@ brew 'openssl'
 brew 'parallel'
 # brew 'poppler'
 # brew 'postgresql'
-# proj
+brew 'procs'
 brew 'pkg-config'
 brew 'ranger', args: ['HEAD']
 brew 'rclone'
 # brew 'reattach-to-user-namespace'
-# proj
 brew 'redis'
 brew 'ripgrep'
 # brew 'ruby-install'
@@ -77,6 +76,7 @@ brew 'sdl2_ttf'
 brew 'terraform'
 brew 'tig'
 # brew 'tmux'
+brew 'tokei'
 # brew 'transmission'
 # brew 'unrar'
 # brew 'vault'
@@ -84,11 +84,9 @@ brew 'tig'
 brew 'watch'
 brew 'w3m'
 brew 'wget'
-# proj
 brew 'yarn'
 # brew 'zsh'
 
-# proj
 # brew install heroku/brew/heroku
 tap 'heroku/brew'
 brew 'heroku'
@@ -108,7 +106,7 @@ brew 'heroku'
 tap 'uptech/homebrew-oss'
 brew 'uptech/oss/alt'
 
-tap 'caskroom/cask'
+tap 'homebrew/cask'
 cask 'alacritty'
 cask 'appcleaner'
 cask 'avibrazil-rdm'
