@@ -238,6 +238,19 @@ augroup gitcommit
   endif
 augroup END
 
+" Golang
+" on save, replace the contents of the buffer with the result
+" of passing them to gofmt. do so silently so that vim doesn't
+" present the results of the external command. run 'edit' (:e)
+" afterwards to refresh
+augroup golang
+  function! s:gofmt()
+    !gofmt -w %
+    edit
+  endfunction
+  autocmd BufWritePost *.go silent! call s:gofmt()
+augroup END
+
 " Terminal - disable line numbers
 "   this allows nested Vim sessions to have the correct column count line up
 "   with the color column
@@ -265,11 +278,13 @@ command! Minpacclean :call minpac#clean()
 " vim-test
 " by default all test tools are loaded. load only these:
 let g:test#runner_commands = ['RSpec']
+" let g:test#enabled_runners = ['ruby#rspec']
+" let test#ruby#minitest#file_pattern = '\v(((^|/)test_.+)|_test)(spec)@<!\.rb$'
 if filereadable($HOME.'/.asdf/shims/bundle')
   let g:test#ruby#rspec#executable = $HOME.'/.asdf/shims/bundle exec rspec'
 endif
 if has('nvim')
-  let g:test#strategy = "neovim"
+  let g:test#strategy = 'neovim'
 endif
 " mappings
 nno <leader>n :TestNearest<CR>
@@ -320,6 +335,7 @@ let g:ale_ruby_rubocop_executable = $HOME.'/.asdf/shims/bundle'
 
 " " vim-go
 " let g:go_fmt_options = '-s'
+" let g:go_gopls_enabled = 0 " no LSP functionality
 
 " vimwiki
 let g:vimwiki_list = [{'path': '~/.vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
