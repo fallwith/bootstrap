@@ -192,6 +192,11 @@ export PATH=~/Library/Python/3.7/bin:$PATH
 source ~/.asdf/asdf.sh
 # }}}
 
+# volta {{{
+export VOLTA_HOME=$HOME/.volta
+export PATH=$VOLTA_HOME/bin:$PATH
+# }}}
+
 # Go {{{
 export GOPATH=~/.go
 export PATH=$GOPATH/bin:$PATH
