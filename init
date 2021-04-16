@@ -287,7 +287,8 @@ echo "Installing / updating Neovim plugins..."
 # --- --- --- --- --- --- ---
 
 if (command -v cargo >/dev/null); then
-  echo "rust is already installed"
+  echo "rust is already installed - running rustup"
+  rustup update stable
 else
   echo "Installing rust..."
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |sh --no-modify-path
@@ -307,6 +308,14 @@ if [[ $? -ne 0 ]]; then
 else
   echo 'clippy is already installed'
 fi
+
+# racer
+# rustup install nightly
+# git clone https://github.com/racer-rust/racer.git
+# cd racer
+# cargo +nightly build --release
+# cp target/release/racer ~/bin/
+# rustup component add rust-src
 
 
 # --- --- --- --- --- --- ---
