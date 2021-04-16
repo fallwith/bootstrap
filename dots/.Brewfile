@@ -146,7 +146,7 @@ cask 'vlc'
 brew 'mas'
 mas 'Xee3', id: 639764244
 # mas 'Things3', id: 904280696
-mas 'GarageBand', id: 682658836
+# mas 'GarageBand', id: 682658836
 mas 'iMovie', id: 408981434
 mas 'Pages', id: 409201541
 mas 'Keynote', id: 409183694
