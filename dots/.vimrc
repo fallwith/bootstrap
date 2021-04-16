@@ -24,6 +24,8 @@ call minpac#add('tpope/vim-commentary')
 call minpac#add('tpope/vim-surround')
 " vim-endwise: add helpful closing structures (like 'end') for Ruby and others
 call minpac#add('tpope/vim-endwise')
+" vim-repeat: use . to repeat plugin based operations
+call minpac#add('tpope/vim-repeat')
 " vim-go: functionality for go programming development
 " call minpac#add('fatih/vim-go')
 " fzf: fuzzy finder integration for Vim
@@ -37,13 +39,17 @@ call minpac#add('vimwiki/vimwiki')
 " vim-vinegar: enhanced netrw file browsing
 call minpac#add('tpope/vim-vinegar')
 " typescript-vim: functionality for TypeScript development
-" call minpac#add('leafgarland/typescript-vim')
+call minpac#add('leafgarland/typescript-vim')
 " vim-hexokinase: display color previews inline
 " call minpac#add('RRethy/vim-hexokinase')
 " vim-fugitive: 'may very well be the best Git wrapper of all time'
 call minpac#add('tpope/vim-fugitive')
 " rust.vim: rust language support
 call minpac#add('rust-lang/rust.vim')
+" vim racer: rust autocompletion
+call minpac#add('racer-rust/vim-racer')
+" editorconfig-vim: support .editorconfig project files
+call minpac#add('editorconfig/editorconfig-vim')
 
 " colorschemes
 " call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
@@ -176,7 +182,9 @@ else
   " colorscheme cosmic_latte
   " colorscheme fogbell
   " colorscheme base16-grayscale-dark
-  colorscheme base16-chalk
+  " colorscheme base16-chalk
+  " colorscheme base16-atlas
+  colorscheme base16-ashes
 
 
   " packadd! dracula
@@ -298,6 +306,7 @@ nno <leader>o :TestVisit<CR>
 " fix issues with :ALEFix
 let g:ale_linters = {
 \ 'ruby': ['ruby', 'rubocop'],
+\ 'typescript': ['eslint', 'prettier'],
 \ 'vim': ['vint'],
 \}
 " Only run linters named in ale_linters settings.
@@ -308,6 +317,12 @@ let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
 " lint immediately
 let g:ale_lint_delay = 0
+" lint on save
+let g:ale_fixers = {
+\ 'typescript': ['eslint', 'prettier'],
+\}
+let g:ale_fix_on_save = 1
+let g:ale_linters_explicit = 1
 " rubocop config
 " let g:ale_ruby_rubocop_executable = $HOME.'/.asdf/shims/rubocop'
 " let g:ale_ruby_rubocop_executable = $HOME.'/.asdf/shims/bundle exec rubocop'
@@ -342,6 +357,12 @@ let g:vimwiki_list = [{'path': '~/.vimwiki/', 'syntax': 'markdown', 'ext': '.md'
 
 " " vim-hexokinase
 " let g:Hexokinase_virtualText = '██████'
+
+" vim racer
+" show the complete function definition
+let g:racer_experimental_completer = 1
+" insert the parenthesis in the completion
+let g:racer_insert_paren = 1
 " }}}
 " {{{ custom mappings
 :noremap <Leader>i :set list!<CR>       " toggle display of invisibles
