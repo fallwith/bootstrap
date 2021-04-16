@@ -1,8 +1,10 @@
 *assets/
+*dist/
 *images/
 *javascripts/
 *log/
 *logs/
+*node_modules/
 *spec/fixtures/vcr_cassettes/
 *stylesheets/
 *tmp/
@@ -14,11 +16,9 @@
 *.csv
 *.tsv
 *.tmp*
-*.js
 *.css
 *.scss
 *.old
-*.json
 *.xml
 *.html
 *.plist
