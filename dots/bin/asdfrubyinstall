@@ -1,0 +1,17 @@
+#!/bin/sh
+
+ruby_version="$1"
+if [ "$ruby_version" == "" ]; then
+  echo "Usage: $0 RUBY_VERSION"
+  exit
+fi
+
+if (asdf list ruby | grep -q "$ruby_version"); then
+  echo "Ruby version $ruby_version is already installed."
+  exit
+fi
+
+export ASDF_RUBY_BUILD_VERSION=master
+asdf update
+asdf plugin update ruby
+asdf install ruby "$ruby_version"
