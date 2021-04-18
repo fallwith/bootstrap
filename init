@@ -21,17 +21,10 @@ bootstrap_dir=$(pwd)
 target_dir=${BOOTSTRAP_TARGET_DIR:-$HOME}
 DESIRED_SHELL=${DESIRED_SHELL:-}
 
-# this shell will be added to /etc/shells if absent and set as the default
-if [[ -z "$DESIRED_SHELL" ]]; then
-  if [[ -e "/bin/mksh" ]]; then
-    DESIRED_SHELL=/bin/mksh
-  elif [[ -e "/usr/local/bin/mksh" ]]; then
-    DESIRED_SHELL=/usr/local/bin/mksh
-  else
-    echo 'Cannot locate mksh and DESIRED_SHELL is not set!'
-    exit -1
-  fi
-fi
+
+# --- --- --- --- --- --- ---
+# helper functions
+# --- --- --- --- --- --- ---
 
 function running_mac_os() {
   [[ "$OSTYPE" == "darwin"* ]] && return
@@ -124,6 +117,23 @@ fi
 if running_mac_os; then
   echo "Installing and running Homebrew..."
   $target_dir/bin/brewupdate
+fi
+
+
+# --- --- --- --- --- --- ---
+# set the desired shell
+# --- --- --- --- --- --- ---
+
+# this shell will be added to /etc/shells if absent and set as the default
+if [[ -z "$DESIRED_SHELL" ]]; then
+  if [[ -e "/bin/mksh" ]]; then
+    DESIRED_SHELL=/bin/mksh
+  elif [[ -e "/usr/local/bin/mksh" ]]; then
+    DESIRED_SHELL=/usr/local/bin/mksh
+  else
+    echo 'Cannot locate mksh and DESIRED_SHELL is not set!'
+    exit -1
+  fi
 fi
 
 
@@ -231,7 +241,8 @@ else
 fi
 set +eu
 source "$target_dir/.asdf/asdf.sh"
-for p in ruby nodejs; do
+# for p in ruby nodejs; do
+for p in ruby; do
   if $(asdf plugin-list | grep -qE "^${p}$"); then
     echo "asdf '$p' plugin already installed"
   else
@@ -239,14 +250,14 @@ for p in ruby nodejs; do
     asdf plugin-add $p
   fi
 done
-if running_mac_os; then
-  if $(gpg -k | grep -q 94AE36675C464D64BAFA68DD7434390BDBE9B9C5); then
-    echo "nodejs release team GPG keys already imported"
-  else
-    echo "Importing GPG keys for the nodejs release team..."
-    bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
-  fi
-fi
+# if running_mac_os; then
+#   if $(gpg -k | grep -q 94AE36675C464D64BAFA68DD7434390BDBE9B9C5); then
+#     echo "nodejs release team GPG keys already imported"
+#   else
+#     echo "Importing GPG keys for the nodejs release team..."
+#     bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+#   fi
+# fi
 set -eu
 
 
@@ -291,7 +302,7 @@ if (command -v cargo >/dev/null); then
   rustup update stable
 else
   echo "Installing rust..."
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |sh --no-modify-path
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |sh
   wget https://sh.rustup.rs -O rustup-init.sh
   sh rustup-init.sh --no-modify-path -y
 fi
