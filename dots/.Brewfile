@@ -22,6 +22,7 @@ brew 'ffmpeg'
 brew 'findutils'
 # brew 'fortune'
 # brew 'fzf', args: ['HEAD']
+brew 'fzf'
 brew 'gdb'
 brew 'ghostscript'
 brew 'git'
