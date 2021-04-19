@@ -185,7 +185,8 @@ alias cdgem=gemcd
 # }}}
 
 # python {{{
-export PATH=~/Library/Python/3.7/bin:$PATH
+# pyver=$(ls ~/Library/Python|sort|tail -1)
+export PATH=~/Library/Python/3.9/bin:$PATH
 # }}}
 
 # asdf {{{
