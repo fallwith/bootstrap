@@ -360,6 +360,21 @@ fi
 
 
 # --- --- --- --- --- --- ---
+# Postgres.app
+# --- --- --- --- --- --- ---
+
+if [[ -e "/Applications/Postgres.app" ]]; then
+  echo "Postgres.app already installed"
+else
+  rm -f Postgres.dmg
+  wget --no-check-certificate https://github.com/PostgresApp/PostgresApp/releases/download/v2.4.2/Postgres-2.4.2-13.dmg -O Postgres.dmg
+  open Postgres.dmg
+  echo 'Hit a key after install Postgres.app to /Applications'
+  read -n 1 any_key
+  echo -e "export PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:\$PATH\n" >> ~/.mkshrc_private
+fi
+
+# --- --- --- --- --- --- ---
 # Debian only from here on out
 # --- --- --- --- --- --- ---
 ! running_debian && exit

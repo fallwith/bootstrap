@@ -4,3 +4,4 @@ fonts/.uuid
 fzf/
 ripgrep/
 rustup-init.sh
+Postgres.app
