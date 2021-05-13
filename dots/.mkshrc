@@ -108,7 +108,7 @@ else
 fi
 alias v='nvim_launch $(\nvim --headless --noplugin -co +q 2>&1 | grep -v "term://" | cut -d" " -f2- | tr -d "\r" | fzf +m)'
 # BSD ls
-alias ll='ls -lGAFTh'
+# alias ll='ls -lGAFTh'
 alias font="kitty @ set-font-size"
 alias b='bundle exec'
 alias brake='b rake'
@@ -280,14 +280,16 @@ fi
 # }}}
 
 # exa {{{
-# -l = long (table) format
-# -a = display all (including hidden) files
-# -g = display each file's group
-# -F = display a type indicator by files (dirs have a trailing slash, like ls -p)
-# --group-directories-first = does what it says on the tin
-# --git = provides a git status for each file (if under revision control)
-# --time-style long-iso = use a long iso format for date/time info
-# alias ll="exa -lagF --group-directories-first --git --time-style long-iso"
+# --long: extended details and attributes
+# --all: show hidden and dot files
+# --group: display group owner
+# --numeric: display the numeric id of each object's owner
+# --classify: display type indicators (show a trailing slash for directories)
+# --git: display the current git status for each object
+# --time-style log-iso: desired timestamp format (default, iso, long-iso, full-iso)
+# --colour-scale: color code the various file size ranges
+# --extended: reveal extended file attributes
+alias ll='exa --long --all --group --numeric --classify --git --time-style long-iso --colour-scale --extended'
 # }}}
 
 # Vim / Neovim {{{
@@ -367,6 +369,13 @@ function cs() {
       ;;
   esac
 }
+
+# }}}
+
+# GPG {{{
+
+alias gpgtest='echo testing | gpg --clearsign'
+export GPG_TTY=$(tty)
 
 # }}}
 
