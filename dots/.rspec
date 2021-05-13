@@ -1,3 +1,4 @@
 --color
 --tty
 --format documentation
+--fail-fast
