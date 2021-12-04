@@ -7,19 +7,15 @@
 #   project root indicating file/dir can be found.
 
 tags_file=.tags
-declare -a root_markers=(.git .hg .svn .bzr _darcs)
 
 ! [ -z "$1" ] && cd "${1%/*}"
 starting_dir=$PWD
 
-root_markers[${#root_markers[@]}]=$tags_file
 while [[ $PWD != '/' ]]; do
-  for marker in ${root_markers[@]}; do
-    if [ -e "${PWD}/${marker}" ]; then
-      ctags_dir=$PWD
-      break
-    fi
-  done
+  if [ -e "${PWD}/.git" ]; then
+    ctags_dir=$PWD
+    break
+  fi
   cd ..
 done
 

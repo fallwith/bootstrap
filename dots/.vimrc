@@ -117,7 +117,7 @@ set number                  " enable line numbers
 " set relativenumber          " enable relative line numbers
 set numberwidth=5           " specify line numbers column width
 set visualbell t_vb=        " disable bell
-"set tags=.tags;/            " look for a .tags ctags file and keep looking all the way up to /
+set tags=.tags;/            " look for a .tags ctags file and keep looking all the way up to /
 "set cursorline              " highlight the line the cursor resides on
 set shiftround              " round indentation to a multiple of 'shiftwidth'
 set wildmenu                " when tab completing commands, show available matches in a menu
@@ -184,7 +184,8 @@ else
   " colorscheme base16-grayscale-dark
   " colorscheme base16-chalk
   " colorscheme base16-atlas
-  colorscheme base16-ashes
+  " colorscheme base16-ashes
+  colorscheme base16-tomorrow-night
 
 
   " packadd! dracula
@@ -471,4 +472,6 @@ function! ChangeDirectoryToProjectRoot()
   execute 'lcd ' . root_path
 endfunction
 autocmd BufEnter * :call ChangeDirectoryToProjectRoot()
+
+command! Rtags :! rubyctags
 " }}}

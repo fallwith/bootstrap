@@ -10,6 +10,8 @@
 *tmp/
 *target/
 *vendor/
+*public/
+*.json
 *.sql
 *.tags*
 *.gemtags*
@@ -26,4 +28,5 @@
 *.log
 !.zshrc
 !.zprofile
-*vcr_cassettes*
+*vcr/cassettes*
+*cassettes*

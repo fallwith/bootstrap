@@ -56,6 +56,7 @@ brew 'mksh'
 # brew 'mysql'
 brew 'ncdu'
 brew 'neovim'
+# brew 'neovim', args: ['HEAD']
 brew 'npm'
 brew 'openssl'
 brew 'parallel'

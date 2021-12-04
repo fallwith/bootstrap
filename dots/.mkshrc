@@ -1,10 +1,13 @@
 # vim:fileencoding=utf-8:ft=conf:foldmethod=marker
 
-# OS detection {{{
+# OS specific {{{
 function running_debian() {
   (command -v apt-get >/dev/null) && return
   false
 }
+
+# https://wilsonmar.github.io/maximum-limits/
+if ! running_debian; then ulimit -n 12288; fi
 # }}}
 
 # Color {{{
@@ -112,6 +115,7 @@ alias v='nvim_launch $(\nvim --headless --noplugin -co +q 2>&1 | grep -v "term:/
 alias font="kitty @ set-font-size"
 alias b='bundle exec'
 alias brake='b rake'
+alias bspec='b rspec'
 alias history='echo $(export FZF_DEFAULT_OPTS="--height 40% $FZF_DEFAULT_OPTS -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort +m"; builtin fc -rnl 1 | perl -ne '\''print "$1\n" if!$u{/\s+(.*)/, $1}++'\'' | fzf)'
 alias reload='. ~/.mkshrc'
 
@@ -289,7 +293,8 @@ fi
 # --time-style log-iso: desired timestamp format (default, iso, long-iso, full-iso)
 # --colour-scale: color code the various file size ranges
 # --extended: reveal extended file attributes
-alias ll='exa --long --all --group --numeric --classify --git --time-style long-iso --colour-scale --extended'
+alias ll='exa --long --all --group --numeric --classify --git --time-style long-iso --colour-scale'
+alias lle='ll --extended'
 # }}}
 
 # Vim / Neovim {{{
@@ -324,7 +329,7 @@ export PGHOST=localhost
 # }}}
 
 # Redis {{{
-alias redisstart='redis-server /usr/local/etc/redis.conf &'
+alias redisstart='redis-server /usr/local/etc/redis.conf >/dev/null &'
 alias redisstop='pkill redis-server'
 # }}}
 
@@ -374,6 +379,7 @@ function cs() {
 
 # GPG {{{
 
+# after any gpg software updates, run: gpgconf --kill gpg-agent
 alias gpgtest='echo testing | gpg --clearsign'
 export GPG_TTY=$(tty)
 
