@@ -1,0 +1,89 @@
+-- visually style columns at the given position(s)
+vim.opt.colorcolumn = '80,120'
+
+-- automcompletion options
+--   menu: use a pop-up menu
+--   menuone: use the menu even if there's only one available option
+--   noselect: always force a manual selection instead of providing a default one
+vim.opt.completeopt = "menu,menuone,noselect"
+
+-- expand tabs to spaces
+vim.opt.expandtab = true
+
+-- highlight search matches
+vim.opt.hlsearch = true
+
+-- case insensitive searching
+vim.opt.ignorecase = true
+
+-- show the effects (or results) of a command (or a search) incrementally
+vim.opt.inccommand = 'nosplit'
+
+-- when searching, incrementally show the current results as the search pattern
+--   continue to be built
+vim.opt.incsearch = true
+
+-- always show the status line of the last window
+vim.opt.laststatus = 2
+
+-- display line numbers
+vim.opt.number = true
+
+-- pad the given number of lines above and below the cursor for context
+vim.opt.scrolloff = 5
+
+-- round indentation to a multiple of 'shiftwidth'
+vim.opt.shiftround = true
+
+-- how many spaces to indent/outdent
+vim.opt.shiftwidth = 2
+
+-- trigger case sensistivity when two differently case characters are present
+vim.opt.smartcase = true
+
+-- tabs are 2 spaces
+vim.opt.tabstop = 2
+
+-- ctags
+-- vim.opt.tags = '.tags'
+
+-- enable gui style colors in the terminal (true 24 bit color support)
+vim.opt.termguicolors = true
+
+-- time to wait after ESC
+vim.opt.timeoutlen = 250
+
+-- automatically update the window's title to show the current filename
+vim.opt.title = true
+
+ -- file based persistent undo
+vim.opt.undofile = true; vim.bo.undofile = true
+
+-- when tab completing commands, show available matches in a menu
+vim.opt.wildmenu = true
+
+-- disable builtin plugins
+-- https://dev.to/voyeg3r/my-ever-growing-neovim-init-lua-h0p
+local disabled_built_ins = {
+    "netrw",
+    "netrwPlugin",
+    "netrwSettings",
+    "netrwFileHandlers",
+    "gzip",
+    "zip",
+    "zipPlugin",
+    "tar",
+    "tarPlugin",
+    "getscript",
+    "getscriptPlugin",
+    "vimball",
+    "vimballPlugin",
+    "2html_plugin",
+    "logipat",
+    "rrhelper",
+    "spellfile_plugin",
+    "matchit"
+}
+for _, plugin in pairs(disabled_built_ins) do
+    vim.g["loaded_" .. plugin] = 1
+end

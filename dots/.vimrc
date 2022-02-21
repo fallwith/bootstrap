@@ -1,13 +1,7 @@
 " vim:fdm=marker
 scriptencoding utf-8
 
-" {{{ VIMHOME
-if has('nvim')
-  let $VIMHOME = $HOME.'/.config/nvim'
-else
-  let $VIMHOME = $HOME.'/.vim'
-endif
-" }}}
+let $VIMHOME = $HOME.'/.vim'
 " minpac {{{
 let $pacpath = $VIMHOME.'/pack/minpac/opt/minpac'
 if empty(glob($pacpath))
@@ -26,71 +20,33 @@ call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-endwise')
 " vim-repeat: use . to repeat plugin based operations
 call minpac#add('tpope/vim-repeat')
-" vim-go: functionality for go programming development
-" call minpac#add('fatih/vim-go')
 " fzf: fuzzy finder integration for Vim
 call minpac#add('junegunn/fzf.vim')
 " ale is an async linter
 call minpac#add('dense-analysis/ale')
-" vim-test: run unit tests
-call minpac#add('janko-m/vim-test')
 " vim-wiki: offline wiki system for notes
 call minpac#add('vimwiki/vimwiki')
 " vim-vinegar: enhanced netrw file browsing
 call minpac#add('tpope/vim-vinegar')
-" typescript-vim: functionality for TypeScript development
-call minpac#add('leafgarland/typescript-vim')
-" vim-hexokinase: display color previews inline
-" call minpac#add('RRethy/vim-hexokinase')
-" vim-fugitive: 'may very well be the best Git wrapper of all time'
-call minpac#add('tpope/vim-fugitive')
-" rust.vim: rust language support
-call minpac#add('rust-lang/rust.vim')
-" vim racer: rust autocompletion
-call minpac#add('racer-rust/vim-racer')
-" editorconfig-vim: support .editorconfig project files
-call minpac#add('editorconfig/editorconfig-vim')
 
 " colorschemes
-" call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
+call minpac#add('Lokaltog/vim-distinguished', {'branch': 'develop'})
 call minpac#add('nightsense/seabird')
 call minpac#add('morhetz/gruvbox')
-" call minpac#add('KeitaNakamura/neodark.vim')
 call minpac#add('ayu-theme/ayu-vim')
-" call minpac#add('tssm/fairyfloss.vim')
-" call minpac#add('jacoborus/tender.vim')
-" call minpac#add('cocopon/iceberg.vim')
 call minpac#add('lifepillar/vim-solarized8')
-" call minpac#add('bluz71/vim-nightfly-guicolors')
 call minpac#add('nightsense/cosmic_latte')
 call minpac#add('jaredgorski/fogbell.vim')
 call minpac#add('jsit/toast.vim')
 call minpac#add('chriskempson/base16-vim')
 call minpac#add('aonemd/kuroi.vim')
-
-" nvim -c "call minpac#update('', {'do': 'quit'})"
-"call minpac#update()
-
-" remove packages with :call minpac#clean()
-" }}}
-" OS detection {{{
-" let s:os = 'unknown'
-" let s:osfile = '/etc/os-release'
-" if filereadable(s:osfile)
-"   let s:osidline = readfile(s:osfile)[5]
-"   if s:osidline == 'ID=debian'
-"     let s:os = 'debian'
-"   endif
-" endif
+call minpac#add('zaki/zazen')
 " }}}
 " {{{ configuration
 let mapleader = ','         " use a comma as the <Leader> character
-" let g:ruby_path='~/bin/ruby'
-let g:ruby_path='~/.asdf/shims/ruby'
 let g:python_path='python3'
 filetype plugin indent on   " enable plugins related to the opened file's type and enable indentation
 syntax enable               " enable syntax highlighting
-" set t_Co=256                " 256 colors
 set autowrite               " save on shell commands
 set noerrorbells            " don't make noise
 set showcmd                 " always display the status line
@@ -106,19 +62,14 @@ set hlsearch                " highlight located values being searched for
 set ignorecase              " case insensitive searching
 set smartcase               " trigger case sensitivity when an upper case char is used
 set incsearch               " show incremental matches while searching ( /<pattern> )
-if has('nvim')
-  set inccommand=nosplit    " show incremental results during a command ( :%s/<pattern> )
-end
 set nocindent               " disable c style indenting
 set nobackup                " disable backups"
 set nowritebackup           " disable backups"
 set noswapfile              " disable the creation of .swp swap files
 set number                  " enable line numbers
-" set relativenumber          " enable relative line numbers
 set numberwidth=5           " specify line numbers column width
 set visualbell t_vb=        " disable bell
 set tags=.tags;/            " look for a .tags ctags file and keep looking all the way up to /
-"set cursorline              " highlight the line the cursor resides on
 set shiftround              " round indentation to a multiple of 'shiftwidth'
 set wildmenu                " when tab completing commands, show available matches in a menu
 set display+=lastline       " display as much as possible of the last (overly long) line
@@ -138,78 +89,8 @@ set spell                   " enable the spell checker
 setglobal commentstring=#\ %s
 " }}}
 " {{{ colorscheme settings
-
-" time changing colorscheme experiment...
-" let thehour = strftime("%H")
-" if thehour < 6 || thehour > 19
-"   set background=dark
-"   colorscheme gruvbox
-" elseif thehour >= 5 && thehour < 17
-"   set background=light
-"   colorscheme seagull
-" else
-"   set background=light
-"   colorscheme gruvbox
-" endif
-
-" set background=light
-" colorscheme seagull
-
-" gruvbox
-" let g:gruvbox_contrast_dark='soft'
-" let g:gruvbox_improved_strings=1
-" let g:gruvbox_improved_warnings=1
-" let g:gruvbox_italic=1
-
-" set bg=dark
-" colorscheme tender
-" set bg:light
-
-" * check if ~/.bgmode exists, default to dark
-" * if exists and 'light', use light
-let s:bgmodefile = $HOME.'/.bgmode'
-if filereadable(s:bgmodefile)
-  let s:bgmode = readfile(s:bgmodefile)[0]
-else
-  let s:bgmode = 'dark'
-endif
-if s:bgmode ==# 'light'
-  set background:light
-  colorscheme greygull
-else
-  set background:dark
-  " colorscheme petrel
-  " colorscheme cosmic_latte
-  " colorscheme fogbell
-  " colorscheme base16-grayscale-dark
-  " colorscheme base16-chalk
-  " colorscheme base16-atlas
-  " colorscheme base16-ashes
-  colorscheme base16-tomorrow-night
-
-
-  " packadd! dracula
-  " colorscheme dracula
-endif
-
-
-" set bg:dark
-" " colorscheme cosmic_latte
-" " colorscheme greygull
-" colorscheme petrel
-
-" gui
-" set guifont=mononoki:h13
-" set guioptions=
-
-" set guifont=menonoki:h5
-
-" if filereadable($HOME.'/.config/kitty/vimcolorscheme')
-"   source ~/.config/kitty/vimcolorscheme
-" else
-"   set background=dark
-"   colorscheme gruvbox
-" end
+set background:dark
+colorscheme cosmic_latte
 
 " allow alacritty/kitty to retain transparency with (n)vim
 " https://github.com/jwilm/alacritty/issues/1082
@@ -217,34 +98,18 @@ endif
 " highlight Normal ctermbg=NONE guibg=black
 highlight Normal ctermbg=NONE guibg=NONE
 
-" nvim colors the terminal with colorscheme values
-" vim needs terminal_ansi_colors
-if !has('nvim')
-  let g:terminal_ansi_colors = [
-              \ '#000000', '#d54e53', '#b9ca4a', '#e6c547',
-              \ '#7aa6da', '#c397d8', '#70c0ba', '#ffffff',
-              \ '#666666', '#ff3334', '#9ec400', '#e7c547',
-              \ '#7aa6da', '#b77ee0', '#54ced6', '#ffffff'
-              \]
-endif
+" colors for the terminal
+let g:terminal_ansi_colors = [
+            \ '#000000', '#d54e53', '#b9ca4a', '#e6c547',
+            \ '#7aa6da', '#c397d8', '#70c0ba', '#ffffff',
+            \ '#666666', '#ff3334', '#9ec400', '#e7c547',
+            \ '#7aa6da', '#b77ee0', '#54ced6', '#ffffff'
+            \]
 " }}}
 " hooks / filetype specific {{{
-
-" automatically leave paste mode after having pasted in text
-" autocmd InsertLeave * silent! set nopaste
-
-" Markdown files
-" autocmd BufRead,BufNewFile *.md set colorcolumn=80
-
-" Terraform templates
-" autocmd FileType tf setlocal commentstring=#\ %s
-
 " Git commit messages
 augroup gitcommit
   autocmd Filetype gitcommit setlocal spell textwidth=72 colorcolumn=50,72
-  if has('nvim') && executable('nvr')
-    let $VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-  endif
 augroup END
 
 " Golang
@@ -259,18 +124,6 @@ augroup golang
   endfunction
   autocmd BufWritePost *.go silent! call s:gofmt()
 augroup END
-
-" Terminal - disable line numbers
-"   this allows nested Vim sessions to have the correct column count line up
-"   with the color column
-if has('nvim')
-  autocmd TermOpen * setlocal nonumber norelativenumber nospell
-endif
-
-" Terminal - close buffer on exit
-" prevents vim-test from working
-" autocmd TermClose * bd!
-
 " }}}
 " packages {{{
 " fzf
@@ -283,24 +136,6 @@ set runtimepath+=/usr/local/opt/fzf
 :noremap <Leader>m :call minpac#update()<CR>
 command! Minpacupdate :call minpac#update()
 command! Minpacclean :call minpac#clean()
-
-" vim-test
-" by default all test tools are loaded. load only these:
-let g:test#runner_commands = ['RSpec']
-" let g:test#enabled_runners = ['ruby#rspec']
-" let test#ruby#minitest#file_pattern = '\v(((^|/)test_.+)|_test)(spec)@<!\.rb$'
-if filereadable($HOME.'/.asdf/shims/bundle')
-  let g:test#ruby#rspec#executable = $HOME.'/.asdf/shims/bundle exec rspec'
-endif
-if has('nvim')
-  let g:test#strategy = 'neovim'
-endif
-" mappings
-nno <leader>n :TestNearest<CR>
-nno <leader>r :TestFile<CR>
-nno <leader>l :TestLast<CR>
-" nno <leader>a :TestSuite<CR>
-nno <leader>o :TestVisit<CR>
 
 " ale
 " check health with :ALEInfo
@@ -325,51 +160,15 @@ let g:ale_fixers = {
 let g:ale_fix_on_save = 1
 let g:ale_linters_explicit = 1
 " rubocop config
-" let g:ale_ruby_rubocop_executable = $HOME.'/.asdf/shims/rubocop'
-" let g:ale_ruby_rubocop_executable = $HOME.'/.asdf/shims/bundle exec rubocop'
-let g:ale_ruby_rubocop_executable = $HOME.'/.asdf/shims/bundle'
-
-" let g:ale_ruby_rubocop_options = '--parallel 4'
-" \ 'javascript': ['eslint'],
-" " \ 'ruby': ['ruby', 'rubocop'],
-" \ 'go': ['gofmt', 'golint', 'go vet']
-" let b:ale_fixers = {'javascript': ['prettier', 'eslint'],
-" \                   'typescript': ['prettier', 'eslint']}
-" let g:ale_fix_on_save = 1
-" hi link ALEErrorLine ErrorMsg
-" hi link ALEWarningLine WarningMsg
-" let g:ale_lint_on_text_changed = 'normal'
-" let g:ale_lint_on_insert_leave = 1
-" let g:ale_lint_delay = 0
-
-" let g:ale_java_javac_classpath = expand("<sfile>:p:h").'/../../.m2/repository'
-" let g:ale_go_metalinter_executable = expand("<sfile>:p:h").'/../../.go/bin/gometalinter'
-" let g:ale_go_golint_executable = expand("<sfile>:p:h").'/../../.go/bin/golint'
-" let g:ale_go_gofmt_executable = '/usr/local/bin/gofmt'
-" let g:ale_go_govet_executable = expand("<sfile>:p:h").'/../../.go/bin/govet'
-" let g:ale_go_fmt_options = '-s'
-
-" " vim-go
-" let g:go_fmt_options = '-s'
-" let g:go_gopls_enabled = 0 " no LSP functionality
+let g:ale_ruby_rubocop_executable = 'bundle'
 
 " vimwiki
 let g:vimwiki_list = [{'path': '~/.vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
-
-" " vim-hexokinase
-" let g:Hexokinase_virtualText = '██████'
-
-" vim racer
-" show the complete function definition
-let g:racer_experimental_completer = 1
-" insert the parenthesis in the completion
-let g:racer_insert_paren = 1
 " }}}
 " {{{ custom mappings
 :noremap <Leader>i :set list!<CR>       " toggle display of invisibles
 :noremap w!! %!sudo tee > /dev/null %        " force a write if vim was launched without sudo
 nmap <silent> <Leader>/ ;nohlsearch<CR> " clear currently displayed search highlighting
-" :noremap <Leader>r ;redraw!<CR>              " re-render the current window
 " alias ctrl-p to shift-tab for autocompletion
 imap <S-Tab> <C-P>
 
@@ -406,9 +205,6 @@ map <Leader>t ;terminal<CR>
 " }}}
 " {{{ tabs and splits
 
-" open a new tab
-" nnoremap <Leader>n :tabnew<CR>
-
 " vertical and horizontal split to new buffer
 :noremap <Leader>v :below vnew<CR>
 :noremap <Leader>h :below new<CR>
@@ -419,59 +215,32 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 
-" navigate away from a terminal window, escaping (C-O) first
-" tnoremap <M-h> <C-O><C-W><C-H>
-" tnoremap <M-j> <C-O><C-W><C-J>
-" tnoremap <M-k> <C-O><C-W><C-K>
-" tnoremap <M-l> <C-O><C-W><C-L>
-" tnoremap <A-h> <C-O><C-W><C-H>
-" tnoremap <A-j> <C-O><C-W><C-J>
-" tnoremap <A-k> <C-O><C-W><C-K>
-" tnoremap <A-l> <C-O><C-W><C-L>
-
 " open new horizonal split panes to the bottom and vertical panes to the right
 set splitbelow
 set splitright
 
 " }}}
 " {{{ functions
-" Z - cd to an fzf selected dir
-" function Zdir(path) abort
-"   exec 'cd ' . $HOME . '/' . a:path
-" endfunction
-" let Zfunc = function('Zdir')
-" command! -bang Z :call fzf#run({'source': 'fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g"', 'sink': Zfunc})
-
-" alt
-function! AltCommand(path, vim_command)
-  let l:alternate = system('alt ' . a:path)
-  if empty(l:alternate)
-    echo 'No alternate file found for ' . a:path
-  else
-    exec a:vim_command . ' ' . l:alternate
-  endif
-endfunction
-nnoremap <leader>a :call AltCommand(expand('%'), ':e')<CR>
 
 " adapted from vim-rooter
-function! ChangeDirectoryToProjectRoot()
-  let b:path = expand('%:p')
-  if empty(b:path) | let b:path = getcwd() | endif
-  let root_path = getbufvar('%', 'rootPath')
-  if !empty(root_path)
-    execute 'lcd ' . root_path
-    return
-  endif
-  let root_path = finddir('.git', escape(b:path, ' ').';')
-  if empty(root_path) | return | endif
-  let root_path = fnamemodify(root_path, ':p:h:h')
-  if empty(root_path) | return | endif
-  if root_path =~? '^term' | return | endif
-  let root_path = fnameescape(root_path)
-  call setbufvar('%', 'rootPath', root_path)
-  execute 'lcd ' . root_path
-endfunction
-autocmd BufEnter * :call ChangeDirectoryToProjectRoot()
+" function! ChangeDirectoryToProjectRoot()
+"   let b:path = expand('%:p')
+"   if empty(b:path) | let b:path = getcwd() | endif
+"   let root_path = getbufvar('%', 'rootPath')
+"   if !empty(root_path)
+"     execute 'lcd ' . root_path
+"     return
+"   endif
+"   let root_path = finddir('.git', escape(b:path, ' ').';')
+"   if empty(root_path) | return | endif
+"   let root_path = fnamemodify(root_path, ':p:h:h')
+"   if empty(root_path) | return | endif
+"   if root_path =~? '^term' | return | endif
+"   let root_path = fnameescape(root_path)
+"   call setbufvar('%', 'rootPath', root_path)
+"   execute 'lcd ' . root_path
+" endfunction
+" autocmd BufEnter * :call ChangeDirectoryToProjectRoot()
 
 command! Rtags :! rubyctags
 " }}}
