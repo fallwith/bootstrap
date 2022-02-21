@@ -230,38 +230,6 @@ fi
 
 
 # --- --- --- --- --- --- ---
-# asdf
-# --- --- --- --- --- --- ---
-
-if [ -e "$target_dir/.asdf" ]; then
-  echo "asdf is already installed"
-else
-  echo "Installing asdf..."
-  git clone https://github.com/asdf-vm/asdf.git "$target_dir/.asdf"
-fi
-set +eu
-source "$target_dir/.asdf/asdf.sh"
-# for p in ruby nodejs; do
-for p in ruby; do
-  if $(asdf plugin-list | grep -qE "^${p}$"); then
-    echo "asdf '$p' plugin already installed"
-  else
-    echo "Adding '$p' plugin to asdf..."
-    asdf plugin-add $p
-  fi
-done
-# if running_mac_os; then
-#   if $(gpg -k | grep -q 94AE36675C464D64BAFA68DD7434390BDBE9B9C5); then
-#     echo "nodejs release team GPG keys already imported"
-#   else
-#     echo "Importing GPG keys for the nodejs release team..."
-#     bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
-#   fi
-# fi
-set -eu
-
-
-# --- --- --- --- --- --- ---
 # Neovim
 # --- --- --- --- --- --- ---
 
@@ -279,18 +247,10 @@ if running_debian; then
   fi
 fi
 
-# install minpac
-pacpath="$HOME/.config/nvim/pack/minpac/opt/minpac"
-if [[ -e "$pacpath" ]]; then
-  echo "Neovim has minpac installed already"
-else
-  echo "Installing minpac for Neovim..."
-  git clone https://github.com/k-takata/minpac.git $pacpath
-fi
-
 # install or update Neovim plugins
 echo "Installing / updating Neovim plugins..."
-\nvim -c "call minpac#update('', {'do': 'quit'}) | exit"
+\nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+
 
 
 # --- --- --- --- --- --- ---

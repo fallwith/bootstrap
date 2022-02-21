@@ -1,4 +1,0 @@
-#!/bin/bash
-
-asdf update
-asdf plugin update --all

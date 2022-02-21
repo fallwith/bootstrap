@@ -186,15 +186,46 @@ function gemcd() {
   cd `bundle info --path $1`
 }
 alias cdgem=gemcd
+
+alias defaultgems='cat $HOME/.default-gems | xargs -n 1 gem install'
+
+function __setrubypath() {
+  local desired="$1"
+  bin_path="$HOME/.rubies/$desired/bin"
+  if [[ -e "$bin_path" ]]; then
+    export PATH="$bin_path:$PATH"
+    echo "Ruby set to $desired"
+  else
+    echo "Can't set Ruby to $desired - is it installed?"
+  fi
+  unset desired
+  unset bin_path
+}
+
+function setruby() {
+  local desired="$1"
+  if [[ "$desired" == "" ]]; then
+    if [[ -e .ruby-version ]]; then
+      desired="$(cat .ruby-version)"
+    else
+      echo "No .ruby-version file found here."
+      return
+    fi
+  fi
+  if [[ $desired = jruby* ]]; then
+    __setrubypath "$desired"
+  else
+    __setrubypath "ruby-$desired"
+  fi
+  unset desired
+}
+
+setruby >/dev/null
 # }}}
 
 # python {{{
 # pyver=$(ls ~/Library/Python|sort|tail -1)
 export PATH=~/Library/Python/3.9/bin:$PATH
-# }}}
-
-# asdf {{{
-source ~/.asdf/asdf.sh
 # }}}
 
 # volta {{{
@@ -320,17 +351,45 @@ alias guide='$nvim_target ~/git/public/vim_guide/vim_guide.md'
 alias no="nvr -o"
 # }}}
 
+# Memcached {{{
+alias memcachedstart='memcached -d -l localhost'
+function memcachedstop() {
+  pid=$(ps auwx | grep 'memcached -d -l localhost' | grep -v grep | awk '{print $2}')
+  15 $pid
+}
+# }}}
+
+# Homebrew Services {{{
+alias servicesstart='brew services --all start'
+alias servicesstop='brew services --all stop'
+# }}}
+
+# MySQL {{{
+# alias mysqlstart='/usr/local/bin/mysqld_safe &'
+# alias mysqlstop='mysqladmin -u root shutdown -p'
+# }}}
+
+# MongoDB {{{
+# alias mongodbstart='mongod --config /usr/local/etc/mongod.conf --fork'
+# alias mongodbstop='run mongosh, issue "use admin; db.shutdownServer();" then kill the other mongod pid'
+# }}}
+
+# RabbitMQ {{{
+# alias rabbitmqstart='/usr/local/sbin/rabbitmq-server &'
+# alias rabbitmqstop='/usr/local/sbin/rabbitmqctl stop'
+# }}}
+
 # Postgresql {{{
 # alias pgstart='pg_ctl -D /usr/local/var/postgres start'
 # alias pgstop='pg_ctl -D /usr/local/var/postgres stop'
-export PGUSER=postgres
-export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/10/bin
-export PGHOST=localhost
+# export PGUSER=postgres
+# export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/10/bin
+# export PGHOST=localhost
 # }}}
 
 # Redis {{{
-alias redisstart='redis-server /usr/local/etc/redis.conf >/dev/null &'
-alias redisstop='pkill redis-server'
+# alias redisstart='redis-server /usr/local/etc/redis.conf >/dev/null &'
+# alias redisstop='pkill redis-server'
 # }}}
 
 # colorschemes {{{
