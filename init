@@ -46,7 +46,8 @@ function process_dot_dir() {
   dir=$1
   shopt -s dotglob
   for f in "$dir"/*; do
-    if [[ -d "$f" ]]; then
+    # for dirs beneath ~/.config, symlink the entire dir
+    if [[ -d "$f" ]] && [[ $dir != */.config ]]; then
       process_dot_dir "$f"
       continue
     fi
