@@ -20,6 +20,9 @@ return require('packer').startup(function(use)
   -- allow . to repeat plugin based operations
   use 'tpope/vim-repeat'
 
+  -- simple file browsing
+  use 'tpope/vim-vinegar'
+
   -- code linting / formating
   use 'jose-elias-alvarez/null-ls.nvim'
 
@@ -41,6 +44,12 @@ return require('packer').startup(function(use)
                      { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
                      { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' } } }
 
+  -- github
+  use { 'pwntester/octo.nvim',
+        requires = { { 'nvim-lua/plenary.nvim' },
+                     { 'nvim-telescope/telescope.nvim' },
+                     { 'kyazdani42/nvim-web-devicons' } } }
+
   -- colorschemes
   use 'zaki/zazen'
   use 'fxn/vim-monochrome'
@@ -55,6 +64,8 @@ return require('packer').startup(function(use)
   use 'jaredgorski/fogbell.vim'
   use 'logico/typewriter-vim'
   use 'LuRsT/austere.vim'
+  use 'sainnhe/edge'
+  use 'sainnhe/sonokai'
 
   if packer_bootstrap then
     require('packer').sync()

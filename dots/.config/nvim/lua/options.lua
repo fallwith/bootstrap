@@ -5,7 +5,7 @@ vim.opt.colorcolumn = '80,120'
 --   menu: use a pop-up menu
 --   menuone: use the menu even if there's only one available option
 --   noselect: always force a manual selection instead of providing a default one
-vim.opt.completeopt = "menu,menuone,noselect"
+vim.opt.completeopt = "menu,menuone,noinsert,noselect"
 
 -- expand tabs to spaces
 vim.opt.expandtab = true
@@ -64,11 +64,13 @@ vim.opt.wildmenu = true
 
 -- disable builtin plugins
 -- https://dev.to/voyeg3r/my-ever-growing-neovim-init-lua-h0p
+--
+-- keeping these for vinegar
+    -- "netrw",
+    -- "netrwPlugin",
+    -- "netrwSettings",
+    -- "netrwFileHandlers",
 local disabled_built_ins = {
-    "netrw",
-    "netrwPlugin",
-    "netrwSettings",
-    "netrwFileHandlers",
     "gzip",
     "zip",
     "zipPlugin",

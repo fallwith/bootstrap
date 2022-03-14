@@ -31,9 +31,9 @@ vim.api.nvim_set_keymap('n', '<C-k>', '<C-w><C-k>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<C-l>', '<C-w><C-l>', {noremap = true})
 
 -- telescope
-vim.api.nvim_set_keymap('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files()<cr>", {noremap = true})
-vim.api.nvim_set_keymap('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep()<cr>", {noremap = true})
-vim.api.nvim_set_keymap('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers()<cr>", {noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>f', "<cmd>lua require('telescope.builtin').find_files()<cr>", {noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>g', "<cmd>lua require('telescope.builtin').live_grep()<cr>", {noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>b', "<cmd>lua require('telescope.builtin').buffers()<cr>", {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<cr>", {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>ft', "<cmd>lua require('telescope.builtin').tags()<cr>", {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>fc', "<cmd>lua require('telescope.builtin').colorscheme()<cr>", {noremap = true})

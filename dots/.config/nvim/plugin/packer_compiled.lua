@@ -122,6 +122,11 @@ _G.packer_plugins = {
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/opt/cmp-vsnip",
     url = "https://github.com/hrsh7th/cmp-vsnip"
   },
+  edge = {
+    loaded = true,
+    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/edge",
+    url = "https://github.com/sainnhe/edge"
+  },
   ["fogbell.vim"] = {
     loaded = true,
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/fogbell.vim",
@@ -192,6 +197,11 @@ _G.packer_plugins = {
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/seabird",
     url = "https://github.com/nightsense/seabird"
   },
+  sonokai = {
+    loaded = true,
+    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/sonokai",
+    url = "https://github.com/sainnhe/sonokai"
+  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/telescope.nvim",
@@ -232,6 +242,11 @@ _G.packer_plugins = {
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/vim-surround",
     url = "https://github.com/tpope/vim-surround"
   },
+  ["vim-vinegar"] = {
+    loaded = true,
+    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/vim-vinegar",
+    url = "https://github.com/tpope/vim-vinegar"
+  },
   ["vim-vsnip"] = {
     loaded = true,
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/vim-vsnip",
@@ -254,11 +269,11 @@ time([[Defining packer_plugins]], false)
 time([[Sequenced loading]], true)
 vim.cmd [[ packadd nvim-cmp ]]
 vim.cmd [[ packadd cmp-nvim-lsp ]]
-vim.cmd [[ packadd cmp-buffer ]]
 vim.cmd [[ packadd cmp-cmdline ]]
-vim.cmd [[ packadd cmp-nvim-lua ]]
-vim.cmd [[ packadd cmp-vsnip ]]
 vim.cmd [[ packadd cmp-path ]]
+vim.cmd [[ packadd cmp-vsnip ]]
+vim.cmd [[ packadd cmp-buffer ]]
+vim.cmd [[ packadd cmp-nvim-lua ]]
 time([[Sequenced loading]], false)
 if should_profile then save_profiles() end
 

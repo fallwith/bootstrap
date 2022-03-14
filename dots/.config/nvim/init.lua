@@ -3,9 +3,13 @@ require 'options'
 require 'mappings'
 require 'lsp'
 require 'cmp_config'
+require 'octo_config'
 
 -- colorscheme
-vim.cmd [[colorscheme monochrome]]
+vim.cmd [[
+  let g:edge_style = 'aura'
+  colorscheme edge
+]]
 
 -- remove the editor trimmings from terminal splits
 vim.api.nvim_command [[autocmd TermOpen * setlocal nonumber norelativenumber nospell]]

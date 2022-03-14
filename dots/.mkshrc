@@ -175,8 +175,9 @@ function fail() {
 }
 
 function matrix() {
-  color=$(shuf -i 1-255 -n 1)
-  cxxmatrix -s rain-forever -c $color
+  # color=$(shuf -i 1-255 -n 1)
+  # cxxmatrix -s rain-forever -c $color
+  cxxmatrix -c green -s rain-forever --rain-density=5 --frame-rate=40
 }
 
 # }}}
@@ -305,6 +306,10 @@ else
       --color info:150,prompt:110,spinner:150,pointer:167,marker:174'
 fi
 # }}}}
+
+# ugrep {{{
+alias ug='\ug --heading --line-number --exclude-from=~/.ignore'
+# }}}
 
 # Rust {{{
 [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
