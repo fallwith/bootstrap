@@ -307,10 +307,6 @@ else
 fi
 # }}}}
 
-# ugrep {{{
-alias ug='\ug --heading --line-number --exclude-from=~/.ignore'
-# }}}
-
 # Rust {{{
 [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 # }}}
