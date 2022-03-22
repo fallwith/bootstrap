@@ -26,6 +26,7 @@
 *.plist
 *.pdf
 *.log
+*.map
 !.zshrc
 !.zprofile
 *vcr/cassettes*

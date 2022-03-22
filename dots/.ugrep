@@ -67,7 +67,8 @@ zmax=1
 
 # Enable/disable ignore files, default: no-ignore-files
 ignore-files=.gitignore
-ignore-files=~/.ignore
+
+exclude-from=~/.ignore
 
 ### OUTPUT ###
 
