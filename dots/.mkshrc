@@ -305,7 +305,13 @@ else
   export FZF_DEFAULT_OPTS='--no-mouse --color fg:-1,bg:-1,hl:230,fg+:3,bg+:233,hl+:229
       --color info:150,prompt:110,spinner:150,pointer:167,marker:174'
 fi
-# }}}}
+# }}}
+
+# ugrep {{{
+alias eug='ug --perl-regexp'
+alias eugrep=eug
+# }}}
+
 
 # Rust {{{
 [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"

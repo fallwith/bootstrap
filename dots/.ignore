@@ -11,6 +11,7 @@
 *target/
 *vendor/
 *public/
+*.git/
 *.json
 *.sql
 *.tags*

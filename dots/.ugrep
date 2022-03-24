@@ -54,7 +54,8 @@ line-number
 ### SEARCH TARGETS ###
 
 # Enable/disable searching hidden files and directories, default: no-hidden
-no-hidden
+# no-hidden
+hidden
 
 # Enable/disable binary files, default: no-ignore-binary
 no-ignore-binary
@@ -75,3 +76,5 @@ exclude-from=~/.ignore
 # Enable/disable sorted output, default: no-sort
 # no-sort
 
+# assume literal characters (not regex pattern based ones) by default
+fixed-strings
