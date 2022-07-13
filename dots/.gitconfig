@@ -50,7 +50,7 @@
   ; wipe (remove) a remote branch from origin (remove the branch from GitHub)
   bwipe = !sh -c 'git push origin --delete $0'
   ; cleanup local copies of branches that have already been merged
-  bclean = !git branch --merged | grep -vE '\\*|main|master|develop' | xargs -n1 git branch -d
+  bclean = !git branch --merged | grep -vE '\\*|main|master|develop|dev' | xargs -n1 git branch -d
   dirty = clean -dxn
   klean = clean -dxi
   mainclean = !git co main && git bpull && git bclean
