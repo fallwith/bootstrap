@@ -213,7 +213,7 @@ function setruby() {
       return
     fi
   fi
-  if [[ $desired = jruby* ]]; then
+  if [[ $desired = jruby* ]] || [[ $desired = ruby* ]]; then
     __setrubypath "$desired"
   else
     __setrubypath "ruby-$desired"
