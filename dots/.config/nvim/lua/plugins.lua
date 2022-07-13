@@ -25,6 +25,10 @@ return require('packer').startup(function(use)
 
   -- code linting / formating
   use 'jose-elias-alvarez/null-ls.nvim'
+  -- https://github.com/jose-elias-alvarez/null-ls.nvim/issues/896
+  vim.api.nvim_create_user_command("NullLsToggle", function()
+    require("null-ls").toggle({})
+  end, {})
 
   -- configuration for neovim's built-in lsp
   use 'neovim/nvim-lspconfig'
