@@ -3,7 +3,11 @@
 # AwesomePrint.pry!
 
 Pry.editor = "nvim"
-# $SAFE ||= 1
+
+if !Object.const_defined?('Pry::HAS_SAFE_LEVEL') ||
+  (Object.const_defined?('Pry::HAS_SAFE_LEVEL') && Pry::HAS_SAFE_LEVEL)
+  $SAFE ||= 1
+end
 
 #Pry.config.prompt_name = "\xF0\x9F\x90\xA8  "
 #Pry.print = proc { |output, value| output.puts value.ai(indent: 2) }
