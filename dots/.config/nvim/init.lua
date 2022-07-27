@@ -15,12 +15,12 @@ vim.cmd [[
 vim.api.nvim_command [[autocmd TermOpen * setlocal nonumber norelativenumber nospell]]
 
 -- git commits
-vim.api.nvim_command([[
-  augroup gitcommit
-    autocmd Filetype gitcommit setlocal spell textwidth=72 colorcolumn=50,72
-    let $VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-  augroup END
-]])
+local gitCommitGroup = vim.api.nvim_create_augroup('gitcommit', { clear = true })
+vim.api.nvim_create_autocmd(
+  "Filetype",
+  { pattern = "gitcommit",
+    command = "setlocal spell textwidth=72 colorcolumn=50,72" }
+)
 
 -- null-ls
 require('null-ls').setup {
