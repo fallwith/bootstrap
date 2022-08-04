@@ -68,4 +68,4 @@
 	defaultBranch = main
 [core]
 	attributesfile = ~/.gitattributes
-  editor = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+  editor = "nvr -cc split --remote-wait-silent +'set bufhidden=wipe'"
