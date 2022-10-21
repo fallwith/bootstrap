@@ -1,7 +1,7 @@
 -- visually style columns at the given position(s)
 vim.opt.colorcolumn = '80,120'
 
--- automcompletion options
+-- autocompletion options
 --   menu: use a pop-up menu
 --   menuone: use the menu even if there's only one available option
 --   noselect: always force a manual selection instead of providing a default one

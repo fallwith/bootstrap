@@ -1,15 +1,9 @@
 require 'plugins'
 require 'options'
 require 'mappings'
-require 'lsp'
-require 'cmp_config'
-require 'octo_config'
 
 -- colorscheme
-vim.cmd [[
-  let g:edge_style = 'aura'
-  colorscheme edge
-]]
+vim.cmd('colorscheme tokyonight')
 
 -- remove the editor trimmings from terminal splits
 vim.api.nvim_command [[autocmd TermOpen * setlocal nonumber norelativenumber nospell]]
@@ -30,10 +24,16 @@ vim.api.nvim_create_autocmd(
   { pattern = "Envfile", command = "set filetype=ruby", group = envfileGroup }
 )
 
--- null-ls
-require('null-ls').setup {
-  debug = false,
-  sources = {
-    require('null-ls').builtins.diagnostics.rubocop,
-  },
+require('lint').linters_by_ft = {
+  ruby = {'rubocop'}
 }
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+  callback = function()
+    require("lint").try_lint()
+  end,
+})
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  callback = function()
+    require("lint").try_lint()
+  end,
+})
