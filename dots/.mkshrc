@@ -78,7 +78,7 @@ RESET='(B[m'
 export PS1=$'${PNK}$(_prompt_pwd) ${GRN}$(date +%H:%M:%S) ${BLU}$ ${RESET}'
 
 HISTFILE="$HOME/.mksh_history"
-HISTSIZE=20000
+HISTSIZE=5000
 export VISUAL="nvim"
 export EDITOR="$VISUAL"
 # constrain manpages to 80 columns
@@ -118,6 +118,7 @@ alias brake='b rake'
 alias bspec='b rspec'
 alias history='echo $(export FZF_DEFAULT_OPTS="--height 40% $FZF_DEFAULT_OPTS -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort +m"; builtin fc -rnl 1 | perl -ne '\''print "$1\n" if!$u{/\s+(.*)/, $1}++'\'' | fzf)'
 alias reload='. ~/.mkshrc'
+alias xattrdel='xattr -c -r'
 
 # }}}
 
@@ -178,6 +179,12 @@ function matrix() {
   # color=$(shuf -i 1-255 -n 1)
   # cxxmatrix -s rain-forever -c $color
   cxxmatrix -c green -s rain-forever --rain-density=5 --frame-rate=40
+}
+
+function keepemptydirs() {
+  local root="$1"
+  echo "Placing .keep files in any empty directories beneath '$root'..."
+  find "$root" -type d -empty -exec touch {}/.keep \;
 }
 
 # }}}
@@ -312,6 +319,38 @@ alias eug='ug --perl-regexp'
 alias eugrep=eug
 # }}}
 
+# rclone {{{
+#   setup:
+#      1. rclone config
+#      2. n (new remote)
+#      3. name the remote "dropbox"
+#      4. type in "dropbox" for the type
+#      5. blank for key
+#      6. blank for secret
+#      7. n to decline advanced setup
+#      8. y for auto config
+#      9. log in to Dropbox via webbrowser
+#     10. grant permission to rclone
+#     11. y to keep the new remote
+#     12. q to quit config
+function dropup() {
+  local src=$1
+  local dest=$2
+
+  cmd="rclone copy -P -vv $src dropbox:$dest"
+  echo $cmd
+  $cmd
+}
+
+function dropdown() {
+  local src=$1
+  local dest=$2
+
+  cmd="rclone copy -P -vv dropbox:$src $dest"
+  echo $cmd
+  $cmd
+}
+# }}}
 
 # Rust {{{
 [[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
