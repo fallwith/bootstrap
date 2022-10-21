@@ -1,3 +1,4 @@
+brew '7zip'
 # brew 'ansible'
 # brew 'atool'
 brew 'awscli'
