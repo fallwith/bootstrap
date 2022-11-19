@@ -50,6 +50,7 @@ return require('packer').startup(function(use)
   use 'rmehri01/onenord.nvim'
   use 'savq/melange'
   use 'ellisonleao/gruvbox.nvim'
+  use 'lunarvim/darkplus.nvim'
 
   if packer_bootstrap then
     require('packer').sync()

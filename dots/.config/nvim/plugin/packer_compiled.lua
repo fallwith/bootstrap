@@ -79,6 +79,11 @@ _G.packer_plugins = {
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/austere.vim",
     url = "https://github.com/LuRsT/austere.vim"
   },
+  ["darkplus.nvim"] = {
+    loaded = true,
+    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/darkplus.nvim",
+    url = "https://github.com/lunarvim/darkplus.nvim"
+  },
   edge = {
     loaded = true,
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/edge",
