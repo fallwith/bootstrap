@@ -83,7 +83,7 @@ set clipboard^=unnamed,unnamedplus  " cross-platform selection + system clipboar
 set list                    " show invisibles
 set fileformat=unix         " unix fileformat
 set termguicolors           " enable gui colors in the terminal (true 24 bit color support)
-set shell=mksh\ -l
+set shell=ksh\ -l
 set listchars=tab:»·,trail:•,eol:¬  " characters to display when showing invisibles
 set spell                   " enable the spell checker
 setglobal commentstring=#\ %s
