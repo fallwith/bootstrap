@@ -126,7 +126,7 @@ alias mv='mv -i'
 # alias dirs='find . -type d -not -name .'
 alias dirs='fd -td'
 alias c=clear
-alias h=fuzzy_history
+alias h='history -$HISTSIZE|awk '\''!x[$2]++'\''|fzf --tac --no-sort --exact'
 if running_debian; then
   alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git | sed "s|$HOME/||g" | fzf +m)'
 else
@@ -146,59 +146,6 @@ alias xattrdel='xattr -c -r'
 # }}}
 
 # Functions {{{
-#
-# fuzzy_history - use fzf for fuzzily searching through history and evaluating
-#                 the selection made
-#
-#     NOTE: the ksh $HISTFILE file contains extra characters beyond what was
-#           entered in on the command line, so fzf can't directly read in the
-#           file contents with 'fzf <$HISTFILE'. instead, fc is used to list
-#           the commands, which are then formatted and de-duped by awk before
-#           being piped to fzf
-#
-#     typeset  = scope the $cmd variable to this function only
-#
-#     fc -rnl 1  = fc is a shell built-in alias for the shell built-in 'hist'
-#                  history command
-#                    -r = reverse the order of commands (so that the most
-#                         recent command appears last)
-#                    -n = suppress the line numbers from the output
-#                    -l = list commands instead of supporting their editing
-#                         and execution
-#                     1 = the command number to start from on the list. 1 is
-#                         the first command, so the complete recorded history
-#                         will be listed
-#
-#     c=                 = assign the sub() result to variable c
-#     gsub(/^\t/,"",$0)  = for each entire line of input referred to as $0,
-#                          substitute (sub()) a replacement of an empty string
-#                          ("") for a single leading tab character (^\t) if one
-#                          is found at the start of the line
-#     !x[$c]++           = "awk '!x[$0]++'" is a neat awk trick to remove
-#                          duplicate lines from the given input which is
-#                          modified here to operate on $c instead of $0, where
-#                          $c holds the result of performing sub() on $0
-#
-#     fzf --no-sort --exact  = fzf (https://github.com/junegunn/fzf) is an
-#                              interactive fuzzy finder tool
-#                                --no-sort = don't apply any sorting to the
-#                                            input, so that the chronological
-#                                            command line history order is
-#                                            preserved
-#                                --exact = require an exact match within a list
-#                                          item, so 'who' matches 'whoami' but
-#                                          not '/web/host'
-#
-#     test -n  = ensure that the given string has a non zero length. if so,
-#                evaluate (re-execute) the selected history command. if not,
-#                finish without taking any action
-#     
-function fuzzy_history {
-  typeset cmd=$(fc -rnl 1|awk '{c=sub(/^\t/,"",$0)}; !x[$c]++'|fzf --no-sort --exact)
-  if test -n "$cmd"; then
-    eval "$cmd"
-  fi
-}
 
 function pidrunning {
   ps -p $1 >/dev/null
