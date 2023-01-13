@@ -32,25 +32,26 @@ return require('packer').startup(function(use)
                                                       { 'nvim-treesitter/nvim-treesitter' } } }
 
   -- colorschemes
-  use 'zaki/zazen'
-  use 'fxn/vim-monochrome'
-  use 'arcticicestudio/nord-vim'
-  use 'nanotech/jellybeans.vim'
-  use 'cocopon/iceberg.vim'
-  use 'ldelossa/vimdark'
-  use { 'Lokaltog/vim-distinguished', branch = 'develop' }
+  -- use 'zaki/zazen'
+  -- use 'fxn/vim-monochrome'
+  -- use 'arcticicestudio/nord-vim'
+  -- use 'nanotech/jellybeans.vim'
+  -- use 'cocopon/iceberg.vim'
+  -- use 'ldelossa/vimdark'
+  -- use { 'Lokaltog/vim-distinguished', branch = 'develop' }
   use 'fallwith/seabird'
-  use 'jaredgorski/fogbell.vim'
-  use 'logico/typewriter-vim'
-  use 'LuRsT/austere.vim'
-  use 'sainnhe/edge'
-  use 'sainnhe/sonokai'
-  use 'Everblush/everblush.nvim'
-  use 'folke/tokyonight.nvim'
-  use 'rmehri01/onenord.nvim'
-  use 'savq/melange'
-  use 'ellisonleao/gruvbox.nvim'
-  use 'lunarvim/darkplus.nvim'
+  -- use 'jaredgorski/fogbell.vim'
+  -- use 'logico/typewriter-vim'
+  -- use 'LuRsT/austere.vim'
+  -- use 'sainnhe/edge'
+  -- use 'sainnhe/sonokai'
+  -- use 'Everblush/everblush.nvim'
+  -- use 'folke/tokyonight.nvim'
+  -- use 'rmehri01/onenord.nvim'
+  -- use 'savq/melange'
+  -- use 'ellisonleao/gruvbox.nvim'
+  -- use 'lunarvim/darkplus.nvim'
+  use 'rose-pine/neovim'
 
   if packer_bootstrap then
     require('packer').sync()

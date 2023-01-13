@@ -74,55 +74,10 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
-  ["austere.vim"] = {
+  neovim = {
     loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/austere.vim",
-    url = "https://github.com/LuRsT/austere.vim"
-  },
-  ["darkplus.nvim"] = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/darkplus.nvim",
-    url = "https://github.com/lunarvim/darkplus.nvim"
-  },
-  edge = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/edge",
-    url = "https://github.com/sainnhe/edge"
-  },
-  ["everblush.nvim"] = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/everblush.nvim",
-    url = "https://github.com/Everblush/everblush.nvim"
-  },
-  ["fogbell.vim"] = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/fogbell.vim",
-    url = "https://github.com/jaredgorski/fogbell.vim"
-  },
-  ["gruvbox.nvim"] = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/gruvbox.nvim",
-    url = "https://github.com/ellisonleao/gruvbox.nvim"
-  },
-  ["iceberg.vim"] = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/iceberg.vim",
-    url = "https://github.com/cocopon/iceberg.vim"
-  },
-  ["jellybeans.vim"] = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/jellybeans.vim",
-    url = "https://github.com/nanotech/jellybeans.vim"
-  },
-  melange = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/melange",
-    url = "https://github.com/savq/melange"
-  },
-  ["nord-vim"] = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/nord-vim",
-    url = "https://github.com/arcticicestudio/nord-vim"
+    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/neovim",
+    url = "https://github.com/rose-pine/neovim"
   },
   ["nvim-lint"] = {
     loaded = true,
@@ -133,11 +88,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
-  },
-  ["onenord.nvim"] = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/onenord.nvim",
-    url = "https://github.com/rmehri01/onenord.nvim"
   },
   ["packer.nvim"] = {
     loaded = true,
@@ -159,45 +109,20 @@ _G.packer_plugins = {
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/seabird",
     url = "https://github.com/fallwith/seabird"
   },
-  sonokai = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/sonokai",
-    url = "https://github.com/sainnhe/sonokai"
-  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
-  },
-  ["tokyonight.nvim"] = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/tokyonight.nvim",
-    url = "https://github.com/folke/tokyonight.nvim"
-  },
-  ["typewriter-vim"] = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/typewriter-vim",
-    url = "https://github.com/logico/typewriter-vim"
   },
   ["vim-commentary"] = {
     loaded = true,
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/vim-commentary",
     url = "https://github.com/tpope/vim-commentary"
   },
-  ["vim-distinguished"] = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/vim-distinguished",
-    url = "https://github.com/Lokaltog/vim-distinguished"
-  },
   ["vim-endwise"] = {
     loaded = true,
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/vim-endwise",
     url = "https://github.com/tpope/vim-endwise"
-  },
-  ["vim-monochrome"] = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/vim-monochrome",
-    url = "https://github.com/fxn/vim-monochrome"
   },
   ["vim-repeat"] = {
     loaded = true,
@@ -213,16 +138,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/vim-vinegar",
     url = "https://github.com/tpope/vim-vinegar"
-  },
-  vimdark = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/vimdark",
-    url = "https://github.com/ldelossa/vimdark"
-  },
-  zazen = {
-    loaded = true,
-    path = "/Users/jbunch/.local/share/nvim/site/pack/packer/start/zazen",
-    url = "https://github.com/zaki/zazen"
   }
 }
 

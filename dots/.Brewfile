@@ -94,7 +94,7 @@ brew 'watch'
 brew 'w3m'
 brew 'wget'
 brew 'yarn'
-# brew 'zsh'
+brew 'zsh'
 
 # brew install heroku/brew/heroku
 # tap 'heroku/brew'

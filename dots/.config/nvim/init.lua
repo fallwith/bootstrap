@@ -3,7 +3,7 @@ require 'options'
 require 'mappings'
 
 -- colorscheme
-vim.cmd('colorscheme tokyonight')
+vim.cmd.colorscheme "rose-pine"
 
 -- remove the editor trimmings from terminal splits
 vim.api.nvim_command [[autocmd TermOpen * setlocal nonumber norelativenumber nospell]]

@@ -5,7 +5,7 @@
 #
 # version info
 # =
-# To display the ksh version: ctrl-alt-v or ksh --version
+# To display the ksh version: ctrl-alt-v or ksh --version or echo ${.sh.version}
 #
 # history
 # =
@@ -26,7 +26,7 @@ function running_debian {
       export RUNNING_DEBIAN=0
     fi
   fi
-  [[ $RUNNING_DEBUG -eq 1 ]]
+  [[ $RUNNING_DEBIAN -eq 1 ]]
 }
 
 # https://wilsonmar.github.io/maximum-limits/
@@ -104,6 +104,7 @@ HISTFILE="$HOME/.ksh_history"
 HISTSIZE=5000
 export VISUAL="nvim"
 export EDITOR="$VISUAL"
+export HISTEDIT="$EDITOR"
 # constrain manpages to 80 columns
 export MANWIDTH=80
 # disable history for less
@@ -126,7 +127,7 @@ alias mv='mv -i'
 # alias dirs='find . -type d -not -name .'
 alias dirs='fd -td'
 alias c=clear
-alias h='history -$HISTSIZE|awk '\''!x[$2]++'\''|fzf --tac --no-sort --exact'
+alias h='hist $(history -$HISTSIZE|awk '\''{o=$1; $1=""; if(!x[$0]){ print o$0; x[$0]++}}'\''|fzf --tac --no-sort --exact|awk '\''{print $1}'\'')'
 if running_debian; then
   alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git | sed "s|$HOME/||g" | fzf +m)'
 else
@@ -368,7 +369,7 @@ function dropdown {
 # }}}
 
 # Rust {{{
-[[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+[[ -e "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 # }}}
 
 # Node {{{
@@ -383,9 +384,9 @@ function dropdown {
 # --classify: display type indicators (show a trailing slash for directories)
 # --git: display the current git status for each object
 # --time-style log-iso: desired timestamp format (default, iso, long-iso, full-iso)
-# --colour-scale: color code the various file size ranges
+## --colour-scale: color code the various file size ranges (best with dark backgrounds)
 # --extended: reveal extended file attributes
-alias ll='exa --long --all --group --numeric --classify --git --time-style long-iso --colour-scale'
+alias ll='exa --long --all --group --numeric --classify --git --time-style long-iso'
 alias lle='ll --extended'
 # }}}
 

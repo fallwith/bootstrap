@@ -121,23 +121,6 @@ if running_mac_os; then
 fi
 
 
-# --- --- --- --- --- --- ---
-# set the desired shell
-# --- --- --- --- --- --- ---
-
-# this shell will be added to /etc/shells if absent and set as the default
-if [[ -z "$DESIRED_SHELL" ]]; then
-  if [[ -e "/bin/mksh" ]]; then
-    DESIRED_SHELL=/bin/mksh
-  elif [[ -e "/usr/local/bin/mksh" ]]; then
-    DESIRED_SHELL=/usr/local/bin/mksh
-  else
-    echo 'Cannot locate mksh and DESIRED_SHELL is not set!'
-    exit -1
-  fi
-fi
-
-
 # --- --- --- --- --- --- --- ---
 # install desired Linux packages
 # --- --- --- --- --- --- --- ---
@@ -159,25 +142,27 @@ function existing_shell() {
   fi
 }
 
-if [[ ! -f "$DESIRED_SHELL" ]]; then
-  echo "Error: desired shell $DESIRED_SHELL does not exist!"
-  exit -1
-fi
-if $(grep -q $DESIRED_SHELL /etc/shells); then
-  echo "Desired shell $DESIRED_SHELL already exists in /etc/shells"
-else
-  echo "Appending $DESIRED_SHELL to /etc/shells..."
-  echo $DESIRED_SHELL|sudo tee -a /etc/shells>/dev/null;
-fi
-
-if [[ "$(existing_shell)" == "$DESIRED_SHELL" ]]; then
-  echo "User $USER is already set to use desired shell $DESIRED_SHELL"
-else
-  echo "Changing shell for user $USER to $DESIRED_SHELL..."
-  if running_debian; then
-    sudo chsh -s $DESIRED_SHELL $USER
+if [[ ! -z "$DESIRED_SHELL" ]]; then
+  if [[ ! -f "$DESIRED_SHELL" ]]; then
+    echo "Error: desired shell $DESIRED_SHELL does not exist!"
+    exit -1
+  fi
+  if $(grep -q $DESIRED_SHELL /etc/shells); then
+    echo "Desired shell $DESIRED_SHELL already exists in /etc/shells"
   else
-    chsh -s $DESIRED_SHELL
+    echo "Appending $DESIRED_SHELL to /etc/shells..."
+    echo $DESIRED_SHELL|sudo tee -a /etc/shells>/dev/null;
+  fi
+
+  if [[ "$(existing_shell)" == "$DESIRED_SHELL" ]]; then
+    echo "User $USER is already set to use desired shell $DESIRED_SHELL"
+  else
+    echo "Changing shell for user $USER to $DESIRED_SHELL..."
+    if running_debian; then
+      sudo chsh -s $DESIRED_SHELL $USER
+    else
+      chsh -s $DESIRED_SHELL
+    fi
   fi
 fi
 
