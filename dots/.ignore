@@ -12,6 +12,7 @@
 *vendor/
 *public/
 *.git/
+!*.github/
 *.json
 *.sql
 *.tags*
