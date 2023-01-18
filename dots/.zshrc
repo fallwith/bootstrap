@@ -3,14 +3,17 @@
 # zmodload zsh/zprof
 
 # Prompt {{{
-# 38;5;1m = pink
+# %F{} = set foreground color
+#   - 098 = lavender
+#   - 172 = orange
+#   - 031 = green (last command succeeded)
+#   - 174 = red (last command failed)
+#   - reset = revert to the default foreground color
 # %1~ = basename of pwd, replace $HOME with '~'
-# 38;5;2m = green
 # %* = HH::MM::SS
-# 38;5;6m = blue
 # $ = literal '$'
-# 0m = reset
-PS1=$'\e[38;5;1m%1~ \e[38;5;2m%* \e[38;5;6m$ \e[0m'
+# %(?.<success>.<failed>) = ternary conditional for the last command
+PROMPT='%F{098}%1~ %F{172}%* %(?.%F{031}.%F{174})$ %F{reset}'
 # }}}
 
 # History {{{
