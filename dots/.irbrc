@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'irb/completion'
 require 'irb/ext/save-history'
 begin
@@ -7,4 +9,6 @@ rescue LoadError
 end
 IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.irb-history"
 IRB.conf[:SAVE_HISTORY] = 1000
-IRB.conf[:USE_AUTOCOMPLETE] = false
+IRB.conf[:USE_AUTOCOMPLETE] = true
+IRB.conf[:USE_READLINE] = true
+IRB.conf[:AUTO_INDENT] = true
