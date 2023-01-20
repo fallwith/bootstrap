@@ -260,7 +260,7 @@ alias lle='ll --extended'
 
 # Vim / Neovim {{{
 if [ -n "$NVIM" ]; then
-  nvim_target='nvr -o'
+  nvim_target=(nvr -o)
 else
   nvim_target=\nvim
 fi
@@ -268,7 +268,8 @@ function nvim_launch {
   if [[ -n $NVIM && "$#" -eq 0 ]]; then
     echo "you're already in neovim..."
   else
-    $nvim_target "$@"
+    nvim_target+="$@"
+    "${nvim_target[@]}"
   fi
 }
 alias nvim=nvim_launch
