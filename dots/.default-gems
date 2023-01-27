@@ -1,8 +1,5 @@
-bundler
-pry
 awesome_print
-neovim
-rubocop
-vimgolf
 interactive_editor
-solargraph
+neovim
+pry
+rubocop
