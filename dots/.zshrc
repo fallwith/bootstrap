@@ -34,7 +34,14 @@ setopt SHARE_HISTORY
 function _fuzzy_history {
   zle push-input
   BUFFER=$(fc -ln -1 0 | fzf --height 40%)
-  zle accept-line
+
+  # place the command on the command line with the cursor at the end of the line
+  zle vi-fetch-history -n $BUFFER
+  zle end-of-line
+  zle reset-prompt
+
+  # or... just execute the history command immediately
+  # zle accept-line
 }
 zle -N _fuzzy_history
 bindkey '^r' _fuzzy_history
@@ -60,6 +67,7 @@ setopt NOCLOBBER  # disable file clobbering
 alias cp='cp -i'
 alias mv='mv -i'
 
+alias fd='fd --color never' # fd doesn't offer a config file
 alias dirs='fd -td' # find . -type d -not -name .
 alias font="kitty @ set-font-size"
 alias matrix='cxxmatrix -c \#FFC0CB -s rain-forever --frame-rate=40 --preserve-background --no-twinkle --no-diffuse'
@@ -259,17 +267,15 @@ alias lle='ll --extended'
 # }}}
 
 # Vim / Neovim {{{
-if [ -n "$NVIM" ]; then
-  nvim_target=(nvr -o)
-else
-  nvim_target=\nvim
-fi
 function nvim_launch {
-  if [[ -n $NVIM && "$#" -eq 0 ]]; then
-    echo "you're already in neovim..."
+  if [[ -n $NVIM ]]; then
+    if [[ $# -eq 0 ]]; then
+      echo "you're already in Neovim..."
+    else
+      nvr -o "$@"
+    fi
   else
-    nvim_target+="$@"
-    "${nvim_target[@]}"
+    \nvim "$@"
   fi
 }
 alias nvim=nvim_launch
