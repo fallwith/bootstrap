@@ -289,7 +289,7 @@ alias no="nvr -o"
 # }}}
 
 # Docker {{{
-alias dockerclean='docker ps -aq |xargs docker container stop; docker ps -aq |xargs docker container rm; docker images | grep latest | awk '"'"'{print $3}'"'"' | xargs docker image rm'
+alias dockerclean='docker ps -aq |xargs docker container stop; docker ps -aq |xargs docker container rm; docker images | grep latest | awk '"'"'{print $3}'"'"' | xargs docker image rm; docker volume prune --force'
 function pants {
   docker run --rm -it --mount "type=bind,source=$(pwd),target=/app" --name pants $1 bash
 }
