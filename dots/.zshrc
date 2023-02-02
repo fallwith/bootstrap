@@ -47,6 +47,47 @@ zle -N _fuzzy_history
 bindkey '^r' _fuzzy_history
 # }}}
 
+# Completion {{{
+zstyle ':completion:*' completer _expand_alias _complete _ignored _approximate
+zstyle ':completion:*' menu select
+
+# https://thevaluable.dev/zsh-completion-guide-examples/
+zstyle ':completion:*:*:*:*:descriptions' format '%F{green}-- %d --%f'
+zstyle ':completion:*:*:*:*:corrections' format '%F{yellow}!- %d (errors: %e) -!%f'
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' group-name ''
+
+# ssh
+if [[ -f "$HOME/.ssh/config" ]]; then
+  # build a list of hosts from the Host lines of ~/.ssh/config
+  local hosts=(${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
+  # 'ssh <tab>' should assume the first argument is a host, not a username
+  zstyle ':completion:*:ssh:argument-1:*' tag-order hosts
+  # ignore all default host sources and user our hosts list instead
+  zstyle ':completion:*:ssh:*' hosts $hosts
+  unset hosts
+fi
+
+# cache
+local zsh_cache_dir="$HOME/.cache/zsh"
+local zsh_cache_file=.zcompdump
+! [[ -e "$zsh_cache_dir" ]] && mkdir -p "$zsh_cache_dir"
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$zsh_cache_dir/$zsh_cache_file"
+autoload -Uz compinit
+# if the cache file is younger than 24 hours, use it
+if [[ -n $(find "$zsh_cache_dir" -name "$zsh_cache_file" -mtime -1d) ]]; then
+  compinit -C -d "$zsh_cache_dir/$zsh_cache_file"
+# else regenerate the cache file
+else
+  compinit -d "$zsh_cache_dir/$zsh_cache_file"
+fi
+unset zsh_cache_dir
+unset zsh_cache_file
+# }}}
+
 # Misc config / env vars {{{
 VISUAL=nvim
 EDITOR=$VISUAL
