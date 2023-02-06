@@ -48,7 +48,7 @@ bindkey '^r' _fuzzy_history
 # }}}
 
 # Completion {{{
-zstyle ':completion:*' completer _expand_alias _complete _ignored _approximate
+zstyle ':completion:*' completer _expand_alias _complete _ignored
 zstyle ':completion:*' menu select
 
 # https://thevaluable.dev/zsh-completion-guide-examples/
