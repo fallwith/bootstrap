@@ -54,6 +54,13 @@
   dirty = clean -dxn
   klean = clean -dxi
   mainclean = !git co main && git bpull && git bclean
+  names = "!f() { \
+    if [ -z "$1" ]; then \
+      git diff --name-only; \
+    else \
+      git diff --name-only \"$1\"; \
+    fi; \
+  }; f"
 [commit]
   template = ~/.gitmessage
 [merge]
