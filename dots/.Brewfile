@@ -64,8 +64,10 @@ brew 'openssl'
 brew 'parallel'
 # brew 'poppler'
 # brew 'postgresql'
+brew 'postgresql@14'
 brew 'procs'
 brew 'pkg-config'
+brew 'python'
 brew 'ranger', args: ['HEAD']
 brew 'rclone'
 # brew 'reattach-to-user-namespace'
@@ -94,6 +96,7 @@ brew 'watch'
 brew 'w3m'
 brew 'wget'
 brew 'yarn'
+brew 'yt-dlp' # modern youtube-dl
 brew 'zsh'
 
 # brew install heroku/brew/heroku
