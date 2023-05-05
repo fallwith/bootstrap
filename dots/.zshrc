@@ -33,7 +33,17 @@ setopt SHARE_HISTORY
 
 function _fuzzy_history {
   zle push-input
-  BUFFER=$(fc -ln -1 0 | fzf --height 40%)
+
+  # fc
+  # -l = display the command list
+  # -1 0 = (when used with -l) build the list from the most recent command (-1)
+  #        back to the oldest command (0)
+  #
+  # fzf
+  # +s = sort the input (based on the zsh command number)
+  # -x = extended-search mode
+  # -e = enable exact match
+  BUFFER=$(fc -l -1 0 | fzf +s -x -e --preview-window=hidden --height 40%)
 
   # place the command on the command line with the cursor at the end of the line
   zle vi-fetch-history -n $BUFFER
@@ -244,6 +254,7 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS"
 # }}}
 
 # ugrep {{{
+alias ug='noglob \ug'
 alias eug='ug --perl-regexp'
 alias eugrep=eug
 # }}}
@@ -330,7 +341,7 @@ alias no="nvr -o"
 # }}}
 
 # Docker {{{
-alias dockerclean='docker ps -aq |xargs docker container stop; docker ps -aq |xargs docker container rm; docker images | grep latest | awk '"'"'{print $3}'"'"' | xargs docker image rm; docker volume prune --force'
+alias dockerclean='docker ps -aq |xargs docker container stop; docker ps -aq |xargs docker container rm; docker images | grep latest | awk '"'"'{print $3}'"'"' | xargs docker image rm; docker volume prune --force; docker builder prune --force'
 function pants {
   docker run --rm -it --mount "type=bind,source=$(pwd),target=/app" --name pants $1 bash
 }
@@ -340,6 +351,7 @@ function rubypants {
 # }}}
 
 # Homebrew {{{
+# to start/stop a single service: brew services stop|start <service>
 alias brewtaps='brew list --full-name | grep /'
 alias servicesstart='brew services --all start'
 alias servicesstop='brew services --all stop'
