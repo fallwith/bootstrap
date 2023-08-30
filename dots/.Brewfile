@@ -115,10 +115,10 @@ brew 'zsh'
 # tap 'homebrew/dupes'
 # brew 'gnugrep', args: ['with-default-names']
 
-tap 'uptech/homebrew-oss'
-brew 'uptech/oss/alt'
+# tap 'uptech/homebrew-oss'
+# brew 'uptech/oss/alt'
 
-tap 'homebrew/cask'
+# tap 'homebrew/cask'
 cask 'alacritty'
 cask 'appcleaner'
 cask 'avibrazil-rdm'

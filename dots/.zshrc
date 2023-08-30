@@ -183,6 +183,14 @@ function keepemptydirs {
   find "$root" -type d -empty -exec touch {}/.keep \;
 }
 
+# gitdiff
+# gitdiff dev
+# gitdiff d4a7b0d..519b30e
+# gitdiff dev -- path/to/file
+function gitdiff {
+  nvim -c ":DiffviewOpen $@"
+}
+
 # }}}
 
 # Python {{{

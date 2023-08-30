@@ -31,6 +31,9 @@ return require('packer').startup(function(use)
                                                       { 'nvim-lua/plenary.nvim' },
                                                       { 'nvim-treesitter/nvim-treesitter' } } }
 
+  -- view all git diffs in a single nvim session
+  use { 'sindrets/diffview.nvim' }
+
   -- colorschemes
   -- use 'zaki/zazen'
   -- use 'fxn/vim-monochrome'
