@@ -1,62 +1,71 @@
-local fn = vim.fn
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+local lazypath = vim.fn.stdpath('data')..'/lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({'git',
+                 'clone',
+                 -- '--depth',
+                 -- '1',
+                 '--filter=blob:none',
+                 'https://github.com/folke/lazy.nvim.git',
+                 '--branch=stable',
+                 lazypath})
 end
+vim.opt.rtp:prepend(lazypath)
 
-return require('packer').startup(function(use)
-  -- have Packer manage itself
-  use 'wbthomason/packer.nvim'
-
+require('lazy').setup({
   -- comment out (and in) code
-  use 'tpope/vim-commentary'
+  'tpope/vim-commentary',
 
   -- add, remove, swap surroundings like quotes or braces
-  use 'tpope/vim-surround'
+  'tpope/vim-surround',
 
   -- add helpful closing structures (like 'end') for Ruby and others
-  use 'tpope/vim-endwise'
+  'tpope/vim-endwise',
 
   -- allow . to repeat plugin based operations
-  use 'tpope/vim-repeat'
+  'tpope/vim-repeat',
 
   -- simple file browsing
-  use 'tpope/vim-vinegar'
+  'tpope/vim-vinegar',
 
   -- code linting
-  use 'mfussenegger/nvim-lint'
+  { 'mfussenegger/nvim-lint',
+    config = function()
+      require 'linting'
+    end },
 
   -- fuzzy finding
-  use { 'nvim-telescope/telescope.nvim', requires = { { 'nvim-lua/popup.nvim' },
-                                                      { 'nvim-lua/plenary.nvim' },
-                                                      { 'nvim-treesitter/nvim-treesitter' } } }
+  { 'nvim-telescope/telescope.nvim',
+    dependencies = { 'nvim-lua/popup.nvim',
+                     'nvim-lua/plenary.nvim',
+                     'nvim-treesitter/nvim-treesitter' } },
 
   -- view all git diffs in a single nvim session
-  use { 'sindrets/diffview.nvim' }
+  'sindrets/diffview.nvim',
 
   -- colorschemes
-  -- use 'zaki/zazen'
-  -- use 'fxn/vim-monochrome'
-  -- use 'arcticicestudio/nord-vim'
-  -- use 'nanotech/jellybeans.vim'
-  -- use 'cocopon/iceberg.vim'
-  -- use 'ldelossa/vimdark'
-  -- use { 'Lokaltog/vim-distinguished', branch = 'develop' }
-  use 'fallwith/seabird'
-  -- use 'jaredgorski/fogbell.vim'
-  -- use 'logico/typewriter-vim'
-  -- use 'LuRsT/austere.vim'
-  -- use 'sainnhe/edge'
-  -- use 'sainnhe/sonokai'
-  -- use 'Everblush/everblush.nvim'
-  -- use 'folke/tokyonight.nvim'
-  -- use 'rmehri01/onenord.nvim'
-  -- use 'savq/melange'
-  -- use 'ellisonleao/gruvbox.nvim'
-  -- use 'lunarvim/darkplus.nvim'
-  use 'rose-pine/neovim'
-
-  if packer_bootstrap then
-    require('packer').sync()
-  end
-end)
+  -- 'zaki/zazen'
+  -- 'fxn/vim-monochrome'
+  -- 'arcticicestudio/nord-vim'
+  -- 'nanotech/jellybeans.vim'
+  -- 'cocopon/iceberg.vim'
+  -- 'ldelossa/vimdark'
+  -- { 'Lokaltog/vim-distinguished', branch = 'develop' }
+  -- 'fallwith/seabird'
+  -- 'jaredgorski/fogbell.vim'
+  -- 'logico/typewriter-vim'
+  -- 'LuRsT/austere.vim'
+  -- 'sainnhe/edge'
+  -- 'sainnhe/sonokai'
+  -- 'Everblush/everblush.nvim'
+  -- 'folke/tokyonight.nvim'
+  -- 'rmehri01/onenord.nvim'
+  -- 'savq/melange'
+  -- 'ellisonleao/gruvbox.nvim'
+  -- 'lunarvim/darkplus.nvim'
+  { 'rose-pine/neovim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme('rose-pine')
+    end }
+})
