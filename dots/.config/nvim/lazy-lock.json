@@ -1,15 +1,15 @@
 {
   "diffview.nvim": { "branch": "main", "commit": "7e5a85c186027cab1e825d018f07c350177077fc" },
   "lazy.nvim": { "branch": "main", "commit": "2a9354c7d2368d78cbd5575a51a2af5bd8a6ad01" },
-  "neovim": { "branch": "main", "commit": "e29002cbee4854a9c8c4b148d8a52fae3176070f" },
   "nvim-lint": { "branch": "master", "commit": "9b6cb72660114e5f188907be0d866a8ca2b0ef23" },
+  "nvim-surround": { "branch": "main", "commit": "1c2ef599abeeb98e40706830bcd27e90e259367a" },
   "nvim-treesitter": { "branch": "master", "commit": "30604fd7dde5abcba7ca8f5761894dfa61febe51" },
   "plenary.nvim": { "branch": "master", "commit": "0dbe561ae023f02c2fb772b879e905055b939ce3" },
   "popup.nvim": { "branch": "master", "commit": "b7404d35d5d3548a82149238289fa71f7f6de4ac" },
   "telescope.nvim": { "branch": "master", "commit": "20a37e43bb43c74c6091f9fea6551af0964ad45a" },
+  "tokyonight.nvim": { "branch": "main", "commit": "9a01eada39558dc3243278e6805d90e8dff45dc0" },
   "vim-commentary": { "branch": "master", "commit": "e87cd90dc09c2a203e13af9704bd0ef79303d755" },
   "vim-endwise": { "branch": "master", "commit": "e714ac3bcfd5a90038de49c3254eded7c70ae3c3" },
   "vim-repeat": { "branch": "master", "commit": "24afe922e6a05891756ecf331f39a1f6743d3d5a" },
-  "vim-surround": { "branch": "master", "commit": "3d188ed2113431cf8dac77be61b842acb64433d9" },
   "vim-vinegar": { "branch": "master", "commit": "bb1bcddf43cfebe05eb565a84ab069b357d0b3d6" }
 }
