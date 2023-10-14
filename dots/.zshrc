@@ -190,7 +190,6 @@ function keepemptydirs {
 function gitdiff {
   nvim -c ":DiffviewOpen $@"
 }
-
 # }}}
 
 # Python {{{
@@ -328,16 +327,38 @@ alias lle='ll --extended'
 
 # Vim / Neovim {{{
 function nvim_launch {
-  if [[ -n $NVIM ]]; then
-    if [[ $# -eq 0 ]]; then
-      echo "you're already in Neovim..."
-    else
-      nvr -o "$@"
-    fi
+  declare -a args
+
+  # if there were no arguments passed to this function...
+  if [[ $# -eq 0 ]]; then
+    # when called from a Neovim terminal session, use `nvr -o <file>` instead
+    # of `nvim <file>` to open the file in a new split within the existing
+    # session. `nvr` is the binary delivered by the neovim-remote Python egg.
+    # `nvr -o`  requires an argument, so if there are no arguments present,
+    # default to a single argument of '.' to have the Neovim split open a file
+    # browser at PWD.
+    if [[ -n $NVIM ]]; then args+=(.); fi
   else
-    \nvim "$@"
+    local path_arg="$1"               # grab the first argument
+    shift                             # remove the first argument from $@
+    elements=(${(s/:/)path_arg})      # split the first argument on ':'
+    local file=${elements[@]:0:1}     # get the file value that precedes the ':' 
+    args+=($file)                     # add the file to our args array
+    local line_num=${elements[@]:1:1} # get the line value that follows the ':'
+    if (( line_num )); then           # if the line value is set
+      args+=("+$line_num")            #   add the '+' prefixed line to the
+    fi                                #   args array
+    args+=($@)                        # add original args 1..-1 to to args array
+  fi
+
+  # if called within a Neovim session, use `nvr` and otherwise use `\nvim`
+  if [[ -n $NVIM ]]; then
+    nvr -o $args
+  else
+    \nvim $args
   fi
 }
+
 alias nvim=nvim_launch
 alias n=nvim_launch
 alias vi=nvim_launch
