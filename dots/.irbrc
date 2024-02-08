@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'irb/completion'
-require 'irb/ext/save-history'
 begin
   require 'interactive_editor'
 rescue LoadError
@@ -26,4 +25,8 @@ end
 
 def echo(on = true)
   conf.echo = on
+end
+
+def flush_sidekiq
+  Sidekiq.redis(&:flushdb)
 end
