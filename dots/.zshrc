@@ -284,18 +284,14 @@ function dropup {
   local src=$1
   local dest=$2
 
-  cmd="rclone copy -P -vv $src dropbox:$dest"
-  echo $cmd
-  $cmd
+  rclone copy -P -vv $src dropbox:"$dest"
 }
 
 function dropdown {
   local src=$1
   local dest=$2
 
-  cmd="rclone copy -P -vv dropbox:$src $dest"
-  echo $cmd
-  $cmd
+  rclone copy -P -vv dropbox:$src "$dest"
 }
 
 function rcopy {
