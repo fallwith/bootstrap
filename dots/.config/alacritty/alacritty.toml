@@ -1,0 +1,24 @@
+# import = ["~/.config/alacritty/colorscheme.toml"]
+
+[window]
+dimensions = { columns = 100, lines = 25 }
+padding = { x = 1, y = 1 }
+opacity = 0.92
+dynamic_padding = true
+
+[font]
+normal = { family = "mononoki" }
+size = 9.0
+
+[keyboard]
+bindings = [
+{ key = "N", mods = "Control|Shift", action = "CreateNewWindow" },
+{ key = "Period", mods = "Command", chars = "\x03 }
+{ key = "F", mods = "Alt", chars = "\x1bf"        }
+{ key = "B", mods = "Alt", chars = "\x1bb"        }
+{ key = "D", mods = "Alt", chars = "\x1bd"        }
+{ key = "H", mods = "Alt", chars = "\x1bh"        }
+{ key = "J", mods = "Alt", chars = "\x1bj"        }
+{ key = "K", mods = "Alt", chars = "\x1bk"        }
+{ key = "L", mods = "Alt", chars = "\x1bl"        }
+]

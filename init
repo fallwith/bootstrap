@@ -126,7 +126,7 @@ fi
 # --- --- --- --- --- --- --- ---
 
 if running_debian; then
-  sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip xclip mksh rclone kitty cros-guest-tools x11-apps
+  sudo apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip xclip mksh rclone kitty cros-guest-tools x11-apps libglfw3 libglfw3-dev alacritty
 fi
 
 
@@ -202,7 +202,7 @@ else
   if running_mac_os; then
     pip3 install --user --upgrade neovim-remote
   else
-    sudo pip3 install --upgrade neovim-remote
+    sudo pip3 install --upgrade --break-system-packages neovim-remote
   fi
 fi
 
