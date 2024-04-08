@@ -70,10 +70,11 @@ vim.opt.wildmenu = true
     -- "netrwPlugin",
     -- "netrwSettings",
     -- "netrwFileHandlers",
+-- keeping these to edit files within .zip archives
+    -- "zip",
+    -- "zipPlugin",
 local disabled_built_ins = {
     "gzip",
-    "zip",
-    "zipPlugin",
     "tar",
     "tarPlugin",
     "getscript",

@@ -194,7 +194,7 @@ function gitdiff {
 
 # Python {{{
 # pyver=$(ls ~/Library/Python|sort|tail -1)
-PATH=~/Library/Python/3.9/bin:$PATH
+PATH=~/Library/Python/3.12/bin:$PATH
 # }}}
 
 # Ruby {{{
