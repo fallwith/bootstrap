@@ -239,6 +239,14 @@ function setruby {
   unset desired
 }
 
+function railsmin {
+  rails new $1 --api --minimal --skip-git \
+  --skip-action-mailer --skip-action-cable \
+  --skip-javascript --skip-test --skip-keeps \
+  --skip-asset-pipeline --skip-hotwire --skip-jbuilder \
+  --skip-decrypted-diffs
+}
+
 [[ -e ~/.ruby-version ]] && setruby $(<~/.ruby-version) >/dev/null
 # }}}
 
