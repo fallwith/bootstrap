@@ -12,7 +12,7 @@
   }; f"
   b = branch
   ba = branch -a
-  d = checkout --
+  d = difftool
   rv = checkout --
   s = stash
   sl = stash list
@@ -80,3 +80,5 @@
 [core]
 	attributesfile = ~/.gitattributes
   editor = "nvr -cc split --remote-wait-silent +'set bufhidden=wipe'"
+[difftool]
+	prompt = false
