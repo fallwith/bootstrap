@@ -247,6 +247,10 @@ function railsmin {
   --skip-decrypted-diffs
 }
 
+function rubyinstall {
+  ruby-install $1 -- --with-openssl-dir=$(brew --prefix openssl@3)
+}
+
 [[ -e ~/.ruby-version ]] && setruby $(<~/.ruby-version) >/dev/null
 # }}}
 
