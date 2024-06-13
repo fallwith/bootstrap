@@ -56,7 +56,8 @@ require('lazy').setup({
                      'nvim-treesitter/nvim-treesitter' } },
 
   -- view all git diffs in a single nvim session
-  'sindrets/diffview.nvim',
+  { 'sindrets/diffview.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' } },
 
   -- colorschemes
   -- 'zaki/zazen'

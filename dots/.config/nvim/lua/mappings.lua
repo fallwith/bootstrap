@@ -48,3 +48,6 @@ vim.api.nvim_set_keymap('n', '<leader>yy', '"+yy', {noremap = true})
 vim.api.nvim_set_keymap('v', '<leader>y', '"+y', {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>p', '"+p', {noremap = true})
 vim.api.nvim_set_keymap('v', '<leader>p', '"+p', {noremap = true})
+
+-- diffview
+vim.api.nvim_set_keymap('n', '<leader>d', ':DiffviewOpen<CR>', {noremap = true})
