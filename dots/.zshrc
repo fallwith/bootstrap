@@ -124,7 +124,7 @@ alias font="kitty @ set-font-size"
 alias matrix='cxxmatrix -c \#FFC0CB -s rain-forever --frame-rate=40 --preserve-background --no-twinkle --no-diffuse'
 alias reload='. ~/.zshrc'
 alias xattrdel='xattr -c -r'
-alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git/public ~/git/private | sed "s|$HOME/||g" | fzf +m --height 33% --border --layout=reverse)'
+alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git | sed "s|$HOME/||g" | fzf +m --height 33% --border --layout=reverse)'
 # }}}
 
 # Functions {{{
@@ -268,11 +268,35 @@ alias got='go test -v ./...'
 FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 
 # https://github.com/rose-pine/fzf/blob/main/fzf-dawn.sh
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS"
- --color=fg:#575279,bg:#fffaf3,hl:#9893a5
- --color=fg+:#797593,bg+:#faf4ed,hl+:#797593
- --color=info:#56949f,prompt:#56949f,pointer:#907aa9
- --color=marker:#d7827e,spinner:#b4637a,header:#d7827e"
+# export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS"
+#  --color=fg:#575279,bg:#fffaf3,hl:#9893a5
+#  --color=fg+:#797593,bg+:#faf4ed,hl+:#797593
+#  --color=info:#56949f,prompt:#56949f,pointer:#907aa9
+#  --color=marker:#d7827e,spinner:#b4637a,header:#d7827e"
+
+local color00='#32302f'
+local color01='#3c3836'
+local color02='#504945'
+local color03='#665c54'
+local color04='#bdae93'
+local color05='#d5c4a1'
+local color06='#ebdbb2'
+local color07='#fbf1c7'
+local color08='#fb4934'
+local color09='#fe8019'
+local color0A='#fabd2f'
+local color0B='#b8bb26'
+local color0C='#8ec07c'
+local color0D='#83a598'
+local color0E='#d3869b'
+local color0F='#d65d0e'
+
+# https://github.com/tinted-theming/tinted-fzf/blob/main/bash/base16-gruvbox-dark-soft.config
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS"\
+" --color=bg+:$color01,bg:$color00,spinner:$color0C,hl:$color0D"\
+" --color=fg:$color04,header:$color0D,info:$color0A,pointer:$color0C"\
+" --color=marker:$color0C,fg+:$color06,prompt:$color0A,hl+:$color0D"
+
 # }}}
 
 # ugrep {{{
@@ -393,6 +417,13 @@ function rubypants {
 # }}}
 
 # Homebrew {{{
+export HOMEBREW_PREFIX="/opt/homebrew";
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+export HOMEBREW_REPOSITORY="/opt/homebrew";
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
+export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+
 # to start/stop a single service: brew services stop|start <service>
 alias brewtaps='brew list --full-name | grep /'
 alias servicesstart='brew services --all start'

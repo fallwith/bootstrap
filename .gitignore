@@ -4,4 +4,5 @@ fonts/.uuid
 fzf/
 ripgrep/
 rustup-init.sh
+dots/bin/cxxmatrix
 Postgres.app

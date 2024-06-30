@@ -79,10 +79,13 @@ require('lazy').setup({
   -- 'savq/melange'
   -- 'ellisonleao/gruvbox.nvim'
   -- 'lunarvim/darkplus.nvim'
-  { 'rose-pine/neovim',
+  -- 'rose-pine/neovim'
+  { 'chriskempson/base16-vim',
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme('rose-pine')
+      vim.base16colorspace = 256
+      vim.o.background = 'dark'
+      vim.cmd.colorscheme('base16-tomorrow-night')
     end }
 })
