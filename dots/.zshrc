@@ -251,6 +251,9 @@ function rubyinstall {
   ruby-install $1 -- --with-openssl-dir=$(brew --prefix openssl@3)
 }
 
+# installing Ruby from source...
+# ./configure --with-opt-dir="$(brew --prefix openssl@3):$(brew --prefix readline):$(brew --prefix libyaml):$(brew --prefix gdbm)" --prefix="$HOME/.rubies/ruby-3.4.0-preview1" && make && make install
+
 [[ -e ~/.ruby-version ]] && setruby $(<~/.ruby-version) >/dev/null
 # }}}
 
@@ -319,7 +322,7 @@ function rcopy {
 # PATH="./node_modules/.bin:$PATH"
 # }}}
 
-# exa {{{
+# eza {{{
 # --long: extended details and attributes
 # --all: show hidden and dot files
 # --group: display group owner
@@ -329,7 +332,7 @@ function rcopy {
 # --time-style log-iso: desired timestamp format (default, iso, long-iso, full-iso)
 ## --colour-scale: color code the various file size ranges (best with dark backgrounds)
 # --extended: reveal extended file attributes
-alias ll='exa --long --all --group --numeric --classify --git --time-style long-iso'
+alias ll='eza --long --all --group --numeric --classify --git --time-style long-iso'
 alias lle='ll --extended'
 # }}}
 
