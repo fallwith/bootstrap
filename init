@@ -200,7 +200,8 @@ if (command -v nvr >/dev/null); then
 else
   echo "Installing neovim-remote..."
   if running_mac_os; then
-    pip3 install --user --upgrade neovim-remote
+    # pip3 install --user --upgrade neovim-remote
+    echo "Skipping neovim-remote installation on macos, use 'brew install neovim-remote' instead"
   else
     sudo pip3 install --upgrade --break-system-packages neovim-remote
   fi
@@ -233,10 +234,10 @@ if running_debian; then
   fi
 fi
 
+# Packer content commented out in favor of lazy.nvim...
 # install or update Neovim plugins
-echo "Installing / updating Neovim plugins..."
-\nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-
+# echo "Installing / updating Neovim plugins..."
+# \nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 
 # --- --- --- --- --- --- ---
@@ -309,16 +310,17 @@ fi
 # Postgres.app
 # --- --- --- --- --- --- ---
 
-if [[ -e "/Applications/Postgres.app" ]]; then
-  echo "Postgres.app already installed"
-else
-  rm -f Postgres.dmg
-  wget --no-check-certificate https://github.com/PostgresApp/PostgresApp/releases/download/v2.4.2/Postgres-2.4.2-13.dmg -O Postgres.dmg
-  open Postgres.dmg
-  echo 'Hit a key after install Postgres.app to /Applications'
-  read -n 1 any_key
-  echo -e "export PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:\$PATH\n" >> ~/.mkshrc_private
-fi
+# commented out - use the Homebrew formula instead
+# if [[ -e "/Applications/Postgres.app" ]]; then
+#   echo "Postgres.app already installed"
+# else
+#   rm -f Postgres.dmg
+#   wget --no-check-certificate https://github.com/PostgresApp/PostgresApp/releases/download/v2.4.2/Postgres-2.4.2-13.dmg -O Postgres.dmg
+#   open Postgres.dmg
+#   echo 'Hit a key after install Postgres.app to /Applications'
+#   read -n 1 any_key
+#   echo -e "export PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:\$PATH\n" >> ~/.mkshrc_private
+# fi
 
 # --- --- --- --- --- --- ---
 # Debian only from here on out
