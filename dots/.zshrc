@@ -240,7 +240,7 @@ function setruby {
 }
 
 function railsmin {
-  rails new $1 --api --minimal --skip-git \
+  rails new $1 --minimal --skip-git \
   --skip-action-mailer --skip-action-cable \
   --skip-javascript --skip-test --skip-keeps \
   --skip-asset-pipeline --skip-hotwire --skip-jbuilder \
@@ -319,7 +319,7 @@ function rcopy {
 # PATH="./node_modules/.bin:$PATH"
 # }}}
 
-# exa {{{
+# eza {{{
 # --long: extended details and attributes
 # --all: show hidden and dot files
 # --group: display group owner
@@ -329,7 +329,8 @@ function rcopy {
 # --time-style log-iso: desired timestamp format (default, iso, long-iso, full-iso)
 ## --colour-scale: color code the various file size ranges (best with dark backgrounds)
 # --extended: reveal extended file attributes
-alias ll='exa --long --all --group --numeric --classify --git --time-style long-iso'
+# alias ll='exa --long --all --group --numeric --classify --git --time-style long-iso'
+alias ll='eza --group-directories-first --long --all --group --numeric --classify --git --time-style long-iso'
 alias lle='ll --extended'
 # }}}
 

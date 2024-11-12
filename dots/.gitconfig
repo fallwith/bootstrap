@@ -3,10 +3,11 @@
 [alias]
   c = commit
   ; checkout the given branch, using fuzzy finding if a branch is not given.
+      ; branch=$(git branch -a | sed 's|remotes/origin/||' | grep -v 'HEAD ->' | fzf | tr -d '^* '); \
   co = "!f() { \
     declare branch=\"$1\"; \
     if [ \"$branch\" == \"\" ]; then \
-      branch=$(git branch -a | sed 's|remotes/origin/||' | grep -v 'HEAD ->' | fzf | tr -d '^* '); \
+      branch=$(git branch | fzf | tr -d '^* '); \
     fi; \
     git checkout \"$branch\"; \
   }; f"
