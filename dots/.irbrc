@@ -24,11 +24,11 @@
 #   - Get source location info for the given instance method
 
 require 'irb/completion'
-begin
-  require 'interactive_editor'
-rescue LoadError
-  puts "Couldn't load interactive_editor for this session"
-end
+# begin
+#   require 'interactive_editor'
+# rescue LoadError
+#   puts "Couldn't load interactive_editor for this session"
+# end
 
 IRB.conf[:AUTO_INDENT] = true
 IRB.conf[:BACK_TRACE_LIMIT] = 75

@@ -12,6 +12,24 @@ local lint_format = '%E%f:%l:%c: %\\d%#:%\\d%# %.%\\{-}'
                  .. 'warning: the option `Z` is unstable %.%#,%W'
                  .. 'warning: %m,%Inote: %m,%C %#--> %f:%l:%c'
 
+-- rust-vim-lint binary is a shell script as follows:
+--
+-- #!/usr/bin/env sh
+
+-- test "$1" || exit 1
+
+-- d=$(dirname "$(realpath "$1")")
+-- while test "$(echo "$d" | grep -o '/' | wc -l)" -ge 1
+-- do
+--     test -f "$d/Cargo.toml" && {
+--         cd "$d" || exit 1
+--         exec cargo check
+--     }
+--     d=$(echo "$d" | sed s/'\/[^\/]*$'//)
+-- done
+
+-- exec clippy-driver "$1"
+
 lint.linters.rust_lint = {
     cmd = 'rust-vim-lint',
     stdin = false,

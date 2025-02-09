@@ -5,7 +5,7 @@ end
 brew '7zip'
 # brew 'ansible'
 # brew 'atool'
-brew 'awscli' if working?
+# brew 'awscli' if working?
 # brew 'bash'
 brew 'bat'
 # brew 'chruby', args: ['HEAD']
@@ -29,18 +29,19 @@ brew 'findutils'
 # brew 'fzf', args: ['HEAD']
 # brew 'frum'
 brew 'fzf'
-brew 'gdb'
+# brew 'gdb'
 brew 'ghostscript'
+# brew 'ghostty' # using nightlies instead as of 2025-01-12
 # brew 'git'
 brew 'gnu-sed'
 brew 'go'
-# needed for asdf nodejs
+# gpg needed for asdf nodejs
 brew 'gpg'
 # brew 'graphicsmagick'
 brew 'grip'
 # brew 'highlight'
 # brew 'hugo'
-# brew 'imagemagick'
+brew 'imagemagick'
 # brew 'jmeter', args: ['with-plugins']
 brew 'jq'
 # brew 'kubernetes-cli'
@@ -64,36 +65,39 @@ brew 'ncdu'
 brew 'neovim'
 brew 'neovim-remote'
 # brew 'neovim', args: ['HEAD']
+brew 'node'
 brew 'npm'
 brew 'openssl'
+brew 'pandoc'
 brew 'parallel'
 # brew 'poppler'
 # brew 'postgresql'
-brew 'postgresql@14' if working?
+brew 'postgresql@14' unless working?
 brew 'procs'
 brew 'pkg-config'
 brew 'python'
 brew 'ranger', args: ['HEAD']
 brew 'rclone'
 # brew 'reattach-to-user-namespace'
-brew 'redis' if working?
-# brew 'ripgrep'
+# brew 'redis' if working?
+# ripgrep is needed by nvim telescope
+brew 'ripgrep'
+brew 'rom-tools' unless working?
 brew 'ruby-install'
-brew 'rustup-init'
+brew 'rustup'
 brew 'sdl2'
+# brew 'sdl2_gfx'
 brew 'sdl2_image'
 brew 'sdl2_mixer'
 brew 'sdl2_ttf'
 # brew 'sk'
-# brew 'sqlite'
+brew 'sqlite'
 # brew 'the_silver_searcher'
 brew 'terraform' if working?
 brew 'tig'
 # brew 'tmux'
 brew 'tokei'
-# brew 'transmission'
 brew 'ugrep'
-# brew 'unrar'
 # brew 'vault'
 # brew 'vim'
 # brew 'volta'
@@ -129,7 +133,10 @@ brew 'yt-dlp' # modern youtube-dl
 # cask 'avibrazil-rdm'
 # cask 'calibre'
 # cask 'chefdk'
-cask 'docker' if working?
+# basictex for .md -> .pdf with pandoc
+cask 'basictex'
+cask 'discord' unless working?
+cask 'docker'
 # cask 'handbrake'
 # cask 'iterm2-nightly'
 # cask 'iterm2'
@@ -141,14 +148,17 @@ cask 'kitty'
 # cask 'macdown'
 # cask 'makemkv'
 cask '1password' unless working?
+cask 'rar' unless working?
 # cask 'sequel-pro'
-# cask 'slack'
+cask 'slack' unless working?
 # cask 'slate'
 cask 'steam' unless working?
+cask 'transmission' unless working?
 # cask 'tuple'
 # cask 'vagrant'
 # cask 'virtualbox'
 # cask 'vlc'
+cask 'zoom' unless working?
 
 # fonts
 # tap 'caskroom/fonts'

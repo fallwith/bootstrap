@@ -43,6 +43,9 @@ require('lazy').setup({
   -- simple file browsing
   'tpope/vim-vinegar',
 
+  -- programming languages
+  'rust-lang/rust.vim',
+
   -- code linting
   { 'mfussenegger/nvim-lint',
     config = function()
@@ -58,6 +61,14 @@ require('lazy').setup({
   -- view all git diffs in a single nvim session
   { 'sindrets/diffview.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' } },
+
+  { "kylechui/nvim-surround",
+    event = "VeryLazy",
+    config = function()
+        require("nvim-surround").setup({
+            -- Configuration here, or leave empty to use defaults
+        })
+    end },
 
   -- colorschemes
   -- 'zaki/zazen'
@@ -87,5 +98,11 @@ require('lazy').setup({
       vim.base16colorspace = 256
       vim.o.background = 'dark'
       vim.cmd.colorscheme('base16-tomorrow-night')
+      -- vim.cmd [[
+      --   highlight Normal guibg=none
+      --   highlight NonText guibg=none
+      --   highlight Normal ctermbg=none
+      --   highlight NonText ctermbg=none
+      -- ]]
     end }
 })

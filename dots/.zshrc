@@ -240,7 +240,7 @@ function setruby {
 }
 
 function railsmin {
-  rails new $1 --api --minimal --skip-git \
+  bundle exec rails new $1 --api --minimal --skip-git \
   --skip-action-mailer --skip-action-cable \
   --skip-javascript --skip-test --skip-keeps \
   --skip-asset-pipeline --skip-hotwire --skip-jbuilder \
@@ -284,6 +284,7 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS"\
 # ugrep {{{
 alias ug='noglob \ug'
 alias eug='ug --perl-regexp'
+alias aug'ug --all'
 alias eugrep=eug
 # }}}
 
@@ -305,7 +306,7 @@ function dropup {
   local src=$1
   local dest=$2
 
-  rclone copy -P -vv $src dropbox:"$dest"
+  rclone copy -P -vv --transfers 12 $src dropbox:"$dest"
 }
 
 function dropdown {
@@ -405,6 +406,16 @@ export HOMEBREW_REPOSITORY="/opt/homebrew";
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
 export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
 export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+if [ -z $LIBRARY_PATH ]; then
+  export LIBRARY_PATH="$(brew --prefix)/lib"
+else
+  export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib"
+fi
+if [ -z $LD_LIBRARY_PATH ]; then
+  export LD_LIBRARY_PATH="$(brew --prefix)/include"
+else
+  export LD_LIBRARY_PATH="$LD_LIBARY_PATH:$(brew --prefix)/include"
+fi
 
 # to start/stop a single service: brew services stop|start <service>
 alias brewtaps='brew list --full-name | grep /'
@@ -416,6 +427,16 @@ alias servicesstop='brew services --all stop'
 # after any gpg software updates, run: gpgconf --kill gpg-agent
 alias gpgtest='echo testing | gpg --clearsign'
 export GPG_TTY=$(tty)
+# }}}
+
+# TeX {{{
+# brew install pandoc
+# brew install basictex
+# update PATH
+# pandoc -V geometry:margin=1pt -s name.md -o name.pdf
+if [[ -e /Library/TeX/texbin ]]; then
+  export PATH=$PATH:/Library/TeX/texbin
+fi
 # }}}
 
 # .zshrc_private {{{
