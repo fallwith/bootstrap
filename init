@@ -276,19 +276,19 @@ fi
 # rustup component add rust-src
 
 
-# --- --- --- --- --- --- ---
-# Kitty
-# --- --- --- --- --- --- ---
-if [[ ! -e "${target_dir}/.config/kitty/kitty.conf" ]]; then
-  if running_debian; then
-    ln -s "${target_dir}/.config/kitty/kitty_debian.conf" "${target_dir}/.config/kitty/kitty.conf"
-  elif running_mac_os; then
-    ln -s "${target_dir}/.config/kitty/kitty_macos.conf" "${target_dir}/.config/kitty/kitty.conf"
-  else
-    echo "Error: unable to prep Kitty for this operating system!"
-    exit -1
-  fi
-fi
+# # --- --- --- --- --- --- ---
+# # Kitty
+# # --- --- --- --- --- --- ---
+# if [[ ! -e "${target_dir}/.config/kitty/kitty.conf" ]]; then
+#   if running_debian; then
+#     ln -s "${target_dir}/.config/kitty/kitty_debian.conf" "${target_dir}/.config/kitty/kitty.conf"
+#   elif running_mac_os; then
+#     ln -s "${target_dir}/.config/kitty/kitty_macos.conf" "${target_dir}/.config/kitty/kitty.conf"
+#   else
+#     echo "Error: unable to prep Kitty for this operating system!"
+#     exit -1
+#   fi
+# fi
 
 
 # --- --- --- --- --- --- ---

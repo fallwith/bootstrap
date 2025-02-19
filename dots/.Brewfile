@@ -26,7 +26,6 @@ brew 'ffmpeg'
 brew 'figlet'
 brew 'findutils'
 # brew 'fortune'
-# brew 'fzf', args: ['HEAD']
 # brew 'frum'
 brew 'fzf'
 # brew 'gdb'
