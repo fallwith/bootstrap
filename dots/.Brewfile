@@ -2,6 +2,7 @@ def working?
   ENV['USER'] != 'james'
 end
 
+cask '1password-cli' if working?
 brew '7zip'
 # brew 'ansible'
 # brew 'atool'
@@ -76,9 +77,10 @@ brew 'procs'
 brew 'pkg-config'
 brew 'python'
 brew 'ranger', args: ['HEAD']
+brew 'rbenv' if working?
 brew 'rclone'
 # brew 'reattach-to-user-namespace'
-# brew 'redis' if working?
+# brew 'redis'
 # ripgrep is needed by nvim telescope
 brew 'ripgrep'
 brew 'rom-tools' unless working?
