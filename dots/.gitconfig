@@ -63,6 +63,7 @@
   }; f"
 [commit]
   template = ~/.gitmessage
+	gpgsign = true
 [diff]
     tool = nvimdiff
 [difftool "nvimdiff"]
@@ -82,3 +83,27 @@
   editor = "nvr -cc split --remote-wait-silent +'set bufhidden=wipe'"
 [difftool]
 	prompt = false
+[tag]
+	gpgSign = true
+
+; Use GPG to sign commits and tags:
+;
+; 1. brew install gpg
+; 2. Make sure ~/.gnupg/gpg-agent.conf exists and looks similar to this:
+;     default-cache-ttl 157680000
+;     max-cache-ttl 157680000
+;     pinentry-program /opt/homebrew/bin/pinentry
+; 3. gpgconf --kill gpg-agent
+;     Only if gpg-agent.conf has changed
+; 4. gpg --full-generate-key
+;     Choose '10' for 'sign only' w/out encryption, defaults for everything else
+; 5. echo "test" | gpg --clearsign
+;     To test signing
+; 6. gpg --list-secret-keys --keyid-format=long
+;     - Grab the part after 'ed25519/' for the correct secret key
+;     - Also grab the fingerprint, the entire string below the previous part
+; 7. git config --global user.signingkey <key saved from previous step>
+; 8. git config --global commit.gpgsign true
+; 9. git config --global tag.gpgSign true
+; 10. gpg --armor --export <key fingerprint from step 6>
+;      Add this GPG public key to your source control system (i.e. GitHub)
