@@ -192,6 +192,30 @@ function gitdiff {
 }
 # }}}
 
+# Homebrew {{{
+export HOMEBREW_PREFIX="/opt/homebrew";
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+export HOMEBREW_REPOSITORY="/opt/homebrew";
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
+export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+if [ -z $LIBRARY_PATH ]; then
+  export LIBRARY_PATH="$(brew --prefix)/lib"
+else
+  export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib"
+fi
+if [ -z $LD_LIBRARY_PATH ]; then
+  export LD_LIBRARY_PATH="$(brew --prefix)/include"
+else
+  export LD_LIBRARY_PATH="$LD_LIBARY_PATH:$(brew --prefix)/include"
+fi
+
+# to start/stop a single service: brew services stop|start <service>
+alias brewtaps='brew list --full-name | grep /'
+alias servicesstart='brew services --all start'
+alias servicesstop='brew services --all stop'
+# }}}
+
 # Python {{{
 # pyver=$(ls ~/Library/Python|sort|tail -1)
 PATH=~/Library/Python/3.12/bin:$PATH
@@ -208,36 +232,46 @@ function gemcd {
 }
 alias cdgem=gemcd
 
-function __setrubypath {
-  desired="$1"
-  bin_path="$HOME/.rubies/$desired/bin"
-  if [[ -e "$bin_path" ]]; then
-    export PATH="$bin_path:$PATH"
-    echo "Ruby set to $desired"
-  else
-    echo "Can't set Ruby to $desired - is it installed?"
-  fi
-  unset desired
-  unset bin_path
-}
-
-function setruby {
-  desired="$1"
-  if [[ "$desired" == "" ]]; then
-    if [[ -e .ruby-version ]]; then
-      desired="$(cat .ruby-version)"
+if [[ -e "/opt/homebrew/bin/rbenv" ]]; then
+  eval "$(rbenv init - --no-rehash zsh)"
+else
+  function __setrubypath {
+    desired="$1"
+    bin_path="$HOME/.rubies/$desired/bin"
+    if [[ -e "$bin_path" ]]; then
+      export PATH="$bin_path:$PATH"
+      echo "Ruby set to $desired"
     else
-      echo "No .ruby-version file found here."
-      return
+      echo "Can't set Ruby to $desired - is it installed?"
     fi
-  fi
-  if [[ $desired = jruby* ]] || [[ $desired = ruby* ]]; then
-    __setrubypath "$desired"
-  else
-    __setrubypath "ruby-$desired"
-  fi
-  unset desired
-}
+    unset desired
+    unset bin_path
+  }
+
+  function setruby {
+    desired="$1"
+    if [[ "$desired" == "" ]]; then
+      if [[ -e .ruby-version ]]; then
+        desired="$(cat .ruby-version)"
+      else
+        echo "No .ruby-version file found here."
+        return
+      fi
+    fi
+    if [[ $desired = jruby* ]] || [[ $desired = ruby* ]]; then
+      __setrubypath "$desired"
+    else
+      __setrubypath "ruby-$desired"
+    fi
+    unset desired
+  }
+
+  function rubyinstall {
+    ruby-install $1 -- --with-openssl-dir=$(brew --prefix openssl@3)
+  }
+
+  [[ -e ~/.ruby-version ]] && setruby $(<~/.ruby-version) >/dev/null
+fi
 
 function railsmin {
   bundle exec rails new $1 --api --minimal --skip-git \
@@ -247,14 +281,8 @@ function railsmin {
   --skip-decrypted-diffs
 }
 
-function rubyinstall {
-  ruby-install $1 -- --with-openssl-dir=$(brew --prefix openssl@3)
-}
-
 # installing Ruby from source...
 # ./configure --with-opt-dir="$(brew --prefix openssl@3):$(brew --prefix readline):$(brew --prefix libyaml):$(brew --prefix gdbm)" --prefix="$HOME/.rubies/ruby-3.4.0-preview1" && make && make install
-
-[[ -e ~/.ruby-version ]] && setruby $(<~/.ruby-version) >/dev/null
 # }}}
 
 # Go {{{
@@ -397,30 +425,6 @@ function pants {
 function rubypants {
   pants ruby:$1
 }
-# }}}
-
-# Homebrew {{{
-export HOMEBREW_PREFIX="/opt/homebrew";
-export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
-export HOMEBREW_REPOSITORY="/opt/homebrew";
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
-export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
-export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
-if [ -z $LIBRARY_PATH ]; then
-  export LIBRARY_PATH="$(brew --prefix)/lib"
-else
-  export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib"
-fi
-if [ -z $LD_LIBRARY_PATH ]; then
-  export LD_LIBRARY_PATH="$(brew --prefix)/include"
-else
-  export LD_LIBRARY_PATH="$LD_LIBARY_PATH:$(brew --prefix)/include"
-fi
-
-# to start/stop a single service: brew services stop|start <service>
-alias brewtaps='brew list --full-name | grep /'
-alias servicesstart='brew services --all start'
-alias servicesstop='brew services --all stop'
 # }}}
 
 # GPG {{{
