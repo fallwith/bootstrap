@@ -7,3 +7,8 @@ ripgrep/
 rustup-init.sh
 dots/bin/cxxmatrix
 Postgres.app
+dots/.gnupg/openpgp-revocs.d/
+dots/.gnupg/private-keys-v1.d/
+dots/.gnupg/pubring.kbx
+dots/.gnupg/pubring.kbx~
+dots/.gnupg/trustdb.gpg
