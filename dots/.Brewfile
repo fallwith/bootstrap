@@ -5,6 +5,7 @@ end
 cask '1password-cli' if working?
 brew '7zip'
 # brew 'ansible'
+brew 'asdf'
 # brew 'atool'
 # brew 'awscli' if working?
 # brew 'bash'
@@ -35,7 +36,7 @@ brew 'ghostscript'
 # brew 'git'
 brew 'gnu-sed'
 brew 'go'
-# gpg needed for asdf nodejs
+# gpg needed for asdf nodejs and git commits
 brew 'gpg'
 # brew 'graphicsmagick'
 brew 'grip'
@@ -44,7 +45,7 @@ brew 'grip'
 brew 'imagemagick'
 # brew 'jmeter', args: ['with-plugins']
 brew 'jq'
-# brew 'kubernetes-cli'
+brew 'kubernetes-cli' if working?
 # brew 'kubernetes-helm'
 brew 'lame'
 brew 'libbluray'
@@ -77,7 +78,6 @@ brew 'procs'
 brew 'pkg-config'
 brew 'python'
 brew 'ranger', args: ['HEAD']
-brew 'rbenv' if working?
 brew 'rclone'
 # brew 'reattach-to-user-namespace'
 # brew 'redis'

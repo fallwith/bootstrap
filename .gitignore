@@ -12,3 +12,4 @@ dots/.gnupg/private-keys-v1.d/
 dots/.gnupg/pubring.kbx
 dots/.gnupg/pubring.kbx~
 dots/.gnupg/trustdb.gpg
+dots/bin/bwctl
