@@ -85,6 +85,7 @@ alias reload='. ~/.zshrc'
 alias xattrdel='xattr -c -r'
 alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git | sed "s|$HOME/||g" | fzf +m --height 33% --border --layout=reverse)'
 # }}}
+alias running='ps auwx|egrep "memcache|mongo|mysql|rabbit|redis|postgres|ruby|rails|puma|node|\.rb|gradle"|egrep -v egrep'
 
 # Functions {{{
 function pidrunning {
@@ -148,6 +149,22 @@ function keepemptydirs {
 # gitdiff dev -- path/to/file
 function gitdiff {
   nvim -c ":DiffviewOpen $@"
+}
+
+# convert *.cue/*.gdi/*.iso to *.chd
+function chdit() {
+  cue_file=$1
+  chd_file=${cue_file:s/.cue/.chd}
+  chd_file=${chd_file:s/.gdi/.chd}
+  chd_file=${chd_file:s/.iso/.chd}
+  chdman createcd -i "$cue_file" -o "$chd_file"
+}
+
+# convert any image to .png
+function pngit() {
+  file="$1"
+  mogrify -format png "$file"
+  rm -f "$file"
 }
 # }}}
 
