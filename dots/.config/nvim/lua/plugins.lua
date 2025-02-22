@@ -62,14 +62,6 @@ require('lazy').setup({
   { 'sindrets/diffview.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' } },
 
-  { "kylechui/nvim-surround",
-    event = "VeryLazy",
-    config = function()
-        require("nvim-surround").setup({
-            -- Configuration here, or leave empty to use defaults
-        })
-    end },
-
   -- colorschemes
   -- 'zaki/zazen'
   -- 'fxn/vim-monochrome'
