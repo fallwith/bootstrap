@@ -43,6 +43,9 @@ require('lazy').setup({
   -- simple file browsing
   'tpope/vim-vinegar',
 
+  -- run unit tests (nearest, all in file, all in project)
+  'vim-test/vim-test',
+
   -- programming languages
   'rust-lang/rust.vim',
 
@@ -63,38 +66,65 @@ require('lazy').setup({
     dependencies = { 'nvim-tree/nvim-web-devicons' } },
 
   -- colorschemes
-  -- 'zaki/zazen'
-  -- 'fxn/vim-monochrome'
-  -- 'arcticicestudio/nord-vim'
-  -- 'nanotech/jellybeans.vim'
-  -- 'cocopon/iceberg.vim'
-  -- 'ldelossa/vimdark'
-  -- { 'Lokaltog/vim-distinguished', branch = 'develop' }
-  -- 'fallwith/seabird'
-  -- 'jaredgorski/fogbell.vim'
-  -- 'logico/typewriter-vim'
-  -- 'LuRsT/austere.vim'
-  -- 'sainnhe/edge'
-  -- 'sainnhe/sonokai'
-  -- 'Everblush/everblush.nvim'
-  -- 'folke/tokyonight.nvim'
-  -- 'rmehri01/onenord.nvim'
-  -- 'savq/melange'
-  -- 'ellisonleao/gruvbox.nvim'
-  -- 'lunarvim/darkplus.nvim'
-  -- 'rose-pine/neovim'
-  { 'chriskempson/base16-vim',
+  -- 'zaki/zazen',
+  -- 'fxn/vim-monochrome',
+  -- 'arcticicestudio/nord-vim',
+  -- 'nanotech/jellybeans.vim',
+  -- 'cocopon/iceberg.vim',
+  -- 'ldelossa/vimdark',
+  -- { 'Lokaltog/vim-distinguished', branch = 'develop' },
+  -- 'fallwith/seabird',
+  -- 'jaredgorski/fogbell.vim',
+  -- 'logico/typewriter-vim',
+  -- 'LuRsT/austere.vim',
+  -- 'sainnhe/edge',
+  -- 'sainnhe/sonokai',
+  -- 'Everblush/everblush.nvim',
+  -- 'folke/tokyonight.nvim',
+  -- 'rmehri01/onenord.nvim',
+  -- 'savq/melange',
+  -- 'ellisonleao/gruvbox.nvim',
+  -- 'sainnhe/gruvbox-material',
+  -- 'lunarvim/darkplus.nvim',
+  -- 'rose-pine/neovim',
+  -- 'sainnhe/everforest',
+  -- 'bluz71/vim-nightfly-colors',
+  -- 'dasupradyumna/midnight.nvim',
+  -- 'ashen-org/ashen.nvim',
+
+  -- { 'chriskempson/base16-vim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     vim.base16colorspace = 256
+  --     vim.o.background = 'dark'
+  --     vim.cmd.colorscheme('base16-tomorrow-night')
+  --     -- vim.cmd [[
+  --     --   highlight Normal guibg=none
+  --     --   highlight NonText guibg=none
+  --     --   highlight Normal ctermbg=none
+  --     --   highlight NonText ctermbg=none
+  --     -- ]]
+  --   end }
+
+  { 'rebelot/kanagawa.nvim',
     lazy = false,
     priority = 1000,
     config = function()
-      vim.base16colorspace = 256
-      vim.o.background = 'dark'
-      vim.cmd.colorscheme('base16-tomorrow-night')
-      -- vim.cmd [[
-      --   highlight Normal guibg=none
-      --   highlight NonText guibg=none
-      --   highlight Normal ctermbg=none
-      --   highlight NonText ctermbg=none
-      -- ]]
+      require('kanagawa').setup({
+        compile = false,
+        undercurl = true,
+        commentStyle = { italic = true },
+        functionStyle = {},
+        keywordStyle = { italic = true },
+        statementStyle = { bold = true },
+        typeStyle = {},
+        transparent = false,
+        dimInactive = true,
+        terminalColors = true,
+        theme = 'wave' -- or dragon
+      })
+      vim.cmd.colorscheme('kanagawa')
     end }
+
 })

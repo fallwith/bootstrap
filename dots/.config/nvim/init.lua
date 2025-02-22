@@ -1,6 +1,7 @@
 require 'plugins'
 require 'options'
 require 'mappings'
+require 'rails'
 
 -- remove the editor trimmings from terminal splits
 vim.api.nvim_command [[autocmd TermOpen * setlocal nonumber norelativenumber nospell]]
