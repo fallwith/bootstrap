@@ -86,6 +86,7 @@ alias xattrdel='xattr -c -r'
 alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git | sed "s|$HOME/||g" | fzf +m --height 33% --border --layout=reverse)'
 # }}}
 alias running='ps auwx|egrep "memcache|mongo|mysql|rabbit|redis|postgres|ruby|rails|puma|node|\.rb|gradle"|egrep -v egrep'
+alias ghostty=/Applications/Ghostty.app/Contents/MacOS/ghostty
 
 # Functions {{{
 function pidrunning {
@@ -263,6 +264,16 @@ if [[ ! -e "/opt/homebrew/bin/asdf" ]]; then
   function rubyinstall {
     ruby-install $1 -- --with-openssl-dir=$(brew --prefix openssl@3)
   }
+
+  # # For Rubies <= v3.0
+  # function rubyinstall_old {
+  #   o11_path=$(brew --prefix openssl@1.1 2>/dev/null)
+  #   if [[ "$o11_path" == "" ]]; then
+  #     echo "OpenSSL v1.1 needed for old Rubies not found. Try 'brew install rbenv/tap/openssl1.1'."
+  #     return 1
+  #   fi
+  #   ruby-install $1 -- --with-openssl-dir=$(brew --prefix openssl@1.1) --with-opt-dir="$(brew --prefix openssl@1.1):$(brew --prefix readline):$(brew --prefix libyaml):$(brew --prefix gdbm)"
+  # }
 
   [[ -e ~/.ruby-version ]] && setruby $(<~/.ruby-version) >/dev/null
 fi

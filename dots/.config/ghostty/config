@@ -2,11 +2,14 @@
 # ghostty +list-fonts
 # ghostty +list-keybinds
 # ghostty +list-themes
+# cmd++ to increase font size
+# cmd+- to decrease font size
 
 auto-update = check
 background-blur-radius = 5 
 background-opacity = 0.87
-font-family = Mononoki Nerd Font Mono
+# font-family = Mononoki Nerd Font Mono
+font-family = PTMono Nerd Font
 # font-feature = -calt
 # font-feature = -liga
 # font-feature = -dlig
@@ -18,7 +21,8 @@ macos-titlebar-proxy-icon = hidden
 macos-titlebar-style = transparent
 quit-after-last-window-closed = true
 shell-integration = none
-theme = xcodedarkhc
+# theme = Ghostty Default StyleDark
+theme = xcodedark
 window-save-state = always
 
 keybind = ctrl+shift+right=next_tab

@@ -91,6 +91,19 @@ require('lazy').setup({
   -- 'bluz71/vim-nightfly-colors',
   -- 'dasupradyumna/midnight.nvim',
   -- 'ashen-org/ashen.nvim',
+  -- 'catppuccin/nvim',
+  -- 'ribru17/bamboo.nvim',
+  -- 'mellow-theme/mellow.nvim',
+  -- 'projekt0n/caret.nvim',
+  -- 'savq/melange-nvim',
+  -- 'samharju/serene.nvim',
+
+  { 'xiantang/darcula-dark.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme('darcula-dark')
+    end }
 
   -- { 'chriskempson/base16-vim',
   --   lazy = false,
@@ -106,25 +119,4 @@ require('lazy').setup({
   --     --   highlight NonText ctermbg=none
   --     -- ]]
   --   end }
-
-  { 'rebelot/kanagawa.nvim',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require('kanagawa').setup({
-        compile = false,
-        undercurl = true,
-        commentStyle = { italic = true },
-        functionStyle = {},
-        keywordStyle = { italic = true },
-        statementStyle = { bold = true },
-        typeStyle = {},
-        transparent = false,
-        dimInactive = true,
-        terminalColors = true,
-        theme = 'wave' -- or dragon
-      })
-      vim.cmd.colorscheme('kanagawa')
-    end }
-
 })
