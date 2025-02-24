@@ -73,7 +73,7 @@ brew 'pandoc'
 brew 'parallel'
 # brew 'poppler'
 # brew 'postgresql'
-brew 'postgresql@14' unless working?
+brew 'postgresql@14'
 brew 'procs'
 brew 'pkg-config'
 brew 'python'
