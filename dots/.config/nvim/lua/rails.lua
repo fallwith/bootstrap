@@ -8,13 +8,10 @@ end
 function AlternateForCurrentFile()
   local file = vim.fn.expand("%")
   local in_spec = string.match(file, "^spec/") ~= nil
-  local in_app = string.match(file, "^app/") ~= nil or string.match(file, "^spec/app/") ~= nil
+  local in_app = string.match(file, "^app/") ~= nil
   if in_spec then
     file = string.gsub(file, "_spec%.rb$", ".rb")
-    file = string.gsub(file, "^spec/", "")
-    if in_app then
-      file = "app/" .. file
-    end
+    file = string.gsub(file, "^spec/", "app/")
   else
     if in_app then
       file = string.gsub(file, "^app/", "")
