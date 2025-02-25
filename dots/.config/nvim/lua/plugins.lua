@@ -41,13 +41,23 @@ require('lazy').setup({
   'tpope/vim-repeat',
 
   -- simple file browsing
-  'tpope/vim-vinegar',
+  -- 'tpope/vim-vinegar',
 
   -- run unit tests (nearest, all in file, all in project)
   'vim-test/vim-test',
 
-  -- programming languages
+  -- Rust support
   'rust-lang/rust.vim',
+
+  -- cellular automation animations
+  'eandrju/cellular-automaton.nvim',
+
+  -- NeoVim filesystem browsing similar to vinegar
+  { 'stevearc/oil.nvim',
+    config = function()
+      require('oil').setup()
+      vim.keymap.set("n", "-", "<CMD>Oil<CR>")
+    end },
 
   -- code linting
   { 'mfussenegger/nvim-lint',
@@ -66,7 +76,7 @@ require('lazy').setup({
     dependencies = { 'nvim-tree/nvim-web-devicons' } },
 
   -- colorschemes
-  -- 'zaki/zazen',
+  'zaki/zazen',
   -- 'fxn/vim-monochrome',
   -- 'arcticicestudio/nord-vim',
   -- 'nanotech/jellybeans.vim',
@@ -84,10 +94,10 @@ require('lazy').setup({
   -- 'rmehri01/onenord.nvim',
   -- 'savq/melange',
   -- 'ellisonleao/gruvbox.nvim',
-  -- 'sainnhe/gruvbox-material',
+  'sainnhe/gruvbox-material',
   -- 'lunarvim/darkplus.nvim',
   -- 'rose-pine/neovim',
-  -- 'sainnhe/everforest',
+  'sainnhe/everforest',
   -- 'bluz71/vim-nightfly-colors',
   -- 'dasupradyumna/midnight.nvim',
   -- 'ashen-org/ashen.nvim',
@@ -97,12 +107,13 @@ require('lazy').setup({
   -- 'projekt0n/caret.nvim',
   -- 'savq/melange-nvim',
   -- 'samharju/serene.nvim',
+  -- 'xiantang/darcula-dark.nvim',
 
-  { 'xiantang/darcula-dark.nvim',
+  { 'sainnhe/gruvbox-material',
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme('darcula-dark')
+      vim.cmd.colorscheme('gruvbox-material')
     end }
 
   -- { 'chriskempson/base16-vim',
