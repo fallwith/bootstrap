@@ -5,24 +5,26 @@
 # cmd++ to increase font size
 # cmd+- to decrease font size
 
+# transparency
+# background-blur-radius = 5
+# background-opacity = 0.87
+# macos-titlebar-style = transparent
+
 auto-update = check
-background-blur-radius = 5 
-background-opacity = 0.87
-# font-family = Mononoki Nerd Font Mono
+cursor-style = bar
+cursor-style-blink = true
 font-family = PTMono Nerd Font
-# font-feature = -calt
-# font-feature = -liga
-# font-feature = -dlig
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
 font-size = 14
-macos-icon = custom-style
-macos-icon-ghost-color = pink
-macos-icon-screen-color = black
+macos-icon = holographic
 macos-titlebar-proxy-icon = hidden
-macos-titlebar-style = transparent
+mouse-hide-while-typing = true
 quit-after-last-window-closed = true
-shell-integration = none
-# theme = Ghostty Default StyleDark
-theme = xcodedark
+shell-integration = zsh
+theme = gruvbox-material
+window-inherit-working-directory = true
 window-save-state = always
 
 keybind = ctrl+shift+right=next_tab
