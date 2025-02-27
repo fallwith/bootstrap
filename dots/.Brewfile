@@ -45,6 +45,7 @@ brew 'grip'
 brew 'imagemagick'
 # brew 'jmeter', args: ['with-plugins']
 brew 'jq'
+brew 'k9s' if working?
 brew 'kubernetes-cli' if working?
 # brew 'kubernetes-helm'
 brew 'lame'
@@ -130,12 +131,13 @@ brew 'yt-dlp' # modern youtube-dl
 
 # tap 'homebrew/cask'
 # cask 'alacritty'
-# cask 'appcleaner'
+cask 'appcleaner'
 # cask 'avibrazil-rdm'
 # cask 'calibre'
 # cask 'chefdk'
 # basictex for .md -> .pdf with pandoc
 cask 'basictex'
+cask 'datagrip' if working?
 cask 'discord' unless working?
 cask 'docker'
 # cask 'handbrake'
@@ -148,7 +150,7 @@ cask 'docker'
 cask 'kitty'
 # cask 'macdown'
 # cask 'makemkv'
-cask '1password' unless working?
+cask '1password'
 cask 'rar' unless working?
 # cask 'sequel-pro'
 cask 'slack' unless working?
