@@ -151,6 +151,7 @@ cask 'kitty'
 # cask 'macdown'
 # cask 'makemkv'
 cask '1password'
+cask 'postman' if working?
 cask 'rar' unless working?
 # cask 'sequel-pro'
 cask 'slack' unless working?
