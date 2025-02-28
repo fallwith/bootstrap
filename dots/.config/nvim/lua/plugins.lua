@@ -10,9 +10,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  -- comment out (and in) code
-  'tpope/vim-commentary',
-
   -- add, remove, swap surroundings like quotes or braces
   --
   --Old text                    Command         New text
