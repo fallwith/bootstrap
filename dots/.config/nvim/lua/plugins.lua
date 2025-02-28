@@ -61,7 +61,7 @@ require('lazy').setup({
   { 'mfussenegger/nvim-lint',
     config = function()
       require('lint').linters_by_ft = {
-        ruby = { },
+        ruby = {},
       }
     end },
 
@@ -69,7 +69,17 @@ require('lazy').setup({
   { 'nvim-telescope/telescope.nvim',
     dependencies = { 'nvim-lua/popup.nvim',
                      'nvim-lua/plenary.nvim',
-                     'nvim-treesitter/nvim-treesitter' } },
+                     'nvim-treesitter/nvim-treesitter' },
+    run = ':TSUpdate',
+    config = function()
+      require'nvim-treesitter.configs'.setup {
+      ensure_installed = { 'bash', 'editorconfig', 'go', 'javascript', 'lua', 'markdown', 'python', 'ruby', 'rust',
+                           'typescript', 'yaml' },
+      highlight = {
+        enable = true,
+      },
+    }
+    end },
 
   -- view all git diffs in a single nvim session
   { 'sindrets/diffview.nvim',
