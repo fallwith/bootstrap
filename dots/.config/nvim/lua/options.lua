@@ -44,9 +44,6 @@ vim.opt.smartcase = true
 -- tabs are 2 spaces
 vim.opt.tabstop = 2
 
--- ctags
--- vim.opt.tags = '.tags'
-
 -- enable gui style colors in the terminal (true 24 bit color support)
 vim.opt.termguicolors = true
 
@@ -64,21 +61,16 @@ vim.opt.wildmenu = true
 
 -- disable builtin plugins
 -- https://dev.to/voyeg3r/my-ever-growing-neovim-init-lua-h0p
---
--- keeping these for vinegar
-    -- "netrw",
-    -- "netrwPlugin",
-    -- "netrwSettings",
-    -- "netrwFileHandlers",
--- keeping these to edit files within .zip archives
-    -- "zip",
-    -- "zipPlugin",
 local disabled_built_ins = {
     "gzip",
     "tar",
     "tarPlugin",
     "getscript",
     "getscriptPlugin",
+    "netrw",
+    "netrwPlugin",
+    "netrwSettings",
+    "netrwFileHandlers",
     "vimball",
     "vimballPlugin",
     "2html_plugin",

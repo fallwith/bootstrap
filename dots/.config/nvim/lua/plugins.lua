@@ -37,10 +37,6 @@ require('lazy').setup({
       vim.api.nvim_create_user_command('TF', 'TestFile', {})
     end },
 
-  -- Rust support
-  -- 'rust-lang/rust.vim',
-  -- 'simrat39/rust-tools.nvim',
-
   -- cellular automation animations
   'eandrju/cellular-automaton.nvim',
 
@@ -55,19 +51,8 @@ require('lazy').setup({
       vim.keymap.set('n', '-', '<CMD>Oil<CR>')
     end },
 
-  -- code linting
-  { 'mfussenegger/nvim-lint',
-    config = function()
-      require('lint').linters_by_ft = {
-        ruby = {},
-      }
-    end },
-
-  -- fuzzy finding
-  { 'nvim-telescope/telescope.nvim',
-    dependencies = { 'nvim-lua/popup.nvim',
-                     'nvim-lua/plenary.nvim',
-                     'nvim-treesitter/nvim-treesitter' },
+  -- tree sitting (https://elevenpond.bandcamp.com/track/watching-trees)
+  { 'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
     config = function()
       require'nvim-treesitter.configs'.setup {
@@ -79,8 +64,15 @@ require('lazy').setup({
     }
     end },
 
+  -- fuzzy finding
+  { 'nvim-telescope/telescope.nvim',
+    dependencies = { 'nvim-lua/popup.nvim',
+                     'nvim-lua/plenary.nvim',
+                     'nvim-treesitter/nvim-treesitter' }},
+
   -- provide context for what structure (method, etc.) the current line is in
-  'nvim-treesitter/nvim-treesitter-context',
+  { 'nvim-treesitter/nvim-treesitter-context',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' }},
 
   -- view all git diffs in a single nvim session
   { 'sindrets/diffview.nvim',
@@ -269,58 +261,11 @@ require('lazy').setup({
       end)
     end },
 
-  -- colorschemes
-  'zaki/zazen',
-  -- 'fxn/vim-monochrome',
-  -- 'arcticicestudio/nord-vim',
-  -- 'nanotech/jellybeans.vim',
-  -- 'cocopon/iceberg.vim',
-  -- 'ldelossa/vimdark',
-  -- { 'Lokaltog/vim-distinguished', branch = 'develop' },
-  -- 'fallwith/seabird',
-  -- 'jaredgorski/fogbell.vim',
-  -- 'logico/typewriter-vim',
-  -- 'LuRsT/austere.vim',
-  -- 'sainnhe/edge',
-  -- 'sainnhe/sonokai',
-  -- 'Everblush/everblush.nvim',
-  -- 'folke/tokyonight.nvim',
-  -- 'rmehri01/onenord.nvim',
-  -- 'savq/melange',
-  -- 'ellisonleao/gruvbox.nvim',
-  -- 'lunarvim/darkplus.nvim',
-  -- 'rose-pine/neovim',
-  'sainnhe/everforest',
-  -- 'bluz71/vim-nightfly-colors',
-  -- 'dasupradyumna/midnight.nvim',
-  -- 'ashen-org/ashen.nvim',
-  -- 'catppuccin/nvim',
-  -- 'ribru17/bamboo.nvim',
-  -- 'mellow-theme/mellow.nvim',
-  -- 'projekt0n/caret.nvim',
-  -- 'savq/melange-nvim',
-  -- 'samharju/serene.nvim',
-  -- 'xiantang/darcula-dark.nvim',
-
+  -- colorscheme
   { 'sainnhe/gruvbox-material',
     lazy = false,
     priority = 1000,
     config = function()
       vim.cmd.colorscheme('gruvbox-material')
     end }
-
-  -- { 'chriskempson/base16-vim',
-  --   lazy = false,
-  --   priority = 1000,
-  --   config = function()
-  --     vim.base16colorspace = 256
-  --     vim.o.background = 'dark'
-  --     vim.cmd.colorscheme('base16-tomorrow-night')
-  --     -- vim.cmd [[
-  --     --   highlight Normal guibg=none
-  --     --   highlight NonText guibg=none
-  --     --   highlight Normal ctermbg=none
-  --     --   highlight NonText ctermbg=none
-  --     -- ]]
-  --   end }
 })
