@@ -197,13 +197,13 @@ require('lazy').setup({
   { 'neovim/nvim-lspconfig',
     config = function()
       local lspconfig = require('lspconfig')
-      lspconfig.solargraph.setup { autostart = true }
+      lspconfig.solargraph.setup { autostart = true,
+                                   completion = true }
       lspconfig.rust_analyzer.setup { autostart = true }
       lspconfig.ts_ls.setup { autostart = true }
 
       vim.api.nvim_create_user_command('LSPFormat', ':lua vim.lsp.buf.format()<CR>', {})
-    end
-  },
+    end },
 
   -- nvim-cmp (Completion Plugin)
   { 'hrsh7th/nvim-cmp',
