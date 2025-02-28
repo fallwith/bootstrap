@@ -22,16 +22,13 @@ require('lazy').setup({
   --<b>or tag* types</b>        csth1<CR>       <h1>or tag types</h1>
   --delete(functi*on calls)     dsf             function calls
   { 'kylechui/nvim-surround',
-    event = "VeryLazy",
+    event = 'VeryLazy',
     config = function()
-      require("nvim-surround").setup({})
+      require('nvim-surround').setup({})
     end },
 
   -- add helpful closing structures (like 'end') for Ruby and others
   'tpope/vim-endwise',
-
-  -- allow . to repeat plugin based operations
-  'tpope/vim-repeat',
 
   -- run unit tests (nearest, all in file, all in project)
   { 'vim-test/vim-test',
@@ -41,7 +38,8 @@ require('lazy').setup({
     end },
 
   -- Rust support
-  'rust-lang/rust.vim',
+  -- 'rust-lang/rust.vim',
+  -- 'simrat39/rust-tools.nvim',
 
   -- cellular automation animations
   'eandrju/cellular-automaton.nvim',
@@ -54,7 +52,7 @@ require('lazy').setup({
           show_hidden = true
         }
       })
-      vim.keymap.set("n", "-", "<CMD>Oil<CR>")
+      vim.keymap.set('n', '-', '<CMD>Oil<CR>')
     end },
 
   -- code linting
@@ -80,6 +78,9 @@ require('lazy').setup({
       },
     }
     end },
+
+  -- provide context for what structure (method, etc.) the current line is in
+  'nvim-treesitter/nvim-treesitter-context',
 
   -- view all git diffs in a single nvim session
   { 'sindrets/diffview.nvim',
@@ -237,14 +238,14 @@ require('lazy').setup({
         mapping = {
           ['<C-Space>'] = cmp.mapping.complete(),
           ['<CR>'] = cmp.mapping.confirm({ select = true }),
-          ["<Tab>"] = vim.schedule_wrap(function(fallback)
+          ['<Tab>'] = vim.schedule_wrap(function(fallback)
             if cmp.visible() and has_words_before() then
               cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
             else
               fallback()
             end
           end),
-          ["<S-Tab>"] = vim.schedule_wrap(function(fallback)
+          ['<S-Tab>'] = vim.schedule_wrap(function(fallback)
             if cmp.visible() and has_words_before() then
               cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
             else
