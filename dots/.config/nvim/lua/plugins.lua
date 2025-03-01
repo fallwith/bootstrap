@@ -27,9 +27,6 @@ require('lazy').setup({
       require('nvim-surround').setup({})
     end },
 
-  -- add helpful closing structures (like 'end') for Ruby and others
-  'tpope/vim-endwise',
-
   -- run unit tests (nearest, all in file, all in project)
   { 'vim-test/vim-test',
     config = function()
@@ -63,6 +60,10 @@ require('lazy').setup({
       },
     }
     end },
+
+  -- treesitter based port of tpope's endwise
+  { 'RRethy/nvim-treesitter-endwise',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' }},
 
   -- fuzzy finding
   { 'nvim-telescope/telescope.nvim',
