@@ -72,7 +72,14 @@ brew 'npm'
 brew 'openssl'
 brew 'pandoc'
 brew 'parallel'
-# brew 'poppler'
+# pillow is used by Ranger for images
+# Ranger needs to be taught to not consider Ghostty to be Kitty + tmux:
+#     def _late_init(self):
+#       # tmux
+#       if 'kitty' not in os.environ['TERM'] and 'ghostty' not in os.environ['TERM_PROGRAM']:
+brew 'pillow'
+# poppler for PDF previews in Yazi
+brew 'poppler'
 # brew 'postgresql'
 brew 'postgresql@14'
 brew 'procs'
@@ -107,6 +114,7 @@ brew 'watch'
 brew 'w3m'
 brew 'wget'
 brew 'yarn'
+brew 'yazi'
 brew 'yt-dlp' # modern youtube-dl
 # brew 'zsh'
 

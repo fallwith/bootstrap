@@ -184,16 +184,6 @@ else
   fi
 fi
 
-# TODO: python3 only solution?
-# install PIL via Pillow - needed for Ranger image previews
-# python -c "import PIL" 2>/dev/null
-# if [[ $? -ne 0 ]]; then
-#   echo "Install Python module PIL (via pillow)..."
-#   sudo /usr/local/bin/pip install pillow
-# else
-#   echo "Python module pillow already exists"
-# fi
-
 # install neovim-remote
 if (command -v nvr >/dev/null); then
   echo "neovim-remote already installed"
