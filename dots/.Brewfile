@@ -49,6 +49,7 @@ brew 'k9s' if working?
 brew 'kubernetes-cli' if working?
 # brew 'kubernetes-helm'
 brew 'lame'
+brew 'lazydocker'
 brew 'libbluray'
 # brew 'libcaca'
 brew 'libxml2'
