@@ -86,6 +86,7 @@ alias xattrdel='xattr -c -r'
 alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git | sed "s|$HOME/||g" | fzf +m --height 33% --border --layout=reverse)'
 # }}}
 alias running='ps auwx|egrep "memcache|mongo|mysql|rabbit|redis|postgres|ruby|rails|puma|node|\.rb|gradle"|egrep -v egrep'
+alias runningd='running; docker ps'
 alias ghostty=/Applications/Ghostty.app/Contents/MacOS/ghostty
 
 # Functions {{{
@@ -222,7 +223,7 @@ fi
 alias b='bundle exec'
 alias brake='noglob bundle exec rake'
 alias bspec='b rspec'
-alias defaultgems='cat $HOME/.default-gems | xargs -n 1 gem install'
+alias defaultgems='cat $HOME/.default-gems | egrep -v '^#' | xargs -n 1 gem install'
 
 function gemcd {
   cd `bundle info --path $1`
@@ -421,6 +422,7 @@ alias no="nvr -o"
 # }}}
 
 # Docker {{{
+alias dockerstop='docker ps -aq |xargs docker container stop'
 alias dockerclean='docker ps -aq |xargs docker container stop; docker ps -aq |xargs docker container rm; docker images | grep latest | awk '"'"'{print $3}'"'"' | xargs docker image rm; docker volume prune --force; docker builder prune --force'
 # TODO: 'docker volume ls' 
 alias dockerwipe='docker images | awk '"'"'{print $3}'"'"' | xargs docker image rm --force; docker volume ls | tail -n+2 | awk '"'"'{print $2}'"'"'|xargs docker volume rm; dockerclean'

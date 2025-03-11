@@ -53,8 +53,8 @@ require('lazy').setup({
     run = ':TSUpdate',
     config = function()
       require'nvim-treesitter.configs'.setup {
-      ensure_installed = { 'bash', 'editorconfig', 'go', 'javascript', 'lua', 'markdown', 'python', 'ruby', 'rust',
-                           'typescript', 'yaml' },
+      ensure_installed = { 'bash', 'editorconfig', 'go', 'javascript', 'lua', 'markdown', 'markdown_inline', 'python',
+                           'ruby', 'rust', 'typescript', 'yaml' },
       highlight = {
         enable = true,
       },
@@ -193,6 +193,16 @@ require('lazy').setup({
       local lspconfig = require('lspconfig')
       lspconfig.solargraph.setup { autostart = true,
                                    completion = true }
+      -- lspconfig.ruby_lsp.setup {
+      --   init_options = {
+      --     formatter = 'standard',
+      --     linters = { 'standard' },
+      --     addonSettings = {
+      --       ['Ruby LSP Rails'] = {
+      --         enablePendingMigrationsPrompt = false,
+      --       },
+      --   },
+      -- }
       lspconfig.rust_analyzer.setup { autostart = true }
       lspconfig.ts_ls.setup { autostart = true }
 
@@ -261,6 +271,16 @@ require('lazy').setup({
         vim.b.copilot_suggestion_hidden = false
       end)
     end },
+
+  -- vimwiki lite
+  -- need to run `mkdir ~/.wiki && touch ~/.wiki/index.md`
+  -- leader+ww to launch
+  -- T to toggle [ ] to [x]
+  -- visual select and hit Enter to create a link
+  -- ctrl+o to navigate back
+  { 'serenevoid/kiwi.nvim',
+    opts = { { name = 'wiki', path = vim.fn.expand('~/.wiki') } },
+    lazy = true },
 
   -- colorscheme
   { 'sainnhe/gruvbox-material',

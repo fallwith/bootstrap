@@ -33,6 +33,7 @@ vim.api.nvim_set_keymap('n', '<C-l>', '<C-w><C-l>', {noremap = true})
 -- telescope
 vim.api.nvim_set_keymap('n', '<leader>f', "<cmd>lua require('telescope.builtin').find_files()<cr>", {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>g', "<cmd>lua require('telescope.builtin').live_grep()<cr>", {noremap = true})
+vim.api.nvim_set_keymap('n', '<leader>gs', "<cmd>lua require('telescope.builtin').grep_string()<cr>", {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>b', "<cmd>lua require('telescope.builtin').buffers()<cr>", {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<cr>", {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>ft', "<cmd>lua require('telescope.builtin').tags()<cr>", {noremap = true})
@@ -51,3 +52,7 @@ vim.api.nvim_set_keymap('v', '<leader>p', '"+p', {noremap = true})
 
 -- diffview
 vim.api.nvim_set_keymap('n', '<leader>d', ':DiffviewOpen<CR>', {noremap = true})
+
+-- kiwi
+vim.api.nvim_set_keymap('n', '<leader>w', "<cmd>lua require('kiwi').open_wiki_index()<cr>", {noremap = true})
+vim.api.nvim_set_keymap('n', 'T', "<cmd>lua require('kiwi').todo.toggle()<cr>", {noremap = true})

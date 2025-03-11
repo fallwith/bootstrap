@@ -1,2 +1,5 @@
 rubocop
+# ruby-lsp is based on prism and needs Ruby 3+
+# ruby-lsp
+# ruby-lsp-rails
 solargraph
