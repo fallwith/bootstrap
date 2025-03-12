@@ -224,6 +224,8 @@ alias b='bundle exec'
 alias brake='noglob bundle exec rake'
 alias bspec='b rspec'
 alias defaultgems='cat $HOME/.default-gems | egrep -v '^#' | xargs -n 1 gem install'
+alias railss='b bin/rails s'
+alias railsc='b bin/rails c'
 
 function gemcd {
   cd `bundle info --path $1`
@@ -419,6 +421,8 @@ alias vimwiki="$nvim_target ~/.vimwiki/index.md"
 alias vw=vimwiki
 alias guide='$nvim_target ~/git/public/vim_guide/vim_guide.md'
 alias no="nvr -o"
+alias plugins='nvim_launch ~/.config/nvim/lua/plugins.lua'
+alias wiki="nvim_launch -c \"lua require('kiwi').open_wiki_index()\""
 # }}}
 
 # Docker {{{
