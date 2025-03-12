@@ -48,6 +48,9 @@ require('lazy').setup({
       vim.keymap.set('n', '-', '<CMD>Oil<CR>')
     end },
 
+  -- code linting
+  'mfussenegger/nvim-lint',
+
   -- tree sitting (https://elevenpond.bandcamp.com/track/watching-trees)
   { 'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
@@ -195,26 +198,28 @@ require('lazy').setup({
   -- g& = show code actions for range
   -- g~ = show code actions for workspace
   -- g` = show code actions for file
-  { 'neovim/nvim-lspconfig',
-    config = function()
-      local lspconfig = require('lspconfig')
-      lspconfig.solargraph.setup { autostart = true,
-                                   completion = true }
-      -- lspconfig.ruby_lsp.setup {
-      --   init_options = {
-      --     formatter = 'standard',
-      --     linters = { 'standard' },
-      --     addonSettings = {
-      --       ['Ruby LSP Rails'] = {
-      --         enablePendingMigrationsPrompt = false,
-      --       },
-      --   },
-      -- }
-      lspconfig.rust_analyzer.setup { autostart = true }
-      lspconfig.ts_ls.setup { autostart = true }
-
-      vim.api.nvim_create_user_command('LSPFormat', ':lua vim.lsp.buf.format()<CR>', {})
-    end },
+  -- { 'neovim/nvim-lspconfig',
+  --   config = function()
+  --     local lspconfig = require('lspconfig')
+  --     lspconfig.solargraph.setup { autostart = true,
+  --                                  completion = true }
+  --
+  --     -- ruby_lsp needs Ruby v3+
+  --     -- lspconfig.ruby_lsp.setup {
+  --     --   init_options = {
+  --     --     formatter = 'standard',
+  --     --     linters = { 'standard' },
+  --     --     addonSettings = {
+  --     --       ['Ruby LSP Rails'] = {
+  --     --         enablePendingMigrationsPrompt = false,
+  --     --       },
+  --     --   },
+  --     -- }
+  --     lspconfig.rust_analyzer.setup { autostart = true }
+  --     lspconfig.ts_ls.setup { autostart = true }
+  --
+  --     vim.api.nvim_create_user_command('LSPFormat', ':lua vim.lsp.buf.format()<CR>', {})
+  --   end },
 
   -- nvim-cmp (Completion Plugin)
   { 'hrsh7th/nvim-cmp',

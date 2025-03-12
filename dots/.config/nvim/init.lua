@@ -1,6 +1,7 @@
 require 'plugins'
 require 'options'
 require 'mappings'
+require 'linting'
 require 'rails'
 
 -- remove the editor trimmings from terminal splits
