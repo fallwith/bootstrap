@@ -79,6 +79,13 @@ require('lazy').setup({
   { 'sindrets/diffview.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' } },
 
+  -- display Git sigils and things like blame
+  { 'lewis6991/gitsigns.nvim',
+    event = 'BufReadPre',
+    config = function()
+      require('gitsigns').setup()
+    end },
+
   -- GitHub Copilot
   { 'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
