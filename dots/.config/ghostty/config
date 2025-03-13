@@ -23,7 +23,7 @@ macos-titlebar-proxy-icon = hidden
 mouse-hide-while-typing = true
 quit-after-last-window-closed = true
 shell-integration = zsh
-theme = gruvbox-material
+theme = xcodedarkhc
 window-inherit-working-directory = true
 window-save-state = always
 
