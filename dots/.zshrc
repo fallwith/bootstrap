@@ -4,16 +4,27 @@
 
 # Prompt {{{
 # %F{} = set foreground color
+#   -- extended colors
 #   - 098 = lavender
 #   - 172 = orange
 #   - 031 = green (last command succeeded)
 #   - 174 = red (last command failed)
+#
+#   -- base colors
+#   - 001 = red
+#   - 002 = green
+#   - 003 = yellow
+#   - 004 = blue
+#   - 005 = magenta
+#   - 006 = cyan
+#
 #   - reset = revert to the default foreground color
 # %1~ = basename of pwd, replace $HOME with '~'
 # %* = HH::MM::SS
 # $ = literal '$'
 # %(?.<success>.<failed>) = ternary conditional for the last command
-PROMPT='%F{098}%1~ %F{172}%* %(?.%F{031}.%F{174})$ %F{reset}'
+# PROMPT='%F{098}%1~ %F{172}%* %(?.%F{031}.%F{174})$ %F{reset}'
+PROMPT='%F{004}%1~ %F{005}%* %(?.%F{002}.%F{001})$ %F{reset}'
 # }}}
 
 # History {{{
@@ -88,6 +99,7 @@ alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git | sed "s|$HOME/||g" | fzf +m 
 alias running='ps auwx|egrep "memcache|mongo|mysql|rabbit|redis|postgres|ruby|rails|puma|node|\.rb|gradle"|egrep -v egrep'
 alias runningd='running; docker ps'
 alias ghostty=/Applications/Ghostty.app/Contents/MacOS/ghostty
+alias ghosttyconfig='nvim_launch ~/.config/ghostty/config'
 
 # Functions {{{
 function pidrunning {
@@ -112,6 +124,7 @@ function fifteen {
     echo "pid $pid still exists"
   fi
 }
+alias 15=fifteen
 
 # usage: upload <IP ADDRESS> <LOCAL PATH> <REMOTE PATH>
 function upload {
