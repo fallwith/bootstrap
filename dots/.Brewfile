@@ -102,6 +102,7 @@ brew 'sdl2_mixer'
 brew 'sdl2_ttf'
 # brew 'sk'
 brew 'sqlite'
+brew 'stripe/stripe-cli/stripe' if working?
 # brew 'the_silver_searcher'
 brew 'terraform' if working?
 brew 'tig'
