@@ -51,7 +51,16 @@ vim.api.nvim_set_keymap('n', '<leader>p', '"+p', {noremap = true})
 vim.api.nvim_set_keymap('v', '<leader>p', '"+p', {noremap = true})
 
 -- diffview
-vim.api.nvim_set_keymap('n', '<leader>d', ':DiffviewOpen<CR>', {noremap = true})
+-- vim.api.nvim_set_keymap('n', '<leader>d', ':DiffviewOpen<CR>', {noremap = true})
+-- https://www.reddit.com/r/neovim/comments/1j9fy2w/comment/mhd8dt3/
+vim.api.nvim_set_keymap('n', '<leader>d', ':lua ' ..
+  'local diffview = require("diffview.lib") ' ..
+  'if next(diffview.views) == nil then ' ..
+    'vim.cmd("DiffviewOpen") ' ..
+  'else ' ..
+    'vim.cmd("DiffviewClose") ' ..
+  'end ' ..
+  '<CR>', { noremap = true, silent = true })
 
 -- kiwi
 vim.api.nvim_set_keymap('n', '<leader>w', "<cmd>lua require('kiwi').open_wiki_index()<cr>", {noremap = true})

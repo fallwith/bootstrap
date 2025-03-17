@@ -89,45 +89,9 @@ require('lazy').setup({
       require('gitsigns').setup()
     end },
 
-  -- GitHub Copilot
-  { 'zbirenbaum/copilot.lua',
-    cmd = 'Copilot',
-    event = 'InsertEnter',
-    config = function()
-      require('copilot').setup({
-        suggestion = {
-          enabled = false, -- using nvim-cmp instead
-          auto_trigger = false,
-        },
-        panel = {
-          enabled = false, -- using nvim-cmp instead
-          auto_trigger = false,
-        },
-        filetypes = {
-          javascript = true,
-          lua = true,
-          python = true,
-          ruby = true,
-          rust = true,
-          typescript = true,
-          ['*'] = false
-        },
-      })
-    end },
-
-  -- GitHub Copilot chat
-  { 'CopilotC-Nvim/CopilotChat.nvim',
-    dependencies = { 'zbirenbaum/copilot.lua',
-                     'nvim-lua/plenary.nvim' },
-    build = 'make tiktoken',
-    config = function()
-      require('CopilotChat').setup({})
-    end },
-
   -- status line
   { 'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons',
-                     'AndreM222/copilot-lualine' },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('lualine').setup({
         options = {
@@ -147,7 +111,6 @@ require('lazy').setup({
                 }
             },
             lualine_c = { 'filename' },
-            lualine_x = { 'copilot', 'encoding', 'fileformat', 'filetype' },
             lualine_y = { 'progress' },
             lualine_z = { 'location' }
         },
@@ -228,11 +191,8 @@ require('lazy').setup({
                      'hrsh7th/cmp-path',
                      'saadparwaiz1/cmp_luasnip',
                      'onsails/lspkind-nvim',
-                     'L3MON4D3/LuaSnip',
-                     'zbirenbaum/copilot-cmp',
-    },
+                     'L3MON4D3/LuaSnip' },
     config = function()
-      require('copilot_cmp').setup()
 
       local has_words_before = function()
         if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then return false end
@@ -269,19 +229,12 @@ require('lazy').setup({
           end),
         },
         sources = {
-          { name = 'copilot' },
           { name = 'nvim_lsp' },
           { name = 'buffer' },
           { name = 'path' },
           { name = 'luasnip' },
         },
       })
-      cmp.event:on('menu_opened', function()
-        vim.b.copilot_suggestion_hidden = true
-      end)
-      cmp.event:on('menu_closed', function()
-        vim.b.copilot_suggestion_hidden = false
-      end)
     end },
 
   -- vimwiki lite

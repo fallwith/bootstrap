@@ -74,3 +74,60 @@
 -- Rust support
 -- 'rust-lang/rust.vim',
 -- 'simrat39/rust-tools.nvim',
+
+
+
+-- BEGIN Copilot
+
+  -- -- GitHub Copilot
+  -- { 'zbirenbaum/copilot.lua',
+  --   cmd = 'Copilot',
+  --   event = 'InsertEnter',
+  --   config = function()
+  --     require('copilot').setup({
+  --       suggestion = {
+  --         enabled = false, -- using nvim-cmp instead
+  --         auto_trigger = false,
+  --       },
+  --       panel = {
+  --         enabled = false, -- using nvim-cmp instead
+  --         auto_trigger = false,
+  --       },
+  --       filetypes = {
+  --         javascript = true,
+  --         lua = true,
+  --         python = true,
+  --         ruby = true,
+  --         rust = true,
+  --         typescript = true,
+  --         ['*'] = false
+  --       },
+  --     })
+  --   end },
+  --
+  -- -- GitHub Copilot chat
+  -- { 'CopilotC-Nvim/CopilotChat.nvim',
+  --   dependencies = { 'zbirenbaum/copilot.lua',
+  --                    'nvim-lua/plenary.nvim' },
+  --   build = 'make tiktoken',
+  --   config = function()
+  --     require('CopilotChat').setup({})
+  --   end },
+
+-- lines to add to lualine plugin config:
+-- 'AndreM222/copilot-lualine' },
+-- lualine_x = { 'copilot', 'encoding', 'fileformat', 'filetype' },
+
+-- lines to add to nvim-cmp plugin config:
+-- 'zbirenbaum/copilot-cmp',
+-- require('copilot_cmp').setup()
+-- sources = {
+-- { name = 'copilot' },
+      -- cmp.event:on('menu_opened', function()
+      --   vim.b.copilot_suggestion_hidden = true
+      -- end)
+      -- cmp.event:on('menu_closed', function()
+      --   vim.b.copilot_suggestion_hidden = false
+      -- end)
+
+-- END Copilot
