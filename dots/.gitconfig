@@ -54,7 +54,7 @@
   bD = "!f() { \
     declare branch=\"$1\"; \
     if [ \"$branch\" == \"\" ]; then \
-      branch=$(git branch | grep -vE '\\*|main|master|develop|dev|staging' | fzf | tr -d '^* '); \
+      branch=$(git branch | grep -vE '(\\* )?(main|master|develop|dev|sandbox|staging)$' | fzf | tr -d '^* '); \
     fi; \
     if [ ! \"$branch\" == \"\" ]; then \
       git branch -D \"$branch\"; \
