@@ -345,7 +345,7 @@ fi
 if [ -z $LD_LIBRARY_PATH ]; then
   export LD_LIBRARY_PATH="$(brew --prefix)/include"
 else
-  export LD_LIBRARY_PATH="$LD_LIBARY_PATH:$(brew --prefix)/include"
+  export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$(brew --prefix)/include"
 fi
 
 # to start/stop a single service: brew services stop|start <service>
