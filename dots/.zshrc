@@ -2,6 +2,151 @@
 
 # zmodload zsh/zprof
 
+# Vi mode {{{
+# enable vi key bindings (ESC+0, ESC+$ for start/end of line)
+bindkey -v
+
+# use 'jk' to switch to normal/command mode from insert/visual mode
+bindkey -M viins jk vi-cmd-mode
+bindkey -M visual jk visual-mode
+
+# tpope/vim-surround functionality
+# example: visually select word, hit S' -> word is surrounded by quotes
+autoload -Uz surround
+zle -N delete-surround surround
+zle -N add-surround surround
+zle -N change-surround surround
+bindkey -M vicmd cs change-surround
+bindkey -M vicmd ds delete-surround
+bindkey -M vicmd ys add-surround
+bindkey -M visual S add-surround
+
+# support emacs bindings
+# ctrl-r/s for history searching
+bindkey -M viins '^r' history-incremental-search-backward
+bindkey -M vicmd '^r' history-incremental-search-backward
+bindkey -M viins '^s' history-incremental-search-forward
+bindkey -M vicmd '^s' history-incremental-search-forward
+# ctrl-p and ctrl-n for previous and next command history cycling
+bindkey -M viins '^P' up-history
+bindkey -M viins '^N' down-history
+# ctrl-a for beginning of line
+bindkey -M viins '^a' beginning-of-line
+bindkey -M vicmd '^a' beginning-of-line
+# ctrl-e for end of line
+bindkey -M viins '^e' end-of-line
+bindkey -M vicmd '^e' end-of-line
+# ctrl-d for forward delete
+bindkey -M viins '^d' delete-char
+bindkey -M vicmd '^d' delete-char
+# ctrl-f for forward movement
+bindkey -M viins '^f' forward-char
+# ctrl-o for backward movement (to not conflict with tmux's own ctrl-b)
+bindkey -M viins '^o' backward-char
+# alt-f/b/d to move forward/backward/delete a word
+bindkey -M viins '\ef' forward-word
+bindkey -M vicmd '\ef' forward-word
+bindkey -M viins '\eb' backward-word
+bindkey -M vicmd '\eb' backward-word
+bindkey -M viins '\ed' kill-word
+bindkey -M vicmd '\ed' kill-word
+
+# allow ctrl-c to behave the same in normal/visual mode as in insert mode
+bindkey -M vicmd '^c' self-insert
+bindkey -M visual '^c' self-insert
+
+# make backspace/ctrl-?, ctrl-w, and ^h work after returning from command mode
+# http://dougblack.io/words/zsh-vi-mode.html
+bindkey -M viins '^?' backward-delete-char
+bindkey -M vicmd '^?' backward-delete-char
+bindkey -M viins '^h' backward-delete-char
+bindkey -M vicmd '^h' backward-delete-char
+bindkey -M viins '^w' backward-kill-word
+bindkey -M vicmd '^w' backward-kill-word
+
+bindkey -M vicmd 'v' visual-mode
+bindkey -M visual 'y' vi-yank-to-macos-clipboard
+bindkey -M visual '^M' vi-yank-to-macos-clipboard
+
+# 'vv' sends the current selection or entire line to $EDITOR
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd 'vv' edit-command-line
+
+typeset -g VI_KEYMAP=${VI_KEYMAP:=main}
+
+# '\e[n q' where n is 0-6:
+# 0  ⇒  blinking block
+# 1  ⇒  blinking block (default).
+# 2  ⇒  steady block
+# 3  ⇒  blinking underline
+# 4  ⇒  steady underline
+# 5  ⇒  blinking bar
+# 6  ⇒  steady bar
+function _vi-mode-set-cursor-shape-for-keymap() {
+  local _shape=0
+  case "${1:-main}}" in
+    main)    _shape=5 ;; # vi insert: line
+    viins)   _shape=5 ;; # vi insert: line
+    isearch) _shape=5 ;; # inc search: line
+    command) _shape=5 ;; # read a command name
+    vicmd)   _shape=2 ;; # vi cmd: block
+    visual)  _shape=6 ;; # vi visual mode: block
+    viopp)   _shape=1 ;; # vi operation pending: blinking block
+    *)       _shape=0 ;;
+  esac
+  printf $'\e[%d q' "${_shape}"
+}
+
+function _visual-mode {
+  typeset -g VI_KEYMAP=visual
+  _vi-mode-set-cursor-shape-for-keymap "$VI_KEYMAP"
+  zle .visual-mode
+}
+zle -N visual-mode _visual-mode
+
+function zle-keymap-select() {
+  typeset -g VI_KEYMAP=$KEYMAP
+  zle reset-prompt
+  zle -R
+  _vi-mode-set-cursor-shape-for-keymap "${VI_KEYMAP}"
+}
+zle -N zle-keymap-select
+
+function zle-line-init() {
+  local prev_vi_keymap="${VI_KEYMAP:-}"
+  typeset -g VI_KEYMAP=main
+  [[ "$prev_vi_keymap" != 'main' ]] && zle reset-prompt
+  _vi-mode-set-cursor-shape-for-keymap "${VI_KEYMAP}"
+}
+zle -N zle-line-init
+
+function zle-line-finish() {
+  typeset -g VI_KEYMAP=main
+  _vi-mode-set-cursor-shape-for-keymap default
+}
+zle -N zle-line-finish
+
+function vi-yank-to-macos-clipboard() {
+  if [[ $__regstart == $__regend ]]; then
+    zle .vi-yank
+  else
+    zle .copy-region-as-kill "$BUFFER[${__regstart}+1,${__regend}]"
+  fi
+  zle .vi-cmd-mode
+  printf -- "$CUTBUFFER" | pbcopy
+}
+zle -N vi-yank-to-macos-clipboard
+
+function vi_mode_prompt_info() {
+  echo "${${VI_KEYMAP/vicmd/ <i>}/(main|viins)/}"
+}
+
+# time to wait before assuming that key input is complete
+# (allows more time for 'jk' input)
+export KEYTIMEOUT=15
+# }}}
+
 # Prompt {{{
 # %F{} = set foreground color
 #   -- extended colors
@@ -24,7 +169,9 @@
 # $ = literal '$'
 # %(?.<success>.<failed>) = ternary conditional for the last command
 # PROMPT='%F{098}%1~ %F{172}%* %(?.%F{031}.%F{174})$ %F{reset}'
-PROMPT='%F{004}%1~ %F{005}%* %(?.%F{002}.%F{001})$ %F{reset}'
+# PROMPT='%F{004}%1~ %F{005}%* %(?.%F{002}.%F{001})$ %F{reset}'
+setopt PROMPT_SUBST
+PROMPT='%F{004}%1~ %F{005}%*%F{006}$(vi_mode_prompt_info) %(?.%F{002}.%F{001})$ %F{reset}'
 # }}}
 
 # History {{{
@@ -95,11 +242,11 @@ alias matrix='cxxmatrix -c \#FFC0CB -s rain-forever --frame-rate=40 --preserve-b
 alias reload='. ~/.zshrc'
 alias xattrdel='xattr -c -r'
 alias z='cd $HOME/$(fd -td -d1 . ~ ~/.config ~/git | sed "s|$HOME/||g" | fzf +m --height 33% --border --layout=reverse)'
-# }}}
 alias running='ps auwx|egrep "memcache|mongo|mysql|rabbit|redis|postgres|ruby|rails|puma|node|\.rb|gradle"|egrep -v egrep'
 alias runningd='running; docker ps'
 alias ghostty=/Applications/Ghostty.app/Contents/MacOS/ghostty
 alias ghosttyconfig='nvim_launch ~/.config/ghostty/config'
+# }}}
 
 # Functions {{{
 function pidrunning {
