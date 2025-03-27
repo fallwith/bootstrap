@@ -384,8 +384,9 @@ alias b='bundle exec'
 alias brake='noglob bundle exec rake'
 alias bspec='b rspec'
 alias defaultgems='cat $HOME/.default-gems | egrep -v '^#' | xargs -n 1 gem install'
-alias railss='rm -f log/*.log && b bin/rails s'
+alias railss='b bin/rails s'
 alias railsc='b bin/rails c'
+alias killrails="ps auwx | grep -E 'rails (master|worker)' | awk '{ print $2 }' | xargs -I {} kill -9 {}"
 
 function gemcd {
   cd `bundle info --path $1`
