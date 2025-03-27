@@ -49,7 +49,21 @@ require('lazy').setup({
     end },
 
   -- code linting
-  'mfussenegger/nvim-lint',
+  { 'mfussenegger/nvim-lint',
+    config = function()
+      local lint = require('lint')
+      lint.linters_by_ft = {
+        ruby = {'rubocop'}
+      }
+      vim.api.nvim_create_autocmd({ 'InsertLeave', 'BufWritePost' }, {
+        callback = function()
+          local lint_status, lint = pcall(require, 'lint')
+            if lint_status then
+              lint.try_lint()
+            end
+        end,
+      })
+    end },
 
   -- tree sitting (https://elevenpond.bandcamp.com/track/watching-trees)
   { 'nvim-treesitter/nvim-treesitter',
@@ -89,153 +103,43 @@ require('lazy').setup({
       require('gitsigns').setup()
     end },
 
-  -- status line
-  { 'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      require('lualine').setup({
-        options = {
-          icons_enabled = true,
-          theme = 'gruvbox-material',
-          section_separators = { left = '', right = '' },
-          component_separators = { left = '', right = '' },
-          always_divide_middle = true,
-        },
-        sections = {
-            lualine_a = { 'mode' },
-            lualine_b = { 'branch', 'diff',
-                {
-                    'diagnostics',
-                    sources = { 'nvim_diagnostic' },
-                    symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' }
-                }
-            },
-            lualine_c = { 'filename' },
-            lualine_y = { 'progress' },
-            lualine_z = { 'location' }
-        },
-        inactive_sections = {
-            lualine_a = {},
-            lualine_b = {},
-            lualine_c = { 'filename' },
-            lualine_x = { 'location' },
-            lualine_y = {},
-            lualine_z = {}
-        },
-        tabline = {},
-        extensions = {}
-      })
-    end },
-
-  -- LSP usage
-  --
-  -- gd = go to definition
-  -- K  = show documentation
-  -- gr = rename
-  -- gi = go to implementation
-  -- gD = go to declaration
-  -- gI = go to type definition
-  -- gR = references
-  -- g0 = go to previous diagnostic
-  -- g1 = go to next diagnostic
-  -- g2 = show line diagnostics
-  -- g3 = show workspace diagnostics
-  -- g4 = show all diagnostics
-  -- g5 = show code actions
-  -- g6 = show code actions for line
-  -- g7 = show code actions for range
-  -- g8 = show code actions for workspace
-  -- g9 = show code actions for file
-  -- g- = show code actions for buffer
-  -- g= = show code actions for line
-  -- g+ = show code actions for range
-  -- g* = show code actions for workspace
-  -- g/ = show code actions for file
-  -- g? = show code actions for buffer
-  -- g! = show code actions for line
-  -- g@ = show code actions for range
-  -- g# = show code actions for workspace
-  -- g$ = show code actions for file
-  -- g% = show code actions for buffer
-  -- g^ = show code actions for line
-  -- g& = show code actions for range
-  -- g~ = show code actions for workspace
-  -- g` = show code actions for file
-  -- { 'neovim/nvim-lspconfig',
+  -- -- status line
+  -- { 'nvim-lualine/lualine.nvim',
+  --   dependencies = { 'nvim-tree/nvim-web-devicons' },
   --   config = function()
-  --     local lspconfig = require('lspconfig')
-  --     lspconfig.solargraph.setup { autostart = true,
-  --                                  completion = true }
-  --
-  --     -- ruby_lsp needs Ruby v3+
-  --     -- lspconfig.ruby_lsp.setup {
-  --     --   init_options = {
-  --     --     formatter = 'standard',
-  --     --     linters = { 'standard' },
-  --     --     addonSettings = {
-  --     --       ['Ruby LSP Rails'] = {
-  --     --         enablePendingMigrationsPrompt = false,
-  --     --       },
-  --     --   },
-  --     -- }
-  --     lspconfig.rust_analyzer.setup { autostart = true }
-  --     lspconfig.ts_ls.setup { autostart = true }
-  --
-  --     vim.api.nvim_create_user_command('LSPFormat', ':lua vim.lsp.buf.format()<CR>', {})
-  --   end },
-
-  -- nvim-cmp (Completion Plugin)
-  { 'hrsh7th/nvim-cmp',
-    dependencies = { 'hrsh7th/cmp-nvim-lsp',
-                     'hrsh7th/cmp-buffer',
-                     'hrsh7th/cmp-path',
-                     'saadparwaiz1/cmp_luasnip',
-                     'onsails/lspkind-nvim',
-                     'L3MON4D3/LuaSnip' },
-    config = function()
-
-      local has_words_before = function()
-        if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then return false end
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_text(0, line-1, 0, line-1, col, {})[1]:match('^%s*$') == nil
-      end
-
-      local cmp = require('cmp')
-      cmp.setup({
-        completion = {
-          autocomplete = false,
-        },
-        snippet = {
-          expand = function(args)
-            require('luasnip').lsp_expand(args.body)
-          end,
-        },
-        mapping = {
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }),
-          ['<Tab>'] = vim.schedule_wrap(function(fallback)
-            if cmp.visible() and has_words_before() then
-              cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-            else
-              fallback()
-            end
-          end),
-          ['<S-Tab>'] = vim.schedule_wrap(function(fallback)
-            if cmp.visible() and has_words_before() then
-              cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-            else
-              fallback()
-            end
-          end),
-        },
-        sources = {
-          { name = 'nvim_lsp' },
-          { name = 'buffer' },
-          { name = 'path' },
-          { name = 'luasnip' },
-        },
-      })
-    end },
+  --     require('lualine').setup({
+  --       options = {
+  --         icons_enabled = true,
+  --         theme = 'gruvbox-material',
+  --         section_separators = { left = '', right = '' },
+  --         component_separators = { left = '', right = '' },
+  --         always_divide_middle = true,
+  --       },
+  --       sections = {
+  --           lualine_a = { 'mode' },
+  --           lualine_b = { 'branch', 'diff',
+  --               {
+  --                   'diagnostics',
+  --                   sources = { 'nvim_diagnostic' },
+  --                   symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' }
+  --               }
+  --           },
+  --           lualine_c = { 'filename' },
+  --           lualine_y = { 'progress' },
+  --           lualine_z = { 'location' }
+  --       },
+  --       inactive_sections = {
+  --           lualine_a = {},
+  --           lualine_b = {},
+  --           lualine_c = { 'filename' },
+  --           lualine_x = { 'location' },
+  --           lualine_y = {},
+  --           lualine_z = {}
+  --       },
+  --       tabline = {},
+  --       extensions = {}
+  --     })
+  --   end }, },
 
   -- vimwiki lite
   -- need to run `mkdir ~/.wiki && touch ~/.wiki/index.md`

@@ -65,3 +65,6 @@ vim.api.nvim_set_keymap('n', '<leader>d', ':lua ' ..
 -- kiwi
 vim.api.nvim_set_keymap('n', '<leader>w', "<cmd>lua require('kiwi').open_wiki_index()<cr>", {noremap = true})
 vim.api.nvim_set_keymap('n', 'T', "<cmd>lua require('kiwi').todo.toggle()<cr>", {noremap = true})
+
+-- diagnostics (when on an underlined bit of text)
+vim.keymap.set('n', '<Leader>x', vim.diagnostic.open_float, { desc = 'Show diagnostics popup' })
