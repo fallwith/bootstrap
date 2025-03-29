@@ -1,11 +1,13 @@
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
 -- visually style columns at the given position(s)
-vim.opt.colorcolumn = '80,120'
+vim.opt.colorcolumn = "80,120"
 
 -- autocompletion options
---   menu: use a pop-up menu
 --   menuone: use the menu even if there's only one available option
 --   noselect: always force a manual selection instead of providing a default one
-vim.opt.completeopt = "menu,menuone,noinsert,noselect"
+vim.opt.completeopt = "menuone,noinsert,noselect"
 
 -- expand tabs to spaces
 vim.opt.expandtab = true
@@ -17,7 +19,7 @@ vim.opt.hlsearch = true
 vim.opt.ignorecase = true
 
 -- show the effects (or results) of a command (or a search) incrementally
-vim.opt.inccommand = 'nosplit'
+vim.opt.inccommand = "nosplit"
 
 -- when searching, incrementally show the current results as the search pattern
 --   continue to be built
@@ -54,31 +56,22 @@ vim.opt.timeoutlen = 250
 vim.opt.title = true
 
  -- file based persistent undo
-vim.opt.undofile = true; vim.bo.undofile = true
+vim.opt.undofile = true
+vim.bo.undofile = true
 
 -- when tab completing commands, show available matches in a menu
 vim.opt.wildmenu = true
 
--- disable builtin plugins
--- https://dev.to/voyeg3r/my-ever-growing-neovim-init-lua-h0p
-local disabled_built_ins = {
-    "gzip",
-    "tar",
-    "tarPlugin",
-    "getscript",
-    "getscriptPlugin",
-    "netrw",
-    "netrwPlugin",
-    "netrwSettings",
-    "netrwFileHandlers",
-    "vimball",
-    "vimballPlugin",
-    "2html_plugin",
-    "logipat",
-    "rrhelper",
-    "spellfile_plugin",
-    "matchit"
-}
-for _, plugin in pairs(disabled_built_ins) do
-    vim.g["loaded_" .. plugin] = 1
-end
+-- diagnostics config for linters and LSPs
+vim.diagnostic.config({
+  virtual_lines = false,
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+  float = {
+    border = "rounded",
+    source = "always",
+  },
+})

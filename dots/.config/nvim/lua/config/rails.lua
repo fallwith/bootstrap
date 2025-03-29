@@ -1,10 +1,12 @@
 -- Use :A to switch between app/ and spec/ content (ala vim.rails).
 -- Adapted from garybernhardt's .vimrc:
 --   https://github.com/garybernhardt/dotfiles/blob/e0786e861687af64b7ea3f1b9f2b66a8bfbfe6bf/.vimrc#L400-L428
+
 function OpenTestAlternate()
   local alt_file = AlternateForCurrentFile()
   vim.cmd("e " .. alt_file)
 end
+
 function AlternateForCurrentFile()
   local file = vim.fn.expand("%")
   local in_spec = string.match(file, "^spec/") ~= nil
@@ -21,4 +23,5 @@ function AlternateForCurrentFile()
   end
   return file
 end
-vim.api.nvim_create_user_command('A', OpenTestAlternate, {})
+
+vim.api.nvim_create_user_command("A", OpenTestAlternate, {})
