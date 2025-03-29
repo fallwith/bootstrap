@@ -11,7 +11,7 @@ return {
   opts = { { name = "wiki", path = vim.fn.expand("~/.wiki") } },
   lazy = true,
   keys = {
-    { "<leader>w", function() require("kiwi").open_wiki_index() end, desc = "Open main wiki index" },
+    { "<leader>w", mode = { "n" }, function() require("kiwi").open_wiki_index() end, desc = "Open main wiki index" },
     { "T", function() require("kiwi").todo.toggle() end, desc = "Toggle checkboxes" },
   },
 }

@@ -7,6 +7,6 @@ return {
   },
   dependencies = { { "echasnovski/mini.icons", opts = {} } },
   keys = {
-    { "-", "<CMD>Oil<CR>", desc = "Launch Oil" },
+    { "-", mode = { "n" }, "<CMD>Oil<CR>", desc = "Launch Oil" },
   },
 }
