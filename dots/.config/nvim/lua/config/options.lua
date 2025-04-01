@@ -50,7 +50,7 @@ vim.opt.tabstop = 2
 vim.opt.termguicolors = true
 
 -- time to wait after ESC
-vim.opt.timeoutlen = 250
+-- vim.opt.timeoutlen = 250
 
 -- automatically update the window's title to show the current filename
 vim.opt.title = true
