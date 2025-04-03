@@ -13,7 +13,7 @@
 auto-update = check
 cursor-style = bar
 cursor-style-blink = true
-font-family = PTMono Nerd Font
+font-family = BlexMono Nerd Font
 font-feature = -calt
 font-feature = -liga
 font-feature = -dlig
