@@ -2,7 +2,6 @@ def working?
   ENV['USER'] != 'james'
 end
 
-cask '1password-cli' if working?
 brew '7zip'
 # brew 'ansible'
 brew 'asdf'
@@ -141,6 +140,8 @@ brew 'yt-dlp' # modern youtube-dl
 # brew 'uptech/oss/alt'
 
 # tap 'homebrew/cask'
+cask '1password'
+cask '1password-cli' if working?
 # cask 'alacritty'
 cask 'appcleaner'
 # cask 'avibrazil-rdm'
@@ -161,7 +162,7 @@ cask 'docker'
 cask 'kitty'
 # cask 'macdown'
 # cask 'makemkv'
-cask '1password'
+cask 'neovide'
 cask 'postman' if working?
 cask 'rar' unless working?
 # cask 'sequel-pro'
