@@ -22,11 +22,13 @@ font-size = 14
 macos-icon = retro
 macos-titlebar-proxy-icon = hidden
 mouse-hide-while-typing = true
-# quit-after-last-window-closed = true
+quit-after-last-window-closed = true
 shell-integration = zsh
 theme = xcodedarkhc
+window-width = 130
+window-height = 30
 window-inherit-working-directory = true
-window-save-state = always
+window-save-state = never
 
 keybind = ctrl+shift+right=next_tab
 keybind = ctrl+shift+left=previous_tab
