@@ -20,6 +20,8 @@ font-feature = -liga
 font-feature = -dlig
 font-size = 14
 macos-icon = retro
+# left opt key = macOS unicode, right opt key = alt
+macos-option-as-alt = right
 macos-titlebar-proxy-icon = hidden
 mouse-hide-while-typing = true
 quit-after-last-window-closed = true
@@ -34,3 +36,16 @@ keybind = ctrl+shift+right=next_tab
 keybind = ctrl+shift+left=previous_tab
 keybind = cmd+period=text:\x03
 keybind = global:cmd+`=toggle_quick_terminal
+
+# With macos-option-as-alt set to true, macOS unicode shortcuts such as
+# alt+shift+8 for a bullet won't work. When it's set to false, standard
+# alt key usage such as alt+f and alt+b for Emacs bindings won't work. With
+# these manually defined keybinds, alt+shift+8 will produce a bullet character
+# and alt+f and alt+b will still work as desired.
+keybind = alt+f=text:\x1bf
+keybind = alt+b=text:\x1bb
+keybind = alt+d=text:\x1bd
+keybind = alt+h=text:\x1bh
+keybind = alt+j=text:\x1bj
+keybind = alt+k=text:\x1bk
+keybind = alt+l=text:\x1bl
