@@ -13,5 +13,6 @@ return {
     { "<leader>fh", function() Snacks.picker.help() end, desc = "Help Pages" },
     { "<leader>sm", function() Snacks.picker.marks() end, desc = "Marks" },
     { "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
+    { "<leader>uC", function() Snacks.picker.colorschemes() end, desc = "Colorschemes" },
   },
 }
