@@ -4,7 +4,7 @@
 --
 -- leader+ww to launch
 -- T to toggle [ ] to [x]
--- visual select and hit Enter to create a link
+-- visual select (usually v+e) and hit Enter to create a link
 -- ctrl+o to navigate back
 return {
   "serenevoid/kiwi.nvim",

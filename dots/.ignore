@@ -33,3 +33,4 @@
 !.zprofile
 *vcr/cassettes*
 *cassettes*
+*third-party-scripts/

@@ -1,11 +1,35 @@
 return {
-  "catppuccin/nvim",
-  name = "catppuccin",
-  lazy = false,
-  priority = 1000,
-  config = function()
-    vim.cmd.colorscheme("catppuccin-macchiato")
-  end,
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    dependencies = {
+      "sainnhe/gruvbox-material",
+      "sainnhe/everforest",
+      "folke/tokyonight.nvim",
+      "rebelot/kanagawa.nvim",
+      "EdenEast/nightfox.nvim",
+      "rose-pine/neovim",
+      "xiantang/darcula-dark.nvim",
+    },
+    lazy = false,
+    priority = 1000,
+    config = function()
+      local schemes = {
+        "catppuccin-macchiato",
+        "everforest",
+        "gruvbox-material",
+        "tokyonight-moon",
+        "kanagawa-wave",
+        "nightfox",
+        "nordfox",
+        "duskfox",
+        "darcula-dark",
+        "rose-pine-moon",
+      }
+      math.randomseed(os.time())
+      vim.cmd.colorscheme(schemes[math.random(#schemes)])
+    end,
+  },
 }
 
 --

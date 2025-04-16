@@ -4,7 +4,7 @@ return {
   "nvim-treesitter/nvim-treesitter",
   dependencies = {
     -- context for what structure (method, etc.) the current line is in
-    "nvim-treesitter/nvim-treesitter-context",
+    -- "nvim-treesitter/nvim-treesitter-context",
     -- treesitter based port of tpope's endwise
     "RRethy/nvim-treesitter-endwise"
   },
