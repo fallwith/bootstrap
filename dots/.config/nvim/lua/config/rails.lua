@@ -25,3 +25,11 @@ function AlternateForCurrentFile()
 end
 
 vim.api.nvim_create_user_command("A", OpenTestAlternate, {})
+
+-- jbuilder files are Ruby
+local envfileGroup = vim.api.nvim_create_augroup('jbuilder', { clear = true })
+vim.api.nvim_create_autocmd(
+  { "Bufread" },
+  { pattern = "*.json.jbuilder", command = "set filetype=ruby", group = envfileGroup }
+)
+

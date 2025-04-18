@@ -34,6 +34,10 @@ return {
       "projekt0n/caret.nvim",
       "savq/melange-nvim",
       "samharju/serene.nvim",
+      "febyeji/bluehour.nvim",
+      "alexxGmZ/e-ink.nvim",
+      "pauchiner/pastelnight.nvim",
+      "HoNamDuong/hybrid.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -74,6 +78,10 @@ return {
         "caret",
         "melange",
         "serene",
+        "bluehour",
+        "e-ink",
+        "pastelnight",
+        "hybrid",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
