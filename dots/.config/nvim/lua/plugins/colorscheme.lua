@@ -38,6 +38,7 @@ return {
       "alexxGmZ/e-ink.nvim",
       "pauchiner/pastelnight.nvim",
       "HoNamDuong/hybrid.nvim",
+      "thesimonho/kanagawa-paper.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -82,6 +83,7 @@ return {
         "e-ink",
         "pastelnight",
         "hybrid",
+        "kanagawa-paper",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])

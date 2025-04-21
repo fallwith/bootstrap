@@ -584,6 +584,8 @@ alias guide='$nvim_target ~/git/public/vim_guide/vim_guide.md'
 alias no="nvr -o"
 alias plugins='nvim_launch ~/.config/nvim/init.lua'
 alias wiki="nvim_launch -c \"lua require('kiwi').open_wiki_index()\""
+# https://www.visualmode.dev/a-better-man-page-viewer
+export MANPAGER='nvim +Man!'
 # }}}
 
 # Docker {{{

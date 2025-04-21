@@ -1,7 +1,16 @@
 return {
   "folke/snacks.nvim",
   opts = {
-    picker = {},
+    picker = {
+      files = {
+        exclude = {
+          ".git",
+          ".github",
+          "public",
+          "log",
+        },
+      },
+    },
   },
   keys = {
     { "<leader>f", function() Snacks.picker.smart() end, desc = "Smart Find Files" },
