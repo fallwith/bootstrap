@@ -12,7 +12,6 @@ return {
       "rose-pine/neovim",
       "xiantang/darcula-dark.nvim",
       "comfysage/cuddlefish.nvim",
-      "RomanAverin/charleston.nvim",
       "everviolet/nvim",
       "vague2k/vague.nvim",
       "bluz71/vim-moonfly-colors",
@@ -39,6 +38,8 @@ return {
       "pauchiner/pastelnight.nvim",
       "HoNamDuong/hybrid.nvim",
       "thesimonho/kanagawa-paper.nvim",
+      "wesleimp/min-theme.nvim",
+      "forest-nvim/sequoia.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -55,7 +56,6 @@ return {
         "darcula-dark",
         "rose-pine-moon",
         "cuddlefish",
-        "charleston",
         "evergarden",
         "vague",
         "moonfly",
@@ -84,6 +84,10 @@ return {
         "pastelnight",
         "hybrid",
         "kanagawa-paper",
+        "min-dark",
+        "sequoia",
+        "sequoia-night",
+        "sequoia-rise",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
