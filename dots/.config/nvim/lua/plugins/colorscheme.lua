@@ -39,7 +39,6 @@ return {
       "HoNamDuong/hybrid.nvim",
       "thesimonho/kanagawa-paper.nvim",
       "wesleimp/min-theme.nvim",
-      "forest-nvim/sequoia.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -85,9 +84,6 @@ return {
         "hybrid",
         "kanagawa-paper",
         "min-dark",
-        "sequoia",
-        "sequoia-night",
-        "sequoia-rise",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
