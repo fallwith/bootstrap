@@ -10,6 +10,15 @@
     fi; \
     git checkout \"$branch\"; \
   }; f"
+  m = "!f() { \
+    declare branch=\"$1\"; \
+    if [ \"$branch\" == \"\" ]; then \
+      branch=$(git branch | grep -vE '(\\* )?(main|master|develop|dev|sandbox|staging)$' | fzf | tr -d '^* '); \
+    fi; \
+    if [ ! \"$branch\" == \"\" ]; then \
+      git merge \"$branch\"; \
+    fi; \
+  }; f"
   b = branch
   ba = branch -a
   d = difftool
