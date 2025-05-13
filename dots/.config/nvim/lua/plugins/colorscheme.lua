@@ -39,6 +39,9 @@ return {
       "HoNamDuong/hybrid.nvim",
       "thesimonho/kanagawa-paper.nvim",
       "wesleimp/min-theme.nvim",
+      "webhooked/kanso.nvim",
+      "Skardyy/makurai-nvim",
+      "kamwitsta/vinyl.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -66,7 +69,6 @@ return {
         "jellybeans",
         "distinguished",
         "iceberg",
-        "vimdark",
         "austere",
         "edge",
         "onenord",
@@ -84,6 +86,13 @@ return {
         "hybrid",
         "kanagawa-paper",
         "min-dark",
+        "kanso-ink",
+        "kanso-pearl",
+        "kanso-zen",
+        "makurai_healer",
+        "makurai_mage",
+        "makurai_rogue",
+        "vinyl",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
