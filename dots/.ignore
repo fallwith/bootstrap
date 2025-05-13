@@ -11,6 +11,10 @@
 *target/
 *vendor/
 *public/
+*__mocks__/
+*mocks/
+*__tests__/
+*cypress/
 *.git/
 !*.github/
 *.json
