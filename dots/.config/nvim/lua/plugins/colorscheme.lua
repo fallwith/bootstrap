@@ -42,6 +42,7 @@ return {
       "webhooked/kanso.nvim",
       "Skardyy/makurai-nvim",
       "kamwitsta/vinyl.nvim",
+      "drewxs/ash.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -51,6 +52,7 @@ return {
         "everforest",
         "gruvbox-material",
         "tokyonight-moon",
+        "edge",
         "kanagawa-wave",
         "nightfox",
         "nordfox",
@@ -70,7 +72,6 @@ return {
         "distinguished",
         "iceberg",
         "austere",
-        "edge",
         "onenord",
         "gruvbox",
         "nightfly",
@@ -93,6 +94,7 @@ return {
         "makurai_mage",
         "makurai_rogue",
         "vinyl",
+        "ash",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
