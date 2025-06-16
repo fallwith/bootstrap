@@ -5,6 +5,10 @@
 # cmd++ to increase font size
 # cmd+- to decrease font size
 # ghostty +show-config --default --docs|nvim
+# ghostty +list-keybinds --default
+# cmd + shift + j = exports scrollback to file, provides filename at prompt
+# cmd + option + shift + j = exports scrollback and opens it in an editor
+  # ^-- EDITOR not yet respected https://github.com/ghostty-org/ghostty/issues/2504
 
 # transparency
 # background-blur-radius = 5
@@ -25,6 +29,7 @@ macos-option-as-alt = right
 macos-titlebar-proxy-icon = hidden
 mouse-hide-while-typing = true
 quit-after-last-window-closed = true
+scrollback-limit = 20_000_000
 shell-integration = zsh
 theme = xcodedark
 window-width = 130
@@ -49,3 +54,5 @@ keybind = alt+h=text:\x1bh
 keybind = alt+j=text:\x1bj
 keybind = alt+k=text:\x1bk
 keybind = alt+l=text:\x1bl
+
+# keybind = shift+enter=text:\n
