@@ -27,6 +27,7 @@ return {
       "navarasu/onedark.nvim",
       "zaki/zazen",
       "r1cardohj/zzz.vim",
+      "wesenseged/stone.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -61,6 +62,8 @@ return {
         "darcula-dark",
         "onedark",
         "zzz",
+        "stone-base",
+        "stone-dark",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
