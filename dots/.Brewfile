@@ -31,6 +31,7 @@ brew 'findutils'
 brew 'fzf'
 # brew 'gdb'
 brew 'ghostscript'
+brew 'gh'
 # brew 'ghostty' # using nightlies instead as of 2025-01-12
 # brew 'git'
 brew 'gnu-sed'
