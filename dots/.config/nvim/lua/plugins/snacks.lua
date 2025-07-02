@@ -10,6 +10,15 @@ return {
           "log",
         },
       },
+      win = {
+        input = {
+          keys = {
+            -- The default C-Up and C-Down conflict with macOS
+            ["<C-]>"] = { "history_forward", mode = { "i", "n" } },
+            ["<C-[>"] = { "history_back", mode = { "i", "n" } },
+          },
+        },
+      },
     },
   },
   keys = {
