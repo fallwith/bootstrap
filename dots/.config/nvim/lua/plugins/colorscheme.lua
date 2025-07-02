@@ -28,6 +28,7 @@ return {
       "zaki/zazen",
       "r1cardohj/zzz.vim",
       "wesenseged/stone.nvim",
+      "github-main-user/lytmode.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -64,6 +65,7 @@ return {
         "zzz",
         "stone-base",
         "stone-dark",
+        "lytmode",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
