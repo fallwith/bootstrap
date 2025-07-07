@@ -163,7 +163,7 @@ cask 'docker'
 cask 'kitty'
 # cask 'macdown'
 # cask 'makemkv'
-cask 'neovide'
+cask 'neovide-app'
 cask 'postman' if working?
 cask 'rar' unless working?
 # cask 'sequel-pro'
