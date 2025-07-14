@@ -34,6 +34,7 @@ brew 'ghostscript'
 brew 'gh'
 # brew 'ghostty' # using nightlies instead as of 2025-01-12
 # brew 'git'
+brew 'git-crypt' if working?
 brew 'gnu-sed'
 brew 'go'
 # gpg needed for asdf nodejs and git commits
@@ -48,6 +49,7 @@ brew 'jq'
 brew 'k9s' if working?
 brew 'kubernetes-cli' if working?
 # brew 'kubernetes-helm'
+brew 'kubeseal' if working?
 brew 'lame'
 brew 'lazydocker'
 brew 'libbluray'
