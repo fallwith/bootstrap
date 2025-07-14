@@ -29,6 +29,10 @@ return {
       "r1cardohj/zzz.vim",
       "wesenseged/stone.nvim",
       "github-main-user/lytmode.nvim",
+      "tourcoder/larn.nvim",
+      "RostislavArts/naysayer.nvim",
+      "josstei/voidpulse.nvim",
+      "RonelXavier/ymir.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -66,6 +70,10 @@ return {
         "stone-base",
         "stone-dark",
         "lytmode",
+        "larn",
+        "naysayer",
+        "voidpulse",
+        "ymir",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
