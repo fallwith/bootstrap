@@ -10,6 +10,7 @@
   "edge": { "branch": "master", "commit": "b279ccb1205a51eab8a513b6a3d123b25ac83394" },
   "everforest": { "branch": "master", "commit": "f40c2e6c8784c99c57c79edc94cd180e76450222" },
   "flash.nvim": { "branch": "main", "commit": "3c942666f115e2811e959eabbdd361a025db8b63" },
+  "forest-night.nvim": { "branch": "main", "commit": "401a9bcc0f35ac22f974972ecb094b5be73fee2c" },
   "gitsigns.nvim": { "branch": "main", "commit": "bbee149e00c404aa9f7a7c248b981cde953b252a" },
   "gruvbox-material": { "branch": "master", "commit": "66cfeb7050e081a746a62dd0400446433e802368" },
   "gruvbox.nvim": { "branch": "main", "commit": "58a2cda2e953a99e2f87c12b7fb4602da4e0709c" },

@@ -33,6 +33,7 @@ return {
       "RostislavArts/naysayer.nvim",
       "josstei/voidpulse.nvim",
       "RonelXavier/ymir.nvim",
+      "adibhanna/forest-night.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -74,6 +75,7 @@ return {
         "naysayer",
         "voidpulse",
         "ymir",
+        "forest-night",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
