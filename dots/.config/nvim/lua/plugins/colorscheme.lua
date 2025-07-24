@@ -31,7 +31,6 @@ return {
       "github-main-user/lytmode.nvim",
       "tourcoder/larn.nvim",
       "RostislavArts/naysayer.nvim",
-      "josstei/voidpulse.nvim",
       "RonelXavier/ymir.nvim",
       "adibhanna/forest-night.nvim",
     },
@@ -48,6 +47,10 @@ return {
         "catppuccin-macchiato",
         "mellow",
         "gruvbox-material",
+        "everforest",
+        "everforest", -- give this one more chances to be picked
+        "everforest",
+        "everforest",
         "everforest",
         "sonokai",
         "rose-pine-moon",
@@ -73,7 +76,6 @@ return {
         "lytmode",
         "larn",
         "naysayer",
-        "voidpulse",
         "ymir",
         "forest-night",
       }
