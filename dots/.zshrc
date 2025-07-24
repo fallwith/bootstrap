@@ -383,6 +383,10 @@ fi
 alias b='bundle exec'
 alias brake='noglob bundle exec rake'
 alias bspec='b rspec'
+alias brubo='b rubocop'
+alias modified_rb_files="git status --porcelain | awk '\$2 ~ /\.rb\$/ {print \$2}'| tr '\n' ' ' |sed 's/ \$/\n/'"
+alias br="b rubocop \$(modified_rb_files)"
+alias bra="b rubocop -a \$(modified_rb_files)"
 alias defaultgems='cat $HOME/.default-gems | egrep -v '^#' | xargs -n 1 gem install'
 alias railss='b bin/rails s'
 alias railsc='b bin/rails c'
