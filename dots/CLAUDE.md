@@ -39,11 +39,19 @@
 - Follow existing project conventions and patterns
 - Keep methods focused and single-purpose
 - Remove unnecessary complexity and redundant code
+- **Use early returns** instead of large conditional blocks in methods
+- **Avoid redundant explicit returns** - use `return` instead of `return nil`, omit explicit returns when Ruby's implicit return is sufficient
 
 ### Database Operations
 - **Always wrap multiple database operations** in `ActiveRecord::Base.transaction do..end`
 - Include all related operations that should succeed or fail together
 - Examples: subscription updates + record deletions, creating multiple related records
+
+### Background Jobs
+- **Incremental vs batch persistence**: Consider saving progress incrementally for long-running jobs to prevent data loss on partial failures
+- **Individual error handling**: Catch and log individual operation failures without failing the entire job when appropriate
+- **Idempotency**: Design jobs to be safely retryable, but consider if `retry: false` simplifies the logic
+- **Error logging specificity**: Use descriptive messages that distinguish individual failures from job-level failures
 
 ## Code Style & Formatting
 
@@ -84,6 +92,11 @@ let(:stripe_id) { 'sub_ratty1138' }
 let(:timeout) { 8675309 }
 let(:album) { 'Power, Corruption & Lies' }
 ```
+
+## Code Analysis
+- **Challenge assumptions**: Question whether transactions are needed for single operations
+- **Memory vs database state**: Remember that ActiveRecord objects don't auto-reload after updates
+- **Dead code identification**: Look for unreachable rescue blocks when inner rescues catch all exceptions
 
 ## Communication Style
 - Be direct and concise in responses
