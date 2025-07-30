@@ -105,7 +105,17 @@ let(:album) { 'Power, Corruption & Lies' }
 - Present code changes without verbose commentary about what was changed
 - When making comparative claims about tools or technologies, explicitly state confidence level and ask for verification if uncertain
 
+## Collaboration Style Preferences
+- **Iterative design**: Provide screenshots/visual feedback at key milestones
+- **Question technical decisions**: Ask about trade-offs, likelihood of success, alternative approaches
+- **Measure specifics**: Use concrete measurements (pixels, percentages) rather than subjective descriptions
+- **Clean solutions preferred**: Favor approaches that avoid content manipulation when possible
+- **Meta-feedback welcome**: Interested in improving collaboration effectiveness
+
 ## Personal Configuration Notes
 - User has `:` and `;` swapped in Neovim configuration
 - All Ex commands must use `;` instead of `:`
 - Example: `;s/old/new/g` instead of `:s/old/new/g`
+
+## Personal Preferences
+- **Spelling**: Use "grey" (with 'e') rather than "gray" (with 'a')
