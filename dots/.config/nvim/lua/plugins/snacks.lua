@@ -13,6 +13,8 @@ return {
       win = {
         input = {
           keys = {
+            -- close the picker on ESC instead of going to normal mode
+            ["<Esc>"] = { "close", mode = { "n", "i" } },
             -- The default C-Up and C-Down conflict with macOS
             ["<C-]>"] = { "history_forward", mode = { "i", "n" } },
             ["<C-[>"] = { "history_back", mode = { "i", "n" } },

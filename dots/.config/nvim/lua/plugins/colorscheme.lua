@@ -76,8 +76,8 @@ return {
         "naysayer",
         "ymir",
         "forest-night",
-        "tearout.nvim",
-        "aetherglow.nvim",
+        "tearout",
+        "aetherglow",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
