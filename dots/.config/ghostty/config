@@ -16,6 +16,7 @@
 # macos-titlebar-style = transparent
 
 auto-update = check
+background = 2b2b2b
 cursor-style = bar
 cursor-style-blink = true
 font-family = NotoSansM Nerd Font Mono
@@ -23,7 +24,12 @@ font-feature = -calt
 font-feature = -liga
 font-feature = -dlig
 font-size = 14
-macos-icon = retro
+link-url = false
+# macos-icon = retro
+macos-icon = custom-style
+macos-icon-frame = aluminum
+macos-icon-ghost-color = FF69B4
+macos-icon-screen-color = 121212
 # left opt key = macOS unicode, right opt key = alt
 macos-option-as-alt = right
 macos-titlebar-proxy-icon = hidden
@@ -31,7 +37,7 @@ mouse-hide-while-typing = true
 quit-after-last-window-closed = true
 scrollback-limit = 20_000_000
 shell-integration = zsh
-theme = xcodedark
+theme = light:rose-pine-dawn,dark:xcodedark
 window-width = 130
 window-height = 30
 window-inherit-working-directory = true
