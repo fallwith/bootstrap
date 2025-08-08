@@ -31,8 +31,9 @@ return {
       "RostislavArts/naysayer.nvim",
       "RonelXavier/ymir.nvim",
       "adibhanna/forest-night.nvim",
-      "leobeosab/tearout.nvim",
       "binbandit/aetherglow.nvim",
+      "hyperb1iss/silkcircuit-nvim",
+      "kaiuri/juliana.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -76,8 +77,9 @@ return {
         "naysayer",
         "ymir",
         "forest-night",
-        "tearout",
         "aetherglow",
+        "silkcircuit",
+        "juliana",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
