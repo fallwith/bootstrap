@@ -33,6 +33,7 @@ return {
       "binbandit/aetherglow.nvim",
       "hyperb1iss/silkcircuit-nvim",
       "kaiuri/juliana.nvim",
+      "avuenja/shizukana.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -78,6 +79,7 @@ return {
         "aetherglow",
         "silkcircuit",
         "juliana",
+        "shizukana-dusk",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
