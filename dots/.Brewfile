@@ -26,6 +26,7 @@ brew 'fd'
 brew 'ffmpeg'
 brew 'figlet'
 brew 'findutils'
+brew 'fish'
 # brew 'fortune'
 # brew 'frum'
 brew 'fzf'
@@ -154,7 +155,7 @@ cask 'appcleaner'
 cask 'basictex'
 cask 'datagrip' if working?
 cask 'discord' unless working?
-cask 'docker'
+cask 'docker' unless working?
 # cask 'handbrake'
 # cask 'iterm2-nightly'
 # cask 'iterm2'
@@ -165,6 +166,7 @@ cask 'docker'
 cask 'kitty'
 # cask 'macdown'
 # cask 'makemkv'
+cask 'ngrok'
 cask 'postman' if working?
 cask 'rar' unless working?
 # cask 'sequel-pro'
