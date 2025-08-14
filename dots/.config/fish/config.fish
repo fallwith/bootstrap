@@ -3,13 +3,14 @@
 # ctrl-f: accepts the entire suggestion
 # preview all themes: fish_config theme show
 # list all themes: fish_config theme list
-# apply a theme: fish_config theme choose :theme
+# temporarily apply a theme: fish_config theme choose :theme
+# permanently apply a theme: fish_config theme save :theme -- writes to fish_variables
 # set a variable: set :name :value
 # export a variable: set -x :name :value
 # iterate over a list: for val in $PATH; echo $val; end
 # redirect stderr and stdout: make &> output.txt
 # if/else: if grep fish /etc/shells; echo fish; else if grep bash /etc/shells; echo bash; else; echo nothing found; end
-# automatic cd: :directory/  -- enter a directory name with the leading slash to cd to it without typing 'cd'
+# automatic cd: :directory/  -- enter a directory name with the trailing slash to cd to it without typing 'cd'
 # cd history: cdh
 # private mode: fish -P  -- create a private session (history won't be saved)
 
