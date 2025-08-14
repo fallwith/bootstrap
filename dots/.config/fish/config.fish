@@ -85,7 +85,11 @@ function fish_prompt
 
   # directory basename (blue)
   set_color blue
-  echo -n (basename $PWD)
+  if test $PWD = $HOME # prefer '~' over basename($HOME)
+    echo -n '~'
+  else
+    echo -n (basename $PWD)
+  end
   set_color normal
   echo -n ' '
 
