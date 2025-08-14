@@ -155,7 +155,7 @@ cask 'appcleaner'
 cask 'basictex'
 cask 'datagrip' if working?
 cask 'discord' unless working?
-cask 'docker' unless working?
+cask 'docker'
 # cask 'handbrake'
 # cask 'iterm2-nightly'
 # cask 'iterm2'
