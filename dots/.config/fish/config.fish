@@ -1,18 +1,58 @@
-# profile fish startup: fish --profile-startup=fishprof.txt -c exit
-# alt-f: accept the next suggested word
-# ctrl-f: accepts the entire suggestion
-# preview all themes: fish_config theme show
-# list all themes: fish_config theme list
-# temporarily apply a theme: fish_config theme choose :theme
-# permanently apply a theme: fish_config theme save :theme -- writes to fish_variables
-# set a variable: set :name :value
-# export a variable: set -x :name :value
-# iterate over a list: for val in $PATH; echo $val; end
-# redirect stderr and stdout: make &> output.txt
-# if/else: if grep fish /etc/shells; echo fish; else if grep bash /etc/shells; echo bash; else; echo nothing found; end
-# automatic cd: :directory/  -- enter a directory name with the trailing slash to cd to it without typing 'cd'
-# cd history: cdh
-# private mode: fish -P  -- create a private session (history won't be saved)
+# autocompletion
+# ===
+# alt-f - accept the next suggested word
+# ctrl-f - accepts the entire suggestion
+#
+# variables
+# ===
+# `set <name> <value>` - set a variable
+# `set -x <name> <value>` - export a variable: 
+#
+# control flow
+# ===
+# • redirection:
+#   ```
+#   make &> output.txt
+#   ```
+#
+# • conditionals:
+#   ```
+#   if grep fish /etc/shells
+#     echo fish
+#   else if grep bash /etc/shells
+#     echo bash
+#   else
+#     echo nothing found
+#   end
+#   ```
+#
+# • loops:
+#   ```
+#   for val in $PATH
+#     echo $val
+#   end
+#   ```
+#
+# navigation
+# ===
+# • `<directory>/` - enter the name of a directory with a trailing slash to cd to
+#                    that directory without typing 'cd'
+# • `cdh` - view the cd history
+# • `prevd` - go to the previous directory
+# • `nextd` - go to the next directory
+# 
+# themes
+# ===
+# `fish_config theme show` - preview all themes
+# `fish_config theme list` - list all themes
+# `fish_config theme choose <theme>` - temporarily apply a theme
+# `fish_config theme save :theme` - permanently apply a theme (writes to
+#                                   fish_variables)
+#
+# utility
+# ===
+# • `fish -P` - create a private session (history won't be saved)
+# • `fish --profile-startup=fishprof.txt -c exit` - profile fish's startup
 
 set -g fish_greeting # disable the greeting
 set -g fish_color_valid_path normal # don't mark up (underline) valid paths
