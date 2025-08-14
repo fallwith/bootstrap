@@ -20,7 +20,6 @@ alias plugins='nvim ~/.config/nvim/init.lua'
 alias railsc='bundle exec bin/rails c'
 alias railss='bundle exec bin/rails s'
 alias running='ps auwx|grep -E "memcache|mongo|mysql|rabbit|redis|postgres|ruby|rails|puma|node|\.rb|gradle"|grep -v grep'
-alias runningd='running; docker ps'
 alias vi='nvim'
 alias vim='nvim'
 alias vimwiki="nvim ~/.vimwiki/index.md"
