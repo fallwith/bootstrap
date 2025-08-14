@@ -77,6 +77,12 @@
 - **String values**: Use creative names and values with preferred references
 - Make tests enjoyable to read while maintaining clarity
 
+### Test Structure & Organization
+- **Boolean expectations**: Prefer `be true`/`be false` over `be_truthy`/`be_falsey` for explicit boolean values
+- **Object references**: Create named `let` variables for test objects instead of using database lookups like `find_by`
+- **Setup preference**: Use `let` blocks for object creation rather than `before` blocks when objects are only used in specific test cases
+- **Context descriptions**: Use precise, natural language ("when widgets exist without recent alterations" vs "when widgets exist but no recent alterations")
+
 ### Creative References for String Values
 - **Numbers**: 1138 (THX-1138), 8675309 (Jenny song), 1977 (Star Wars)
 - **Characters**: The Wind in the Willows (Mole, Rat, Badger, Toad, etc.)
