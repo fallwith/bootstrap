@@ -1,4 +1,14 @@
-# Fish configuration - ported from ~/.zshrc
+# profile fish startup: fish --profile-startup=fishprof.txt -c exit
+# alt-f: accept the next suggested word
+# ctrl-f: accepts the entire suggestion
+# preview all themes: fish_config theme show
+# list all themes: fish_config theme list
+# apply a theme: fish_config theme choose :theme
+# set a variable: set :name :value
+# export a variable: set -x :name :value
+# iterate over a list: for val in $PATH; echo $val; end
+# redirect stderr and stdout: make &> output.txt
+# if/else: if grep fish /etc/shells; echo fish; else if grep bash /etc/shells; echo bash; else; echo nothing found; end
 
 set -g fish_greeting # disable the greeting
 set -g fish_color_valid_path normal # don't mark up (underline) valid paths
