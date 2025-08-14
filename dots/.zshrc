@@ -139,7 +139,7 @@ function vi-yank-to-macos-clipboard() {
 zle -N vi-yank-to-macos-clipboard
 
 function vi_mode_prompt_info() {
-  echo "${${VI_KEYMAP/vicmd/ <i>}/(main|viins)/}"
+  echo "${${VI_KEYMAP/vicmd/ <N>}/(main|viins)/}"
 }
 
 # time to wait before assuming that key input is complete
