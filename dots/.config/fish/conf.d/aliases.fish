@@ -26,6 +26,7 @@ alias vimwiki="nvim ~/.vimwiki/index.md"
 alias vw=vimwiki
 alias wiki="nvim -c \"lua require('kiwi').open_wiki_index()\""
 
+abbr -a ayu "fish_config theme save 'ayu Mirage'"
 abbr -a brewtaps 'brew list --full-name | grep /'
 abbr -a config 'cd ~/.config/fish'
 abbr -a font 'kitty @ set-font-size'

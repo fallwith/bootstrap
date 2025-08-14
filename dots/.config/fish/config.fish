@@ -9,6 +9,9 @@
 # iterate over a list: for val in $PATH; echo $val; end
 # redirect stderr and stdout: make &> output.txt
 # if/else: if grep fish /etc/shells; echo fish; else if grep bash /etc/shells; echo bash; else; echo nothing found; end
+# automatic cd: :directory/  -- enter a directory name with the leading slash to cd to it with typing 'cd'
+# cd history: cdh
+# private mode: fish -P  -- create a private session (history won't be saved)
 
 set -g fish_greeting # disable the greeting
 set -g fish_color_valid_path normal # don't mark up (underline) valid paths
