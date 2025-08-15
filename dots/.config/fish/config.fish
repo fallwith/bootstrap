@@ -130,8 +130,25 @@ if status is-interactive
   end
 end
 
-# disable the the [I] / [N] vi mode indicators
+# customize the [I] / [N] vi mode indicators that appear in the prompt
 function fish_mode_prompt
+  switch $fish_bind_mode
+    case default
+      set_color --bold red
+      echo '[N] '
+    case insert
+      # don't display anything
+    case replace_one
+      set_color --bold green
+      echo '[R] '
+    case visual
+      set_color --bold brmagenta
+      echo '[V] '
+    case '*'
+      set_color --bold red
+      echo '[?] '
+  end
+  set_color normal
 end
 
 function fish_prompt
@@ -150,16 +167,6 @@ function fish_prompt
   # time (magenta)
   set_color magenta
   echo -n (date +%H:%M:%S)
-  set_color normal
-
-  # vi mode indicator (cyan) - not shown in insert mode
-  set_color cyan
-  switch $fish_bind_mode
-  case default
-    echo -n ' <N>'  # Normal mode shows <N>
-  case visual
-    echo -n ' <V>'  # Visual mode shows <V>
-  end
   set_color normal
 
   # last status based '$' prompt (green = succeeded, red = failed)
@@ -186,7 +193,7 @@ else
 end
 
 fish_add_path ~/bin
-fish_add_path ~/Library/Python/3.12/bin
+# fish_add_path ~/Library/Python/3.12/bin
 
 # homebrew
 if test -d /opt/homebrew
@@ -195,16 +202,14 @@ if test -d /opt/homebrew
   set -gx HOMEBREW_REPOSITORY /opt/homebrew
   fish_add_path /opt/homebrew/bin /opt/homebrew/sbin
 
-  if test -z "$LIBRARY_PATH"
-    set -gx LIBRARY_PATH (brew --prefix)/lib
-  else
-    set -gx LIBRARY_PATH "$LIBRARY_PATH:"(brew --prefix)/lib
+  set -l homebrew_lib_path (brew --prefix)/lib
+
+  if not contains -- "$homebrew_lib_path" $LIBRARY_PATH
+    set -gx LIBRARY_PATH $homebrew_lib_path
   end
 
-  if test -z "$LD_LIBRARY_PATH"
-    set -gx LD_LIBRARY_PATH (brew --prefix)/include
-  else
-    set -gx LD_LIBRARY_PATH "$LD_LIBRARY_PATH:"(brew --prefix)/include
+  if not contains -- "$homebrew_lib_path" $LD_LIBRARY_PATH
+    set -gx LD_LIBRARY_PATH $homebrew_lib_path
   end
 end
 
