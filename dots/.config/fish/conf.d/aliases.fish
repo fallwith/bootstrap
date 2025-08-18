@@ -27,7 +27,10 @@ alias vw=vimwiki
 alias wiki="nvim -c \"lua require('kiwi').open_wiki_index()\""
 
 abbr -a ayu "fish_config theme save 'ayu Mirage'"
+abbr -a brewinstall '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
 abbr -a brewtaps 'brew list --full-name | grep /'
+# when upgrading Homebrew casks, only upgrade outdated ones and never Docker
+abbr -a brewupdate 'brew update && brew bundle --global && brew upgrade && brew upgrade --cask (brew outdated --cask | string split -f1 ' ' | string match -v docker) && brew cleanup'
 abbr -a config 'cd ~/.config/fish'
 abbr -a font 'kitty @ set-font-size'
 abbr -a gpgtest 'echo testing | gpg --clearsign'
