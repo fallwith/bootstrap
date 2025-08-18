@@ -5,13 +5,14 @@ fonts/.uuid
 fzf/
 ripgrep/
 rustup-init.sh
+dots/bin/bwctl
 dots/bin/cxxmatrix
+dots/bin/tsu
 Postgres.app
 dots/.gnupg/openpgp-revocs.d/
 dots/.gnupg/private-keys-v1.d/
 dots/.gnupg/pubring.kbx
 dots/.gnupg/pubring.kbx~
 dots/.gnupg/trustdb.gpg
-dots/bin/bwctl
 dots/.config/fish/fish_variables
 dots/.config/fish/config_private.fish
