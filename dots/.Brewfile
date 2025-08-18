@@ -122,6 +122,7 @@ brew 'wget'
 brew 'yarn'
 brew 'yazi'
 brew 'yt-dlp' # modern youtube-dl
+brew 'zig'
 # brew 'zsh'
 
 # brew install heroku/brew/heroku
