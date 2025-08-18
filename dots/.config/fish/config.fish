@@ -56,6 +56,12 @@
 
 set -g fish_greeting # disable the greeting
 set -g fish_color_valid_path normal # don't mark up (underline) valid paths
+set -g fish_term24bit 1 # force 24-bit color
+
+if ! test -e ~/.hushlogin
+  echo "Hushing 'last login' message via ~/.hushlogin"
+  touch ~/.hushlogin
+end
 
 if status is-interactive
   fish_vi_key_bindings # enable vi mode
@@ -151,8 +157,22 @@ function fish_mode_prompt
   set_color normal
 end
 
+if type -q tsu
+  set tsu_exists
+end
+
 function fish_prompt
   set -l last_status $status
+
+  echo -n '🐟 '
+
+  # tsu driven tide info (cyan)
+  if set -q tsu_exists
+    set -l tide_status (tsu)
+    set_color cyan
+    echo -n "$tide_status "
+    set_color normal
+  end
 
   # directory basename (blue)
   set_color blue
@@ -173,7 +193,7 @@ function fish_prompt
   if test $last_status -eq 0
     set_color green
   else
-    set_color red
+    set_color FF3333 # red - despite what the terminal theme might set as "red"
   end
   echo -n ' $ '
   set_color normal
@@ -185,6 +205,7 @@ set -gx HISTEDIT $EDITOR
 set -gx MANWIDTH 80
 set -gx LESSHISTFILE -
 set -gx MANPAGER 'nvim +Man!'
+set -gx NOAA_GOV_STATION_ID 9410230
 
 if test -n "$KITTY_PID"
   set -gx TERM xterm-kitty
