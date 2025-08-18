@@ -157,6 +157,15 @@ function fish_mode_prompt
   set_color normal
 end
 
+# set terminal title to the basename of PWD
+function fish_title
+  if test $PWD = $HOME # prefer '~' over basename($HOME)
+    echo -n '~'
+  else
+    echo -n (basename $PWD)
+  end
+end
+
 if type -q tsu
   set tsu_exists
 end
