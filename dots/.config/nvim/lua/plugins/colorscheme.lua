@@ -35,6 +35,7 @@ return {
       "kaiuri/juliana.nvim",
       "avuenja/shizukana.nvim",
       "mcauley-penney/techbase.nvim",
+      "cxinu/glyph.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -82,6 +83,7 @@ return {
         "juliana",
         "shizukana-dusk",
         "techbase",
+        "glyph",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
