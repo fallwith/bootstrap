@@ -39,3 +39,8 @@ vim.api.nvim_set_keymap("v", "<leader>p", '"+p', { noremap = true })
 
 -- diagnostics (when on an underlined bit of text)
 vim.keymap.set("n", "<Leader>x", vim.diagnostic.open_float, { desc = "Show diagnostics popup" })
+
+-- copy current file path to clipboard
+vim.api.nvim_create_user_command("CP", function()
+  vim.fn.setreg("+", vim.fn.expand("%"))
+end, { desc = "Copy current file path to clipboard" })
