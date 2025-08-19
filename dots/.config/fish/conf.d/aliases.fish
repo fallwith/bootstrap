@@ -10,21 +10,19 @@ alias dirs='fd -td'
 alias dockerstop='docker ps -aq |xargs docker container stop'
 alias fd='fd --color never'
 alias ghostty=/Applications/Ghostty.app/Contents/MacOS/ghostty
-alias ghosttyconfig='nvim ~/.config/ghostty/config'
-alias guide='nvim ~/git/public/vim_guide/vim_guide.md'
+alias ghosttyconfig='nvim_launch ~/.config/ghostty/config'
+alias guide='nvim_launch ~/git/public/vim_guide/vim_guide.md'
 alias ll='eza --long --all --group --numeric --classify --git --time-style long-iso'
 alias lle='ll --extended'
 alias mv='mv -i'
-alias no="nvr -o"
-alias plugins='nvim ~/.config/nvim/init.lua'
+alias nvim='nvim_launch'
+alias plugins='nvim_launch ~/.config/nvim/init.lua'
 alias railsc='bundle exec bin/rails c'
 alias railss='bundle exec bin/rails s'
 alias running='ps auwx|grep -E "memcache|mongo|mysql|rabbit|redis|postgres|ruby|rails|puma|node|\.rb|gradle"|grep -v grep'
-alias vi='nvim'
-alias vim='nvim'
-alias vimwiki="nvim ~/.vimwiki/index.md"
-alias vw=vimwiki
-alias wiki="nvim -c \"lua require('kiwi').open_wiki_index()\""
+alias vi='nvim_launch'
+alias vim='nvim_launch'
+alias wiki="nvim_launch -c \"lua require('kiwi').open_wiki_index()\""
 
 abbr -a ayu "fish_config theme save 'ayu Mirage'"
 abbr -a brewinstall '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
