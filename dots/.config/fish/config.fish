@@ -198,7 +198,10 @@ function fish_prompt
   echo -n (date +%H:%M:%S)
   set_color normal
 
+  # set_color F2963A
+  set_color D8CF9E
   echo -n (git_branch_name)
+  set_color normal
 
   # last status based '$' prompt (green = succeeded, red = failed)
   if test $last_status -eq 0
