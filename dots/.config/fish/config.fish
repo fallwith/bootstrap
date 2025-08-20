@@ -198,14 +198,25 @@ function fish_prompt
   echo -n (date +%H:%M:%S)
   set_color normal
 
+  echo -n (git_branch_name)
+
   # last status based '$' prompt (green = succeeded, red = failed)
   if test $last_status -eq 0
     set_color green
   else
     set_color FF3333 # red - despite what the terminal theme might set as "red"
   end
-  echo -n ' $ '
+  echo -n ' ❯ '
   set_color normal
+end
+
+function git_branch_name
+  set -l bname (git branch --show-current 2>/dev/null)
+  test -n "$bname" || return
+  # truncate to n chars. if the name ends in 1-2 digits ("phase1", "v10", etc.)
+  # then append the 1-2 digits to help differentiate between long branch names
+  # that are identical except for the number.
+  echo " $(string sub --length 15 $bname)$(string match -r '(?<!\d)\d{1,2}$' $bname)"
 end
 
 set -gx VISUAL nvim
