@@ -36,6 +36,7 @@ return {
       "avuenja/shizukana.nvim",
       "mcauley-penney/techbase.nvim",
       "cxinu/glyph.nvim",
+      "mitch1000/backpack.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -75,6 +76,8 @@ return {
         "zzz",
         "stone-base",
         "stone-dark",
+        "lytmode", -- favored
+        "lytmode",
         "lytmode",
         "naysayer",
         "ymir",
@@ -84,6 +87,7 @@ return {
         "shizukana-dusk",
         "techbase",
         "glyph",
+        "backpack",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])

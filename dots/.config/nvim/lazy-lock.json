@@ -1,6 +1,7 @@
 {
   "aetherglow.nvim": { "branch": "main", "commit": "7e55235b543fd0431fc3f42ea1d13cf20815dde3" },
   "austere.vim": { "branch": "master", "commit": "d985d31982bef869055e7a8c8d01cfe8c2992279" },
+  "backpack.nvim": { "branch": "main", "commit": "dfcf39b54776f004b37d7e1e343412aafd72a0c1" },
   "bamboo.nvim": { "branch": "master", "commit": "56c924d0cbd3a37f9d0ea1235a189a3cccde1f44" },
   "bluehour.nvim": { "branch": "main", "commit": "d415741cd60df3fe2a59879ea4e187a2b7507b4c" },
   "bufferline.nvim": { "branch": "main", "commit": "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3" },

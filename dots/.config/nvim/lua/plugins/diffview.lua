@@ -1,4 +1,7 @@
 -- view all git diffs in a single nvim session
+--
+-- do (Diff Obtain): Use the copy from the other file
+-- dp (Diff Put): Use the copy from this file
 
 return {
   "sindrets/diffview.nvim",
