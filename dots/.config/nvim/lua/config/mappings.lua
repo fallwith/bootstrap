@@ -44,3 +44,8 @@ vim.keymap.set("n", "<Leader>x", vim.diagnostic.open_float, { desc = "Show diagn
 vim.api.nvim_create_user_command("CP", function()
   vim.fn.setreg("+", vim.fn.expand("%"))
 end, { desc = "Copy current file path to clipboard" })
+
+-- display current lualine theme
+vim.api.nvim_create_user_command("Luatheme", function()
+  print("Lualine theme: " .. (vim.g.lualine_theme or "unknown"))
+end, { desc = "Display current lualine theme" })
