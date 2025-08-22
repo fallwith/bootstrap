@@ -6,14 +6,14 @@
   co = "!f() { \
     declare branch=\"$1\"; \
     if [ \"$branch\" == \"\" ]; then \
-      branch=$(git branch -a | sed 's|remotes/origin/||' | grep -v 'HEAD ->' | fzf | tr -d '^* '); \
+      branch=$(git branch -a --format='%(refname:short)' | sed 's|^origin/||' | sort -u | fzf); \
     fi; \
     git checkout \"$branch\"; \
   }; f"
   m = "!f() { \
     declare branch=\"$1\"; \
     if [ \"$branch\" == \"\" ]; then \
-      branch=$(git branch | grep -vE '(\\* )?(main|master|develop|dev|sandbox|staging)$' | fzf | tr -d '^* '); \
+      branch=$(git branch -a --format='%(refname:short)' | sed 's|^origin/||' | sort -u | grep -vE '^(main|master|develop|dev|sandbox|staging)$' | fzf); \
     fi; \
     if [ ! \"$branch\" == \"\" ]; then \
       git merge \"$branch\"; \
@@ -79,6 +79,11 @@
       git diff --name-only \"$1\"; \
     fi; \
   }; f"
+  recent = for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads/ refs/remotes/origin/ | sed 's|^origin/||' | sort -u | head -10
+  gone-clean = !git remote prune origin && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -n 1 git branch -D
+  gone-list = !git remote prune origin && git branch -vv | grep ': gone]' | awk '{print $1}'
+  pushf = push --force-with-lease
+  last = log -1 HEAD --stat
 [commit]
   template = ~/.gitmessage
 	gpgsign = true
