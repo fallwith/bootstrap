@@ -53,3 +53,7 @@ end, { desc = "Display current lualine theme" })
 -- shift-h/l for buffer switching (borrowed from dart.nvim)
 vim.api.nvim_set_keymap("n", "H", ":bprev<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "L", ":bnext<CR>", { noremap = true })
+
+vim.api.nvim_create_user_command("Strip", function()
+  vim.cmd([[%s/\s\+$//e]])
+end, { desc = "Trim trailing whitespace" })

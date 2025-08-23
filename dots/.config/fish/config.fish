@@ -307,3 +307,6 @@ set -gx GPG_TTY (tty)
 if test -e ~/.config/fish/config_private.fish
   source ~/.config/fish/config_private.fish
 end
+
+# fzf
+type -q fzf && fzf --fish | source
