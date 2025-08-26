@@ -35,4 +35,5 @@ return {
     { "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
     { "<leader>uC", function() Snacks.picker.colorschemes() end, desc = "Colorschemes" },
   },
+  lazy = false,
 }
