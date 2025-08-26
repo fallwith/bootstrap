@@ -20,6 +20,7 @@ alias plugins='nvim_launch ~/.config/nvim/init.lua'
 alias railsc='bundle exec bin/rails c'
 alias railss='bundle exec bin/rails s'
 alias running='ps auwx|grep -E "memcache|mongo|mysql|rabbit|redis|postgres|ruby|rails|puma|node|\.rb|gradle|rubocop"|grep -v grep'
+alias v='nvim_launch -c "lua require(\'snacks\').picker.smart()"'
 alias vi='nvim_launch'
 alias vim='nvim_launch'
 alias wiki="nvim_launch -c \"lua require('kiwi').open_wiki_index()\""
