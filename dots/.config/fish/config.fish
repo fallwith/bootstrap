@@ -58,6 +58,8 @@ set -g fish_greeting # disable the greeting
 set -g fish_color_valid_path normal # don't mark up (underline) valid paths
 set -g fish_term24bit 1 # force 24-bit color
 
+set -g PROMPT_EMOJI 🌊 🐠 🚀 🛸 🦊 🍒 😎 🤔 🧙‍♂️ 🤷‍♂️ 🐨 🏄‍♂️ 🏎️ 🏝️
+
 if ! test -e ~/.hushlogin
   echo "Hushing 'last login' message via ~/.hushlogin"
   touch ~/.hushlogin
@@ -173,18 +175,18 @@ end
 function fish_prompt
   set -l last_status $status
 
-  echo -n '🐟 '
+  echo -n $PROMPT_EMOJI[(random 1 (count $PROMPT_EMOJI))]" "
 
-  # tsu driven tide info (cyan)
+  # tsu driven tide info
   if set -q tsu_exists
     set -l tide_status (tsu)
-    set_color cyan
+    set_color F8E6BD
     echo -n "$tide_status "
     set_color normal
   end
 
-  # directory basename (blue)
-  set_color blue
+  # directory basename
+  set_color 9DD6E7
   if test $PWD = $HOME # prefer '~' over basename($HOME)
     echo -n '~'
   else
@@ -193,21 +195,21 @@ function fish_prompt
   set_color normal
   echo -n ' '
 
-  # time (magenta)
-  set_color magenta
+  # time
+  set_color FE7EAA
   echo -n (date +%H:%M:%S)
   set_color normal
 
-  # set_color F2963A
-  set_color D8CF9E
+  # git branch
+  set_color B8D59A
   echo -n (git_branch_name)
   set_color normal
 
-  # last status based '$' prompt (green = succeeded, red = failed)
+  # last status based prompt (normal = succeeded, red = failed)
   if test $last_status -eq 0
-    set_color green
+    set_color BEB549
   else
-    set_color FF3333 # red - despite what the terminal theme might set as "red"
+    set_color FF3333
   end
   echo -n ' ❯ '
   set_color normal
