@@ -82,6 +82,10 @@
 - **Object references**: Create named `let` variables for test objects instead of using database lookups like `find_by`
 - **Setup preference**: Use `let` blocks for object creation rather than `before` blocks when objects are only used in specific test cases
 - **Context descriptions**: Use precise, natural language ("when widgets exist without recent alterations" vs "when widgets exist but no recent alterations")
+- **Prefer real integration over mocking**: Use `and_call_original` when testing method interactions to test actual behavior
+- **Test behavior, not implementation**: Verify side effects and state changes over method calls
+- **Use heredocs for multi-line expectations**: Clearer than complex regex patterns for output testing
+- **Extract shared test values**: Use `let` blocks for amounts, IDs, and other repeated data to eliminate duplication
 
 ### Creative References for String Values
 - **Numbers**: 1138 (THX-1138), 8675309 (Jenny song), 1977 (Star Wars)
