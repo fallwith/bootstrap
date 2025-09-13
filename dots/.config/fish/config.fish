@@ -58,8 +58,6 @@ set -g fish_greeting # disable the greeting
 set -g fish_color_valid_path normal # don't mark up (underline) valid paths
 set -g fish_term24bit 1 # force 24-bit color
 
-set -g PROMPT_EMOJI 🌊 🐠 🚀 🛸 🦊 🍒 😎 🤔 🧙‍♂️ 🤷‍♂️ 🐨 🏄‍♂️ 🏎️ 🏝️
-
 if ! test -e ~/.hushlogin
   echo "Hushing 'last login' message via ~/.hushlogin"
   touch ~/.hushlogin
@@ -174,8 +172,6 @@ end
 
 function fish_prompt
   set -l last_status $status
-
-  echo -n $PROMPT_EMOJI[(random 1 (count $PROMPT_EMOJI))]" "
 
   # tsu driven tide info
   if set -q tsu_exists
