@@ -29,11 +29,11 @@ return {
       "github-main-user/lytmode.nvim",
       "RostislavArts/naysayer.nvim",
       "RonelXavier/ymir.nvim",
-      "binbandit/aetherglow.nvim",
       "kaiuri/juliana.nvim",
       "avuenja/shizukana.nvim",
       "cxinu/glyph.nvim",
       "mitch1000/backpack.nvim",
+      "khoido2003/monokai-v2.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -60,7 +60,6 @@ return {
         "edge",
         "bamboo",
         "serene",
-        "duskfox",
         "nightfox",
         "nordfox",
         "vague",
@@ -77,11 +76,11 @@ return {
         "lytmode",
         "naysayer",
         "ymir",
-        "aetherglow",
         "juliana",
         "shizukana-dusk",
         "glyph",
         "backpack",
+        "monokai-v2",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
