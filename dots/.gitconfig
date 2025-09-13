@@ -80,8 +80,8 @@
     fi; \
   }; f"
   recent = for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads/ refs/remotes/origin/ | sed 's|^origin/||' | sort -u | head -10
-  gone-clean = !git remote prune origin && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -n 1 git branch -D
-  gone-list = !git remote prune origin && git branch -vv | grep ': gone]' | awk '{print $1}'
+  gone-clean = !git remote prune origin && git branch -vv | grep -E '^[^*].*: gone]' | awk '{print $1}' | xargs -n 1 git branch -D
+  gone-list = !git remote prune origin && git branch -vv | grep -E '^[^*].*: gone]' | awk '{print $1}'
   pushf = push --force-with-lease
   last = log -1 HEAD --stat
 [commit]
