@@ -42,7 +42,7 @@ vim.keymap.set("n", "<Leader>x", vim.diagnostic.open_float, { desc = "Show diagn
 
 -- copy current file path to clipboard
 vim.api.nvim_create_user_command("CP", function()
-  vim.fn.setreg("+", vim.fn.expand("%"))
+  vim.fn.setreg("+", vim.fn.expand("%:p"))
 end, { desc = "Copy current file path to clipboard" })
 
 -- display current lualine theme
