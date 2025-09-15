@@ -17,8 +17,6 @@ brew 'ctags'
 brew 'dust'
 # brew 'elinks'
 # brew 'elixir'
-# brew 'emacs', args: ['HEAD', 'with-cocoa']
-# brew 'emacs', args:['with-cocoa', 'srgb']
 brew 'eza'
 # brew 'exiftool'
 # brew 'fasd'
@@ -52,7 +50,6 @@ brew 'kubernetes-cli' if working?
 # brew 'kubernetes-helm'
 brew 'kubeseal' if working?
 brew 'lame'
-brew 'lazydocker'
 brew 'libbluray'
 # brew 'libcaca'
 brew 'libxml2'
@@ -129,8 +126,8 @@ brew 'zig'
 # tap 'heroku/brew'
 # brew 'heroku'
 
-# tap 'd12frosted/emacs-plus'
-# brew 'emacs-plus', args: ['HEAD', 'without-spacemacs-icon']
+tap 'd12frosted/emacs-plus'
+brew 'emacs-plus@30', args: %w(with-imagemagick with-modern-alecive-flatwoken-icon)
 
 # tap 'tavianator/tap'
 # brew 'bfs'
