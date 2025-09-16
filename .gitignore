@@ -16,3 +16,4 @@ dots/.gnupg/pubring.kbx~
 dots/.gnupg/trustdb.gpg
 dots/.config/fish/fish_variables
 dots/.config/fish/config_private.fish
+dots/.emacs.d/eln-cache/
