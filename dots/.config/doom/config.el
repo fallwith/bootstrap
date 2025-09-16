@@ -1,5 +1,10 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+(when (display-graphic-p)
+  ;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+  (set-frame-size (selected-frame) 140 60)
+  )
+
 ;; allowlist of themes
 (defvar themes
   '(doom-nova
@@ -41,10 +46,10 @@
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
 (map! :leader
-      :desc "Open terminal" "t" #'+vterm/toggle
+      :desc "Open terminal" "t" #'+vterm/here
       :desc "Clear search highlight" "/" #'evil-ex-nohighlight
-      :desc "Vertical split" "v" #'evil-window-vsplit
-      :desc "Horizontal split" "h" #'evil-window-split)
+      :desc "Vertical split" "v" (cmd! (evil-window-vsplit) (other-window 1))
+      :desc "Horizontal split" "h" (cmd! (evil-window-split) (other-window 1)))
 
 (map! :map evil-normal-state-map
       "C-h" #'evil-window-left
@@ -168,3 +173,9 @@
 ;; enable evil-escape
 (after! evil-escape
   (evil-escape-mode 1))
+
+;; vterm configuration - ensure Evil works in copy mode
+(after! vterm
+  (add-hook 'vterm-copy-mode-hook #'evil-normal-state)
+  ;; Map Cmd-. to send C-c (Mac Terminal.app behavior)
+  (define-key vterm-mode-map (kbd "s-.") (lambda () (interactive) (vterm-send "C-c"))))
