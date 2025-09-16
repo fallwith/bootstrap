@@ -174,6 +174,13 @@
 (after! evil-escape
   (evil-escape-mode 1))
 
+;; fuzzy search with orderless
+(after! orderless
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides nil)
+  (setq orderless-matching-styles '(orderless-flex)))
+
 ;; vterm configuration - ensure Evil works in copy mode
 (after! vterm
   (add-hook 'vterm-copy-mode-hook #'evil-normal-state)
