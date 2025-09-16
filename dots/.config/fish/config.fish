@@ -298,6 +298,9 @@ set -gx FZF_DEFAULT_OPTS "\
 --color=fg:#b4b7b4,header:#81a2be,info:#f0c674,pointer:#8abeb7 \
 --color=marker:#8abeb7,fg+:#e0e0e0,prompt:#f0c674,hl+:#81a2be"
 
+# fzf shell keybindings
+type -q fzf && fzf --fish | source
+
 # gpg
 set -gx GPG_TTY (tty)
 
@@ -305,6 +308,3 @@ set -gx GPG_TTY (tty)
 if test -e ~/.config/fish/config_private.fish
   source ~/.config/fish/config_private.fish
 end
-
-# fzf
-type -q fzf && fzf --fish | source
