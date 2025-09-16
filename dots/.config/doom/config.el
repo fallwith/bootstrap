@@ -8,7 +8,6 @@
 ;; allowlist of themes
 (defvar themes
   '(doom-nova
-    doom-material-dark
     doom-monokai-pro
     doom-nord
     doom-palenight
@@ -186,3 +185,13 @@
   (add-hook 'vterm-copy-mode-hook #'evil-normal-state)
   ;; Map Cmd-. to send C-c (Mac Terminal.app behavior)
   (define-key vterm-mode-map (kbd "s-.") (lambda () (interactive) (vterm-send "C-c"))))
+
+;; do not by default yank to the kill ring (which syncs to the system
+;; clipboard) and instead use <leader>y to do do
+(setq select-enable-clipboard nil)
+(after! evil
+  (map! :leader
+        "y" (lambda! ()
+              (interactive)
+              (setq evil-this-register ?+)
+              (call-interactively #'evil-yank))))
