@@ -21,7 +21,7 @@
 (package! nerd-icons)
 
 ;; Testing integration (vim-test equivalent)
-(package! rspec-mode)
+;; (package! rspec-mode)
 
 ;; Ruby and Rails development
 ;; (package! inf-ruby)

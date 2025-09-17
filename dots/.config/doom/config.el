@@ -97,110 +97,74 @@
 (defalias 'CP 'copy-file-path "Copy current file path")
 (defalias 'Strip 'strip-trailing-whitespace-custom "Strip trailing whitespace")
 (defalias 'A 'rails-alternate-file "Alternate between app and spec files")
+(defalias 'TN 'rspec-run-single-in-full-vterm "Run the test at the cursor's current line")
+(defalias 'TF 'rspec-run-file-in-full-vterm "Run all tests in the current file")
 
 ;; RSpec
-(after! rspec-mode
-  (defun rspec-run-single-in-full-vterm ()
-    "Run the current RSpec test in a full-window vterm"
+;; shared runner function
+(defun rspec-run-in-vterm (command)
+  "Run RSpec command in a full-window vterm"
+  (let ((buffer-name "*RSpec*"))
+    ;; kill existing RSpec buffer if it exists
+    (when (get-buffer buffer-name)
+      (kill-buffer buffer-name))
+
+    ;; create new vterm buffer in full window
+    (delete-other-windows)
+    (let ((vterm-buffer (vterm buffer-name)))
+      (with-current-buffer vterm-buffer
+        ;; disable line numbers
+        (display-line-numbers-mode -1)
+
+        ;; evil keybindings
+        (evil-local-set-key 'insert (kbd "C-o")
+          (lambda () (interactive) (vterm-copy-mode 1) (evil-normal-state)))
+        (evil-local-set-key 'normal (kbd "C-o")
+          (lambda () (interactive) (other-window 1)))
+
+        ;; process killing with either C-c C-c or s-.
+        (evil-local-set-key 'insert (kbd "s-.")
+          (lambda () (interactive) (vterm-send "C-c")))
+        (evil-local-set-key 'insert (kbd "C-c C-c")
+          (lambda () (interactive) (vterm-send "C-c")))
+
+        ;; 'q' to close when done - kill the vterm process without prompting
+        (evil-local-set-key 'normal (kbd "q")
+          (lambda ()
+            (interactive)
+            (let ((proc (get-buffer-process (current-buffer))))
+              (when proc
+                (set-process-query-on-exit-flag proc nil)
+                (kill-process proc))
+              (kill-buffer (current-buffer))
+              (when (= (length (window-list)) 1)
+                (previous-buffer)))))
+
+        ;; run the command
+        (vterm-send-string command)
+        (vterm-send-return)))))
+
+;; single test runner
+(defun rspec-run-single-in-full-vterm ()
+    "Run the RSpec test on the current line"
     (interactive)
     (let* ((test-file (buffer-file-name))
            (line-number (line-number-at-pos))
            (command (format "cd %s && bundle exec rspec %s:%d"
                            (projectile-project-root)
                            (file-relative-name test-file (projectile-project-root))
-                           line-number))
-           (buffer-name "*RSpec Test*"))
+                           line-number)))
+      (rspec-run-in-vterm command)))
 
-      ;; kill existing RSpec buffer if it exists
-      (when (get-buffer buffer-name)
-        (kill-buffer buffer-name))
-
-      ;; create new vterm buffer in full window
-      (delete-other-windows)
-      (let ((vterm-buffer (vterm buffer-name)))
-        (with-current-buffer vterm-buffer
-          ;; disable line numbers
-          (display-line-numbers-mode -1)
-
-          ;; evil keybindings
-          (evil-local-set-key 'insert (kbd "C-o")
-            (lambda () (interactive) (vterm-copy-mode 1) (evil-normal-state)))
-          (evil-local-set-key 'normal (kbd "C-o")
-            (lambda () (interactive) (other-window 1)))
-
-          ;; process killing
-          (evil-local-set-key 'insert (kbd "s-.")
-            (lambda () (interactive) (vterm-send "C-c")))
-          (evil-local-set-key 'insert (kbd "C-c C-c")
-            (lambda () (interactive) (vterm-send "C-c")))
-
-          ;; use 'q' to close when done - force kill vterm without prompting
-          (evil-local-set-key 'normal (kbd "q")
-            (lambda ()
-              (interactive)
-              (let ((proc (get-buffer-process (current-buffer))))
-                (when proc
-                  (set-process-query-on-exit-flag proc nil)
-                  (kill-process proc))
-                (kill-buffer (current-buffer))
-                (when (= (length (window-list)) 1)
-                  (previous-buffer)))))
-
-          ;; run the command
-          (vterm-send-string command)
-          (vterm-send-return)))))
-
-  (defun rspec-run-file-in-full-vterm ()
-    "Run all RSpec tests in the current file in a full-window vterm"
+;; all tests in file runner
+(defun rspec-run-file-in-full-vterm ()
+    "Run all RSpec tests in the current file"
     (interactive)
     (let* ((test-file (buffer-file-name))
            (command (format "cd %s && bundle exec rspec %s"
                            (projectile-project-root)
-                           (file-relative-name test-file (projectile-project-root))))
-           (buffer-name "*RSpec Test*"))
-
-      ;; kill existing RSpec buffer if it exists
-      (when (get-buffer buffer-name)
-        (kill-buffer buffer-name))
-
-      ;; create new vterm buffer in full window
-      (delete-other-windows)
-      (let ((vterm-buffer (vterm buffer-name)))
-        (with-current-buffer vterm-buffer
-          ;; disable line numbers
-          (display-line-numbers-mode -1)
-
-          ;; evil keybindings (same as single test)
-          (evil-local-set-key 'insert (kbd "C-o")
-            (lambda () (interactive) (vterm-copy-mode 1) (evil-normal-state)))
-          (evil-local-set-key 'normal (kbd "C-o")
-            (lambda () (interactive) (other-window 1)))
-
-          ;; setup process killing
-          (evil-local-set-key 'insert (kbd "s-.")
-            (lambda () (interactive) (vterm-send "C-c")))
-          (evil-local-set-key 'insert (kbd "C-c C-c")
-            (lambda () (interactive) (vterm-send "C-c")))
-
-          ;; setup 'q' to close when done - force kill without prompting
-          (evil-local-set-key 'normal (kbd "q")
-            (lambda ()
-              (interactive)
-              (let ((proc (get-buffer-process (current-buffer))))
-                (when proc
-                  (set-process-query-on-exit-flag proc nil)
-                  (kill-process proc))
-                (kill-buffer (current-buffer))
-                (when (= (length (window-list)) 1)
-                  (previous-buffer)))))
-
-          ;; run the command
-          (vterm-send-string command)
-          (vterm-send-return)))))
-
-  ;; aliases
-  (defalias 'TN 'rspec-run-single-in-full-vterm "Run specified example at point in full vterm")
-  (defalias 'TF 'rspec-run-file-in-full-vterm "Run all specs in current file in full vterm"))
+                           (file-relative-name test-file (projectile-project-root)))))
+      (rspec-run-in-vterm command)))
 
 (defun random-theme ()
   "Load a random dark theme from our rotation"
