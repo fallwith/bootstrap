@@ -14,6 +14,8 @@
 ;; themes
 (package! catppuccin-theme)
 (package! modus-themes)
+(package! everforest
+  :recipe (:repo "https://github.com/Theory-of-Everything/everforest-emacs.git"))
 
 ;; nerd-icons for proper glyph rendering
 (package! nerd-icons)
