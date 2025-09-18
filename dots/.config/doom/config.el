@@ -2,8 +2,7 @@
 
 (when (display-graphic-p)
   ;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
-  (set-frame-size (selected-frame) 140 60)
-  )
+  (set-frame-size (selected-frame) 145 60))
 
 ;; allowlist of themes
 (defvar themes
@@ -22,28 +21,46 @@
 
 (setq display-line-numbers-type t)
 
-(after! evil
-  (setq evil-ex-search-case 'smart))
+; (after! evil
+;   (setq evil-ex-search-case 'smart)
+;   (setq evil-ex-completion-system 'emacs))
 
 (after! evil
   (setq evil-escape-key-sequence "jk"
-        evil-escape-delay 0.25
-        evil-escape-unordered-key-sequence t))
+        evil-escape-delay 0.25))
 
 ;; flip ; and : for evil mode
 (map! :after evil
       :n ";" #'evil-ex
       :n ":" #'evil-repeat-find-char)
 
-(setq scroll-margin 5
-      scroll-conservatively 101)
+; (setq scroll-margin 5
+;       scroll-conservatively 101)
 
 (setq-default indent-tabs-mode nil
               tab-width 2
               standard-indent 2)
 
-(setq display-fill-column-indicator-column 80)
-(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+(setq-default fill-column 120)
+;; ?\u2502 = │ (default)
+;; ?\u2506 = ┆ (dashed)
+;; ?\u254e = ╎ (light dashed)
+;; ?\u2016 = ‖ (double vertical)
+;; ?|      = | (ASCII pipe)
+; (setq-default display-fill-column-indicator-character ?\u254e)
+(global-display-fill-column-indicator-mode)
+
+(add-hook 'tetris-mode-hook
+          (lambda ()
+            (evil-local-set-key 'normal (kbd "<up>") 'tetris-rotate-prev)
+            (evil-local-set-key 'normal (kbd "<down>") 'tetris-rotate-next)
+            (evil-local-set-key 'normal (kbd "<left>") 'tetris-move-left)
+            (evil-local-set-key 'normal (kbd "<right>") 'tetris-move-right)
+            (evil-local-set-key 'normal (kbd "w") 'tetris-move-bottom) ; hard drop
+            (evil-local-set-key 'normal (kbd "d") 'tetris-move-down) ; soft drop
+            (evil-local-set-key 'normal (kbd "n") 'tetris-start-game)
+            (evil-local-set-key 'normal (kbd "p") 'tetris-pause-game)
+            (evil-local-set-key 'normal (kbd "q") 'tetris-end-game)))
 
 (map! :leader
       :desc "Open terminal" "t" #'+vterm/here
@@ -60,7 +77,7 @@
 (map! :n "H" #'previous-buffer
       :n "L" #'next-buffer)
 
-;; Custom functions
+;; custom functions
 (defun copy-file-path ()
   "Copy the current file path to clipboard"
   (interactive)
@@ -244,7 +261,7 @@
 (after! orderless
   (setq completion-styles '(orderless basic)
         completion-category-defaults nil
-        completion-category-overrides nil)
+        completion-pcm-leading-wildcard t)
   (setq orderless-matching-styles '(orderless-flex)))
 
 ;; vterm configuration - ensure Evil works in copy mode
