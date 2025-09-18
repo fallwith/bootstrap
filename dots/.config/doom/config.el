@@ -4,6 +4,10 @@
   ;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
   (set-frame-size (selected-frame) 145 60))
 
+  ;; Frame transparency (xx% opaque, xx% when unfocused)
+  ;; (set-frame-parameter (selected-frame) 'alpha '(90 . 50))
+  ;; (add-to-list 'default-frame-alist '(alpha . (90 . 50))))
+
 ;; allowlist of themes
 (defvar themes
   '(everforest-hard-dark everforest-hard-dark everforest-hard-dark everforest-hard-dark everforest-hard-dark
@@ -74,6 +78,18 @@
       "C-k" #'evil-window-up
       "C-l" #'evil-window-right)
 
+;; Meta-key window navigation (Vi-style larger movements)
+(map! "M-h" #'evil-window-left
+      "M-j" #'evil-window-down
+      "M-k" #'evil-window-up
+      "M-l" #'evil-window-right)
+
+;; Window resizing with Meta-Shift keys
+(map! "M-H" #'evil-window-decrease-width
+      "M-L" #'evil-window-increase-width
+      "M-J" #'evil-window-decrease-height
+      "M-K" #'evil-window-increase-height)
+
 (map! :n "H" #'previous-buffer
       :n "L" #'next-buffer)
 
@@ -86,14 +102,6 @@
         (kill-new buffer-file-name)
         (message "File path copied: %s" buffer-file-name))
     (message "No file associated with this buffer")))
-
-(defun strip-trailing-whitespace-custom ()
-  "Remove trailing whitespace from entire buffer"
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (while (re-search-forward "[ \t]+$" nil t)
-      (replace-match "" nil nil))))
 
 (defun rails-alternate-file ()
   "Switch between app/ and spec/ files (Rails convention)"
@@ -263,6 +271,11 @@
         completion-category-defaults nil
         completion-pcm-leading-wildcard t)
   (setq orderless-matching-styles '(orderless-flex)))
+
+;; Disable immediate flycheck for Ruby files, but allow on save
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (setq-local flycheck-check-syntax-automatically '(save))))
 
 ;; vterm configuration - ensure Evil works in copy mode
 (after! vterm
