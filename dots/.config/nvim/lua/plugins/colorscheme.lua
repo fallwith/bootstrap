@@ -33,7 +33,8 @@ return {
       "avuenja/shizukana.nvim",
       "cxinu/glyph.nvim",
       "mitch1000/backpack.nvim",
-      "khoido2003/monokai-v2.nvim",
+      "vyrx-dev/void.nvim",
+      "regularhunter/builder-dark.vim",
     },
     lazy = false,
     priority = 1000,
@@ -80,7 +81,8 @@ return {
         "shizukana-dusk",
         "glyph",
         "backpack",
-        "monokai-v2",
+        "void",
+        "builder-dark",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])

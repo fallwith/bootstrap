@@ -9,6 +9,9 @@ vim.opt.colorcolumn = "80,120"
 --   noselect: always force a manual selection instead of providing a default one
 vim.opt.completeopt = "menuone,noinsert,noselect"
 
+-- highlight the line the cursor is currently on
+vim.opt.cursorline = true
+
 -- expand tabs to spaces
 vim.opt.expandtab = true
 
