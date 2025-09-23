@@ -33,6 +33,7 @@
 *.pdf
 *.log
 *.map
+*.svg
 !.zshrc
 !.zprofile
 *vcr/cassettes*
