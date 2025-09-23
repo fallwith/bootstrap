@@ -272,6 +272,10 @@
         completion-pcm-leading-wildcard t)
   (setq orderless-matching-styles '(orderless-flex)))
 
+;; configure flycheck to only run on save, not on file read
+(after! flycheck
+  (setq flycheck-check-syntax-automatically '(save mode-enabled)))
+
 ;; Disable immediate flycheck for Ruby files, but allow on save
 (add-hook 'ruby-mode-hook
           (lambda ()
@@ -292,3 +296,4 @@
               (interactive)
               (setq evil-this-register ?+)
               (call-interactively #'evil-yank))))
+
