@@ -35,6 +35,7 @@ return {
       "mitch1000/backpack.nvim",
       "vyrx-dev/void.nvim",
       "regularhunter/builder-dark.vim",
+      "nkxxll/ghostty-default-style-dark.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -83,6 +84,7 @@ return {
         "backpack",
         "void",
         "builder-dark",
+        "nkxxll/ghostty-default-style-dark.nvim",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
