@@ -78,7 +78,11 @@
 - Make tests enjoyable to read while maintaining clarity
 
 ### Test Structure & Organization
+- **Method-level test organization**: Organize tests by individual methods (`#method_name`) making it easy to locate and understand test coverage
+- **Logical flow testing**: Structure tests to follow the actual execution path through methods, testing early returns before testing the success path
+- **Comprehensive edge case coverage**: Test each conditional branch and early return separately with dedicated test cases
 - **Boolean expectations**: Prefer `be true`/`be false` over `be_truthy`/`be_falsey` for explicit boolean values
+- **Minitest-style assertions in RSpec**: Use `assert` and `refute` instead of `expect().to be true/false` for more direct, readable assertions
 - **Object references**: Create named `let` variables for test objects instead of using database lookups like `find_by`
 - **Setup preference**: Use `let` blocks for object creation rather than `before` blocks when objects are only used in specific test cases
 - **Context descriptions**: Use precise, natural language ("when widgets exist without recent alterations" vs "when widgets exist but no recent alterations")
@@ -86,6 +90,25 @@
 - **Test behavior, not implementation**: Verify side effects and state changes over method calls
 - **Use heredocs for multi-line expectations**: Clearer than complex regex patterns for output testing
 - **Extract shared test values**: Use `let` blocks for amounts, IDs, and other repeated data to eliminate duplication
+- **Testing private methods explicitly**: Use `object.send(:private_method)` to test private methods directly when necessary
+
+### Advanced Testing Patterns
+- **Never stub the object under test**: Always stub external dependencies (APIs, file system, ENV vars) instead of methods on the class being tested
+- **Helper methods for setup**: Create `mock_xyz_setup!` methods to encapsulate common test setup patterns and reduce duplication
+- **Realistic test data**: Use production-like values in tests rather than obviously fake placeholder data
+- **Proper external resource stubbing**: Use `and_call_original` then stub specific calls to avoid conflicts with test framework internals
+- **System command testing**: Prefer structured command execution libraries over shell commands for better stubbing and error handling
+
+### Mock/Double Usage Patterns
+- **Justify double usage with comments**: When using test doubles instead of real objects, include a comment explaining why (e.g., "doubles are used because: 1. instance_double can't handle the metaprogramming..., 2. method supports 3 different execution paths...")
+- **Named mock variables**: Use descriptive names like `mock_api_client`, `mock_service_response` instead of generic names like `mock_object`
+- **Path-specific mocking**: Create different mock setups for each execution path rather than one complex setup that tries to handle all scenarios
+- **Meaningful test data in mocks**: Use mock return values that clearly indicate what's being tested (e.g., `'premium'` vs `'basic'` for service tiers)
+
+### Error Handling & Edge Case Testing
+- **Specific error scenario testing**: Test exact error conditions and verify logging behavior with expected log messages
+- **Partial execution path testing**: Test scenarios where some operations succeed but others fail to ensure proper cleanup and error handling
+- **API failure simulation**: Test what happens when external API calls fail at different points in the execution flow
 
 ### Creative References for String Values
 - **Numbers**: 1138 (THX-1138), 8675309 (Jenny song), 1977 (Star Wars)
