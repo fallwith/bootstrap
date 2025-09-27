@@ -141,6 +141,9 @@ brew 'emacs-plus@30', args: %w(with-imagemagick with-modern-alecive-flatwoken-ic
 # tap 'uptech/homebrew-oss'
 # brew 'uptech/oss/alt'
 
+# "Error: It seems there is already an App at '/Applications/1password"
+# brew reinstall --cask 1password --force
+
 # tap 'homebrew/cask'
 cask '1password'
 cask '1password-cli' if working?
