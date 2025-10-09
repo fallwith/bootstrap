@@ -166,20 +166,10 @@ function fish_title
   end
 end
 
-if type -q tsu
-  set tsu_exists
-end
-
 function fish_prompt
   set -l last_status $status
 
-  # tsu driven tide info
-  if set -q tsu_exists
-    set -l tide_status (tsu)
-    set_color F8E6BD
-    echo -n "$tide_status "
-    set_color normal
-  end
+  echo -n ' 🦊 '
 
   # directory basename
   set_color 9DD6E7
