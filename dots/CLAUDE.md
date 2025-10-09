@@ -27,6 +27,7 @@
 - **Block syntax**: Use `{}` for return values, `do..end` for execution (defer to RuboCop)
 - **Complex conditionals**: Use guard clauses
 - **Perlish style**: Prefer Perlish idioms when appropriate
+- **Collection size**: Use `#size` instead of `#length` or `#count` for arrays and hashes
 
 ## Code Organization & Quality
 
@@ -75,17 +76,24 @@
 ### Test Naming & Values
 - **Variable names**: Use descriptive names that match the object type (`school`, `user`, `organization`)
 - **String values**: Use creative names and values with preferred references
+- **Use proper grammar in test descriptions**: Include articles (a/an/the) for readability - prefer "when a user is authenticated" over "when user is authenticated"
 - Make tests enjoyable to read while maintaining clarity
 
 ### Test Structure & Organization
 - **Method-level test organization**: Organize tests by individual methods (`#method_name`) making it easy to locate and understand test coverage
 - **Logical flow testing**: Structure tests to follow the actual execution path through methods, testing early returns before testing the success path
 - **Comprehensive edge case coverage**: Test each conditional branch and early return separately with dedicated test cases
+- **Test negative cases explicitly**: Don't rely on tests passing with default data - explicitly test exclusions, filters, and boundary conditions
+- **Consistent context structure**: When testing variations of the same scenario (e.g., different data states), use parallel structure with the same test cases across contexts to ensure comprehensive coverage
+- **Test the absence of activity**: Include tests for nil/empty/zero states, not just positive values
 - **Boolean expectations**: Prefer `be true`/`be false` over `be_truthy`/`be_falsey` for explicit boolean values
 - **Minitest-style assertions in RSpec**: Use `assert` and `refute` instead of `expect().to be true/false` for more direct, readable assertions
 - **Object references**: Create named `let` variables for test objects instead of using database lookups like `find_by`
 - **Setup preference**: Use `let` blocks for object creation rather than `before` blocks when objects are only used in specific test cases
 - **Context descriptions**: Use precise, natural language ("when widgets exist without recent alterations" vs "when widgets exist but no recent alterations")
+- **Context names should describe state, not existence**: Prefer "with archived rooms" over "when archived rooms exist"
+- **Test descriptions should be unambiguous**: "returns X when Y has recent activity" is clearer than "returns X when Y"
+- **Avoid redundancy in test descriptions**: Don't repeat the context in every test description within that context
 - **Prefer real integration over mocking**: Use `and_call_original` when testing method interactions to test actual behavior
 - **Test behavior, not implementation**: Verify side effects and state changes over method calls
 - **Use heredocs for multi-line expectations**: Clearer than complex regex patterns for output testing
@@ -98,6 +106,31 @@
 - **Realistic test data**: Use production-like values in tests rather than obviously fake placeholder data
 - **Proper external resource stubbing**: Use `and_call_original` then stub specific calls to avoid conflicts with test framework internals
 - **System command testing**: Prefer structured command execution libraries over shell commands for better stubbing and error handling
+
+### Testing Queries with Default Scopes
+- **Test scope bypass explicitly**: When a method should include archived/soft-deleted records, create test data with those flags set to true
+- **Don't assume tests verify filters**: Tests that only create non-filtered data don't prove filters work - you must create filtered data and verify it's included/excluded as intended
+- **Test both sides of the filter**: Create separate contexts testing that filtered data is properly excluded when it should be, and properly included when the method bypasses filters
+- **Example pattern for testing archived data inclusion**:
+  ```ruby
+  context 'with archived records' do
+    let(:archived_record) { create(:model, is_archive_ready: true) }
+
+    it 'includes archived record with recent activity' do
+      archived_record.update!(activity_at: 1.week.ago)
+      expect(subject.active_records).to include(archived_record)
+    end
+
+    it 'includes archived record with old activity' do
+      archived_record.update!(activity_at: 6.months.ago)
+      expect(subject.all_records).to include(archived_record)
+    end
+
+    it 'handles archived record with no activity' do
+      expect(subject.all_records).to include(archived_record)
+    end
+  end
+  ```
 
 ### Mock/Double Usage Patterns
 - **Justify double usage with comments**: When using test doubles instead of real objects, include a comment explaining why (e.g., "doubles are used because: 1. instance_double can't handle the metaprogramming..., 2. method supports 3 different execution paths...")
