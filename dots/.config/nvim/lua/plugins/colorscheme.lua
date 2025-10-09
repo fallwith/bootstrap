@@ -31,10 +31,8 @@ return {
       "RonelXavier/ymir.nvim",
       "kaiuri/juliana.nvim",
       "avuenja/shizukana.nvim",
-      "cxinu/glyph.nvim",
       "mitch1000/backpack.nvim",
       "vyrx-dev/void.nvim",
-      "regularhunter/builder-dark.vim",
       "nkxxll/ghostty-default-style-dark.nvim",
     },
     lazy = false,
@@ -80,10 +78,8 @@ return {
         "ymir",
         "juliana",
         "shizukana-dusk",
-        "glyph",
         "backpack",
         "void",
-        "builder-dark",
         "nkxxll/ghostty-default-style-dark.nvim",
       }
       math.randomseed(os.time())
