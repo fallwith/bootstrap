@@ -86,6 +86,9 @@
 - **Test negative cases explicitly**: Don't rely on tests passing with default data - explicitly test exclusions, filters, and boundary conditions
 - **Consistent context structure**: When testing variations of the same scenario (e.g., different data states), use parallel structure with the same test cases across contexts to ensure comprehensive coverage
 - **Test the absence of activity**: Include tests for nil/empty/zero states, not just positive values
+- **Concise expectations**: Use `be` for direct value comparisons instead of `eq`:
+  - Prefer: `expect(result[:amount]).to be 100`
+  - Over: `expect(result[:amount]).to eq(100)`
 - **Boolean expectations**: Prefer `be true`/`be false` over `be_truthy`/`be_falsey` for explicit boolean values
 - **Minitest-style assertions in RSpec**: Use `assert` and `refute` instead of `expect().to be true/false` for more direct, readable assertions
 - **Object references**: Create named `let` variables for test objects instead of using database lookups like `find_by`
