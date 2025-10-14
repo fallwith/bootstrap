@@ -34,6 +34,7 @@ return {
       "mitch1000/backpack.nvim",
       "vyrx-dev/void.nvim",
       "nkxxll/ghostty-default-style-dark.nvim",
+      "KijitoraFinch/nanode.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -81,6 +82,7 @@ return {
         "backpack",
         "void",
         "nkxxll/ghostty-default-style-dark.nvim",
+        "nanode",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
