@@ -35,6 +35,9 @@ return {
       "vyrx-dev/void.nvim",
       "nkxxll/ghostty-default-style-dark.nvim",
       "KijitoraFinch/nanode.nvim",
+      "utakotoba/myrrh.nvim",
+      "zanshin/nvim-fourcolor-theme",
+      "folksoftware/nvim",
     },
     lazy = false,
     priority = 1000,
@@ -83,6 +86,11 @@ return {
         "void",
         "nkxxll/ghostty-default-style-dark.nvim",
         "nanode",
+        "myrrh",
+        "fourcolor",
+        "folk-ushirogami",
+        "folk-snawfus",
+        "folk-abraxas",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
