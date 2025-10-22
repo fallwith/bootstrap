@@ -62,6 +62,7 @@ brew 'luarocks'
 # brew 'maven'
 brew 'mdcat'
 # brew 'mediainfo'
+brew 'mkcert' if working?
 # brew 'mksh'
 # brew 'mongodb'
 # brew 'mysql'
