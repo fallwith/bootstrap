@@ -174,6 +174,21 @@ let(:album) { 'Power, Corruption & Lies' }
 - Present code changes without verbose commentary about what was changed
 - When making comparative claims about tools or technologies, explicitly state confidence level and ask for verification if uncertain
 
+### Rails Console Code Formatting
+When providing Rails console code examples, format for Ruby 2.7 irb compatibility:
+- **Preferred**: Use backslash line continuations for multi-line method chains
+  ```ruby
+  records = Model.where(user_id: user.id) \
+    .where('created_at <= ?', timestamp) \
+    .where('expires_at >= ?', timestamp) \
+    .where.not(status: nil)
+  ```
+- **Alternative**: Use single-line format when the line is reasonably short
+  ```ruby
+  records = Model.where(user_id: user.id).where('created_at <= ?', timestamp).where.not(status: nil)
+  ```
+- **Avoid**: Standard multi-line method chains without continuations (irb will error on lines starting with `.`)
+
 ## Collaboration Style Preferences
 - **Iterative design**: Provide screenshots/visual feedback at key milestones
 - **Question technical decisions**: Ask about trade-offs, likelihood of success, alternative approaches
