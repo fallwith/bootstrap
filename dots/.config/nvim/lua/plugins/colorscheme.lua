@@ -38,6 +38,8 @@ return {
       "utakotoba/myrrh.nvim",
       "zanshin/nvim-fourcolor-theme",
       "folksoftware/nvim",
+      "saran13raj/wheat-fox.nvim",
+      "y9san9/y9nika.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -91,6 +93,8 @@ return {
         "folk-ushirogami",
         "folk-snawfus",
         "folk-abraxas",
+        "wheat-fox",
+        "y9nika",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
