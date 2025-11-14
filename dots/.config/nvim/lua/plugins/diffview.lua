@@ -2,6 +2,8 @@
 --
 -- do (Diff Obtain): Use the copy from the other file
 -- dp (Diff Put): Use the copy from this file
+-- ]c (jumpto-diffs): jump forwards to next change
+-- [c (jumpto-diffs): jump backwards to previous change
 
 return {
   "sindrets/diffview.nvim",
