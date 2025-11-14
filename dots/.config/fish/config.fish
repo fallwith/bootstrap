@@ -207,7 +207,9 @@ function git_branch_name
   # truncate to n chars. if the name ends in 1-2 digits ("phase1", "v10", etc.)
   # then append the 1-2 digits to help differentiate between long branch names
   # that are identical except for the number.
-  echo " $(string sub --length 15 $bname)$(string match -r '(?<!\d)\d{1,2}$' $bname)"
+  set -l truncated (string sub --length 15 $bname)
+  set -l suffix (test (string length $bname) -gt 15; and string match -r '(?<!\d)\d{1,2}$' $bname)
+  echo " $truncated$suffix"
 end
 
 set -gx VISUAL nvim
