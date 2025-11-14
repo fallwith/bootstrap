@@ -14,7 +14,6 @@ return {
       "ribru17/bamboo.nvim",
       "samharju/serene.nvim",
       "EdenEast/nightfox.nvim",
-      "vague2k/vague.nvim",
       "fxn/vim-monochrome",
       "alexxGmZ/e-ink.nvim",
       "rebelot/kanagawa.nvim",
@@ -36,8 +35,7 @@ return {
       "utakotoba/myrrh.nvim",
       "zanshin/nvim-fourcolor-theme",
       "folksoftware/nvim",
-      "saran13raj/wheat-fox.nvim",
-      "wkflanders/anysphere-dark.nvim",
+      "guillermodotn/nvim-earthsong",
     },
     lazy = false,
     priority = 1000,
@@ -65,7 +63,6 @@ return {
         "serene",
         "nightfox",
         "nordfox",
-        "vague",
         "kanagawa-wave",
         "melange",
         "nightfly",
@@ -87,9 +84,8 @@ return {
         "myrrh",
         "fourcolor",
         "folk-ushirogami",
-        "folk-snawfus",
-        "wheat-fox",
-        "anysphere-dark",
+        "earthsong",
+        "earthsong-mute",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
