@@ -127,8 +127,8 @@ brew 'zig'
 # tap 'heroku/brew'
 # brew 'heroku'
 
-tap 'd12frosted/emacs-plus'
-brew 'emacs-plus@30', args: %w(with-imagemagick with-modern-alecive-flatwoken-icon)
+# tap 'd12frosted/emacs-plus'
+# brew 'emacs-plus@30', args: %w(with-imagemagick with-modern-alecive-flatwoken-icon)
 
 # tap 'tavianator/tap'
 # brew 'bfs'
@@ -180,6 +180,7 @@ cask 'transmission' unless working?
 # cask 'vagrant'
 # cask 'virtualbox'
 # cask 'vlc'
+cask 'yacreader' unless working?
 cask 'zoom' unless working?
 
 # fonts
