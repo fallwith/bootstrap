@@ -36,6 +36,10 @@ return {
       "zanshin/nvim-fourcolor-theme",
       "folksoftware/nvim",
       "guillermodotn/nvim-earthsong",
+      "dlvandenberg/stilla.nvim",
+      "alexpasmantier/hubbamax.nvim",
+      "eggfriedrice24/eggfriedrice.nvim",
+      "kylesnowschwartz/cobalt-neon.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -86,6 +90,10 @@ return {
         "folk-ushirogami",
         "earthsong",
         "earthsong-mute",
+        "stilla",
+        "hubbamax",
+        "eggfriedrice",
+        "cobalt-neon",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
