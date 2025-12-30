@@ -39,7 +39,8 @@ return {
       "dlvandenberg/stilla.nvim",
       "alexpasmantier/hubbamax.nvim",
       "eggfriedrice24/eggfriedrice.nvim",
-      "kylesnowschwartz/cobalt-neon.nvim",
+      "oskarnurm/chiefdog.nvim",
+      "MartelleV/kaimandres.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -93,7 +94,8 @@ return {
         "stilla",
         "hubbamax",
         "eggfriedrice",
-        "cobalt-neon",
+        "chiefdog",
+        "kaimandres",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
