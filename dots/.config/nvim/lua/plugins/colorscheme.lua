@@ -41,6 +41,8 @@ return {
       "eggfriedrice24/eggfriedrice.nvim",
       "oskarnurm/chiefdog.nvim",
       "MartelleV/kaimandres.nvim",
+      "aethersyscall/AetherAmethyst.nvim",
+      "maroozm/moegi-neovim",
     },
     lazy = false,
     priority = 1000,
@@ -79,6 +81,7 @@ return {
         "lytmode", -- favored
         "lytmode",
         "lytmode",
+        "lytmode",
         "ymir",
         "juliana",
         "shizukana-dusk",
@@ -96,6 +99,9 @@ return {
         "eggfriedrice",
         "chiefdog",
         "kaimandres",
+        "aetheramethyst-eclipse",
+        "moegi-dark",
+        "moegi-space",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
