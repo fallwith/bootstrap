@@ -64,7 +64,8 @@ if ! test -e ~/.hushlogin
 end
 
 if status is-interactive
-  fish_vi_key_bindings # enable vi mode
+  set --global fish_key_bindings fish_vi_key_bindings
+  # fish_vi_key_bindings # enable vi mode
 
   function fish_user_key_bindings
     # use 'jk' to switch to normal mode
