@@ -56,10 +56,14 @@
 
 ## Code Style & Formatting
 
+### Line Length Limits
+- **Code**: Maximum 120 characters (enforced by RuboCop)
+- **Comments**: Maximum 80 characters (strict personal preference)
+
 ### Comments Policy
 - **NEVER add source code comments** unless explicitly requested
 - Keep code self-documenting through clear naming and structure
-- When comments are needed, restrict to 80 columns
+- **When comments ARE written**: Hard limit of 80 columns for all Ruby source comments (inline, method docs, class docs, etc.)
 
 ## Testing Philosophy
 
