@@ -227,6 +227,8 @@ else
 end
 
 fish_add_path ~/bin
+# pipx uses ~/.local/bin
+fish_add_path ~/.local/bin
 # fish_add_path ~/Library/Python/3.12/bin
 
 # homebrew

@@ -179,7 +179,7 @@ cask 'transmission' unless working?
 # cask 'tuple'
 # cask 'vagrant'
 # cask 'virtualbox'
-# cask 'vlc'
+cask 'vlc' unless working?
 cask 'yacreader' unless working?
 cask 'zoom' unless working?
 
