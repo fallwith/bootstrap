@@ -43,6 +43,10 @@ return {
       "MartelleV/kaimandres.nvim",
       "aethersyscall/AetherAmethyst.nvim",
       "maroozm/moegi-neovim",
+      "ATTron/bebop.nvim",
+      "Old-Farmer/noctis-nvim",
+      "wunki/gondolin.nvim",
+      "NisonChrist/tailwind-theme.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -102,6 +106,17 @@ return {
         "aetheramethyst-eclipse",
         "moegi-dark",
         "moegi-space",
+        "bebop",
+
+        "noctis-azureus",
+        "noctis-bordo",
+        "noctis-minimus",
+        "noctis-obscuro",
+        "noctis-sereno",
+        "noctis-uva",
+        "noctis-viola",
+        "gondolin",
+        "tailwind-theme",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
