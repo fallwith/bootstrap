@@ -47,6 +47,10 @@ return {
       "Old-Farmer/noctis-nvim",
       "wunki/gondolin.nvim",
       "NisonChrist/tailwind-theme.nvim",
+      "bergholmm/cursor-dark.nvim",
+      "voylin/godot_color_theme",
+      "aisk/kukishinobu.vim",
+      "kotsuban/nekomi.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -107,7 +111,6 @@ return {
         "moegi-dark",
         "moegi-space",
         "bebop",
-
         "noctis-azureus",
         "noctis-bordo",
         "noctis-minimus",
@@ -117,6 +120,10 @@ return {
         "noctis-viola",
         "gondolin",
         "tailwind-theme",
+        "cursor-dark",
+        "godot",
+        "kukishinobu.vim",
+        "nekomi.nvim",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
