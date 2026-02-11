@@ -122,8 +122,8 @@ return {
         "tailwind-theme",
         "cursor-dark",
         "godot",
-        "kukishinobu.vim",
-        "nekomi.nvim",
+        "kukishinobu",
+        "nekomi",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
