@@ -24,6 +24,7 @@ alias v='nvim_launch -c "lua require(\'snacks\').picker.smart()"'
 alias vi='nvim_launch'
 alias vim='nvim_launch'
 alias wiki="nvim_launch -c \"lua require('kiwi').open_wiki_index()\""
+alias wt='worktree'
 
 abbr -a ayu "fish_config theme save 'ayu Mirage'"
 abbr -a brewinstall '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
