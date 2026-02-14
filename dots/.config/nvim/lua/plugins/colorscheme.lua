@@ -51,6 +51,7 @@ return {
       "voylin/godot_color_theme",
       "aisk/kukishinobu.vim",
       "kotsuban/nekomi.nvim",
+      "waytoopurple/fieldlights.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -124,6 +125,7 @@ return {
         "godot",
         "kukishinobu",
         "nekomi",
+        "fieldlights",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
