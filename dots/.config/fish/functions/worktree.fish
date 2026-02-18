@@ -153,23 +153,23 @@ function worktree --description 'Manage git worktrees'
 
       $git fetch
 
-      if $git rev-parse --verify origin/$branch >/dev/null 2>&1
-        read -l -P "Create worktree for '$branch'? [y/N] " confirm
-        if test "$confirm" != y -a "$confirm" != Y
-          return 1
-        end
-        $git worktree add $worktree_path --track -b $branch origin/$branch
-        or return 1
-        cd $worktree_path
-        return 0
-      end
-
       if $git rev-parse --verify $branch >/dev/null 2>&1
         read -l -P "Create worktree for '$branch'? [y/N] " confirm
         if test "$confirm" != y -a "$confirm" != Y
           return 1
         end
         $git worktree add $worktree_path $branch
+        or return 1
+        cd $worktree_path
+        return 0
+      end
+
+      if $git rev-parse --verify origin/$branch >/dev/null 2>&1
+        read -l -P "Create worktree for '$branch'? [y/N] " confirm
+        if test "$confirm" != y -a "$confirm" != Y
+          return 1
+        end
+        $git worktree add $worktree_path --track -b $branch origin/$branch
         or return 1
         cd $worktree_path
         return 0
