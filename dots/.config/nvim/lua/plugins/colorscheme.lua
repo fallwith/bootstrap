@@ -52,6 +52,8 @@ return {
       "aisk/kukishinobu.vim",
       "kotsuban/nekomi.nvim",
       "waytoopurple/fieldlights.nvim",
+      "T-b-t-nchos/Aquavium.nvim",
+      "jakubkarlicek/molokai-nvim",
     },
     lazy = false,
     priority = 1000,
@@ -92,6 +94,9 @@ return {
         "lytmode",
         "lytmode",
         "ymir",
+        "juliana", -- favored
+        "juliana",
+        "juliana",
         "juliana",
         "shizukana-dusk",
         "backpack",
@@ -126,6 +131,8 @@ return {
         "kukishinobu",
         "nekomi",
         "fieldlights",
+        "Aquavium",
+        "molokai-nvim",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
