@@ -84,6 +84,13 @@
   gone-list = !git remote prune origin && git branch -vv | grep -E '^[^*].*: gone]' | awk '{print $1}'
   pushf = push --force-with-lease
   last = log -1 HEAD --stat
+  up = "!f() { \
+    if [ -z "$1" ]; then \
+      echo "usage: 'git up branch_name_to_update_from'"; \
+    else \
+      git fetch origin "$1" && git rebase origin/"$1"; \
+    fi; \
+  }; f"
 [commit]
   template = ~/.gitmessage
 	gpgsign = true
@@ -97,6 +104,8 @@
   prompt = true
 [mergetool "vimdiff"]
   cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[push]
+	autoSetupRemote = true
 [pull]
 	ff = only
 [init]
