@@ -111,15 +111,16 @@ function worktree --description 'Manage git worktrees'
     case go
       set -l selection (
         $git worktree list |
+        sed "s|$repo_root/||" |
         fzf --prompt="worktree> " | awk '{print $1}'
       )
       if test -z "$selection"
         return 0
       end
-      cd $selection
+      cd $repo_root/$selection
 
     case list ls
-      $git worktree list
+      $git worktree list | sed "s|$repo_root/||"
 
     case rm remove
       if test (count $argv) -lt 2
@@ -130,8 +131,10 @@ function worktree --description 'Manage git worktrees'
       set -l branch $argv[2]
       set -l worktree_path $repo_root/$branch
 
-      $git worktree remove $worktree_path
-      or return 1
+      if not $git worktree remove $worktree_path
+        echo "Hint: use 'git worktree remove --force $worktree_path' for uncommitted changes"
+        return 1
+      end
 
       if $git rev-parse --verify $branch >/dev/null 2>&1
         $git branch -d $branch
