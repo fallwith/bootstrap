@@ -38,7 +38,7 @@ quit-after-last-window-closed = true
 scrollback-limit = 20_000_000
 shell-integration = fish
 # theme = light:rose-pine-dawn,dark:Xcode Dark
-theme = Nordfox
+# theme = Nordfox
 window-width = 130
 window-height = 30
 window-inherit-working-directory = true
@@ -49,6 +49,8 @@ keybind = ctrl+shift+left=previous_tab
 keybind = cmd+period=text:\x03
 keybind = cmd+,=text:,
 keybind = global:alt+cmd+`=toggle_quick_terminal
+
+config-file = theme.conf
 
 # With macos-option-as-alt set to true, macOS unicode shortcuts such as
 # alt+shift+8 for a bullet won't work. When it's set to false, standard
