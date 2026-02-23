@@ -54,6 +54,9 @@ return {
       "waytoopurple/fieldlights.nvim",
       "T-b-t-nchos/Aquavium.nvim",
       "jakubkarlicek/molokai-nvim",
+      "Kopihue/one-dark-pro-max",
+      "kurund/atomic.nvim",
+      "smit4k/shale.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -133,6 +136,10 @@ return {
         "fieldlights",
         "Aquavium",
         "molokai-nvim",
+        "one-dark-pro-max",
+        "atomic",
+        "atomic-dark",
+        "shale",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
