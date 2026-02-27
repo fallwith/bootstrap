@@ -1,5 +1,8 @@
-[user]
-  editor = vi
+[include]
+  ; git config --file ~/.gitconfig.local user.name your_name
+  ; git config --file ~/.gitconfig.local user.email your_email
+  ; git config --file ~/.gitconfig.local user.signingkey your_signingkey
+  path = ~/.gitconfig.local
 [alias]
   c = commit
   ; checkout the given branch, using fuzzy finding if a branch is not given.
@@ -44,17 +47,15 @@
       echo \"$protected\"; \
     fi \
   }; f"
-  bpull = !sh -c '_branch_name=`git bname` && git pull origin $_branch_name'
-  ; bpullr = !sh -c '_branch_name=`git bname` && git pull --rebase origin $_branch_name'
   revision = !git show|head -1|cut -c8-
   rev = revision
   ; delete a local branch that has been merged to master and not pushed to remote
   bdel = branch -d
   ; delete a local branch that has not been merged and not pushed to remote
   bdelf = branch -D
-  ; delete a remote branch that has been merged
+  ; delete a local branch that has been merged
   bdelr = !sh -c 'git branch -d -r origin/$0'
-  ; delete a remote branch that has not been merged
+  ; delete a local branch that has not been merged
   bdelrf = !sh -c 'git branch -D -r origin/$0'
   ; wipe (remove) a remote branch from origin (remove the branch from GitHub)
   bwipe = !sh -c 'git push origin --delete $0'
@@ -79,7 +80,7 @@
       git diff --name-only \"$1\"; \
     fi; \
   }; f"
-  recent = for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads/ refs/remotes/origin/ | sed 's|^origin/||' | sort -u | head -10
+  recent = !git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads/ refs/remotes/origin/ | sed 's|^origin/||' | sort -u | head -10
   gone-clean = !git remote prune origin && git branch -vv | grep -E '^[^*].*: gone]' | awk '{print $1}' | xargs -n 1 git branch -D
   gone-list = !git remote prune origin && git branch -vv | grep -E '^[^*].*: gone]' | awk '{print $1}'
   pushf = push --force-with-lease
@@ -88,7 +89,7 @@
     if [ -z "$1" ]; then \
       echo "usage: 'git up branch_name_to_update_from'"; \
     else \
-      git fetch origin "$1" && git rebase origin/"$1"; \
+      git fetch origin && git merge origin/"$1"; \
     fi; \
   }; f"
 [commit]
