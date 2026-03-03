@@ -1,5 +1,5 @@
 {
-  "AetherAmethyst.nvim": { "branch": "main", "commit": "c8e45cdb435ac0ab42496824a164f2609eef1c45" },
+  "AetherAmethyst.nvim": { "branch": "main", "commit": "1b457b4e3192759edce6f4c65d9c4cd64c8b6840" },
   "Aquavium.nvim": { "branch": "main", "commit": "7d78d05c2935097984e99fa6254ca80e50566b6c" },
   "atomic.nvim": { "branch": "main", "commit": "3c4a69b87ae3439238f804aaf55d3255489f24ae" },
   "austere.vim": { "branch": "master", "commit": "d985d31982bef869055e7a8c8d01cfe8c2992279" },

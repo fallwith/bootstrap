@@ -41,7 +41,7 @@ return {
       "eggfriedrice24/eggfriedrice.nvim",
       "oskarnurm/koda.nvim",
       "MartelleV/kaimandres.nvim",
-      "aethersyscall/AetherAmethyst.nvim",
+      "fallwith/AetherAmethyst.nvim",
       "maroozm/moegi-neovim",
       "ATTron/bebop.nvim",
       "Old-Farmer/noctis-nvim",
