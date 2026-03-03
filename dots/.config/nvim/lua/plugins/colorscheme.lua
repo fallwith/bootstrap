@@ -57,6 +57,10 @@ return {
       "Kopihue/one-dark-pro-max",
       "kurund/atomic.nvim",
       "smit4k/shale.nvim",
+      "nnavales/paragon",
+      "ikelaiah/nebula-drift-omega",
+      "OwlfaceGames/owly.nvim",
+      "hopsk/tomorrow-night-bright-rstudio.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -140,6 +144,10 @@ return {
         "atomic",
         "atomic-dark",
         "shale",
+        "paragon",
+        "nebula-drift-omega",
+        "owly",
+        "tomorrow-night-bright-r",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
