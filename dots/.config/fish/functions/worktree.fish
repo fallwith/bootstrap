@@ -21,6 +21,9 @@
 #   - fuzzy-find and cd to an existing worktree
 # `worktree rm <exact name>`
 #   - remove the worktree and delete the local branch
+# `worktree clean`
+#   - remove worktrees whose branches are merged or
+#     whose remote tracking branch is gone
 function worktree --description 'Manage git worktrees'
   if test "$argv[1]" = clone
     if test (count $argv) -lt 2
@@ -121,6 +124,89 @@ function worktree --description 'Manage git worktrees'
 
     case list ls
       $git worktree list | sed "s|$repo_root/||"
+
+    case clean prune
+      $git fetch --prune
+
+      set -l protected main master develop dev staging sandbox
+
+      set -l default_ref
+      set -l default_ref_raw ($git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null)
+      if test -n "$default_ref_raw"
+        set default_ref (string replace 'refs/remotes/' '' $default_ref_raw)
+      else
+        for candidate in main master
+          if $git rev-parse --verify origin/$candidate >/dev/null 2>&1
+            set default_ref origin/$candidate
+            break
+          end
+        end
+      end
+
+      if test -z "$default_ref"
+        echo "Error: could not determine default branch"
+        return 1
+      end
+
+      set -l merged (
+        $git branch --merged $default_ref | string trim | string replace -r '^\* ' ''
+      )
+
+      set -l gone (
+        $git branch -vv |
+        string match '*: gone]*' |
+        string replace -r '^\s*\+?\s*(\S+)\s.*' '$1'
+      )
+
+      set -l removable
+      for line in ($git worktree list)
+        if string match -q '*(bare)*' $line
+          continue
+        end
+        set -l branch (string match -r '\[(.+)\]' $line)[2]
+        if test -z "$branch"
+          continue
+        end
+        if contains -- $branch $protected
+          continue
+        end
+        if contains -- $branch $merged $gone
+          set -a removable $branch
+        end
+      end
+
+      if test (count $removable) -eq 0
+        echo "No cleanable worktrees found"
+        return 0
+      end
+
+      echo "Worktrees to remove:"
+      for branch in $removable
+        echo "  $branch"
+      end
+      read -l -P "Remove all? [y/N] " confirm
+      if test "$confirm" != y -a "$confirm" != Y
+        return 0
+      end
+
+      set -l skipped
+      for branch in $removable
+        echo "Removing $branch..."
+        if $git worktree remove $repo_root/$branch 2>/dev/null
+          $git branch -d $branch 2>/dev/null
+        else
+          set -a skipped $branch
+        end
+      end
+
+      if test (count $skipped) -gt 0
+        echo
+        echo "Skipped (dirty):"
+        for branch in $skipped
+          echo "  $branch"
+        end
+        echo "Clean up untracked/modified files, then re-run."
+      end
 
     case rm remove
       if test (count $argv) -lt 2
