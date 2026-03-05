@@ -51,6 +51,9 @@ function process_dot_dir() {
       process_dot_dir "$f"
       continue
     fi
+    # skip seed files (used by jq merge, not symlinked)
+    [[ "$f" == *.seed.json ]] && continue
+
     target="$target_dir/${f//$bootstrap_dir\/dots\//}"
     if [[ -e "$target" ]]; then
       echo "$target already exists - skipping"
@@ -69,6 +72,39 @@ function process_dot_dir() {
   shopt -u dotglob
 }
 process_dot_dir "$bootstrap_dir/dots"
+
+
+# --- --- --- --- --- --- ---
+# Claude Code seed configs
+# --- --- --- --- --- --- ---
+
+function merge_seed_json() {
+  local seed="$1"
+  local target="$2"
+
+  if ! command -v jq >/dev/null 2>&1; then
+    echo "jq not found - skipping Claude seed merge for $target"
+    return
+  fi
+
+  if [[ ! -f "$seed" ]]; then
+    return
+  fi
+
+  if [[ ! -f "$target" ]]; then
+    echo "Creating $target from seed"
+    mkdir -p "$(dirname "$target")"
+    cp "$seed" "$target"
+  else
+    local merged
+    merged=$(jq -s '.[0] * .[1]' "$target" "$seed")
+    echo "$merged" > "$target"
+    echo "Merged seed into $target"
+  fi
+}
+
+merge_seed_json "$bootstrap_dir/dots/.claude.seed.json" "$target_dir/.claude.json"
+merge_seed_json "$bootstrap_dir/dots/.claude/settings.seed.json" "$target_dir/.claude/settings.json"
 
 
 # --- --- --- --- --- --- ---
