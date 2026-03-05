@@ -56,7 +56,6 @@ set repos \
   smit4k/shale.nvim \
   nnavales/paragon \
   ikelaiah/nebula-drift-omega \
-  OwlfaceGames/owly.nvim \
   hopsk/tomorrow-night-bright-rstudio.nvim
 
 for repo in $repos

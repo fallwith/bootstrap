@@ -59,7 +59,6 @@ return {
       "smit4k/shale.nvim",
       "nnavales/paragon",
       "ikelaiah/nebula-drift-omega",
-      "OwlfaceGames/owly.nvim",
       "hopsk/tomorrow-night-bright-rstudio.nvim",
     },
     lazy = false,
@@ -124,13 +123,7 @@ return {
         "moegi-dark",
         "moegi-space",
         "bebop",
-        "noctis-azureus",
-        "noctis-bordo",
-        "noctis-minimus",
-        "noctis-obscuro",
-        "noctis-sereno",
-        "noctis-uva",
-        "noctis-viola",
+        "noctis-sereno", -- non-sereno ones don't look right with highlighting + visual selection
         "gondolin",
         "tailwind-theme",
         "cursor-dark",
@@ -146,7 +139,6 @@ return {
         "shale",
         "paragon",
         "nebula-drift-omega",
-        "owly",
         "tomorrow-night-bright-r",
       }
       math.randomseed(os.time())
