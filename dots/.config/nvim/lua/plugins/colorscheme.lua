@@ -60,6 +60,8 @@ return {
       "nnavales/paragon",
       "ikelaiah/nebula-drift-omega",
       "hopsk/tomorrow-night-bright-rstudio.nvim",
+      "aymenhafeez/doric-themes.nvim",
+      "bashful-strix/arcana",
     },
     lazy = false,
     priority = 1000,
@@ -140,6 +142,16 @@ return {
         "paragon",
         "nebula-drift-omega",
         "tomorrow-night-bright-r",
+        "doric-water",
+        "doric-plum",
+        "doric-fire",
+        "doric-valley",
+        "doric-dark",
+        "doric-obsidian",
+        "doric-mermaid",
+        "doric-pine",
+        "doric-copper",
+        "arcana",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])

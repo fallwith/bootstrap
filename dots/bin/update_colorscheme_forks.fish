@@ -56,7 +56,9 @@ set repos \
   smit4k/shale.nvim \
   nnavales/paragon \
   ikelaiah/nebula-drift-omega \
-  hopsk/tomorrow-night-bright-rstudio.nvim
+  hopsk/tomorrow-night-bright-rstudio.nvim \
+  aymenhafeez/doric-themes.nvim \
+  bashful-strix/arcana
 
 for repo in $repos
   set -l name (basename $repo)
