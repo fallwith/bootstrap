@@ -1,5 +1,6 @@
 function addscheme -d 'Add a colorscheme to Neovim from a GitHub repo'
   set -l lua_file ~/.config/nvim/lua/plugins/colorscheme.lua
+  set -l forks_file ~/git/bootstrap/dots/bin/update_colorscheme_forks.fish
   set -l test_flag false
   set -l owner_repo
 
@@ -94,6 +95,25 @@ function addscheme -d 'Add a colorscheme to Neovim from a GitHub repo'
   rm -f $scheme_tmp
 
   echo "Added $owner_repo to colorscheme.lua"
+
+  if grep -q "$owner_repo" $forks_file
+    echo "$owner_repo is already in update_colorscheme_forks.fish"
+  else
+    set -l last_repo_line (grep -n '^\s\+\S\+/\S\+' $forks_file | tail -1 | cut -d: -f1)
+    if test -n "$last_repo_line"
+      set -l forks_tmp (mktemp)
+      set -l before (math $last_repo_line - 1)
+      set -l after (math $last_repo_line + 1)
+      head -n $before $forks_file > $forks_tmp
+      printf '%s %s\n' (sed -n "$last_repo_line"p $forks_file) "\\" >> $forks_tmp
+      printf '  %s\n' $owner_repo >> $forks_tmp
+      tail -n +$after $forks_file >> $forks_tmp
+      mv $forks_tmp $forks_file
+      echo "Added $owner_repo to update_colorscheme_forks.fish"
+    else
+      echo "Error: could not find insertion point in update_colorscheme_forks.fish"
+    end
+  end
 
   if test "$test_flag" = true
     echo "Installing with Lazy..."

@@ -58,7 +58,10 @@ set repos \
   ikelaiah/nebula-drift-omega \
   hopsk/tomorrow-night-bright-rstudio.nvim \
   aymenhafeez/doric-themes.nvim \
-  bashful-strix/arcana
+  bashful-strix/arcana \
+  m-mead/eddy.nvim \
+  vague-theme/vague.vim \
+  ilm-alan/venice.vim
 
 for repo in $repos
   set -l name (basename $repo)

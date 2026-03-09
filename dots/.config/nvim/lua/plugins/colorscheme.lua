@@ -62,6 +62,9 @@ return {
       "hopsk/tomorrow-night-bright-rstudio.nvim",
       "aymenhafeez/doric-themes.nvim",
       "bashful-strix/arcana",
+      "m-mead/eddy.nvim",
+      "vague-theme/vague.vim",
+      "ilm-alan/venice.vim",
     },
     lazy = false,
     priority = 1000,
@@ -152,6 +155,9 @@ return {
         "doric-pine",
         "doric-copper",
         "arcana",
+        "eddy",
+        "vague",
+        "venice",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
