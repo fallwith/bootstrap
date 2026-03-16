@@ -28,7 +28,10 @@
   rv = checkout --
   s = stash
   sl = stash list
+  ; apply keeps the entry in the stash
   sa = stash apply
+  ; pop applies and drops the entry from the stash
+  sp = stash pop
   sc = stash clear
   st = status
   bname = rev-parse --abbrev-ref HEAD
