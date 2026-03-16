@@ -36,6 +36,8 @@ abbr -a gpgtest 'echo testing | gpg --clearsign'
 abbr -a gom "gometalinter --enable-all --line-length=120 --deadline=180s ./..."
 abbr -a got 'go test -v ./...'
 abbr -a matrix 'cxxmatrix -c \#FFC0CB -s rain-forever --frame-rate=40 --preserve-background --no-twinkle --no-diffuse'
+abbr -a pull 'git pull'
+abbr -a push 'git bpush'
 abbr -a servicesstart 'brew services --all start'
 abbr -a servicesstop 'brew services --all stop'
 abbr -a uga 'ug --all'
