@@ -62,20 +62,30 @@ Match the culture of the Ruby community (MINASWAN).
 - Examples: subscription updates + record deletions, creating multiple related records.
 
 ### Rails Console Snippet Format
-- Wrap multi-line chains in parentheses for paste-friendly leading-dot style.
-- End with `;` to suppress IRB echo.
+- Wrap multi-line chains in parentheses for paste-friendly leading-dot style. IRB treats a leading `.` as a new statement, so parentheses are required for multi-line chains to paste correctly.
+- End with `;nil` to suppress IRB echo.
 - Use `pp` (preferred) or `puts` when console output is desired.
 - Hold results in variables otherwise.
-- Example:
+- Standalone chain:
   ```ruby
   (User.joins(:posts)
     .where(posts: { published: true })
     .order(created_at: :desc)
     .limit(10)
-    .pluck(:email));
+    .pluck(:email));nil
+  ```
+- Assignment with chain — parentheses wrap the **right-hand side**:
+  ```ruby
+  emails = (User.joins(:posts)
+    .where(posts: { published: true })
+    .pluck(:email));nil
   ```
 - With output: `pp User.where(active: true).count`
-- With variable: `emails = (User.where(active: true).pluck(:email));`
+- Multiple statements: put each on its own line or join with `;`
+  ```ruby
+  sub = Subscription.find(123)
+  pp({ id: sub.id, status: sub.status });nil
+  ```
 
 ### Testing Approach - Test-Driven Development (TDD)
 - The test diff alone should tell the complete story of the code change. Tests represent the desired behavior — get alignment on that first, then implement.
