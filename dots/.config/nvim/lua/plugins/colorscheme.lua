@@ -65,6 +65,8 @@ return {
       "m-mead/eddy.nvim",
       "vague-theme/vague.vim",
       "ilm-alan/venice.vim",
+      "marcos-venicius/zenburned",
+      "0xleodevv/oc-2.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -161,6 +163,9 @@ return {
         "eddy",
         "vague",
         "venice",
+        "zenburned",
+        "oc-2",
+        "oc-2-noir",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])

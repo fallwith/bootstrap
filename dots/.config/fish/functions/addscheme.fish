@@ -109,6 +109,7 @@ function addscheme -d 'Add a colorscheme to Neovim from a GitHub repo'
       printf '  %s\n' $owner_repo >> $forks_tmp
       tail -n +$after $forks_file >> $forks_tmp
       mv $forks_tmp $forks_file
+      chmod 755 $forks_file
       echo "Added $owner_repo to update_colorscheme_forks.fish"
     else
       echo "Error: could not find insertion point in update_colorscheme_forks.fish"

@@ -63,7 +63,9 @@ set repos \
     bashful-strix/arcana \
     m-mead/eddy.nvim \
     vague-theme/vague.vim \
-    ilm-alan/venice.vim
+    ilm-alan/venice.vim \
+  marcos-venicius/zenburned \
+  0xleodevv/oc-2.nvim
 
 set -l successes
 set -l auto_fixed
@@ -74,7 +76,7 @@ for repo in $repos
     set -l fork $gh_user/$name
 
     echo "=== $repo ==="
-    gh repo fork $repo --clone=false --remote=false 2>&1
+    gh repo fork $repo --clone=false 2>&1
 
     set -l sync_out (gh repo sync $fork 2>&1)
     set -l sync_rc $status
