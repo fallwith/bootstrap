@@ -65,7 +65,11 @@ set repos \
     vague-theme/vague.vim \
     ilm-alan/venice.vim \
   marcos-venicius/zenburned \
-  0xleodevv/oc-2.nvim
+  0xleodevv/oc-2.nvim \
+  kcayme/bearded-arc.nvim \
+  omacom-io/lumon.nvim \
+  dgrco/hearthlight.nvim \
+  ankushbhagats/pastel.nvim
 
 set -l successes
 set -l auto_fixed
