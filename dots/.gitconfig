@@ -121,6 +121,8 @@
 	prompt = false
 [tag]
 	gpgSign = true
+[url "git@github.com:"]
+	insteadOf = https://github.com/
 
 ; Use GPG to sign commits and tags:
 ;
