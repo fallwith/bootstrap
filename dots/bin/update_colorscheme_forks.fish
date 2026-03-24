@@ -69,7 +69,8 @@ set repos \
   kcayme/bearded-arc.nvim \
   omacom-io/lumon.nvim \
   dgrco/hearthlight.nvim \
-  ankushbhagats/pastel.nvim
+  ankushbhagats/pastel.nvim \
+  mohseenrm/brutus
 
 set -l successes
 set -l auto_fixed

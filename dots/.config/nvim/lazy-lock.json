@@ -8,6 +8,7 @@
   "bamboo.nvim": { "branch": "master", "commit": "1309bc88bffcf1bedc3e84e7fa9004de93da774a" },
   "bearded-arc.nvim": { "branch": "main", "commit": "324dc99538d48344400467a0a73483eb0cb74afb" },
   "bebop.nvim": { "branch": "main", "commit": "997b2d40a728a17d225026f9580cb5e489e82f4f" },
+  "brutus": { "branch": "main", "commit": "29ed9271f51e8adbe757c79fce3cc21b52697f64" },
   "catppuccin": { "branch": "main", "commit": "a7788416689dbefea659d9e9415c87926b0ba5d8" },
   "cursor-dark.nvim": { "branch": "main", "commit": "68997e3e1abdc7fed34bd9fe53a9c6cf6229fd1e" },
   "darcula-dark.nvim": { "branch": "main", "commit": "285c1fe3225ef19ef2639a3080551ee9669f263b" },

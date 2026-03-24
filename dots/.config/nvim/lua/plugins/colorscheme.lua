@@ -71,6 +71,7 @@ return {
       "omacom-io/lumon.nvim",
       "dgrco/hearthlight.nvim",
       "ankushbhagats/pastel.nvim",
+      "mohseenrm/brutus",
     },
     lazy = false,
     priority = 1000,
@@ -188,6 +189,7 @@ return {
         "pastelcream",
         "pastelcool",
         "pastel",
+        "cobalt-kinetic",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
