@@ -55,6 +55,7 @@ function worktree --description 'Manage git worktrees'
     $git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
     $git config push.autoSetupRemote true
     $git fetch
+    $git remote set-head origin --auto
 
     set -l default_branch (
       string replace 'refs/heads/' '' ($git symbolic-ref HEAD)
