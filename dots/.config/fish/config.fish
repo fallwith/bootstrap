@@ -265,24 +265,13 @@ end
 set -gx GOPATH ~/.go
 fish_add_path $GOPATH/bin
 
-# asdf
-if test -e /opt/homebrew/bin/asdf
-  set -gx ASDF_DATA_DIR $HOME/.asdf
-  mkdir -p $ASDF_DATA_DIR
-  fish_add_path $ASDF_DATA_DIR/shims
-
-  if not test -e $ASDF_DATA_DIR/completions
-    mkdir -p $ASDF_DATA_DIR/completions
+# ruby
+source ~/.config/fish/functions/auto_setruby.fish
+if test -d ~/.rubies
+  if test -e ~/.ruby-version
+    set -g DEFAULT_RUBY_VERSION (cat ~/.ruby-version)
   end
-
-  # auto-install plugins
-  for plugin in ruby nodejs
-    if not test -e $ASDF_DATA_DIR/plugins/$plugin
-      asdf plugin add $plugin
-    end
-  end
-
-  set -gx ASDF_NODEJS_AUTO_ENABLE_COREPACK 1
+  auto_setruby
 end
 
 # rust

@@ -4,7 +4,7 @@ end
 
 brew '7zip'
 # brew 'ansible'
-brew 'asdf'
+# brew 'asdf'
 # brew 'atool'
 # brew 'awscli' if working?
 # brew 'bash'
@@ -29,6 +29,7 @@ brew 'fish'
 # brew 'frum'
 brew 'fzf'
 # brew 'gdb'
+brew 'gdbm'
 brew 'ghostscript'
 brew 'gh'
 # brew 'ghostty' # using nightlies instead as of 2025-01-12
@@ -52,6 +53,7 @@ brew 'kubeseal' if working?
 brew 'lame'
 brew 'libbluray'
 # brew 'libcaca'
+brew 'libffi'
 brew 'libxml2'
 brew 'libxslt'
 brew 'libyaml'
@@ -71,6 +73,7 @@ brew 'neovim'
 brew 'neovim-remote'
 # brew 'neovim', args: ['HEAD']
 brew 'node'
+brew 'node@22' if working?
 brew 'npm'
 brew 'openssl'
 brew 'pandoc'
@@ -90,12 +93,14 @@ brew 'pkg-config'
 brew 'python'
 brew 'ranger', args: ['HEAD']
 brew 'rclone'
+brew 'readline'
 # brew 'reattach-to-user-namespace'
 # brew 'redis'
 # ripgrep is needed by nvim telescope
 brew 'ripgrep'
 brew 'rom-tools' unless working?
-brew 'ruby-install'
+brew 'ruby-build'
+# brew 'ruby-install'
 brew 'rustup'
 brew 'sdl2'
 # brew 'sdl2_gfx'
