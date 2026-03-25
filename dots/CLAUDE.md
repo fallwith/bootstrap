@@ -13,6 +13,11 @@
 - If overruled, note the objection and move on.
 - If the objection is high-stakes, the danger of proceeding is significant, or the back-and-forth has been extensive, offer to write a markdown plan file for future follow-up.
 
+### Linting
+- **Before committing**, run the project's linter on all changed files (e.g., `bundle exec rubocop` for Ruby, `fish -n` / `fish_indent --check` for fish). Do not rely on code review agents or manual inspection as a substitute for the real tool.
+- **New code**: Fix all lint violations before committing.
+- **Pre-existing violations** surfaced in changed files: follow the ownership rules below.
+
 ### Existing Code That Violates Preferences
 - **My code**: Default to opportunistic cleanup when editing.
 - **Someone else's code**: Leave it alone unless directly related to the change being made.
@@ -26,6 +31,13 @@
 ### Decision-Making Under Uncertainty
 - Prioritize: security > performance > resources > maintainability/clarity > style.
 - When there is no clear winner, say so. Present the options and their tradeoffs for collaborative decision-making.
+
+### Addressing PR Feedback
+- Use the `/address-pr-feedback` skill when asked to address PR review comments. If not using the skill directly, follow its ordering: make changes, commit, push, *then* reply to threads. Never tell a reviewer that feedback has been addressed before the commit has landed on the remote branch.
+- **Reply format for addressed feedback**: `"{Acknowledgment phrase}, addressed in {short sha}. — {attribution}"`. Always include the short SHA of the commit that contains the fix so reviewers can verify quickly. For threads that are pure explanations/answers with no code change, the SHA is not needed.
+- **Human reviewer suggestions**: When a human reviewer provides a `suggestion` block, prompt me to use the "Commit suggestion" button in the browser. This gives the reviewer contributor credit and guarantees their exact wording is captured. Do not apply these locally.
+- **Bot suggestions** (linters, formatters, CI bots): Apply directly in code. Batch multiple bot suggestions into a single edit pass and commit.
+- **Attribution**: When replying to PR threads (or any external-facing text not drafted by me), include attribution like "— Claude & $USER" to make agent involvement clear. Solo credit is fine only when the text was originally drafted by me and Claude's role was limited to editing.
 
 ### Whitespace and Formatting
 - **Line length**: Maximum 120 characters for code in all languages.
