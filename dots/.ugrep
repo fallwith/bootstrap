@@ -63,6 +63,9 @@ no-ignore-binary
 # Enable/disable decompression and archive search, default: no-decompress
 no-decompress
 
+# Enable/disable tree view of matching files
+no-tree
+
 # Maximum decompression and de-archiving nesting levels, default: 1
 zmax=1
 
