@@ -70,7 +70,9 @@ set repos \
   omacom-io/lumon.nvim \
   dgrco/hearthlight.nvim \
   ankushbhagats/pastel.nvim \
-  mohseenrm/brutus
+  mohseenrm/brutus \
+  reobin/olive-crt.nvim \
+  gillisc/cynosure.nvim
 
 set -l successes
 set -l auto_fixed

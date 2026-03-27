@@ -72,6 +72,8 @@ return {
       "dgrco/hearthlight.nvim",
       "ankushbhagats/pastel.nvim",
       "mohseenrm/brutus",
+      "reobin/olive-crt.nvim",
+      "gillisc/cynosure.nvim",
     },
     lazy = false,
     priority = 1000,
@@ -190,6 +192,8 @@ return {
         "pastelcool",
         "pastel",
         "cobalt-kinetic",
+        "olive-crt",
+        "cynosure-dark",
       }
       math.randomseed(os.time())
       vim.cmd.colorscheme(schemes[math.random(#schemes)])
