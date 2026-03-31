@@ -10,8 +10,4 @@
 --<b>or tag* types</b>        csth1<CR>       <h1>or tag types</h1>
 --delete(functi*on calls)     dsf             function calls
 
-return {
-  "kylechui/nvim-surround",
-  opts = {},
-  event = "VeryLazy",
-}
+require("nvim-surround").setup()
