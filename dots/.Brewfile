@@ -148,6 +148,9 @@ brew 'zig'
 # tap 'uptech/homebrew-oss'
 # brew 'uptech/oss/alt'
 
+tap 'atlassian/homebrew-acli' if working?
+brew 'acli' if working?
+
 # "Error: It seems there is already an App at '/Applications/1password"
 # brew reinstall --cask 1password --force
 
