@@ -228,6 +228,10 @@ Match the culture of the Ruby community (MINASWAN).
 - **100% isolated coverage**:
   Each .rb file should achieve 100% coverage
   when running only its corresponding spec file.
+- **Full branch coverage on changed code**:
+  Codecov tracks each branch of a conditional independently.
+  Ensure both sides of every `if`/`unless`/ternary
+  introduced or modified by the change are exercised by specs.
 
 ### Test Style
 - **Minitest assertions in RSpec**:
