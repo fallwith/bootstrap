@@ -115,6 +115,7 @@ brew 'terraform' if working?
 brew 'tig'
 # brew 'tmux'
 brew 'tokei'
+brew 'tree-sitter-cli'
 brew 'ugrep'
 brew 'uv'
 # brew 'vault'
