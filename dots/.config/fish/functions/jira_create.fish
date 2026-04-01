@@ -90,7 +90,7 @@ function jira_create -d 'Create a Jira ticket via acli and print the new key'
 
     # ── Interactive fallbacks ───────────────────────────────────
     if test -z "$summary"
-        read -P "Summary: " -l summary
+        read -P "Summary: " summary
         if test -z "$summary"
             echo "Summary is required. Aborting." >&2
             return 1
@@ -98,15 +98,14 @@ function jira_create -d 'Create a Jira ticket via acli and print the new key'
     end
 
     if test -z "$description"
-        read -P "Description (enter for none): " -l description
+        read -P "Description (enter for none): " description
     end
 
     # ── Build command ───────────────────────────────────────────
     set -l cmd acli jira workitem create \
         --project $cfg_project \
         --type $issue_type \
-        --summary $summary \
-        --json
+        --summary $summary
 
     if test $unassigned -eq 0 -a -n "$cfg_assignee"
         set -a cmd --assignee $cfg_assignee
@@ -128,7 +127,12 @@ function jira_create -d 'Create a Jira ticket via acli and print the new key'
         return 1
     end
 
-    set -l ticket_key (echo $result | jq -r '.key // empty')
+    # acli may return JSON or a human-readable success message.
+    # Try JSON first, fall back to parsing "Work item KEY-123 created".
+    set -l ticket_key (echo $result | jq -r '.key // empty' 2>/dev/null)
+    if test -z "$ticket_key"
+        set ticket_key (string match -r '[A-Z]+-\d+' -- $result)
+    end
     if test -z "$ticket_key"
         echo "Could not parse ticket key from response." >&2
         echo $result >&2
@@ -151,7 +155,7 @@ function jira_create -d 'Create a Jira ticket via acli and print the new key'
 
     # ── Output ──────────────────────────────────────────────────
     # Diagnostics to stderr so stdout is just the key (for piping)
-    echo "Created $ticket_key: $summary" >&2
+    echo $result >&2
     if test -n "$target_status"
         echo "Status: $target_status" >&2
     end
