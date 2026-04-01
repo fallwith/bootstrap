@@ -72,7 +72,8 @@ set repos \
   ankushbhagats/pastel.nvim \
   mohseenrm/brutus \
   reobin/olive-crt.nvim \
-  gillisc/cynosure.nvim
+  gillisc/cynosure.nvim \
+  aejkatappaja/sora
 
 set -l successes
 set -l auto_fixed

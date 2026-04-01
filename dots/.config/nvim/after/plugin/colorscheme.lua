@@ -112,6 +112,7 @@ local schemes = {
   "cobalt-kinetic",
   "olive-crt",
   "cynosure-dark",
+  "sora",
 }
 math.randomseed(os.time())
 vim.cmd.colorscheme(schemes[math.random(#schemes)])
