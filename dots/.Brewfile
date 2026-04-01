@@ -72,6 +72,7 @@ brew 'ncdu'
 brew 'neovim'
 brew 'neovim-remote'
 # brew 'neovim', args: ['HEAD']
+# brew 'ngrok' # 2026-03-30/31 - Formula can't download the package, S3 related?
 brew 'node'
 brew 'node@22' if working?
 brew 'npm'
@@ -178,7 +179,6 @@ cask 'docker-desktop'
 cask 'kitty'
 # cask 'macdown'
 # cask 'makemkv'
-cask 'ngrok'
 cask 'postman' if working?
 cask 'rar' unless working?
 # cask 'sequel-pro'
