@@ -284,6 +284,10 @@
       "rev": "b023c5280b16fe2366f5e779d8d2756b3e5ee9c3",
       "src": "https://github.com/sainnhe/sonokai"
     },
+    "sora": {
+      "rev": "c978d3fe038d94f0a4f82911b86703afae89580e",
+      "src": "https://github.com/aejkatappaja/sora"
+    },
     "stilla.nvim": {
       "rev": "5e48668cf7fe37dc878a51a434ea722041ab5a9f",
       "src": "https://github.com/dlvandenberg/stilla.nvim"
