@@ -113,6 +113,7 @@ vim.pack.add({
   "https://github.com/reobin/olive-crt.nvim",
   "https://github.com/gillisc/cynosure.nvim",
   "https://github.com/aejkatappaja/sora",
+  "https://github.com/sudoscrawl/tokyo-dark.nvim",
 
   -- editing
   "https://github.com/folke/flash.nvim",

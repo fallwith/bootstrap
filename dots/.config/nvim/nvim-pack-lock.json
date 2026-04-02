@@ -300,6 +300,10 @@
       "rev": "b80823b10142e6592b7b860e012d9d6489afb689",
       "src": "https://github.com/NisonChrist/tailwind-theme.nvim"
     },
+    "tokyo-dark.nvim": {
+      "rev": "3628350450e60d255e584f2b1ec5931f141e37a5",
+      "src": "https://github.com/sudoscrawl/tokyo-dark.nvim"
+    },
     "tomorrow-night-bright-rstudio.nvim": {
       "rev": "78064daf347b395a36e4c872667094de52657f9f",
       "src": "https://github.com/hopsk/tomorrow-night-bright-rstudio.nvim"

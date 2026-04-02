@@ -73,7 +73,8 @@ set repos \
   mohseenrm/brutus \
   reobin/olive-crt.nvim \
   gillisc/cynosure.nvim \
-  aejkatappaja/sora
+  aejkatappaja/sora \
+  sudoscrawl/tokyo-dark.nvim
 
 set -l successes
 set -l auto_fixed
