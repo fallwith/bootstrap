@@ -192,11 +192,15 @@ Match the culture of the Ruby community (MINASWAN).
   IRB treats a leading `.` as a new statement,
   so parentheses are required for multi-line chains to paste correctly.
 - End with `;nil` to suppress IRB echo.
-- Use `pp` (preferred) or `puts` when console output is desired.
-- Hold results in variables otherwise.
-- Standalone chain:
+- **When a snippet retrieves data, the result must be printed or
+  assigned** -- `(...);nil` alone silently discards it.
+  Use `pp` (preferred) or `puts` for output,
+  or assign to a variable when the value is needed later.
+  Side-effect-only snippets (enqueuing a job, toggling a flag)
+  need neither.
+- Standalone chain with output:
   ```ruby
-  (User.joins(:posts)
+  pp(User.joins(:posts)
     .where(posts: { published: true })
     .order(created_at: :desc)
     .limit(10)
