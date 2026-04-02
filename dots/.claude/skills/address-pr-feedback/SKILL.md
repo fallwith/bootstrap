@@ -82,6 +82,15 @@ assessment with one of these verdicts:
 | **Subjective — needs discussion** | Reasonable people could disagree. Present both sides to the user. |
 | **Question — needs clarification** | The comment is unclear or asks for input. Flag for the user. |
 
+**Important:** Include ALL comments in the assessment table — even ones that have
+already been replied to by the user or are otherwise handled. Use a verdict like
+"Already addressed" so the user can confirm nothing was missed. Never silently
+skip a comment.
+
+**Emoji reactions on comments** (e.g., +1, thumbs up) from other reviewers
+indicate additional support for the feedback. Note these in the assessment — a
+comment with multiple supporters carries more weight than one without.
+
 For each comment, read the relevant code context:
 
 ```bash
