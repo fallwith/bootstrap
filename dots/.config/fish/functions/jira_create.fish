@@ -1,4 +1,27 @@
 function jira_create -d 'Create a Jira ticket via acli and print the new key'
+    # Usage:
+    #   jira_create [summary] [options]
+    #
+    # Options:
+    #   -d, --description TEXT  Ticket description
+    #   -t, --type TYPE         Issue type (default: from config)
+    #   -p, --parent KEY        Parent epic (e.g. PROJ-900)
+    #   --backlog               Use backlog status instead of active
+    #   --unassigned            Do not assign to self
+    #
+    # Omitted args are prompted for interactively.
+    # Stdout is the ticket key only, for piping:
+    #   jira_work (jira_create "Fix the widget")
+    #
+    # Config: ~/.config/jira_create.conf (created on first run)
+    #
+    # Examples:
+    #   jira_create
+    #   jira_create "Fix the widget"
+    #   jira_create "Fix the widget" -d "Details here" -t Bug
+    #   jira_create "Backlog item" --backlog --unassigned
+    #   jira_create "Sub-task" -p PROJ-900
+
     # ── Config ──────────────────────────────────────────────────
     set -l config_path ~/.config/jira_create.conf
     if not test -f $config_path
