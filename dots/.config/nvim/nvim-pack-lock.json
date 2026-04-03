@@ -160,6 +160,10 @@
       "rev": "9ceaa04525edcc9dadfa7ff5cb835e7f49cfc71d",
       "src": "https://github.com/github-main-user/lytmode.nvim"
     },
+    "marks.nvim": {
+      "rev": "f353e8c08c50f39e99a9ed474172df7eddd89b72",
+      "src": "https://github.com/chentoast/marks.nvim"
+    },
     "melange-nvim": {
       "rev": "ce42f6b629beeaa00591ba73a77d3eeac4cf28ce",
       "src": "https://github.com/savq/melange-nvim"

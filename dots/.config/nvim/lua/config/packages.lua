@@ -144,6 +144,9 @@ vim.pack.add({
 
   -- testing
   "https://github.com/vim-test/vim-test",
+
+  -- marks
+  "https://github.com/chentoast/marks.nvim",
 })
 
 require("mini.icons").setup({})
