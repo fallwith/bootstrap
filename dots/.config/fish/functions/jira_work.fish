@@ -54,10 +54,12 @@ function jira_work -d 'Prep a new worktree and interactive Claude Code session f
         end
         worktree $branch_name $base_branch
         or return 1
+        acli jira workitem transition --key $ticket --status "In Progress" 2>/dev/null
         claude --name $ticket --permission-mode plan \
-            "Fetch Jira ticket $ticket via acli. Run these two commands: \
-(1) acli jira workitem view $ticket --fields summary,status,assignee,parent --json \
+            "Fetch Jira ticket $ticket via acli. Run these three commands: \
+(1) acli jira workitem view $ticket --fields summary,status,assignee,parent,components --json \
 (2) acli jira workitem view $ticket --fields description --json | jq -r '[.fields.description.content[].content[]?.text // empty] | join(\"\\n\")' \
-Review the summary and description, then propose an implementation plan before writing any code."
+(3) acli jira workitem comment list --key $ticket --json | jq -r '.comments[].body' \
+Review the summary, description, and comments, then propose an implementation plan before writing any code."
     end
 end
