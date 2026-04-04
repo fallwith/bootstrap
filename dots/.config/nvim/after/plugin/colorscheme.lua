@@ -20,6 +20,8 @@ local schemes = {
   "nightfox",
   "nordfox",
   "kanagawa-wave",
+  "kanagawa-wave",
+  "kanagawa-wave",
   "melange",
   "nightfly",
   "darcula-dark",
