@@ -114,6 +114,10 @@ vim.pack.add({
   "https://github.com/gillisc/cynosure.nvim",
   "https://github.com/aejkatappaja/sora",
   "https://github.com/sudoscrawl/tokyo-dark.nvim",
+  "https://github.com/thorstenrhau/token",
+  "https://github.com/terkelg/north-sea.nvim",
+  "https://github.com/davidklassen/mote",
+  "https://github.com/pisgahk/muted.nvim",
 
   -- editing
   "https://github.com/folke/flash.nvim",

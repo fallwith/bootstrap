@@ -116,6 +116,16 @@ local schemes = {
   "cynosure-dark",
   "sora",
   "tokyo-dark",
+  "token",
+  "palette-dark.svg",
+  "north-sea",
+  "mote",
+  "muted_water",
+  "muted_fire",
+  "muted_earth",
+  "muted_autumn",
+  "muted_air",
+  "muted",
 }
 math.randomseed(os.time())
 vim.cmd.colorscheme(schemes[math.random(#schemes)])

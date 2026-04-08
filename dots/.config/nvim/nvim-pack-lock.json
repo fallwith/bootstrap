@@ -184,6 +184,14 @@
       "rev": "30a6d3527c514bf55a2e261a8cd19dc77127c732",
       "src": "https://github.com/jakubkarlicek/molokai-nvim"
     },
+    "mote": {
+      "rev": "c4dc85e1b5b82d51057187a4807420bac0133a81",
+      "src": "https://github.com/davidklassen/mote"
+    },
+    "muted.nvim": {
+      "rev": "5ebdae4470b4438d3b8c106dc74e8f0e4674c6fa",
+      "src": "https://github.com/pisgahk/muted.nvim"
+    },
     "myrrh.nvim": {
       "rev": "c0575c96a28d833c027f460592cf6bf4186f9162",
       "src": "https://github.com/utakotoba/myrrh.nvim"
@@ -211,6 +219,10 @@
     "noctis-nvim": {
       "rev": "e415da8f3d2f7d95749bef9769bc014d01926488",
       "src": "https://github.com/Old-Farmer/noctis-nvim"
+    },
+    "north-sea.nvim": {
+      "rev": "0cbb2beaee456a57d9fba77e70cff4e857ef0f32",
+      "src": "https://github.com/terkelg/north-sea.nvim"
     },
     "nvim-earthsong": {
       "rev": "d02bc3ad8f01766f0f816340c59991839fb54641",
@@ -303,6 +315,10 @@
     "tailwind-theme.nvim": {
       "rev": "b80823b10142e6592b7b860e012d9d6489afb689",
       "src": "https://github.com/NisonChrist/tailwind-theme.nvim"
+    },
+    "token": {
+      "rev": "0576b004dac571ee8bb0d038008efa89b5b3f588",
+      "src": "https://github.com/thorstenrhau/token"
     },
     "tokyo-dark.nvim": {
       "rev": "3628350450e60d255e584f2b1ec5931f141e37a5",

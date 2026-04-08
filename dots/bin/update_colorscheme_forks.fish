@@ -74,7 +74,11 @@ set repos \
   reobin/olive-crt.nvim \
   gillisc/cynosure.nvim \
   aejkatappaja/sora \
-  sudoscrawl/tokyo-dark.nvim
+  sudoscrawl/tokyo-dark.nvim \
+  thorstenrhau/token \
+  terkelg/north-sea.nvim \
+  davidklassen/mote \
+  pisgahk/muted.nvim
 
 set -l successes
 set -l auto_fixed
