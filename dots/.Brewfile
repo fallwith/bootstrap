@@ -5,7 +5,6 @@ end
 brew '7zip'
 # brew 'ansible'
 # brew 'asdf'
-brew 'ast-grep' if working?
 # brew 'atool'
 # brew 'awscli' if working?
 # brew 'bash'
