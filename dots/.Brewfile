@@ -5,6 +5,7 @@ end
 brew '7zip'
 # brew 'ansible'
 # brew 'asdf'
+brew 'ast-grep' if working?
 # brew 'atool'
 # brew 'awscli' if working?
 # brew 'bash'
@@ -37,6 +38,7 @@ brew 'gh'
 brew 'git-crypt' if working?
 brew 'gnu-sed'
 brew 'go'
+brew 'googleworkspace-cli' if working?
 # gpg needed for asdf nodejs and git commits
 brew 'gpg'
 # brew 'graphicsmagick'
