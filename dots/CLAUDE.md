@@ -305,3 +305,9 @@ Match the culture of the Ruby community (MINASWAN).
 
 ## Personal Preferences
 - **Spelling**: Use "grey" (with 'e') rather than "gray" (with 'a').
+- **Search tool**: When using Bash for text search
+  (e.g., gem source, system files outside the project),
+  use `ug` (ugrep) instead of `grep`.
+  `~/.ugrep` sets `fixed-strings` by default,
+  so patterns are literal -- no escaping needed for `.`, `(`, etc.
+  Pass `-P` when regex is actually required.
