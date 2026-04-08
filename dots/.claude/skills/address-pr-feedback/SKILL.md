@@ -43,7 +43,8 @@ Group review comments by thread. A comment is a thread root if
 - **File and line**: where the comment targets
 - **Suggested change**: if the comment includes a ` ```suggestion ` block
 
-Filter out threads that are already resolved. To check resolution status:
+Filter out threads that are already resolved or outdated (the comment targets
+code that has since been modified by a new commit). To check status:
 
 ```bash
 gh api graphql -f query='
@@ -54,6 +55,7 @@ gh api graphql -f query='
         nodes {
           id
           isResolved
+          isOutdated
           comments(first: 1) {
             nodes { databaseId }
           }
@@ -62,12 +64,12 @@ gh api graphql -f query='
     }
   }
 }' --jq '.data.repository.pullRequest.reviewThreads.nodes[]
-  | select(.isResolved == false)
+  | select(.isResolved == false and .isOutdated == false)
   | {threadId: .id, rootCommentId: .comments.nodes[0].databaseId}'
 ```
 
-Map each unresolved thread ID to its root comment ID so you can resolve threads
-later. Skip threads that are already resolved — they don't need attention.
+Map each active thread ID to its root comment ID so you can resolve threads
+later. Skip threads that are resolved or outdated -- they don't need attention.
 
 ### Step 3 — Assess each comment
 
