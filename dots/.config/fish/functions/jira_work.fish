@@ -42,9 +42,17 @@ function jira_work -d 'Prep a new worktree and interactive Claude Code session f
     end
 
     set -l worktree_dir ~/git/web/$branch_name
+    set -l task_summary
+    if test -n "$summary"
+        set task_summary $summary
+    else
+        set task_summary $branch_name
+    end
+
     if test -d $worktree_dir
         echo "Resuming work on $ticket in existing worktree"
         cd $worktree_dir
+        t set $ticket session $ticket 2>/dev/null
         claude --resume $ticket
     else
         cd ~/git/web
@@ -54,6 +62,7 @@ function jira_work -d 'Prep a new worktree and interactive Claude Code session f
         end
         worktree $branch_name $base_branch
         or return 1
+        t add "$task_summary" -j $ticket -s $ticket --dir $worktree_dir
         acli jira workitem transition --key $ticket --status "In Progress" 2>/dev/null
         claude --name $ticket --permission-mode plan \
             "Fetch Jira ticket $ticket via acli. Run these three commands: \
