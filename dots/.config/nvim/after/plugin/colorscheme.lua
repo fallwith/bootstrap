@@ -126,6 +126,16 @@ local schemes = {
   "muted_autumn",
   "muted_air",
   "muted",
+  "ember",
+  "ember-soft",
+  "bonbon",
+  "zorn",
+  "zorn-umber",
+  "zorn-plum",
+  "zorn-dark",
+  "zorn-blue",
+  "carvion",
+  "humdrum",
 }
 math.randomseed(os.time())
 vim.cmd.colorscheme(schemes[math.random(#schemes)])

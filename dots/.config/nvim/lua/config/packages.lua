@@ -118,6 +118,11 @@ vim.pack.add({
   "https://github.com/terkelg/north-sea.nvim",
   "https://github.com/davidklassen/mote",
   "https://github.com/pisgahk/muted.nvim",
+  "https://github.com/ember-theme/nvim",
+  "https://github.com/pankvitek/bonbon.nvim",
+  "https://github.com/anhari/zorn.nvim",
+  "https://github.com/zitrocode/carvion.nvim",
+  "https://github.com/xpac27/humdrum.vim",
 
   -- editing
   "https://github.com/folke/flash.nvim",

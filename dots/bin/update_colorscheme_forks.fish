@@ -78,7 +78,12 @@ set repos \
   thorstenrhau/token \
   terkelg/north-sea.nvim \
   davidklassen/mote \
-  pisgahk/muted.nvim
+  pisgahk/muted.nvim \
+  ember-theme/nvim \
+  pankvitek/bonbon.nvim \
+  anhari/zorn.nvim \
+  zitrocode/carvion.nvim \
+  xpac27/humdrum.vim
 
 set -l successes
 set -l auto_fixed
