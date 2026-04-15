@@ -167,7 +167,8 @@ cask 'appcleaner'
 # cask 'chefdk'
 # basictex for .md -> .pdf with pandoc
 cask 'basictex'
-cask 'datagrip' if working?
+cask 'codex' if working?
+# cask 'datagrip' if working?
 cask 'discord' unless working?
 cask 'docker-desktop'
 # cask 'handbrake'
