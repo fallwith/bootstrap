@@ -83,7 +83,8 @@ set repos \
   pankvitek/bonbon.nvim \
   anhari/zorn.nvim \
   zitrocode/carvion.nvim \
-  xpac27/humdrum.vim
+  xpac27/humdrum.vim \
+  nopangel/nimmy.vim
 
 set -l successes
 set -l auto_fixed

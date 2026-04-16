@@ -228,6 +228,10 @@
       "rev": "ba47d4b4c5ec308718641ba7402c143836f35aa9",
       "src": "https://github.com/EdenEast/nightfox.nvim"
     },
+    "nimmy.vim": {
+      "rev": "b164d8dc54325cd9f46744495fdca68f0a2c3495",
+      "src": "https://github.com/nopangel/nimmy.vim"
+    },
     "noctis-nvim": {
       "rev": "e415da8f3d2f7d95749bef9769bc014d01926488",
       "src": "https://github.com/Old-Farmer/noctis-nvim"

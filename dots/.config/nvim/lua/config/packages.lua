@@ -123,6 +123,7 @@ vim.pack.add({
   "https://github.com/anhari/zorn.nvim",
   "https://github.com/zitrocode/carvion.nvim",
   "https://github.com/xpac27/humdrum.vim",
+  "https://github.com/nopangel/nimmy.vim",
 
   -- editing
   "https://github.com/folke/flash.nvim",
