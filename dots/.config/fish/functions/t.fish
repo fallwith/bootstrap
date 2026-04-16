@@ -1,7 +1,7 @@
 # t -- task registry for tracking work across projects
 #
 # A lightweight index for resuming agent sessions and jumping
-# between projects. Not a task manager -- Jira, Slack, etc.
+# between projects. Not a task manager -- Linear, Slack, etc.
 # remain the systems of record. This is the switchboard.
 #
 # Data: ~/.tasks/todo.txt (standard todo.txt format)
@@ -9,7 +9,7 @@
 # Subcommands:
 #   t                           Interactive fzf picker (default)
 #   t add "summary" [flags]     Add a task
-#     --jira, -j TICKET         Jira ticket (auto-fetches summary)
+#     --ticket, -t KEY          Linear ticket (auto-fetches title)
 #     --dir PATH                Working directory
 #     --session, -s ID          Agent session ID
 #     --priority, -p X          Priority A-Z
@@ -35,7 +35,7 @@
 #             Falls back to cd if no session is set.
 #   ctrl-e    Open todo.txt in $EDITOR
 #   ctrl-d    cd to task directory
-#   ctrl-o    Open Jira ticket in browser (via acli --web)
+#   ctrl-o    Open ticket in browser (via linear-cli)
 #   ctrl-x    Mark task done
 #
 #   The picker shows ALL tasks (including done) so completed
@@ -50,7 +50,7 @@
 #   a todo.txt line directly:
 #
 #   echo "(A) 2026-04-07 Fix thing status:active session:SESS \
-#     dir:~/git/web jira:ACT-456 agent:codex" >> ~/.tasks/todo.txt
+#     dir:~/git/web ticket:ACT-456 agent:codex" >> ~/.tasks/todo.txt
 
 function __t_field --description 'Extract key:value from a todo.txt line'
     set -l match (string match -r -- "$argv[1]:(\\S+)" $argv[2])
@@ -155,11 +155,11 @@ function t --description 'Task registry -- track work across projects'
 
     switch "$argv[1]"
 
-        # ── add ────────────────────────────────────────────────────
+        # -- add --------------------------------------------------------
         case add
             set -l args $argv[2..]
             set -l summary
-            set -l jira
+            set -l ticket
             set -l dir
             set -l session
             set -l priority
@@ -169,9 +169,9 @@ function t --description 'Task registry -- track work across projects'
             set -l i 1
             while test $i -le (count $args)
                 switch $args[$i]
-                    case --jira -j
+                    case --ticket -t
                         set i (math $i + 1)
-                        set jira $args[$i]
+                        set ticket $args[$i]
                     case --dir
                         set i (math $i + 1)
                         set dir $args[$i]
@@ -201,13 +201,12 @@ function t --description 'Task registry -- track work across projects'
                 set i (math $i + 1)
             end
 
-            # Auto-fetch summary from Jira when omitted
-            if test -z "$summary"; and test -n "$jira"
+            # Auto-fetch title from Linear when omitted
+            if test -z "$summary"; and test -n "$ticket"
                 set summary (
-          acli jira workitem view $jira \
-            --fields summary --json 2>/dev/null \
-            | jq -r '.fields.summary // empty'
-        )
+                    linear-cli i get $ticket -o json 2>/dev/null \
+                        | jq -r '.title // empty'
+                )
             end
             if test -z "$summary"
                 read -P "Summary: " summary
@@ -241,14 +240,14 @@ function t --description 'Task registry -- track work across projects'
             if test -n "$dir"
                 set line "$line dir:"(string replace -- $HOME '~' $dir)
             end
-            if test -n "$jira"
-                set line "$line jira:$jira"
+            if test -n "$ticket"
+                set line "$line ticket:$ticket"
             end
 
             echo $line >>$tasks_file
             echo $line
 
-            # ── pick (default) ────────────────────────────────────────
+            # -- pick (default) -----------------------------------------
         case pick ''
             set -l all_tasks
             set -l line_nums
@@ -265,14 +264,14 @@ function t --description 'Task registry -- track work across projects'
                 return 0
             end
 
-            set -l header "enter:resume  ctrl-e:edit  ctrl-d:cd  ctrl-o:jira  ctrl-x:done"
+            set -l header "enter:resume  ctrl-e:edit  ctrl-d:cd  ctrl-o:open  ctrl-x:done"
             set -l result (
-        printf '%s\n' $all_tasks \
-          | fzf --expect 'ctrl-e,ctrl-d,ctrl-o,ctrl-x' \
-                --header "$header" \
-                --no-sort \
-                --reverse
-      )
+                printf '%s\n' $all_tasks \
+                    | fzf --expect 'ctrl-e,ctrl-d,ctrl-o,ctrl-x' \
+                        --header "$header" \
+                        --no-sort \
+                        --reverse
+            )
 
             test -z "$result"; and return 0
 
@@ -325,12 +324,12 @@ function t --description 'Task registry -- track work across projects'
                     end
 
                 case ctrl-o
-                    set -l ticket (__t_field jira "$selection")
-                    if test -n "$ticket"
-                        acli jira workitem view $ticket --web 2>/dev/null
-                        or echo "Could not open $ticket" >&2
+                    set -l tk (__t_field ticket "$selection")
+                    if test -n "$tk"
+                        linear-cli issues open $tk 2>/dev/null
+                        or echo "Could not open $tk" >&2
                     else
-                        echo "No Jira ticket on this task."
+                        echo "No ticket on this task."
                     end
 
                 case ctrl-x
@@ -338,9 +337,9 @@ function t --description 'Task registry -- track work across projects'
                         if test "$all_tasks[$idx]" = "$selection"
                             set -l target $line_nums[$idx]
                             set -l updated (
-                string replace -r 'status:\\S+' 'status:done' \
-                  -- $selection
-              )
+                                string replace -r 'status:\\S+' 'status:done' \
+                                    -- $selection
+                            )
                             if not string match -q '*status:*' -- $updated
                                 set updated "$updated status:done"
                             end
@@ -351,7 +350,7 @@ function t --description 'Task registry -- track work across projects'
                     end
             end
 
-            # ── list ──────────────────────────────────────────────────
+            # -- list ---------------------------------------------------
         case list ls
             set -l show_all 0
             set -l filter_project
@@ -391,7 +390,7 @@ function t --description 'Task registry -- track work across projects'
                 echo $line
             end <$tasks_file
 
-            # ── done ──────────────────────────────────────────────────
+            # -- done ---------------------------------------------------
         case done
             if not set -q argv[2]
                 echo "Usage: t done <identifier>" >&2
@@ -402,15 +401,15 @@ function t --description 'Task registry -- track work across projects'
 
             set -l line (sed -n "$target"p $tasks_file)
             set -l updated (
-        string replace -r 'status:\\S+' 'status:done' -- $line
-      )
+                string replace -r 'status:\\S+' 'status:done' -- $line
+            )
             if not string match -q '*status:*' -- $updated
                 set updated "$updated status:done"
             end
             __t_replace_line $target "x "(date +%Y-%m-%d)" $updated"
             echo "Done: $line"
 
-            # ── status ────────────────────────────────────────────────
+            # -- status -------------------------------------------------
         case status
             if test (count $argv) -lt 3
                 echo "Usage: t status <identifier> <new_status>" >&2
@@ -424,7 +423,7 @@ function t --description 'Task registry -- track work across projects'
             __t_replace_line $target $updated
             echo "Updated: $updated"
 
-            # ── session ───────────────────────────────────────────────
+            # -- session ------------------------------------------------
         case session
             if test (count $argv) -lt 3
                 echo "Usage: t session <identifier> <session_id>" >&2
@@ -438,7 +437,7 @@ function t --description 'Task registry -- track work across projects'
             __t_replace_line $target $updated
             echo "Updated: $updated"
 
-            # ── set ───────────────────────────────────────────────────
+            # -- set ----------------------------------------------------
         case set
             if test (count $argv) -lt 4
                 echo "Usage: t set <identifier> <key> <value>" >&2
@@ -473,7 +472,7 @@ function t --description 'Task registry -- track work across projects'
             __t_replace_line $target $updated
             echo "Updated: $updated"
 
-            # ── edit ──────────────────────────────────────────────────
+            # -- edit ---------------------------------------------------
         case edit
             if test -n "$EDITOR"
                 $EDITOR $tasks_file
@@ -481,7 +480,7 @@ function t --description 'Task registry -- track work across projects'
                 nvim $tasks_file
             end
 
-            # ── rm ────────────────────────────────────────────────────
+            # -- rm -----------------------------------------------------
         case rm remove
             if not set -q argv[2]
                 echo "Usage: t rm <identifier>" >&2
@@ -494,14 +493,14 @@ function t --description 'Task registry -- track work across projects'
             __t_remove_line $target
             echo "Removed: $line"
 
-            # ── help ──────────────────────────────────────────────────
+            # -- help ---------------------------------------------------
         case help
             echo "t -- task registry"
             echo ""
             echo "Subcommands:"
             echo "  t                     Interactive picker (default)"
             echo "  t add \"summary\" [flags]"
-            echo "    --jira, -j TICKET   Jira ticket (auto-fetches summary)"
+            echo "    --ticket, -t KEY    Linear ticket (auto-fetches title)"
             echo "    --dir PATH          Working directory"
             echo "    --session, -s ID    Agent session ID"
             echo "    --priority, -p X    Priority A-Z"
@@ -519,7 +518,7 @@ function t --description 'Task registry -- track work across projects'
             echo "  enter     Resume agent session"
             echo "  ctrl-e    Edit todo.txt"
             echo "  ctrl-d    cd to task directory"
-            echo "  ctrl-o    Open Jira in browser"
+            echo "  ctrl-o    Open ticket in browser"
             echo "  ctrl-x    Mark done"
             echo ""
             echo "Data: ~/.tasks/todo.txt"
