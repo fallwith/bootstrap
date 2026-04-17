@@ -63,7 +63,7 @@ function linear_work -d 'Prep a new worktree and interactive Claude Code session
         worktree $branch_name $base_branch
         or return 1
         set -l dir_tilde (string replace -- $HOME '~' $worktree_dir)
-        todo.sh add "(A) $task_title +brightwheel/web ticket:$ticket session:$ticket dir:$dir_tilde"
+        t add "(A) $task_title +brightwheel/web ticket:$ticket session:$ticket dir:$dir_tilde"
         linear-cli issues start $ticket 2>/dev/null
         claude --name $ticket --permission-mode plan \
             "Fetch Linear ticket $ticket via linear-cli. Run these three commands: \

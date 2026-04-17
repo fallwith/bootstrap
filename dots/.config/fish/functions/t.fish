@@ -1,22 +1,28 @@
-# t -- fzf picker and field setter for todo.txt
+# t -- fzf picker, field setter, and todo.sh wrapper
 #
 # A lightweight switchboard for resuming agent sessions and
-# jumping between projects. Delegates add/done/list/etc. to
-# todo.sh (the official todo.txt CLI) and focuses on the two
-# things todo.sh can't do well:
-#
-#   1. fzf picker with agent-aware resume dispatch
-#   2. targeted key:value field updates with special handling
-#      for dir (~ collapse), project (+tag), priority ((A) prefix)
+# jumping between projects. Natively handles the fzf picker and
+# targeted field updates; passes everything else through to
+# todo.sh (the official todo.txt CLI).
 #
 # Data: ~/.tasks/todo.txt and ~/.tasks/done.txt
 #       (paths match ~/.todo.cfg)
 #
-# Subcommands:
+# Native commands:
 #   t                     fzf picker over active tasks (todo.txt)
 #   t --done              picker over archived tasks (done.txt)
 #   t --all               picker over both files combined
 #   t set <id> <k> <v>    update a field on the matching task
+#                           (dir ~ collapse, +project syntax,
+#                            (A) priority prefix)
+#   t -h / t --help       show this help + todo.sh help
+#
+# Everything else (add, do, archive, ls, pri, rm, replace, ...)
+# is passed through to todo.sh. Examples:
+#   t add "Fix the thing +proj"
+#   t do 3
+#   t archive
+#   t ls @backend
 #
 # Pick keybindings:
 #   enter     Resume agent session. Dispatches by agent: field
@@ -27,11 +33,7 @@
 #   ctrl-o    Open ticket in browser
 #   ctrl-x    Mark done (delegates to `todo.sh do N`)
 #
-# Agent field:
-#   agent:claude (default) or agent:codex
-#
-# Everything else (adding, marking done by id, listing, removing,
-# archiving, etc.) -- use todo.sh directly.
+# Agent field: agent:claude (default) or agent:codex
 
 function __t_field --description 'Extract key:value from a todo.txt line'
     set -l match (string match -r -- "$argv[1]:(\\S+)" $argv[2])
@@ -99,73 +101,68 @@ function __t_set_field --description 'Set or add a key:value field on a line'
     end
 end
 
-function t --description 'Task registry -- fzf picker and field setter'
-    set -l tasks_dir ~/.tasks
-    set -l tasks_file $tasks_dir/todo.txt
-    set -l done_file $tasks_dir/done.txt
-
-    if not test -d $tasks_dir
-        mkdir -p $tasks_dir
+function __t_set --description 't set implementation'
+    if test (count $argv) -lt 3
+        echo "Usage: t set <identifier> <key> <value>" >&2
+        return 1
     end
-    if not test -f $tasks_file
-        touch $tasks_file
-    end
+    set -l tasks_file ~/.tasks/todo.txt
+    set -l target (__t_find $argv[1])
+    or return 1
 
-    # -- set subcommand ---------------------------------------
-    if test "$argv[1]" = set
-        if test (count $argv) -lt 4
-            echo "Usage: t set <identifier> <key> <value>" >&2
-            return 1
-        end
-        set -l target (__t_find $argv[2])
-        or return 1
+    set -l line (sed -n "$target"p $tasks_file)
+    set -l updated
 
-        set -l line (sed -n "$target"p $tasks_file)
-        set -l updated
-
-        switch $argv[3]
-            case priority
+    switch $argv[2]
+        case priority
+            set updated (string replace -r '^\([A-Z]\) ' '' -- $line)
+            if test -n "$argv[3]"
+                set updated "($argv[3]) $updated"
+            end
+        case project
+            set updated (string replace -r ' \+\S+' '' -- $line)
+            if string match -qr ' \S+:\S+' -- $updated
                 set updated (
-                    string replace -r '^\([A-Z]\) ' '' -- $line
+                    string replace -r ' (\S+:\S+)' \
+                        " +$argv[3] \$1" -- $updated
                 )
-                if test -n "$argv[4]"
-                    set updated "($argv[4]) $updated"
-                end
-            case project
-                set updated (string replace -r ' \+\S+' '' -- $line)
-                if string match -qr ' \S+:\S+' -- $updated
-                    set updated (
-                        string replace -r ' (\S+:\S+)' \
-                            " +$argv[4] \$1" -- $updated
-                    )
-                else
-                    set updated "$updated +$argv[4]"
-                end
-            case dir
-                set -l value (string replace -- $HOME '~' $argv[4])
-                set updated (__t_set_field "$line" dir $value)
-            case '*'
-                set updated (__t_set_field "$line" $argv[3] $argv[4])
-        end
-
-        __t_replace_line $target $updated
-        echo "Updated: $updated"
-        return 0
+            else
+                set updated "$updated +$argv[3]"
+            end
+        case dir
+            set -l value (string replace -- $HOME '~' $argv[3])
+            set updated (__t_set_field "$line" dir $value)
+        case '*'
+            set updated (__t_set_field "$line" $argv[2] $argv[3])
     end
 
-    # -- picker -----------------------------------------------
-    set -l source active
-    for arg in $argv
-        switch $arg
-            case --done
-                set source done
-            case --all
-                set source all
-            case '*'
-                echo "Unknown: $arg (try: t, t --done, t --all, t set ...)" >&2
-                return 1
-        end
-    end
+    __t_replace_line $target $updated
+    echo "Updated: $updated"
+end
+
+function __t_help --description 't extensions + todo.sh help'
+    echo "t extensions:"
+    echo "  t                     fzf picker over active tasks"
+    echo "  t --done              picker over done.txt"
+    echo "  t --all               picker over todo.txt + done.txt"
+    echo "  t set <id> <k> <v>    targeted field update"
+    echo "                          (dir ~ collapse, +project,"
+    echo "                           (A) priority prefix)"
+    echo ""
+    echo "Pick keybindings:"
+    echo "  enter   resume agent (claude/codex)  ctrl-d   cd"
+    echo "  ctrl-e  edit todo.txt                ctrl-o   ticket"
+    echo "  ctrl-x  mark done"
+    echo ""
+    echo "Any other invocation passes through to todo.sh."
+    echo "--- todo.sh help ---"
+    todo.sh -h 2>&1
+end
+
+function __t_pick --description 'fzf picker: active | done | all'
+    set -l source $argv[1]
+    set -l tasks_file ~/.tasks/todo.txt
+    set -l done_file ~/.tasks/done.txt
 
     set -l source_files
     switch $source
@@ -250,6 +247,9 @@ function t --description 'Task registry -- fzf picker and field setter'
         case ctrl-o
             set -l ticket (__t_field ticket "$selection")
             if test -z "$ticket"
+                set ticket (__t_field jira "$selection")
+            end
+            if test -z "$ticket"
                 echo "No ticket on this task."
                 return 0
             end
@@ -259,6 +259,9 @@ function t --description 'Task registry -- fzf picker and field setter'
             )
             if test -n "$url"
                 open $url
+            else
+                acli jira workitem view $ticket --web 2>/dev/null
+                or echo "Could not open $ticket" >&2
             end
 
         case ctrl-x
@@ -278,4 +281,47 @@ function t --description 'Task registry -- fzf picker and field setter'
                 echo "Task not in todo.txt (already archived?)." >&2
             end
     end
+end
+
+function t --description 'Task registry -- picker + setter + todo.sh wrapper'
+    set -l tasks_dir ~/.tasks
+    if not test -d $tasks_dir
+        mkdir -p $tasks_dir
+    end
+    if not test -f $tasks_dir/todo.txt
+        touch $tasks_dir/todo.txt
+    end
+
+    # No args -- picker over active
+    if test (count $argv) -eq 0
+        __t_pick active
+        return
+    end
+
+    # Native handling based on first arg
+    switch "$argv[1]"
+        case --done
+            if test (count $argv) -gt 1
+                echo "t --done takes no additional arguments" >&2
+                return 1
+            end
+            __t_pick done
+            return
+        case --all
+            if test (count $argv) -gt 1
+                echo "t --all takes no additional arguments" >&2
+                return 1
+            end
+            __t_pick all
+            return
+        case -h --help
+            __t_help
+            return
+        case set
+            __t_set $argv[2..]
+            return
+    end
+
+    # Pass-through to todo.sh
+    todo.sh $argv
 end
