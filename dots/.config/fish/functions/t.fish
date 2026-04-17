@@ -450,6 +450,16 @@ function t --description 'Task registry -- track work across projects'
             set -l updated
 
             switch $argv[3]
+                case priority
+                    # Priority is a (A) prefix at the start of the line
+                    # Strip existing priority prefix if any
+                    set updated (
+                        string replace -r '^\([A-Z]\) ' '' -- $line
+                    )
+                    # Prepend new priority (empty value removes it)
+                    if test -n "$argv[4]"
+                        set updated "($argv[4]) $updated"
+                    end
                 case project
                     # Replace or add +project tag (todo.txt syntax)
                     set updated (string replace -r ' \+\S+' '' -- $line)
