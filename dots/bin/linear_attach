@@ -1,0 +1,129 @@
+#!/usr/bin/env fish
+# Upload files to a Linear issue as resource attachments.
+# Uses the Linear GraphQL API (fileUpload + attachmentCreate).
+#
+# Usage:
+#   linear_attach ACT-37 file1.md file2.yaml ...
+#
+# Requires:
+#   LINEAR_API_KEY env var (personal API key from Linear settings)
+
+set -l api_url "https://api.linear.app/graphql"
+
+if test -z "$LINEAR_API_KEY"
+  echo "Error: LINEAR_API_KEY not set" >&2
+  echo "Generate one at: Linear > Settings > API > Personal API keys" >&2
+  exit 1
+end
+
+if test (count $argv) -lt 2
+  echo "Usage: linear_attach ISSUE_ID file [file ...]" >&2
+  exit 1
+end
+
+set -l issue_id $argv[1]
+set -l files $argv[2..]
+
+# Resolve issue identifier (e.g., ACT-37) to UUID
+set -l resolve_query "query { issue(id: \"$issue_id\") { id identifier } }"
+set -l issue_uuid (curl -sS -X POST "$api_url" \
+  -H "Authorization: $LINEAR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d (echo '{}' | jq -c --arg q "$resolve_query" '{query: $q}') \
+  | jq -r '.data.issue.id')
+
+if test -z "$issue_uuid" -o "$issue_uuid" = "null"
+  echo "Error: could not resolve issue '$issue_id'" >&2
+  exit 1
+end
+
+echo "Resolved $issue_id -> $issue_uuid"
+
+for filepath in $files
+  if not test -f "$filepath"
+    echo "Skip: $filepath not found" >&2
+    continue
+  end
+
+  set -l filename (basename "$filepath")
+  set -l filesize (stat -f%z "$filepath")
+  set -l content_type (file --mime-type -b "$filepath")
+
+  echo "Uploading $filename ($filesize bytes, $content_type)..."
+
+  # Step 1: Request signed upload URL
+  set -l upload_query 'mutation($f: String!, $ct: String!, $sz: Int!) {
+    fileUpload(filename: $f, contentType: $ct, size: $sz) {
+      success
+      uploadFile { uploadUrl assetUrl headers { key value } }
+    }
+  }'
+  set -l upload_vars (echo '{}' | jq -c \
+    --arg f "$filename" \
+    --arg ct "$content_type" \
+    --argjson sz "$filesize" \
+    '{f: $f, ct: $ct, sz: $sz}')
+
+  set -l upload_resp (curl -sS -X POST "$api_url" \
+    -H "Authorization: $LINEAR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d (echo '{}' | jq -c --arg q "$upload_query" --argjson v "$upload_vars" \
+      '{query: $q, variables: $v}'))
+
+  set -l success (echo "$upload_resp" | jq -r '.data.fileUpload.success')
+  if test "$success" != "true"
+    echo "Error: fileUpload failed for $filename" >&2
+    echo "$upload_resp" | jq . >&2
+    continue
+  end
+
+  set -l upload_url (echo "$upload_resp" | jq -r '.data.fileUpload.uploadFile.uploadUrl')
+  set -l asset_url (echo "$upload_resp" | jq -r '.data.fileUpload.uploadFile.assetUrl')
+
+  # Build header flags from the response
+  set -l header_flags
+  for row in (echo "$upload_resp" | jq -c '.data.fileUpload.uploadFile.headers[]')
+    set -l hkey (echo "$row" | jq -r '.key')
+    set -l hval (echo "$row" | jq -r '.value')
+    set -a header_flags -H "$hkey: $hval"
+  end
+
+  # Step 2: PUT file to signed URL
+  set -l put_status (curl -sS -o /dev/null -w "%{http_code}" \
+    -X PUT "$upload_url" \
+    -H "Content-Type: $content_type" \
+    $header_flags \
+    --data-binary @"$filepath")
+
+  if test "$put_status" -lt 200 -o "$put_status" -ge 300
+    echo "Error: PUT returned HTTP $put_status for $filename" >&2
+    continue
+  end
+
+  # Step 3: Create attachment on the issue
+  set -l attach_query 'mutation($iid: String!, $url: String!, $title: String!) {
+    attachmentCreate(input: { issueId: $iid, url: $url, title: $title }) {
+      success
+      attachment { id title }
+    }
+  }'
+  set -l attach_vars (echo '{}' | jq -c \
+    --arg iid "$issue_uuid" \
+    --arg url "$asset_url" \
+    --arg title "$filename" \
+    '{iid: $iid, url: $url, title: $title}')
+
+  set -l attach_resp (curl -sS -X POST "$api_url" \
+    -H "Authorization: $LINEAR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d (echo '{}' | jq -c --arg q "$attach_query" --argjson v "$attach_vars" \
+      '{query: $q, variables: $v}'))
+
+  set -l att_ok (echo "$attach_resp" | jq -r '.data.attachmentCreate.success')
+  if test "$att_ok" = "true"
+    echo "  -> attached as resource"
+  else
+    echo "Error: attachmentCreate failed for $filename" >&2
+    echo "$attach_resp" | jq . >&2
+  end
+end
