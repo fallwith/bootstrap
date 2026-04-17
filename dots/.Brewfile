@@ -116,6 +116,7 @@ brew 'stripe/stripe-cli/stripe' if working?
 brew 'terraform' if working?
 brew 'tig'
 # brew 'tmux'
+brew 'todo-txt'
 brew 'tokei'
 brew 'tree-sitter-cli'
 brew 'ugrep'
