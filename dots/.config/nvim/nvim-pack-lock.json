@@ -220,6 +220,10 @@
       "rev": "b2e1a2eb5e3bc066dd6dce058861162508de5069",
       "src": "https://github.com/kotsuban/nekomi.nvim"
     },
+    "neon-ghost-theme": {
+      "rev": "aa67b4929c7894ac96725b4bfbf062065c321480",
+      "src": "https://github.com/jamesgadoury/neon-ghost-theme"
+    },
     "neovim": {
       "rev": "cf2a288696b03d0934da713d66c6d71557b5c997",
       "src": "https://github.com/rose-pine/neovim"
