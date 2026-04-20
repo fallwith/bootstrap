@@ -301,7 +301,6 @@ Match the culture of the Ruby community (MINASWAN).
     `set -l cmd git --flag=value` then `$cmd args`.
 - Linting: `fish -n <file>` for syntax,
   `fish_indent --check <file>` for formatting.
-- Prefer 2-space indentation in fish files.
 - **Fish functions from Bash**: Custom fish functions (e.g., `t`)
   are not available in plain `bash`. Invoke them with
   `fish -c 'command args'`.
