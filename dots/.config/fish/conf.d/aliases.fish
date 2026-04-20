@@ -9,6 +9,7 @@ alias defaultgems='cat $HOME/.default-gems | grep -v "^#" | xargs -n 1 gem insta
 alias dirs='fd -td'
 alias dockerstop='docker ps -aq |xargs docker container stop'
 alias fd='fd --color never'
+alias funcs='vi ~/.config/fish/functions'
 alias ghostty=/Applications/Ghostty.app/Contents/MacOS/ghostty
 alias ghosttyconfig='nvim_launch ~/.config/ghostty/config'
 alias guide='nvim_launch ~/git/public/vim_guide/vim_guide.md'
