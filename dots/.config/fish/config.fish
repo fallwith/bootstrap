@@ -296,6 +296,10 @@ set -gx FZF_DEFAULT_OPTS "\
 # fzf shell keybindings
 type -q fzf && fzf --fish | source
 
+# gh
+export GH_TELEMETRY=false
+export DO_NOT_TRACK=true
+
 # gpg
 set -gx GPG_TTY (tty)
 
