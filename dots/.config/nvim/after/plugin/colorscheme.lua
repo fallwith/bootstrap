@@ -139,6 +139,8 @@ local schemes = {
   "nimmy",
   "nimmy-hard",
   "neon-ghost",
+  "kintsugi-flared",
+  "kintsugi-dark",
 }
 math.randomseed(os.time())
 vim.cmd.colorscheme(schemes[math.random(#schemes)])

@@ -85,7 +85,8 @@ set repos \
   zitrocode/carvion.nvim \
   xpac27/humdrum.vim \
   nopangel/nimmy.vim \
-  jamesgadoury/neon-ghost-theme
+  jamesgadoury/neon-ghost-theme \
+  metalelf0/kintsugi-nvim
 
 set -l successes
 set -l auto_fixed

@@ -125,6 +125,7 @@ vim.pack.add({
   "https://github.com/xpac27/humdrum.vim",
   "https://github.com/nopangel/nimmy.vim",
   "https://github.com/jamesgadoury/neon-ghost-theme",
+  "https://github.com/metalelf0/kintsugi-nvim",
 
   -- editing
   "https://github.com/folke/flash.nvim",
