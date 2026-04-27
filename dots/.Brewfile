@@ -12,8 +12,14 @@ brew 'bat'
 # brew 'chruby', args: ['HEAD']
 brew 'cmake'
 # brew 'cmatrix'
+brew 'colima' if working?
+# brew 'container' if working?
+# brew 'container-compose' if working?
 brew 'coreutils'
 brew 'ctags'
+brew 'ctop' if working?
+brew 'docker' if working?
+brew 'docker-compose' if working?
 brew 'dust'
 # brew 'elinks'
 # brew 'elixir'
@@ -52,6 +58,7 @@ brew 'kubernetes-cli' if working?
 # brew 'kubernetes-helm'
 brew 'kubeseal' if working?
 brew 'lame'
+brew 'lazydocker' if working?
 brew 'libbluray'
 # brew 'libcaca'
 brew 'libffi'
@@ -164,14 +171,13 @@ cask '1password-cli' if working?
 # cask 'alacritty'
 cask 'appcleaner'
 # cask 'avibrazil-rdm'
-# cask 'calibre'
-# cask 'chefdk'
 # basictex for .md -> .pdf with pandoc
 cask 'basictex'
+# cask 'calibre'
+# cask 'chefdk'
 cask 'codex' if working?
 # cask 'datagrip' if working?
 cask 'discord' unless working?
-cask 'docker-desktop'
 # cask 'handbrake'
 # cask 'iterm2-nightly'
 # cask 'iterm2'
