@@ -19,6 +19,7 @@ brew 'coreutils'
 brew 'ctags'
 brew 'ctop' if working?
 brew 'docker' if working?
+brew 'docker-buildx' if working?
 brew 'docker-compose' if working?
 brew 'dust'
 # brew 'elinks'
