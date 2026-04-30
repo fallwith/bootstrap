@@ -31,6 +31,7 @@
 #   ctrl-e    Open todo.txt in $EDITOR
 #   ctrl-d    cd to task directory
 #   ctrl-o    Open ticket in browser
+#   ctrl-r    View captured recap (~/.tasks/recaps/<session>.jsonl)
 #   ctrl-x    Mark done (delegates to `todo.sh do N`)
 #
 # Agent field: agent:claude (default) or agent:codex
@@ -188,10 +189,10 @@ function __t_pick --description 'fzf picker: active | done | all'
         return 0
     end
 
-    set -l header "enter:resume  ctrl-e:edit  ctrl-d:cd  ctrl-o:ticket  ctrl-x:done"
+    set -l header "enter:resume  ctrl-e:edit  ctrl-d:cd  ctrl-o:ticket  ctrl-r:recap  ctrl-x:done"
     set -l result (
         printf '%s\n' $all_lines \
-            | fzf --expect 'ctrl-e,ctrl-d,ctrl-o,ctrl-x' \
+            | fzf --expect 'ctrl-e,ctrl-d,ctrl-o,ctrl-r,ctrl-x' \
                   --header "$header" \
                   --no-sort \
                   --reverse
@@ -250,6 +251,13 @@ function __t_pick --description 'fzf picker: active | done | all'
                 set ticket (__t_field jira "$selection")
             end
             if test -z "$ticket"
+                # Fallback: first ticket-like pattern in the line
+                set -l m (string match -r '\b[A-Z]+-\d+\b' -- $selection)
+                if test -n "$m"
+                    set ticket $m[1]
+                end
+            end
+            if test -z "$ticket"
                 echo "No ticket on this task."
                 return 0
             end
@@ -263,6 +271,29 @@ function __t_pick --description 'fzf picker: active | done | all'
                 acli jira workitem view $ticket --web 2>/dev/null
                 or echo "Could not open $ticket" >&2
             end
+
+        case ctrl-r
+            set -l sess (__t_field session "$selection")
+            if test -z "$sess"
+                echo "No session on this task."
+                return 0
+            end
+            set -l recap_file ~/.tasks/recaps/$sess.jsonl
+            if not test -f $recap_file
+                echo "No recap at $recap_file"
+                return 0
+            end
+            jq -r '
+                if .type == "user" then
+                    "── You ────────────────────────────────\n" +
+                    (if (.message.content | type) == "string" then .message.content
+                     else (.message.content | map(select(.type == "text") | .text) | join("\n"))
+                     end)
+                elif .type == "assistant" then
+                    "── Claude ─────────────────────────────\n" +
+                    (.message.content | map(select(.type == "text") | .text) | join("\n"))
+                else empty end
+            ' $recap_file 2>/dev/null | less -R
 
         case ctrl-x
             # Find the selected line in todo.txt and delegate to todo.sh

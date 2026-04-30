@@ -52,8 +52,22 @@ function linear_work -d 'Prep a new worktree and interactive Claude Code session
     if test -d $worktree_dir
         echo "Resuming work on $ticket in existing worktree"
         cd $worktree_dir
-        t set $ticket session $ticket 2>/dev/null
-        claude --resume $ticket
+        # Look up tracked session UUID by ticket key in dir field
+        set -l existing (
+            grep -E "dir:[^ ]*$ticket-" ~/.tasks/todo.txt | head -1
+        )
+        set -l existing_uuid
+        if test -n "$existing"
+            set existing_uuid (
+                string match -r 'session:(\S+)' -- $existing
+            )[2]
+        end
+        if test -n "$existing_uuid"
+            claude --resume $existing_uuid
+        else
+            echo "No tracked session for $ticket. Starting plain claude." >&2
+            claude
+        end
     else
         cd ~/git/web
         or begin
@@ -62,10 +76,8 @@ function linear_work -d 'Prep a new worktree and interactive Claude Code session
         end
         worktree $branch_name $base_branch
         or return 1
-        set -l dir_tilde (string replace -- $HOME '~' $worktree_dir)
-        t add "(A) $task_title +brightwheel/web ticket:$ticket session:$ticket dir:$dir_tilde"
         linear-cli issues start $ticket 2>/dev/null
-        claude --name $ticket --permission-mode plan \
+        clod "$ticket $task_title" --permission-mode plan \
             "Fetch Linear ticket $ticket via linear-cli. Run these three commands: \
 (1) linear-cli i get $ticket -o json \
 (2) linear-cli comments list $ticket -o json \
