@@ -1,7 +1,10 @@
 function setruby --description 'Switch Ruby version'
+  argparse --name=setruby 'q/quiet' -- $argv
+  or return
+
   set -l desired $argv[1]
   set -l quiet 0
-  contains -- --quiet $argv; and set quiet 1
+  set -q _flag_quiet; and set quiet 1
 
   if test -z "$desired"
     if test -e .ruby-version
@@ -30,5 +33,7 @@ function setruby --description 'Switch Ruby version'
   end
   set -gx PATH $bin_path $new_path
 
-  test $quiet -eq 0; and echo "Ruby set to $desired"
+  if test $quiet -eq 0
+    echo "Ruby set to $desired"
+  end
 end
