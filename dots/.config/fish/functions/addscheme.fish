@@ -2,22 +2,13 @@ function addscheme -d 'Add a colorscheme to Neovim from repo or vimcolorschemes 
     set -l packages_file ~/.config/nvim/lua/config/packages.lua
     set -l schemes_file ~/.config/nvim/after/plugin/colorscheme.lua
     set -l forks_file ~/git/bootstrap/dots/bin/update_colorscheme_forks.fish
-    set -l test_flag false
-    set -l owner_repo
 
-    for arg in $argv
-        switch $arg
-            case --test
-                set test_flag true
-            case '*'
-                set owner_repo $arg
-        end
-    end
-
-    if test -z "$owner_repo"
-        echo "Usage: addscheme <owner/repo | vimcolorschemes URL> [--test]"
+    if test (count $argv) -ne 1
+        echo "Usage: addscheme <owner/repo | vimcolorschemes URL>"
         return 1
     end
+
+    set -l owner_repo $argv[1]
 
     set owner_repo (string replace -r '^https?://vimcolorschemes\.com/' '' $owner_repo)
     set owner_repo (string replace -r '/$' '' $owner_repo)
@@ -77,13 +68,16 @@ function addscheme -d 'Add a colorscheme to Neovim from repo or vimcolorschemes 
         return 1
     end
 
+    # write through `cat` instead of `mv` so the destination file's inode
+    # (and therefore its permissions) survives the rewrite
     set -l pkg_tmp (mktemp)
     set -l pkg_line "  \"https://github.com/$owner_repo\","
     awk -v el="$editing_line" -v pl="$pkg_line" '
     NR == el - 1 { print pl; print ""; next }
     { print }
   ' $packages_file >$pkg_tmp
-    mv $pkg_tmp $packages_file
+    cat $pkg_tmp >$packages_file
+    rm -f $pkg_tmp
 
     echo "Added $owner_repo to packages.lua"
 
@@ -104,8 +98,8 @@ function addscheme -d 'Add a colorscheme to Neovim from repo or vimcolorschemes 
     NR == sc { while ((getline line < sf) > 0) print line; close(sf) }
     { print }
   ' $schemes_file >$out_tmp
-    mv $out_tmp $schemes_file
-    rm -f $scheme_tmp
+    cat $out_tmp >$schemes_file
+    rm -f $scheme_tmp $out_tmp
 
     echo "Added schemes to colorscheme.lua"
 
@@ -121,25 +115,14 @@ function addscheme -d 'Add a colorscheme to Neovim from repo or vimcolorschemes 
             printf '%s %s\n' (sed -n "$last_repo_line"p $forks_file) "\\" >>$forks_tmp
             printf '  %s\n' $owner_repo >>$forks_tmp
             tail -n +$after $forks_file >>$forks_tmp
-            mv $forks_tmp $forks_file
-            chmod 755 $forks_file
+            cat $forks_tmp >$forks_file
+            rm -f $forks_tmp
             echo "Added $owner_repo to update_colorscheme_forks.fish"
         else
             echo "Error: could not find insertion point in update_colorscheme_forks.fish"
         end
     end
 
-    if test "$test_flag" = true
-        echo "Installing with vim.pack..."
-        nvim --headless +"lua vim.pack.update(nil, {force=true})" +qa 2>/dev/null
-        for s in $selected
-            printf "Testing colorscheme %s... " $s
-            set -l err (nvim --headless +"colorscheme $s" +qa 2>&1 >/dev/null)
-            if test -z "$err"
-                echo OK
-            else
-                echo FAILED
-            end
-        end
-    end
+    echo "Installing with vim.pack..."
+    nvim --headless +"lua vim.pack.update(nil, {force=true})" +qa 2>/dev/null
 end
