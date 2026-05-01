@@ -40,12 +40,10 @@ vim.api.nvim_set_keymap("v", "<leader>p", '"+p', { noremap = true })
 -- diagnostics (when on an underlined bit of text)
 vim.keymap.set("n", "<Leader>x", vim.diagnostic.open_float, { desc = "Show diagnostics popup" })
 
--- copy current file path to clipboard
 vim.api.nvim_create_user_command("CP", function()
   vim.fn.setreg("+", vim.fn.expand("%:p"))
 end, { desc = "Copy current file path to clipboard" })
 
--- display current lualine theme
 vim.api.nvim_create_user_command("Luatheme", function()
   print("Lualine theme: " .. (vim.g.lualine_theme or "unknown"))
 end, { desc = "Display current lualine theme" })
