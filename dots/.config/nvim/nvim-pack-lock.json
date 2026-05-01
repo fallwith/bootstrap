@@ -45,7 +45,7 @@
       "src": "https://github.com/mohseenrm/brutus"
     },
     "carvion.nvim": {
-      "rev": "1515a25d4422bbdd388c40a67e36f611bb5aa8de",
+      "rev": "a5a120d535b83fec5b08efab2557effbc2f34602",
       "src": "https://github.com/zitrocode/carvion.nvim"
     },
     "catppuccin": {
@@ -149,7 +149,7 @@
       "src": "https://github.com/rebelot/kanagawa.nvim"
     },
     "kape-nvim": {
-      "rev": "62c04e91fc81c5a873ede8199c8ccf0c4a81dfd7",
+      "rev": "3d33b99a205ee79d942c79dbd27f596f703a5cf1",
       "src": "https://github.com/gabiuz/kape-nvim"
     },
     "kintsugi-nvim": {
@@ -209,7 +209,7 @@
       "src": "https://github.com/davidklassen/mote"
     },
     "muted.nvim": {
-      "rev": "69c5e95bb231bc5219b6cbc06b64399ce618098b",
+      "rev": "6967424df29fecf248f58a5a597b9ec94cc8b36a",
       "src": "https://github.com/pisgahk/muted.nvim"
     },
     "myrrh.nvim": {
@@ -347,6 +347,10 @@
     "tailwind-theme.nvim": {
       "rev": "8e34e3af3295ad81738c237a299571c5583875a3",
       "src": "https://github.com/NisonChrist/tailwind-theme.nvim"
+    },
+    "thorn.nvim": {
+      "rev": "a793d5026ae09a17da175c5d8bd884df18a4b9a1",
+      "src": "https://github.com/jpwol/thorn.nvim"
     },
     "token": {
       "rev": "5dbcf002a9ac7eda4fb78fe5a7ceaaac8162e511",
