@@ -57,3 +57,7 @@ vim.api.nvim_set_keymap("n", "L", ":bnext<CR>", { noremap = true })
 vim.api.nvim_create_user_command("Strip", function()
   vim.cmd([[%s/\s\+$//e]])
 end, { desc = "Trim trailing whitespace" })
+
+vim.api.nvim_create_user_command("Update", function()
+  vim.pack.update()
+end, { desc = "Update plugins via vim.pack" })
