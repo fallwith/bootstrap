@@ -160,6 +160,85 @@ function __t_help --description 't extensions + todo.sh help'
     todo.sh -h 2>&1
 end
 
+function __t_sort_key --description 'Extract sortable YYYY-MM-DD HH:MM from a todo.txt line'
+    set -l line $argv[1]
+    set -l working (string replace -r '^x \d{4}-\d{2}-\d{2} ' '' -- $line)
+    set working (string replace -r '^\([A-Z]\) ' '' -- $working)
+
+    set -l m (string match -r '^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2})' -- $working)
+    if test (count $m) -ge 3
+        echo "$m[2] $m[3]"
+        return
+    end
+    set m (string match -r '^(\d{4}-\d{2}-\d{2})' -- $working)
+    if test (count $m) -ge 2
+        echo "$m[2] 00:00"
+        return
+    end
+    echo "0000-00-00 00:00"
+end
+
+function __t_pretty --description 'Render a todo.txt line for fzf display'
+    set -l line $argv[1]
+    set -l working $line
+
+    if string match -q 'x *' -- $working
+        set working (string replace -r '^x \d{4}-\d{2}-\d{2} ' '' -- $working)
+    end
+    set working (string replace -r '^\([A-Z]\) ' '' -- $working)
+
+    set -l date ""
+    set -l time ""
+    set -l rest $working
+
+    set -l m (string match -r '^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}) (.*)' -- $working)
+    if test (count $m) -ge 4
+        set date $m[2]
+        set time $m[3]
+        set rest $m[4]
+    else
+        set m (string match -r '^(\d{4}-\d{2}-\d{2}) (.*)' -- $working)
+        if test (count $m) -ge 3
+            set date $m[2]
+            set rest $m[3]
+        end
+    end
+
+    set -l desc (string replace -r '\s*(\+\S+|[a-zA-Z]\S*:\S+).*$' '' -- $rest)
+
+    set -l ticket ""
+    set -l tm (string match -r 'ticket:(\S+)' -- $line)
+    test (count $tm) -ge 2; and set ticket $tm[2]
+    if test -z "$ticket"
+        set tm (string match -r 'jira:(\S+)' -- $line)
+        test (count $tm) -ge 2; and set ticket $tm[2]
+    end
+    if test -z "$ticket"
+        set tm (string match -r '\b[A-Z]+-\d+\b' -- $line)
+        test (count $tm) -ge 1; and set ticket $tm[1]
+    end
+
+    set -l mmdd ""
+    test -n "$date"; and set mmdd (string sub -s 6 -- $date)
+
+    set -l max_desc 60
+    if test (string length -- $desc) -gt $max_desc
+        set desc (string sub -l (math $max_desc - 1) -- $desc)…
+    end
+    set -l desc_padded (string pad -r -w $max_desc -- $desc)
+
+    set -l dt (string pad -r -w 5 -- "$mmdd")
+
+    set -l c_date (printf '\e[38;2;190;181;73m')
+    set -l c_ticket (printf '\e[38;2;157;214;231m')
+    set -l reset (printf '\e[0m')
+
+    printf '%s%s%s  %s  %s%s%s' \
+        "$c_date" "$dt" "$reset" \
+        "$desc_padded" \
+        "$c_ticket" "$ticket" "$reset"
+end
+
 function __t_pick --description 'fzf picker: active | done | all'
     set -l source $argv[1]
     set -l tasks_file ~/.tasks/todo.txt
@@ -170,7 +249,7 @@ function __t_pick --description 'fzf picker: active | done | all'
         case active
             set source_files $tasks_file
         case done
-            set source_files $done_file
+            set source_files $tasks_file $done_file
         case all
             set source_files $tasks_file $done_file
     end
@@ -180,6 +259,16 @@ function __t_pick --description 'fzf picker: active | done | all'
         test -f $file; or continue
         while read -l line
             test -z "$line"; and continue
+            set -l is_done 0
+            if string match -q 'x *' -- $line
+                set is_done 1
+            end
+            switch $source
+                case active
+                    test $is_done -eq 1; and continue
+                case done
+                    test $is_done -eq 0; and continue
+            end
             set -a all_lines $line
         end <$file
     end
@@ -189,10 +278,22 @@ function __t_pick --description 'fzf picker: active | done | all'
         return 0
     end
 
+    set -l TAB (printf '\t')
+    set -l input
+    for line in $all_lines
+        set -l sk (__t_sort_key $line)
+        set -l pretty (__t_pretty $line)
+        set -a input "$sk$TAB$pretty$TAB$line"
+    end
+
     set -l header "enter:resume  ctrl-e:edit  ctrl-d:cd  ctrl-o:ticket  ctrl-r:recap  ctrl-x:done"
     set -l result (
-        printf '%s\n' $all_lines \
-            | fzf --expect 'ctrl-e,ctrl-d,ctrl-o,ctrl-r,ctrl-x' \
+        printf '%s\n' $input \
+            | sort -r \
+            | fzf --delimiter='\t' \
+                  --with-nth=2 \
+                  --ansi \
+                  --expect 'ctrl-e,ctrl-d,ctrl-o,ctrl-r,ctrl-x' \
                   --header "$header" \
                   --no-sort \
                   --reverse
@@ -200,7 +301,10 @@ function __t_pick --description 'fzf picker: active | done | all'
 
     test -z "$result"; and return 0
     set -l key $result[1]
-    set -l selection $result[2]
+    set -l fzf_line $result[2]
+    test -z "$fzf_line"; and return 0
+
+    set -l selection (string split -m 2 $TAB -- $fzf_line)[3]
     test -z "$selection"; and return 0
 
     switch "$key"
