@@ -159,12 +159,12 @@ function worktree --description 'Manage git worktrees'
         string replace -r '^\s*\+?\s*(\S+)\s.*' '$1'
       )
 
-            # Parse `worktree list --porcelain` to capture each worktree's real path.
+            # Parse `worktree list --porcelain` into parallel arrays.
             # Directory basename doesn't always equal branch name (nested worktrees,
             # rename, etc.), so $repo_root/$branch is not a safe assumption.
-            set -l rm_branches
-            set -l rm_paths
-            set -l rm_gone
+            set -l wt_paths
+            set -l wt_branches
+            set -l wt_bares
             set -l cur_path ""
             set -l cur_branch ""
             set -l cur_bare no
@@ -176,18 +176,10 @@ function worktree --description 'Manage git worktrees'
                 set -l tokens (string split -m 1 ' ' -- $line)
                 switch $tokens[1]
                     case worktree
-                        if test -n "$cur_path" -a "$cur_bare" = no -a -n "$cur_branch"
-                            if not contains -- $cur_branch $protected
-                                if contains -- $cur_branch $merged $gone
-                                    set -a rm_branches $cur_branch
-                                    set -a rm_paths $cur_path
-                                    if contains -- $cur_branch $gone
-                                        set -a rm_gone yes
-                                    else
-                                        set -a rm_gone no
-                                    end
-                                end
-                            end
+                        if test -n "$cur_path"
+                            set -a wt_paths $cur_path
+                            set -a wt_branches $cur_branch
+                            set -a wt_bares $cur_bare
                         end
                         set cur_path $tokens[2]
                         set cur_branch ""
@@ -198,40 +190,40 @@ function worktree --description 'Manage git worktrees'
                         set cur_bare yes
                 end
             end
-            if test -n "$cur_path" -a "$cur_bare" = no -a -n "$cur_branch"
-                if not contains -- $cur_branch $protected
-                    if contains -- $cur_branch $merged $gone
-                        set -a rm_branches $cur_branch
-                        set -a rm_paths $cur_path
-                        if contains -- $cur_branch $gone
-                            set -a rm_gone yes
-                        else
-                            set -a rm_gone no
-                        end
-                    end
-                end
+            if test -n "$cur_path"
+                set -a wt_paths $cur_path
+                set -a wt_branches $cur_branch
+                set -a wt_bares $cur_bare
             end
 
-            if test (count $rm_branches) -eq 0
-                echo "No cleanable worktrees found"
-                return 0
-            end
-
-            echo "Worktrees to remove:"
-            for b in $rm_branches
-                echo "  $b"
-            end
-            read -l -P "Remove all? [y/N] " confirm
-            if test "$confirm" != y -a "$confirm" != Y
-                return 0
-            end
-
+            # Classify: removal candidates must be merged-or-gone, not protected,
+            # clean, and (for non-gone branches) fully pushed. Dirty / unpushed
+            # worktrees are reported separately and never offered for removal.
+            set -l rm_branches
+            set -l rm_paths
+            set -l rm_gone
             set -l skipped_dirty
             set -l skipped_unpushed
-            for i in (seq (count $rm_branches))
-                set -l branch $rm_branches[$i]
-                set -l path $rm_paths[$i]
-                set -l is_gone $rm_gone[$i]
+
+            for i in (seq (count $wt_paths))
+                set -l path $wt_paths[$i]
+                set -l branch $wt_branches[$i]
+                set -l bare $wt_bares[$i]
+
+                if test "$bare" = yes -o -z "$branch"
+                    continue
+                end
+                if contains -- $branch $protected
+                    continue
+                end
+                if not contains -- $branch $merged $gone
+                    continue
+                end
+
+                set -l is_gone no
+                if contains -- $branch $gone
+                    set is_gone yes
+                end
 
                 set -l dirty (git -C $path status --porcelain 2>/dev/null)
                 if test (count $dirty) -gt 0
@@ -250,15 +242,38 @@ function worktree --description 'Manage git worktrees'
                     end
                 end
 
-                echo "Removing $branch..."
-                if $git worktree remove $path 2>/dev/null
-                    if test "$is_gone" = yes
-                        $git branch -D $branch 2>/dev/null
+                set -a rm_branches $branch
+                set -a rm_paths $path
+                set -a rm_gone $is_gone
+            end
+
+            if test (count $rm_branches) -eq 0
+                echo "No cleanable worktrees found"
+            else
+                echo "Worktrees to remove:"
+                for b in $rm_branches
+                    echo "  $b"
+                end
+                read -l -P "Remove all? [y/N] " confirm
+                if test "$confirm" != y -a "$confirm" != Y
+                    return 0
+                end
+
+                for i in (seq (count $rm_branches))
+                    set -l branch $rm_branches[$i]
+                    set -l path $rm_paths[$i]
+                    set -l is_gone $rm_gone[$i]
+
+                    echo "Removing $branch..."
+                    if $git worktree remove $path 2>/dev/null
+                        if test "$is_gone" = yes
+                            $git branch -D $branch 2>/dev/null
+                        else
+                            $git branch -d $branch 2>/dev/null
+                        end
                     else
-                        $git branch -d $branch 2>/dev/null
+                        set -a skipped_dirty $branch
                     end
-                else
-                    set -a skipped_dirty $branch
                 end
             end
 
