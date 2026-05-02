@@ -14,6 +14,7 @@ local themes = {
   "powerline",
   "seoul256",
   "tomorrow_night",
+  "metsanpeitto",
 }
 math.randomseed(os.time())
 local selected_theme = themes[math.random(#themes)]
