@@ -144,6 +144,11 @@ local schemes = {
   "thorn",
   "thorn-dark-warm",
   "thorn-dark-cold",
+  "metsanpeitto", -- favored
+  "metsanpeitto",
+  "metsanpeitto",
+  "metsanpeitto",
+  "metsanpeitto",
 }
 math.randomseed(os.time())
 vim.cmd.colorscheme(schemes[math.random(#schemes)])

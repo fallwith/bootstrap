@@ -109,7 +109,7 @@
       "src": "https://github.com/nkxxll/ghostty-default-style-dark.nvim"
     },
     "gitsigns.nvim": {
-      "rev": "6d808f99bd63303646794406e270bd553ad7792e",
+      "rev": "dd3f588bacbeb041be6facf1742e42097f62165d",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "godot_color_theme": {
@@ -149,7 +149,7 @@
       "src": "https://github.com/rebelot/kanagawa.nvim"
     },
     "kape-nvim": {
-      "rev": "3d33b99a205ee79d942c79dbd27f596f703a5cf1",
+      "rev": "ba1f7bd8429fd0e7551633d58eaa9ff7bb2ee53d",
       "src": "https://github.com/gabiuz/kape-nvim"
     },
     "kintsugi-nvim": {
@@ -191,6 +191,10 @@
     "mellow.nvim": {
       "rev": "6273b7f0ddf6ac2b75021b3bc0bd8b3305cfeef1",
       "src": "https://github.com/mellow-theme/mellow.nvim"
+    },
+    "metsanpeitto.nvim": {
+      "rev": "2252faa2b8bed245de2e739e2bd813ba4cc417bf",
+      "src": "https://github.com/fallwith/metsanpeitto.nvim"
     },
     "mini.icons": {
       "rev": "bac6317300e205335df425296570d84322730067",
@@ -289,7 +293,7 @@
       "src": "https://github.com/stevearc/oil.nvim"
     },
     "olive-crt.nvim": {
-      "rev": "2596d43957d18a080514fefac2ea4867fdbcd5a2",
+      "rev": "9b4c2469a054f54b98685e93f1ced0ec19ba16b5",
       "src": "https://github.com/reobin/olive-crt.nvim"
     },
     "one-dark-pro-max": {
