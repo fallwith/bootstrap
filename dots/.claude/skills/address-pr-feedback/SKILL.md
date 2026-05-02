@@ -24,7 +24,7 @@ If the current branch has no associated PR, stop and ask the user.
 
 ## Procedure
 
-### Step 0 — Preflight
+### Step 0 -- Preflight
 
 Verify the GitHub CLI is authenticated:
 
@@ -49,7 +49,7 @@ Store these values. Specifically:
 - `headRefName` -- used in Step 5 to verify the PR branch is checked out
 - `title`, `url` -- useful for the Step 9 summary
 
-### Step 1 — Fetch review comments
+### Step 1 -- Fetch review comments
 
 Use `--paginate` on every fetch -- without it the GitHub API caps responses at
 30 items and silently truncates. PRs with more than 30 comments (or reviews,
@@ -78,7 +78,7 @@ gh api --paginate repos/<owner>/<repo>/pulls/<number>/reviews \
   --jq '.[] | select(.body != null and .body != "") | {id, body, state, user: .user.login}'
 ```
 
-### Step 2 — Group into threads
+### Step 2 -- Group into threads
 
 Group review comments by thread. A comment is a thread root if
 `in_reply_to_id` is null. Replies share the same `in_reply_to_id` as the root's
@@ -133,28 +133,28 @@ item.
 
 Map each thread ID to its root comment ID so you can resolve threads later.
 
-### Step 3 — Assess each comment
+### Step 3 -- Assess each comment
 
 For each thread that needs a response, read the feedback and the targeted code.
 Produce an assessment with one of these verdicts:
 
 | Verdict | Meaning |
 |---|---|
-| **Agree — will fix** | The feedback is correct and actionable. A code change is needed. |
-| **Agree — already addressed** | Valid point but already handled (e.g., by a prior commit). Just reply. |
-| **Answer — no code change** | The reviewer asked a question or requested context. Reply with the answer; no code change. |
-| **Disagree — will explain** | The feedback is incorrect or based on a misunderstanding. Reply with rationale. |
-| **Subjective — needs your input** | Reasonable people could disagree. Present both sides to the user. |
-| **Unclear — needs your input** | The comment is ambiguous; you need clarification before deciding how to respond. |
-| **Outdated — courtesy ack** | The thread is marked outdated but is human-authored. Reply briefly to acknowledge; no code change, no resolve. |
+| **Agree -- will fix** | The feedback is correct and actionable. A code change is needed. |
+| **Agree -- already addressed** | Valid point but already handled (e.g., by a prior commit). Just reply. |
+| **Answer -- no code change** | The reviewer asked a question or requested context. Reply with the answer; no code change. |
+| **Disagree -- will explain** | The feedback is incorrect or based on a misunderstanding. Reply with rationale. |
+| **Subjective -- needs your input** | Reasonable people could disagree. Present both sides to the user. |
+| **Unclear -- needs your input** | The comment is ambiguous; you need clarification before deciding how to respond. |
+| **Outdated -- courtesy ack** | The thread is marked outdated but is human-authored. Reply briefly to acknowledge; no code change, no resolve. |
 
-**Important:** Include ALL comments in the assessment table — even ones that have
+**Important:** Include ALL comments in the assessment table -- even ones that have
 already been replied to by the user or are otherwise handled. Use a verdict like
 "Already addressed" so the user can confirm nothing was missed. Never silently
 skip a comment.
 
 **Emoji reactions on comments** (e.g., +1, thumbs up) from other reviewers
-indicate additional support for the feedback. Note these in the assessment — a
+indicate additional support for the feedback. Note these in the assessment -- a
 comment with multiple supporters carries more weight than one without.
 
 For each comment, read the relevant code context. If you have the PR branch
@@ -174,7 +174,7 @@ comment's description of it. The line referenced in a comment may have moved
 or been replaced; always confirm what's actually there now.
 
 When a comment includes a ` ```suggestion ` block, evaluate whether the suggested
-change is correct and an improvement. Suggestions are not automatically right —
+change is correct and an improvement. Suggestions are not automatically right --
 assess them with the same rigor as any other feedback.
 
 **Bot vs. human suggestions:** Check the `user` field to determine if a comment
@@ -185,32 +185,32 @@ suffix). This distinction matters for how suggestions are handled:
   suggestion" button in the browser. This gives the reviewer contributor credit
   and guarantees their exact wording is captured. Do not apply these locally.
 - **Bot suggestions** (linters, formatters, static analysis): Apply these
-  directly in code — there is no contributor credit concern. When multiple bot
+  directly in code -- there is no contributor credit concern. When multiple bot
   suggestions target the same file or follow the same pattern (e.g., several
   RuboCop alignment fixes), batch them into a single edit pass and a single
   commit rather than handling each individually.
 
-### Step 4 — Present the assessment to the user
+### Step 4 -- Present the assessment to the user
 
 Show a summary table:
 
 ```
 | # | File:Line | Verdict | Summary |
 |---|-----------|---------|---------|
-| 1 | path:42   | Agree — will fix | Description of the issue and planned fix |
-| 2 | path:87   | Disagree — will explain | Why the current code is correct |
-| 3 | path:15   | Subjective — needs your input | The tradeoff involved |
+| 1 | path:42   | Agree -- will fix | Description of the issue and planned fix |
+| 2 | path:87   | Disagree -- will explain | Why the current code is correct |
+| 3 | path:15   | Subjective -- needs your input | The tradeoff involved |
 ```
 
 For "Subjective" and "Unclear" items, present the details and ask the user how
 to proceed before taking action. Wait for their input.
 
-For "Agree — will fix" and "Agree — already addressed" items, briefly describe
+For "Agree -- will fix" and "Agree -- already addressed" items, briefly describe
 the planned response and ask the user to confirm before proceeding. Something
 like: "I'll make the fixes for items 1, 4, 5 and reply to all threads. Items 3
 and 6 need your input. Sound good?"
 
-### Step 5 — Make code changes
+### Step 5 -- Make code changes
 
 **Verify the PR branch is checked out** before editing anything. Compare the
 current branch against the PR's `headRefName` from Step 0:
@@ -223,19 +223,19 @@ If they don't match, check out the PR branch (`gh pr checkout <number>`) or
 stop and ask the user. Editing files on the wrong branch silently lands the
 fix in the wrong place.
 
-For each "Agree — will fix" item, edit the code. Follow these principles:
+For each "Agree -- will fix" item, edit the code. Follow these principles:
 
 - Read the file before editing.
 - Make the minimum change that addresses the feedback.
 - Don't introduce unrelated changes.
 
-**Group edits by file.** When multiple "Agree — will fix" items target the same
+**Group edits by file.** When multiple "Agree -- will fix" items target the same
 file, address them in a single pass: read the file once, apply all edits
 together, save. This produces a cleaner diff and avoids re-reading the same
 file. Track which comments each edit addresses so the commit message and
 replies remain accurate.
 
-### Step 6 — Verify, commit, and push
+### Step 6 -- Verify, commit, and push
 
 **Pre-commit gate (hard requirement):**
 
@@ -270,41 +270,41 @@ prefix like "CHORE" or ask the user.
 
 Push to the PR's head branch.
 
-### Step 7 — Draft, approve, and post replies
+### Step 7 -- Draft, approve, and post replies
 
 For each thread (regardless of verdict), draft a reply matching the templates
 below. Don't post anything yet -- the user reviews drafts as a batch first.
 
 #### Reply templates
 
-**Agree — will fix / already addressed:**
-> "{Acknowledgment phrase}, addressed in {short sha}. — {attribution}"
+**Agree -- will fix / already addressed:**
+> "{Acknowledgment phrase}, addressed in {short sha}. -- {attribution}"
 
 Use varied acknowledgment phrases: "Good call", "Agreed", "Yep", "Good catch",
 "Fair point", etc. Don't use the same phrase for every comment.
 
-**Answer — no code change:**
+**Answer -- no code change:**
 > A direct, concise answer to the reviewer's question. End with an offer for
 > follow-up if appropriate.
 
-**Disagree — will explain:**
+**Disagree -- will explain:**
 > A concise, respectful explanation of why the current approach was chosen.
-> Not dismissive — acknowledge the reviewer's perspective, then explain.
+> Not dismissive -- acknowledge the reviewer's perspective, then explain.
 
-**Subjective — needs your input:**
+**Subjective -- needs your input:**
 > Whatever the user decided in Step 4, phrased as a collaborative response.
 
-**Unclear — needs your input:**
+**Unclear -- needs your input:**
 > The answer, if the user provided one in Step 4.
 
-**Outdated — courtesy ack:**
+**Outdated -- courtesy ack:**
 > Brief acknowledgment. If you can identify the SHA where the relevant code
 > was reworked (e.g., via `git log --oneline <path>` or `git log -p <path>`),
 > reference it: "Got reworked in {short sha} -- the original concern no
-> longer applies. — {attribution}". If the SHA isn't readily findable
+> longer applies. -- {attribution}". If the SHA isn't readily findable
 > (older PR, code moved across renames, etc.), degrade gracefully:
 > "The surrounding code was reworked since this comment -- original concern
-> no longer applies. — {attribution}". Don't spend effort hunting for a SHA
+> no longer applies. -- {attribution}". Don't spend effort hunting for a SHA
 > that won't materially help the reviewer.
 
 #### Approval gate
@@ -314,9 +314,9 @@ Once all drafts are written, present them as a batch:
 ```
 | # | Thread (file:line) | Verdict | Draft reply |
 |---|--------------------|---------|-------------|
-| 1 | foo.rb:42          | Agree — will fix | Good catch, addressed in <sha>. — Claude & James |
-| 2 | bar.rb:88          | Disagree — will explain | We're keeping the current approach because... |
-| 3 | baz.rb:15          | Answer — no code change | The reason this uses a class method is... |
+| 1 | foo.rb:42          | Agree -- will fix | Good catch, addressed in <sha>. -- Claude & James |
+| 2 | bar.rb:88          | Disagree -- will explain | We're keeping the current approach because... |
+| 3 | baz.rb:15          | Answer -- no code change | The reason this uses a class method is... |
 ```
 
 **Wait for the user to approve, edit, or skip specific drafts.** Never post
@@ -340,7 +340,7 @@ gh api repos/<owner>/<repo>/issues/<number>/comments \
   -f body="<reply text>"
 ```
 
-### Step 8 — Resolve threads
+### Step 8 -- Resolve threads
 
 **Reply must succeed before resolve.** If a reply call from Step 7 failed
 (network blip, body too long, API error), do not resolve that thread -- you'd
@@ -361,20 +361,20 @@ gh api graphql -f query='
 ```
 
 **Resolve** threads with these verdicts after replying:
-- Agree — will fix
-- Agree — already addressed
-- Answer — no code change (when a definitive answer was given)
-- Subjective — needs your input (after the user-decided response)
+- Agree -- will fix
+- Agree -- already addressed
+- Answer -- no code change (when a definitive answer was given)
+- Subjective -- needs your input (after the user-decided response)
 
 **Do NOT resolve** threads where:
-- The verdict was "Disagree — will explain" (let the reviewer decide if they
+- The verdict was "Disagree -- will explain" (let the reviewer decide if they
   accept the explanation)
-- The verdict was "Unclear — needs your input" and no definitive answer was given
-- The verdict was "Outdated — courtesy ack" (the thread is already outdated;
+- The verdict was "Unclear -- needs your input" and no definitive answer was given
+- The verdict was "Outdated -- courtesy ack" (the thread is already outdated;
   GitHub treats it specially -- a resolve mutation is unnecessary)
 - The user explicitly asked to leave it open
 
-### Step 9 — Summary
+### Step 9 -- Summary
 
 Print a final summary:
 
@@ -390,7 +390,7 @@ Print a final summary:
 ## Attribution
 
 The default attribution suffix for replies is the user's name (derived from git
-config) and "Claude". Example: "— Claude & James"
+config) and "Claude". Example: "-- Claude & James"
 
 If the user specifies a different attribution style, use that instead.
 
@@ -406,7 +406,7 @@ If the user specifies a different attribution style, use that instead.
 - Bot issue comments may pack multiple findings into one comment body. Parse
   each finding as its own thread in the assessment rather than treating the
   whole comment as one item.
-- When in doubt about a verdict, err toward "Subjective — needs your input"
+- When in doubt about a verdict, err toward "Subjective -- needs your input"
   and let the user decide. Don't auto-resolve things you're unsure about.
 - If the PR has a very large number of comments (>20), process them in batches
   and check in with the user between batches.
