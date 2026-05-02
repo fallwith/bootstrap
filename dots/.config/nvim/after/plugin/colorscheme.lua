@@ -150,6 +150,24 @@ local schemes = {
   "metsanpeitto",
   "metsanpeitto",
 }
+-- when the colorscheme changes, swap lualine to a matching theme if one
+-- ships with the colorscheme (e.g. metsanpeitto, everforest, kanagawa).
+-- try ev.match first (the requested name), then g:colors_name (what the
+-- scheme set itself to -- e.g. kanagawa-wave -> kanagawa).
+vim.api.nvim_create_autocmd('ColorScheme', {
+  callback = function(ev)
+    for _, name in ipairs({ ev.match, vim.g.colors_name }) do
+      if name and pcall(require, 'lualine.themes.' .. name) then
+        local config = require('lualine').get_config()
+        config.options.theme = name
+        require('lualine').setup(config)
+        vim.g.lualine_theme = name
+        return
+      end
+    end
+  end,
+})
+
 math.randomseed(os.time())
 vim.cmd.colorscheme(schemes[math.random(#schemes)])
 
