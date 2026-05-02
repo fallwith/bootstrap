@@ -232,7 +232,9 @@ set -gx LESSHISTFILE -
 set -gx MANPAGER 'nvim +Man!'
 set -gx NOAA_GOV_STATION_ID 9410230
 
-if test -n "$KITTY_PID"
+if string match -q ghostty -- $TERM_PROGRAM
+  set -gx TERM xterm-ghostty
+else if test -n "$KITTY_PID"
   set -gx TERM xterm-kitty
 else
   set -gx TERM xterm-256color
