@@ -85,6 +85,7 @@ brew 'neovim-remote'
 brew 'node'
 brew 'node@22' if working?
 brew 'npm'
+brew 'ollama' if working?
 brew 'openssl'
 brew 'pandoc'
 brew 'parallel'
