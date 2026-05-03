@@ -24,6 +24,7 @@ brew 'docker-compose' if working?
 brew 'dust'
 # brew 'elinks'
 # brew 'elixir'
+brew 'exiftool' unless working?
 brew 'eza'
 # brew 'exiftool'
 # brew 'fasd'
