@@ -50,6 +50,7 @@ keybind = cmd+period=text:\x03
 keybind = cmd+,=text:,
 keybind = global:alt+cmd+`=toggle_quick_terminal
 
+# git update-index --skip-worktree dots/.config/ghostty/theme.conf
 config-file = theme.conf
 
 # With macos-option-as-alt set to true, macOS unicode shortcuts such as
