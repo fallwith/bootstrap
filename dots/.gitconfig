@@ -108,7 +108,7 @@
   }; f"
 [commit]
   template = ~/.gitmessage
-	gpgsign = true
+	gpgsIgn = true
 [diff]
     tool = nvimdiff
 [difftool "nvimdiff"]
@@ -131,7 +131,7 @@
 [difftool]
 	prompt = false
 [tag]
-	gpgSign = true
+	gpgsign = true
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 
