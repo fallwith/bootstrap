@@ -108,11 +108,11 @@
   }; f"
 [commit]
   template = ~/.gitmessage
-	gpgsIgn = true
+  gpgsIgn = true
 [diff]
-    tool = nvimdiff
+  tool = nvimdiff
 [difftool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [merge]
   tool = vimdiff
 [mergetool]
@@ -120,20 +120,20 @@
 [mergetool "vimdiff"]
   cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [push]
-	autoSetupRemote = true
+  autoSetupRemote = true
 [pull]
-	ff = only
+  ff = only
 [init]
-	defaultBranch = main
+  defaultBranch = main
 [core]
-	attributesfile = ~/.gitattributes
+  attributesfile = ~/.gitattributes
   editor = "nvr -cc split --remote-wait-silent +'set bufhidden=wipe'"
 [difftool]
-	prompt = false
+  prompt = false
 [tag]
-	gpgsign = true
+  gpgsign = true
 [url "git@github.com:"]
-	insteadOf = https://github.com/
+  insteadOf = https://github.com/
 
 ; Use GPG to sign commits and tags:
 ;
