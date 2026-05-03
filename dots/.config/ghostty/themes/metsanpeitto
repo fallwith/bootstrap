@@ -1,0 +1,31 @@
+# metsanpeitto theme for Ghostty
+# Official palette mapping from fallwith/metsanpeitto.nvim
+# Usage:
+#  1. Place this file at ~/.config/ghostty/themes/metsanpeitto
+#  2. In your Ghostty config file (likely ~/.config/ghostty/config), set the
+#     theme via `theme = metsanpeitto`
+
+background = #1d2230
+foreground = #f5ecd7
+cursor-color = #f5ecd7
+selection-background = #2e3a52
+selection-foreground = #f5ecd7
+
+# Terminal 16-color palette
+# Based on vim.g.terminal_color_x assignments
+palette = 0=#181c28
+palette = 1=#e07a76
+palette = 2=#a3bf83
+palette = 3=#e0c87a
+palette = 4=#84b4d0
+palette = 5=#b094c4
+palette = 6=#84b6a0
+palette = 7=#c9c1ad
+palette = 8=#8a8478
+palette = 9=#f0a070
+palette = 10=#a3bf83
+palette = 11=#e5b86a
+palette = 12=#7d9cc4
+palette = 13=#d49aab
+palette = 14=#84b6a0
+palette = 15=#f5ecd7

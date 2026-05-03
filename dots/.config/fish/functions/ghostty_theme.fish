@@ -6,7 +6,8 @@ function ghostty_theme -d 'Cycle Ghostty theme'
         'TokyoNight Storm' \
         'Everforest Dark Hard' \
         'Nightfox' \
-        'Nordfox'
+        'Nordfox' \
+        'metsanpeitto'
     set -l current (string replace 'theme = ' '' < ~/.config/ghostty/theme.conf)
     set -l idx 0
     for i in (seq (count $themes))
