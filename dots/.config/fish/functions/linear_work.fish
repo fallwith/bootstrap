@@ -76,7 +76,8 @@ function linear_work -d 'Prep a new worktree and interactive Claude Code session
         end
         worktree $branch_name $base_branch
         or return 1
-        linear-cli issues start $ticket 2>/dev/null
+        linear-cli i update $ticket -s 'In Progress' -a me -q
+        or echo "Warning: failed to set $ticket to 'In Progress' or assign to self" >&2
         clod "$ticket $task_title" --permission-mode plan \
             "Fetch Linear ticket $ticket via linear-cli. Run these three commands: \
 (1) linear-cli i get $ticket -o json \
