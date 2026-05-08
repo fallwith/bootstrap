@@ -79,9 +79,11 @@ function linear_work -d 'Prep a new worktree and interactive Claude Code session
         linear-cli i update $ticket -s 'In Progress' -a me -q
         or echo "Warning: failed to set $ticket to 'In Progress' or assign to self" >&2
         clod "$ticket $task_title" --permission-mode plan \
-            "Fetch Linear ticket $ticket via linear-cli. Run these three commands: \
-(1) linear-cli i get $ticket -o json \
-(2) linear-cli comments list $ticket -o json \
-Review the title, description, and comments, then propose an implementation plan before writing any code."
+            "Fetch Linear ticket $ticket via linear-cli. Run these two commands: \
+(1) linear-cli i get $ticket --comments -o json \
+(2) linear-cli att list $ticket -o json \
+Review the title, description, and comments. If any attachments are listed, download each into the worktree \
+and review them -- read text files and view images via the Read tool. \
+Then propose an implementation plan before writing any code."
     end
 end
