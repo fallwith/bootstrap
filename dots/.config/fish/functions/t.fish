@@ -210,10 +210,6 @@ function __t_pretty --description 'Render a todo.txt line for fzf display'
     set -l tm (string match -r 'ticket:(\S+)' -- $line)
     test (count $tm) -ge 2; and set ticket $tm[2]
     if test -z "$ticket"
-        set tm (string match -r 'jira:(\S+)' -- $line)
-        test (count $tm) -ge 2; and set ticket $tm[2]
-    end
-    if test -z "$ticket"
         set tm (string match -r '\b[A-Z]+-\d+\b' -- $line)
         test (count $tm) -ge 1; and set ticket $tm[1]
     end
@@ -352,9 +348,6 @@ function __t_pick --description 'fzf picker: active | done | all'
         case ctrl-o
             set -l ticket (__t_field ticket "$selection")
             if test -z "$ticket"
-                set ticket (__t_field jira "$selection")
-            end
-            if test -z "$ticket"
                 # Fallback: first ticket-like pattern in the line
                 set -l m (string match -r '\b[A-Z]+-\d+\b' -- $selection)
                 if test -n "$m"
@@ -372,8 +365,7 @@ function __t_pick --description 'fzf picker: active | done | all'
             if test -n "$url"
                 open $url
             else
-                acli jira workitem view $ticket --web 2>/dev/null
-                or echo "Could not open $ticket" >&2
+                echo "Could not open $ticket" >&2
             end
 
         case ctrl-r
