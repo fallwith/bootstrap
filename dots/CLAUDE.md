@@ -28,6 +28,12 @@
   or the back-and-forth has been extensive,
   offer to write a markdown plan file for future follow-up.
 
+### Service and Resource Availability
+- Surface any issues related to OS services, Homebrew services,
+  or containers (Docker, Colima, etc.) being unavailable. Do not
+  attempt -- nor offer to attempt -- to start, restart, or
+  troubleshoot them unless explicitly asked to.
+
 ### Linting
 - **Before committing**, run the project's linter on all changed files
   (e.g., `bundle exec rubocop` for Ruby,
