@@ -1,0 +1,30 @@
+# metsanpeitto-syksy theme for Ghostty (autumn dark)
+# Official palette mapping from fallwith/metsanpeitto.nvim
+# Usage:
+#  1. Place this file at ~/.config/ghostty/themes/metsanpeitto-syksy
+#  2. In your Ghostty config (likely ~/.config/ghostty/config), set the
+#     theme via `theme = metsanpeitto-syksy`
+
+background = #2a2425
+foreground = #f0e0c0
+cursor-color = #f0e0c0
+selection-background = #453843
+selection-foreground = #f0e0c0
+
+# Terminal 16-color palette
+palette = 0=#221c1d
+palette = 1=#d86855
+palette = 2=#a8a558
+palette = 3=#dab85a
+palette = 4=#80a5b8
+palette = 5=#bf8aa8
+palette = 6=#86a07a
+palette = 7=#cab896
+palette = 8=#8a7d6a
+palette = 9=#e89060
+palette = 10=#a8a558
+palette = 11=#e8a558
+palette = 12=#7d96a8
+palette = 13=#c88a99
+palette = 14=#86a07a
+palette = 15=#f0e0c0

@@ -1,0 +1,30 @@
+# metsanpeitto-aukea theme for Ghostty (light)
+# Official palette mapping from fallwith/metsanpeitto.nvim
+# Usage:
+#  1. Place this file at ~/.config/ghostty/themes/metsanpeitto-aukea
+#  2. In your Ghostty config (likely ~/.config/ghostty/config), set the
+#     theme via `theme = metsanpeitto-aukea`
+
+background = #f4ead2
+foreground = #3a4258
+cursor-color = #3a4258
+selection-background = #dcc285
+selection-foreground = #3a4258
+
+# Terminal 16-color palette
+palette = 0=#e0d2a8
+palette = 1=#a83a3a
+palette = 2=#5a8045
+palette = 3=#7a6018
+palette = 4=#3a6a8a
+palette = 5=#7d5ca3
+palette = 6=#3a7560
+palette = 7=#5a6175
+palette = 8=#7d8290
+palette = 9=#b85a30
+palette = 10=#5a8045
+palette = 11=#a07820
+palette = 12=#4a7595
+palette = 13=#a85878
+palette = 14=#3a7560
+palette = 15=#3a4258

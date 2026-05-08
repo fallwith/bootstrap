@@ -290,10 +290,16 @@ end
 set -gx FZF_DEFAULT_COMMAND 'rg --files --hidden --follow --glob "!.git/*"'
 
 # fzf base16 tomorrow night theme
+# set -gx FZF_DEFAULT_OPTS "\
+# --color=bg+:#282a2e,bg:#1d1f21,spinner:#8abeb7,hl:#81a2be \
+# --color=fg:#b4b7b4,header:#81a2be,info:#f0c674,pointer:#8abeb7 \
+# --color=marker:#8abeb7,fg+:#e0e0e0,prompt:#f0c674,hl+:#81a2be"
+
+# fzf metsanpeitto-syksy theme (autumn dark)
 set -gx FZF_DEFAULT_OPTS "\
---color=bg+:#282a2e,bg:#1d1f21,spinner:#8abeb7,hl:#81a2be \
---color=fg:#b4b7b4,header:#81a2be,info:#f0c674,pointer:#8abeb7 \
---color=marker:#8abeb7,fg+:#e0e0e0,prompt:#f0c674,hl+:#81a2be"
+--color=bg+:#302828,bg:#2a2425,spinner:#86a07a,hl:#e8a558 \
+--color=fg:#f0e0c0,header:#80a5b8,info:#7d6f7d,pointer:#e89060 \
+--color=marker:#86a07a,fg+:#f0e0c0,prompt:#bf8aa8,hl+:#e8a558"
 
 # fzf shell keybindings
 type -q fzf && fzf --fish | source
