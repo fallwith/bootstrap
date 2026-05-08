@@ -7,6 +7,7 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
     #   -p, --priority NUM      Priority (1=urgent, 2=high, 3=normal, 4=low)
     #   -l, --label LABEL       Label (can be specified multiple times)
     #   -s, --state STATE       Override state (e.g. "In Progress", "Backlog")
+    #   -a, --attach PATH       Attach a file (can be specified multiple times)
     #   --backlog               Use backlog state instead of active
     #   --unassigned            Do not assign to self
     #
@@ -22,6 +23,7 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
     #   linear_create "Fix the widget" -d "Details here" -p 2
     #   linear_create "Backlog item" --backlog --unassigned
     #   linear_create "Bug" -l Bug -p 2
+    #   linear_create "Bug" -a screenshot.png -a logs.txt
 
     # -- Config -----------------------------------------------------
     set -l config_path ~/.config/linear_create.conf
@@ -75,6 +77,7 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
     set -l priority
     set -l labels
     set -l state_override
+    set -l attachments
     set -l backlog 0
     set -l unassigned 0
 
@@ -93,6 +96,9 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
             case -s --state
                 set i (math $i + 1)
                 set state_override $argv[$i]
+            case -a --attach
+                set i (math $i + 1)
+                set -a attachments $argv[$i]
             case --backlog
                 set backlog 1
             case --unassigned
@@ -122,6 +128,14 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
 
     if test -z "$description"
         read -P "Description (enter for none): " description
+    end
+
+    # Validate attachments exist before creating the ticket so we fail fast.
+    for path in $attachments
+        if not test -f "$path"
+            echo "Attachment not found: $path" >&2
+            return 1
+        end
     end
 
     # -- Build command ----------------------------------------------
@@ -181,6 +195,15 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
     echo "Created: $ticket_id $ticket_title" >&2
     if test -n "$target_state"
         echo "State: $target_state" >&2
+    end
+
+    # -- Attachments ------------------------------------------------
+    # Failures here don't fail the function -- the ticket already exists.
+    if test (count $attachments) -gt 0
+        echo "Attaching "(count $attachments)" file(s)..." >&2
+        if not linear_attach $ticket_id $attachments >&2
+            echo "Warning: linear_attach failed; ticket $ticket_id was created but attachments may be missing." >&2
+        end
     end
 
     echo $ticket_id
