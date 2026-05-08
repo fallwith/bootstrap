@@ -87,7 +87,8 @@ set repos \
   nopangel/nimmy.vim \
   jamesgadoury/neon-ghost-theme \
   metalelf0/kintsugi-nvim \
-  jpwol/thorn.nvim
+  jpwol/thorn.nvim \
+  initsyscall/themeinitnvim
 
 set -l successes
 set -l auto_fixed

@@ -5,7 +5,7 @@
       "src": "https://github.com/fallwith/AetherAmethyst.nvim"
     },
     "Aquavium.nvim": {
-      "rev": "a8f4400aacfb6755f5e8f009926d4565bacd4084",
+      "rev": "c72ae2e60557a291f9bb2715193ffef0026a8ac3",
       "src": "https://github.com/T-b-t-nchos/Aquavium.nvim"
     },
     "arcana": {
@@ -133,7 +133,7 @@
       "src": "https://github.com/alexpasmantier/hubbamax.nvim"
     },
     "humdrum.vim": {
-      "rev": "081c246248b0f0ab9e0f1f8f0d9a366767424fb6",
+      "rev": "54c829c7ac7970c9df507ac11ed463fd39d66857",
       "src": "https://github.com/xpac27/humdrum.vim"
     },
     "juliana.nvim": {
@@ -149,7 +149,7 @@
       "src": "https://github.com/rebelot/kanagawa.nvim"
     },
     "kape-nvim": {
-      "rev": "ba1f7bd8429fd0e7551633d58eaa9ff7bb2ee53d",
+      "rev": "0e59b14ddffcdbbccc992cc52fdd5f33a789ff5d",
       "src": "https://github.com/gabiuz/kape-nvim"
     },
     "kintsugi-nvim": {
@@ -193,7 +193,7 @@
       "src": "https://github.com/mellow-theme/mellow.nvim"
     },
     "metsanpeitto.nvim": {
-      "rev": "2252faa2b8bed245de2e739e2bd813ba4cc417bf",
+      "rev": "6808cd30243f80bcd67a1e2a0f4410bef001c832",
       "src": "https://github.com/fallwith/metsanpeitto.nvim"
     },
     "mini.icons": {
@@ -241,7 +241,7 @@
       "src": "https://github.com/rose-pine/neovim"
     },
     "nightfox.nvim": {
-      "rev": "ba47d4b4c5ec308718641ba7402c143836f35aa9",
+      "rev": "26b61b1f856ec37cae3cb64f5690adb955f246a1",
       "src": "https://github.com/EdenEast/nightfox.nvim"
     },
     "nimmy.vim": {
@@ -273,7 +273,7 @@
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-surround": {
-      "rev": "9291040de8cd8a4439eb64c441e8d5d2bf884a5a",
+      "rev": "2e93e154de9ff326def6480a4358bfc149d5da2c",
       "src": "https://github.com/kylechui/nvim-surround"
     },
     "nvim-treesitter": {
@@ -321,7 +321,7 @@
       "src": "https://github.com/samharju/serene.nvim"
     },
     "shale.nvim": {
-      "rev": "4fa6c80ab33bcbf3c0377ece4773a69b8facd041",
+      "rev": "caa302848ceb5fa6038ced228b93b5c6b4120fee",
       "src": "https://github.com/smit4k/shale.nvim"
     },
     "shizukana.nvim": {
@@ -352,8 +352,12 @@
       "rev": "8e34e3af3295ad81738c237a299571c5583875a3",
       "src": "https://github.com/NisonChrist/tailwind-theme.nvim"
     },
+    "themeinitnvim": {
+      "rev": "87e9230e22f88f4242e7122f09333860c1a969c5",
+      "src": "https://github.com/initsyscall/themeinitnvim"
+    },
     "thorn.nvim": {
-      "rev": "a793d5026ae09a17da175c5d8bd884df18a4b9a1",
+      "rev": "719f558623eb05d0e391401c419820ffb9042fb6",
       "src": "https://github.com/jpwol/thorn.nvim"
     },
     "token": {
@@ -369,7 +373,7 @@
       "src": "https://github.com/hopsk/tomorrow-night-bright-rstudio.nvim"
     },
     "vague.vim": {
-      "rev": "b39224bea2806ba58bfef13b249f795d68186560",
+      "rev": "dc0b7584d087e3f9b91f041416a6ac306bef2083",
       "src": "https://github.com/vague-theme/vague.vim"
     },
     "venice.vim": {
@@ -385,7 +389,7 @@
       "src": "https://github.com/bluz71/vim-nightfly-colors"
     },
     "vim-test": {
-      "rev": "bc0e94059de40641d163516a83c63bc45c716acf",
+      "rev": "7062b50979a28e804081f0e82b7321184ec1c20b",
       "src": "https://github.com/vim-test/vim-test"
     },
     "void.nvim": {

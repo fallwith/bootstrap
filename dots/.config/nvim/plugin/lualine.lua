@@ -39,10 +39,6 @@ require("lualine").setup({
     lualine_c = {
       {
         "buffers",
-        buffers_color = {
-          active = { fg = "#ffffff" },
-          inactive = { fg = "#808080" },
-        },
         hide_filename_extension = true,
         icons_enabled = false,
         component_separators = { left = "", right = "" },

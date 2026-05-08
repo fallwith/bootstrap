@@ -118,7 +118,6 @@ local schemes = {
   "sora",
   "tokyo-dark",
   "token",
-  "palette-dark.svg",
   "north-sea",
   "mote",
   "muted_water",
@@ -146,10 +145,19 @@ local schemes = {
   "thorn-dark-warm",
   "thorn-dark-cold",
   "metsanpeitto", -- favored
-  "metsanpeitto",
-  "metsanpeitto",
-  "metsanpeitto",
-  "metsanpeitto",
+  "metsanpeitto-tihea",
+  "metsanpeitto-tihea",
+  "metsanpeitto-tihea",
+  "metsanpeitto-tihea",
+  "metsanpeitto-syksy",
+  "metsanpeitto-syksy",
+  "metsanpeitto-syksy",
+  "metsanpeitto-syksy",
+  "metsanpeitto-sumu",
+  "metsanpeitto-sumu",
+  "metsanpeitto-sumu",
+  "metsanpeitto-sumu",
+  "nightSyscall",
 }
 -- when the colorscheme changes, swap lualine to a matching theme if one
 -- ships with the colorscheme (e.g. metsanpeitto, everforest, kanagawa).
