@@ -5,6 +5,7 @@
   path = ~/.gitconfig.local
 [alias]
   c = commit
+  cne = commit --no-edit
   ; checkout the given branch, using fuzzy finding if a branch is not given.
   co = "!f() { \
     declare branch=\"$1\"; \
