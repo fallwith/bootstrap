@@ -148,10 +148,6 @@
       "rev": "8ad3b4cdcc804b332c32db8f9743667e1bb82b99",
       "src": "https://github.com/rebelot/kanagawa.nvim"
     },
-    "kape-nvim": {
-      "rev": "0e59b14ddffcdbbccc992cc52fdd5f33a789ff5d",
-      "src": "https://github.com/gabiuz/kape-nvim"
-    },
     "kintsugi-nvim": {
       "rev": "6c8b881e6aea8ee1e3361a00858b5b1a3488d885",
       "src": "https://github.com/metalelf0/kintsugi-nvim"

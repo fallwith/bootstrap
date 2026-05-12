@@ -23,15 +23,33 @@ function rmscheme -d 'Remove a colorscheme that was installed via addscheme'
         return 1
     end
 
-    # collect owner/repo URLs in packages.lua matching the prefix
+    # collect matching package lines in packages.lua, extracting both the
+    # owner/repo (used for packages.lua + the forks file) and the vim.pack
+    # plugin name (the lockfile/on-disk key, used by vim.pack.del). The
+    # name defaults to the repo basename, but the `{ src = ..., name = ... }`
+    # table form lets a spec override it (e.g. catppuccin, folk-nvim).
     set -l owner_repos
+    set -l plugin_names
     for line in (grep -iE 'github\.com/[^"]*'$prefix_re $packages_file)
-        set -l m (string match -r 'github\.com/([^"]+)' -- $line)
-        if test (count $m) -eq 2
-            set -a owner_repos (string replace -r '/$' '' -- $m[2])
+        set -l url_match (string match -r 'github\.com/([^"]+)' -- $line)
+        if test (count $url_match) -lt 2
+            continue
+        end
+        set -l owner_repo (string replace -r '/$' '' -- $url_match[2])
+        # the URL match greedily eats the rest of the line; trim at the
+        # closing quote so an explicit name from the same table doesn't
+        # leak into owner_repo
+        set owner_repo (string replace -r '".*' '' -- $owner_repo)
+        set -a owner_repos $owner_repo
+
+        set -l name_match (string match -r 'name\s*=\s*"([^"]+)"' -- $line)
+        if test (count $name_match) -ge 2
+            set -a plugin_names $name_match[2]
+        else
+            set -l parts (string split -r -m1 / -- $owner_repo)
+            set -a plugin_names $parts[-1]
         end
     end
-    set owner_repos (printf '%s\n' $owner_repos | sort -u | string match -er '.')
 
     if test (count $owner_repos) -eq 0
         echo "No package URLs matching '$prefix' found in $packages_file"
@@ -51,6 +69,11 @@ function rmscheme -d 'Remove a colorscheme that was installed via addscheme'
     echo "Will remove from $forks_file (if present):"
     for r in $owner_repos
         echo "  $r"
+    end
+    echo
+    echo "Will call vim.pack.del() for (clears on-disk dir + lockfile entry):"
+    for n in $plugin_names
+        echo "  $n"
     end
     echo
     read -l -P "Proceed? [y/N] " confirm
@@ -105,7 +128,19 @@ function rmscheme -d 'Remove a colorscheme that was installed via addscheme'
 
     rm -f $tmp
 
-    echo "Updating nvim-pack-lock.json..."
-    nvim --headless +qa 2>/dev/null
+    # vim.pack.del drops the on-disk plugin dir AND the lockfile entry
+    # in one shot. Must run AFTER packages.lua has been edited so the
+    # plugin is no longer "active" (del refuses to remove active plugins
+    # without force=true). Per-name pcall so a missing/already-cleaned
+    # entry doesn't abort the rest.
+    set -l names_quoted
+    for n in $plugin_names
+        set -a names_quoted "\"$n\""
+    end
+    set -l names_lua (string join , -- $names_quoted)
+    echo "Removing plugin(s) from disk and lockfile via vim.pack.del..."
+    nvim --headless \
+        -c "lua for _,n in ipairs({$names_lua}) do pcall(vim.pack.del, {n}) end" \
+        -c qa 2>&1
     echo Done
 end
