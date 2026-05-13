@@ -1,5 +1,6 @@
 function qwen -d 'Frontend for Ollama based Qwen'
-    set -l model "qwen2.5-coder:7b"
+    # set -l model "qwen2.5-coder:7b"
+    set -l model "qwen3.5:9b"
     set -l instructions ""
 
     # check for the -r (raw) flag
