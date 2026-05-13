@@ -56,6 +56,10 @@
       "rev": "68997e3e1abdc7fed34bd9fe53a9c6cf6229fd1e",
       "src": "https://github.com/bergholmm/cursor-dark.nvim"
     },
+    "cybersynth.nvim": {
+      "rev": "7999b8dedef2db7e708929c0bc0e059ab650b385",
+      "src": "https://github.com/web-dev-codi/cybersynth.nvim"
+    },
     "cynosure.nvim": {
       "rev": "29d7437ae2226a4d6131efb901b0b7e949debba0",
       "src": "https://github.com/gillisc/cynosure.nvim"

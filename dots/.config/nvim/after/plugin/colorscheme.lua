@@ -158,6 +158,7 @@ local schemes = {
   "metsanpeitto-sumu",
   "metsanpeitto-sumu",
   "nightSyscall",
+  "cybersynth",
 }
 -- when the colorscheme changes, swap lualine to a matching theme if one
 -- ships with the colorscheme (e.g. metsanpeitto, everforest, kanagawa).

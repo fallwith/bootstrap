@@ -129,6 +129,7 @@ vim.pack.add({
   "https://github.com/jpwol/thorn.nvim",
   "https://github.com/fallwith/metsanpeitto.nvim",
   "https://github.com/initsyscall/themeinitnvim",
+  "https://github.com/web-dev-codi/cybersynth.nvim",
 
   -- editing
   "https://github.com/folke/flash.nvim",
