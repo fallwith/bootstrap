@@ -130,6 +130,7 @@ vim.pack.add({
   "https://github.com/fallwith/metsanpeitto.nvim",
   "https://github.com/initsyscall/themeinitnvim",
   "https://github.com/web-dev-codi/cybersynth.nvim",
+  "https://github.com/miladggg/neonwave.nvim",
 
   -- editing
   "https://github.com/folke/flash.nvim",

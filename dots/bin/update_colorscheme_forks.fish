@@ -89,7 +89,8 @@ set repos \
   metalelf0/kintsugi-nvim \
   jpwol/thorn.nvim \
   initsyscall/themeinitnvim \
-  web-dev-codi/cybersynth.nvim
+  web-dev-codi/cybersynth.nvim \
+  miladggg/neonwave.nvim
 
 set -l successes
 set -l auto_fixed
