@@ -21,7 +21,7 @@
       "src": "https://github.com/LuRsT/austere.vim"
     },
     "backpack.nvim": {
-      "rev": "b7deb983699dbf622fcc0c81d2e705a4efb83de1",
+      "rev": "d4428964cf5d1ae8c9a27ef3540251d41902e209",
       "src": "https://github.com/mitch1000/backpack.nvim"
     },
     "bamboo.nvim": {
@@ -161,7 +161,7 @@
       "src": "https://github.com/serenevoid/kiwi.nvim"
     },
     "koda.nvim": {
-      "rev": "4668e307f2f3a1e38bd627b14d13368ebf5b8d9f",
+      "rev": "ff7ea32c2002ee18032629122f8232fc97e5ccb3",
       "src": "https://github.com/oskarnurm/koda.nvim"
     },
     "kukishinobu.vim": {
