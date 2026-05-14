@@ -102,7 +102,6 @@ local schemes = {
   "hearthlight-cinder",
   "pastel",
   "pastelblack",
-  "pastelcloud",
   "pastelcool",
   "pastelcream",
   "pasteldark",
