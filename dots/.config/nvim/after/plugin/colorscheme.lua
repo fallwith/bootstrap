@@ -141,8 +141,6 @@ local schemes = {
   "kintsugi-flared",
   "kintsugi-dark",
   "thorn",
-  "thorn-dark-warm",
-  "thorn-dark-cold",
   "metsanpeitto", -- favored
   "metsanpeitto-tihea",
   "metsanpeitto-tihea",
