@@ -8,6 +8,7 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
     #   -l, --label LABEL       Label (can be specified multiple times)
     #   -s, --state STATE       Override state (e.g. "In Progress", "Backlog")
     #   -a, --attach PATH       Attach a file (can be specified multiple times)
+    #   --project NAME_OR_ID    Associate ticket with a Linear project
     #   --backlog               Use backlog state instead of active
     #   --unassigned            Do not assign to self
     #
@@ -24,6 +25,7 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
     #   linear_create "Backlog item" --backlog --unassigned
     #   linear_create "Bug" -l Bug -p 2
     #   linear_create "Bug" -a screenshot.png -a logs.txt
+    #   linear_create "Story" --project "Q3 Roadmap"
 
     # -- Config -----------------------------------------------------
     set -l config_path ~/.config/linear_create.conf
@@ -78,6 +80,7 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
     set -l labels
     set -l state_override
     set -l attachments
+    set -l project
     set -l backlog 0
     set -l unassigned 0
 
@@ -99,6 +102,9 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
             case -a --attach
                 set i (math $i + 1)
                 set -a attachments $argv[$i]
+            case --project
+                set i (math $i + 1)
+                set project $argv[$i]
             case --backlog
                 set backlog 1
             case --unassigned
@@ -195,6 +201,16 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
     echo "Created: $ticket_id $ticket_title" >&2
     if test -n "$target_state"
         echo "State: $target_state" >&2
+    end
+
+    # -- Project association ----------------------------------------
+    # Failures here don't fail the function -- the ticket already exists.
+    if test -n "$project"
+        if linear-cli issues update $ticket_id --project $project >/dev/null 2>&1
+            echo "Project: $project" >&2
+        else
+            echo "Warning: failed to associate $ticket_id with project '$project'." >&2
+        end
     end
 
     # -- Attachments ------------------------------------------------
