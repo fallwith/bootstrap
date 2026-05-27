@@ -5,10 +5,18 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
     # Options:
     #   -d, --description TEXT  Issue description (markdown)
     #   -p, --priority NUM      Priority (1=urgent, 2=high, 3=normal, 4=low)
-    #   -l, --label LABEL       Label (can be specified multiple times)
+    #   -l, --label LABEL       Label name or uuid (can be specified
+    #                           multiple times). Names are resolved to
+    #                           team-scoped uuids via GraphQL; workspace
+    #                           labels (e.g. "Bug") are the fallback when
+    #                           no team match exists. Requires
+    #                           LINEAR_API_KEY in the environment.
     #   -s, --state STATE       Override state (e.g. "In Progress", "Backlog")
     #   -a, --attach PATH       Attach a file (can be specified multiple times)
     #   --project NAME_OR_ID    Associate ticket with a Linear project
+    #   --team TEAM_KEY         Override the configured team (for
+    #                           cross-team handoff tickets). When set,
+    #                           labels are resolved against this team.
     #   --backlog               Use backlog state instead of active
     #   --unassigned            Do not assign to self
     #
@@ -26,6 +34,7 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
     #   linear_create "Bug" -l Bug -p 2
     #   linear_create "Bug" -a screenshot.png -a logs.txt
     #   linear_create "Story" --project "Q3 Roadmap"
+    #   linear_create "Handoff" --team FOX --unassigned -s Triage
 
     # -- Config -----------------------------------------------------
     set -l config_path ~/.config/linear_create.conf
@@ -81,6 +90,7 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
     set -l state_override
     set -l attachments
     set -l project
+    set -l team_override
     set -l backlog 0
     set -l unassigned 0
 
@@ -105,6 +115,9 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
             case --project
                 set i (math $i + 1)
                 set project $argv[$i]
+            case --team
+                set i (math $i + 1)
+                set team_override $argv[$i]
             case --backlog
                 set backlog 1
             case --unassigned
@@ -121,6 +134,13 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
                 end
         end
         set i (math $i + 1)
+    end
+
+    # -- Apply team override ----------------------------------------
+    # An explicit --team replaces the configured default for the rest
+    # of the function, including label resolution.
+    if test -n "$team_override"
+        set cfg_team $team_override
     end
 
     # -- Interactive fallbacks --------------------------------------
@@ -142,6 +162,56 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
             echo "Attachment not found: $path" >&2
             return 1
         end
+    end
+
+    # -- Resolve label names to uuids -------------------------------
+    # linear-cli matches label names case-insensitively across the
+    # whole workspace and can pick the wrong team's label, which the
+    # API then rejects. Resolve each name to an id ourselves,
+    # preferring a team-scoped match before falling back to a
+    # workspace-level label (e.g. "Bug" lives at the workspace level).
+    set -l label_ids
+    for lbl in $labels
+        # UUID pass-through.
+        if string match -qr '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' -- $lbl
+            set -a label_ids $lbl
+            continue
+        end
+
+        if test -z "$LINEAR_API_KEY"
+            echo "LINEAR_API_KEY not set; cannot resolve label '$lbl'." >&2
+            return 1
+        end
+
+        set -l body (jq -nc --arg name "$lbl" '{
+            query: "query L($name: String!) { issueLabels(filter: {name: {eq: $name}}) { nodes { id team { key name } } } }",
+            variables: {name: $name}
+        }')
+        set -l response (curl -sS -X POST https://api.linear.app/graphql \
+            -H "Authorization: $LINEAR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "$body")
+        if test $status -ne 0
+            echo "GraphQL request failed while resolving label '$lbl'." >&2
+            return 1
+        end
+
+        set -l team_id (echo $response | jq -r --arg t "$cfg_team" \
+            '[.data.issueLabels.nodes[]? | select(.team.key == $t or .team.name == $t)][0].id // empty')
+        if test -n "$team_id"
+            set -a label_ids $team_id
+            continue
+        end
+
+        set -l workspace_id (echo $response | jq -r \
+            '[.data.issueLabels.nodes[]? | select(.team == null)][0].id // empty')
+        if test -n "$workspace_id"
+            set -a label_ids $workspace_id
+            continue
+        end
+
+        echo "No label named '$lbl' found for team '$cfg_team' or at workspace level." >&2
+        return 1
     end
 
     # -- Build command ----------------------------------------------
@@ -174,7 +244,7 @@ function linear_create -d 'Create a Linear issue via linear-cli and print the id
         set -a cmd -p $priority
     end
 
-    for lbl in $labels
+    for lbl in $label_ids
         set -a cmd -l $lbl
     end
 
