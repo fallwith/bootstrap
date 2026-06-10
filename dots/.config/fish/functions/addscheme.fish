@@ -10,7 +10,7 @@ function addscheme -d 'Add a colorscheme to Neovim from repo or vimcolorschemes 
 
     set -l owner_repo $argv[1]
 
-    set owner_repo (string replace -r '^https?://vimcolorschemes\.com/' '' $owner_repo)
+    set owner_repo (string replace -r '^https?://vimcolorschemes\.com/r/' '' $owner_repo)
     set owner_repo (string replace -r '/$' '' $owner_repo)
 
     if not string match -qr '^[^/]+/[^/]+$' $owner_repo
