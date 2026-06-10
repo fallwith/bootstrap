@@ -166,6 +166,9 @@ brew 'zig'
 # tap 'atlassian/homebrew-acli' if working?
 # brew 'acli' if working?
 
+tap 'oven-sh/bun' if working?
+brew 'bun' if working?
+
 # "Error: It seems there is already an App at '/Applications/1password"
 # brew reinstall --cask 1password --force
 
