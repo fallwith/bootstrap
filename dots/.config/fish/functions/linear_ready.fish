@@ -45,7 +45,7 @@ function linear_ready -d 'List unblocked vs blocked issues for a Linear project 
     end
 
     # -- Fetch issues + blocked-by relations ------------------------
-    set -l body (jq -nc --arg pid "$pid" '{query:"query($pid:String!){project(id:$pid){issues(first:50){nodes{identifier title state{type} inverseRelations{nodes{type issue{identifier}}}}}}}",variables:{pid:$pid}}')
+    set -l body (jq -nc --arg pid "$pid" '{query:"query($pid:String!){project(id:$pid){issues(first:50){nodes{identifier title state{type} labels{nodes{name}} inverseRelations{nodes{type issue{identifier}}}}}}}",variables:{pid:$pid}}')
     set -l iresp (curl -sS -X POST $api -H "Authorization: $LINEAR_API_KEY" -H "Content-Type: application/json" -d $body | string collect)
 
     if test (echo $iresp | jq -r 'if .data.project == null then "null" else "ok" end') = null
@@ -56,7 +56,7 @@ function linear_ready -d 'List unblocked vs blocked issues for a Linear project 
         echo "(note: 50 issues fetched; project may have more -- pagination not implemented)" >&2
     end
 
-    set -l prog '.data.project.issues.nodes as $n | ($n | map({(.identifier): .state.type}) | add) as $st | ($n | map(. + {blockers: [.inverseRelations.nodes[]? | select(.type=="blocks") | .issue.identifier]})) | map(. + {incomplete: [.blockers[] | select($st[.] != "completed")]}) | sort_by(.identifier) | (map(select((.state.type|test("completed|canceled")|not) and (.incomplete|length==0)))) as $ready | (map(select((.state.type|test("completed|canceled")|not) and (.incomplete|length>0)))) as $blocked | "READY NOW (\($ready|length)):", ($ready[] | "  \(.identifier)  \(.title[0:50])"), "", "BLOCKED (\($blocked|length)):", ($blocked[] | "  \(.identifier)  <- \(.incomplete|join(", "))")'
+    set -l prog '.data.project.issues.nodes as $n | ($n | map({(.identifier): .state.type}) | add) as $st | ($n | map(. + {blockers: [.inverseRelations.nodes[]? | select(.type=="blocks") | .issue.identifier]})) | map(. + {incomplete: [.blockers[] | select($st[.] != "completed")], lbl: (.labels.nodes | map(.name) | join(", "))}) | sort_by(.identifier) | (map(select((.state.type|test("completed|canceled")|not) and (.incomplete|length==0)))) as $ready | (map(select((.state.type|test("completed|canceled")|not) and (.incomplete|length>0)))) as $blocked | "READY NOW (\($ready|length)):", ($ready[] | "  \(.identifier)  \(.title[0:50])\(if .lbl=="" then "" else "  [\(.lbl)]" end)"), "", "BLOCKED (\($blocked|length)):", ($blocked[] | "  \(.identifier)  <- \(.incomplete|join(", "))\(if .lbl=="" then "" else "  [\(.lbl)]" end)")'
 
     echo $iresp | jq -r $prog
 end
