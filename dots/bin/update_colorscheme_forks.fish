@@ -47,7 +47,6 @@ set repos \
     wunki/gondolin.nvim \
     NisonChrist/tailwind-theme.nvim \
     bergholmm/cursor-dark.nvim \
-    voylin/godot_color_theme \
     aisk/kukishinobu.vim \
     kotsuban/nekomi.nvim \
     waytoopurple/fieldlights.nvim \
@@ -90,7 +89,14 @@ set repos \
   jpwol/thorn.nvim \
   initsyscall/themeinitnvim \
   web-dev-codi/cybersynth.nvim \
-  miladggg/neonwave.nvim
+  miladggg/neonwave.nvim \
+  tickloop/solaris.nvim \
+  danfry1/rime \
+  ogswag/valve-olive.nvim \
+  boningmaple/mac-clear \
+  shiraied/wolf359_nvim_rust_theme \
+  oahlen/aurora.nvim \
+  bavajitu/blacklust.nvim
 
 set -l successes
 set -l auto_fixed

@@ -86,7 +86,6 @@ vim.pack.add({
   "https://github.com/wunki/gondolin.nvim",
   "https://github.com/NisonChrist/tailwind-theme.nvim",
   "https://github.com/bergholmm/cursor-dark.nvim",
-  "https://github.com/voylin/godot_color_theme",
   "https://github.com/aisk/kukishinobu.vim",
   "https://github.com/kotsuban/nekomi.nvim",
   "https://github.com/waytoopurple/fieldlights.nvim",
@@ -131,6 +130,13 @@ vim.pack.add({
   "https://github.com/initsyscall/themeinitnvim",
   "https://github.com/web-dev-codi/cybersynth.nvim",
   "https://github.com/miladggg/neonwave.nvim",
+  "https://github.com/tickloop/solaris.nvim",
+  "https://github.com/danfry1/rime",
+  "https://github.com/ogswag/valve-olive.nvim",
+  "https://github.com/boningmaple/mac-clear",
+  "https://github.com/shiraied/wolf359_nvim_rust_theme",
+  "https://github.com/oahlen/aurora.nvim",
+  "https://github.com/bavajitu/blacklust.nvim",
 
   -- editing
   "https://github.com/folke/flash.nvim",

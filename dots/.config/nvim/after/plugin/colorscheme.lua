@@ -61,7 +61,6 @@ local schemes = {
   "gondolin",
   "tailwind-theme",
   "cursor-dark",
-  "godot",
   "kukishinobu",
   "nekomi",
   "fieldlights",
@@ -157,6 +156,16 @@ local schemes = {
   "nightSyscall",
   "cybersynth",
   "neonwave",
+  "solaris",
+  "solaris-gold",
+  "rime",
+  "valve-olive",
+  "mac-clear",
+  "mac-clear-dark",
+  "wolf359",
+  "aurora",
+  "aurora-dark",
+  "blacklust",
 }
 -- when the colorscheme changes, swap lualine to a matching theme if one
 -- ships with the colorscheme (e.g. metsanpeitto, everforest, kanagawa).
