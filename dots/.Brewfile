@@ -121,7 +121,7 @@ brew 'sdl2_mixer'
 brew 'sdl2_ttf'
 # brew 'sk'
 brew 'sqlite'
-brew 'stripe/stripe-cli/stripe' if working?
+brew 'stripe/stripe-cli/stripe', trusted: true if working?
 # brew 'the_silver_searcher'
 brew 'terraform' if working?
 brew 'tig'
@@ -166,7 +166,7 @@ brew 'zig'
 # tap 'atlassian/homebrew-acli' if working?
 # brew 'acli' if working?
 
-tap 'oven-sh/bun' if working?
+tap 'oven-sh/bun', trust: true if working?
 brew 'bun' if working?
 
 # "Error: It seems there is already an App at '/Applications/1password"
