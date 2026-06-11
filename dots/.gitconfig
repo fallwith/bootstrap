@@ -104,7 +104,7 @@
     if [ -z "$1" ]; then \
       echo "usage: 'git up branch_name_to_update_from'"; \
     else \
-      git fetch origin && git merge origin/"$1"; \
+      git fetch origin && git merge --no-edit origin/"$1"; \
     fi; \
   }; f"
 [commit]
