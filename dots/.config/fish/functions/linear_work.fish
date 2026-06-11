@@ -82,8 +82,13 @@ function linear_work -d 'Prep a new worktree and interactive Claude Code session
             "Fetch Linear ticket $ticket via linear-cli. Run these two commands: \
 (1) linear-cli i get $ticket --comments -o json \
 (2) linear-cli att list $ticket -o json \
-Review the title, description, and comments. If any attachments are listed, download each into the worktree \
-and review them -- read text files and view images via the Read tool. \
-Then propose an implementation plan before writing any code."
+Review the title, description, and comments. If any attachments are listed, \
+download each into the worktree and review them -- read text files and view \
+images via the Read tool. Then propose an implementation plan before writing \
+any code. For any non-trivial task, ensure that the plan includes instructions \
+to repeatedly make use of the '/simplify' command until it yields diminishing \
+returns. Also, if the git repository involved offers a '/review-pr' command, \
+ensure that the plan contains instructions to make use of it after the use of \
+'/simplify'."
     end
 end
