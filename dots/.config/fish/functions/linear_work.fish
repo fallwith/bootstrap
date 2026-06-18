@@ -89,6 +89,15 @@ any code. For any non-trivial task, ensure that the plan includes instructions \
 to repeatedly make use of the '/simplify' command until it yields diminishing \
 returns. Also, if the git repository involved offers a '/review-pr' command, \
 ensure that the plan contains instructions to make use of it after the use of \
-'/simplify'."
+'/simplify'. Finally, after '/review-pr', the plan should: (1) push the branch \
+and open the PR; (2) determine the repo slug via \
+'gh repo view --json nameWithOwner --jq .nameWithOwner' and the PR number via \
+'gh pr view --json number --jq .number'; (3) invoke the 'reviewcodex' fish \
+function (it is a fish function, so call it through 'fish -c') with three \
+arguments -- the repo slug, the PR number, and a findings output file such as \
+codex_review.md in the worktree -- to obtain an independent Codex review of the \
+PR; (4) read that findings file, triage each finding, address the valid ones \
+(skipping or pushing back on any that are wrong), and commit and push the \
+fixes. Run reviewcodex once; do not re-run it after addressing its findings."
     end
 end
