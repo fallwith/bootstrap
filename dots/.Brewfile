@@ -90,6 +90,7 @@ brew 'ollama'
 brew 'openssl'
 brew 'pandoc'
 brew 'parallel'
+brew 'pgcli' if working?
 # pillow is used by Ranger for images
 # Ranger needs to be taught to not consider Ghostty to be Kitty + tmux:
 #     def _late_init(self):
