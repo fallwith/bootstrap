@@ -166,6 +166,9 @@ local schemes = {
   "aurora",
   "aurora-dark",
   "blacklust",
+  "naysayer",
+  "darktooth",
+  "tokyo-night",
 }
 -- when the colorscheme changes, swap lualine to a matching theme if one
 -- ships with the colorscheme (e.g. metsanpeitto, everforest, kanagawa).

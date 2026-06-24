@@ -137,6 +137,9 @@ vim.pack.add({
   "https://github.com/shiraied/wolf359_nvim_rust_theme",
   "https://github.com/oahlen/aurora.nvim",
   "https://github.com/bavajitu/blacklust.nvim",
+  "https://github.com/nyvyme/naysayer.nvim",
+  "https://github.com/al3rez/darktooth.nvim",
+  "https://github.com/manucoding/tokyo-night.vim",
 
   -- editing
   "https://github.com/folke/flash.nvim",

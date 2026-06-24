@@ -96,7 +96,10 @@ set repos \
   boningmaple/mac-clear \
   shiraied/wolf359_nvim_rust_theme \
   oahlen/aurora.nvim \
-  bavajitu/blacklust.nvim
+  bavajitu/blacklust.nvim \
+  nyvyme/naysayer.nvim \
+  al3rez/darktooth.nvim \
+  manucoding/tokyo-night.vim
 
 set -l successes
 set -l auto_fixed
