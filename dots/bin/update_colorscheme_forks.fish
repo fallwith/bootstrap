@@ -99,7 +99,8 @@ set repos \
   bavajitu/blacklust.nvim \
   nyvyme/naysayer.nvim \
   al3rez/darktooth.nvim \
-  manucoding/tokyo-night.vim
+  manucoding/tokyo-night.vim \
+  r1cardohj/citylights.vim
 
 set -l successes
 set -l auto_fixed

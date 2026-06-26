@@ -17,7 +17,7 @@
       "src": "https://github.com/kurund/atomic.nvim"
     },
     "aurora.nvim": {
-      "rev": "48a313ee79c4720084be6e12aa8a4d56d8df35cf",
+      "rev": "315a86024423c29d242a4c0cae041e5c7395a8e7",
       "src": "https://github.com/oahlen/aurora.nvim"
     },
     "austere.vim": {
@@ -59,6 +59,10 @@
     "catppuccin": {
       "rev": "e068ab5f8261f23f6f71ffd8791ae40315b77b9c",
       "src": "https://github.com/catppuccin/nvim"
+    },
+    "citylights.vim": {
+      "rev": "c3e421861861ac72bfa02d5e9946bedfda0d969d",
+      "src": "https://github.com/r1cardohj/citylights.vim"
     },
     "cursor-dark.nvim": {
       "rev": "68997e3e1abdc7fed34bd9fe53a9c6cf6229fd1e",
@@ -129,7 +133,7 @@
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "gondolin.nvim": {
-      "rev": "de515e742552ed19d97e91c8f4eb70c0073a8a7f",
+      "rev": "4df38259f5d394621a23fc7854c3db4feab0f044",
       "src": "https://github.com/wunki/gondolin.nvim"
     },
     "gruvbox-material": {
@@ -189,7 +193,7 @@
       "src": "https://github.com/github-main-user/lytmode.nvim"
     },
     "mac-clear": {
-      "rev": "5068767863a8d11f91e956827c43118c189e639d",
+      "rev": "1bfd1c798233f5e4d29a1d104e2c419682679e32",
       "src": "https://github.com/boningmaple/mac-clear"
     },
     "marks.nvim": {
@@ -289,7 +293,7 @@
       "src": "https://github.com/zanshin/nvim-fourcolor-theme"
     },
     "nvim-lint": {
-      "rev": "01c9842c089069ab497430159312b2c8868a4590",
+      "rev": "a219b2c9e5b4765e5c845aba119dad55806fcaf1",
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-surround": {

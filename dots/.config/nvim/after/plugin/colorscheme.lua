@@ -169,6 +169,7 @@ local schemes = {
   "naysayer",
   "darktooth",
   "tokyo-night",
+  "citylights",
 }
 -- when the colorscheme changes, swap lualine to a matching theme if one
 -- ships with the colorscheme (e.g. metsanpeitto, everforest, kanagawa).
