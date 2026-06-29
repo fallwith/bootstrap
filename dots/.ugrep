@@ -78,6 +78,3 @@ exclude-from=~/.ignore
 
 # Enable/disable sorted output, default: no-sort
 # no-sort
-
-# assume literal characters (not regex pattern based ones) by default
-fixed-strings

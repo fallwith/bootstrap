@@ -1,5 +1,39 @@
 # Personal Claude Code Preferences
 
+## Data Privacy and PII Protection (ZERO TOLERANCE)
+
+This section overrides convenience in every case. When in doubt, do less.
+
+- **Never, under any circumstances, fill the context window with PII,
+  and never let PII leave the local machine.** This applies to every
+  data source without exception: SQL, REPL/console output, API
+  responses, file reads, log searches, clipboard, anything.
+- **SQL: never use `*`.** Before running any query, proactively
+  determine an explicit allowlist of safe, non-PII columns and SELECT
+  only those. An allowlist (name each safe column) is required; a
+  denylist (SELECT all-but-X) is not acceptable.
+  - Never extract values from free-form / blob columns (e.g. JSONB
+    `metadata`, free-text notes) into output. To inspect a JSONB
+    column's shape without its values, select key names only
+    (e.g. `jsonb_object_keys(col)`), never the values.
+  - Prefer aggregates (`count`, `group by` over enums/timestamps):
+    they answer most questions and structurally cannot leak row PII.
+  - Treat user-level identifiers (user UUIDs, actor ids, emails,
+    phone numbers, names, payment details) as PII. Customer/org
+    identifiers (e.g. UUIDs) are not personal PII but are still
+    identifiers -- use for grouping, do not dump lists of them.
+- **REPL / console output you will consume: take extreme measures with
+  zero tolerance for error to ensure PII is not exposed.** Scope every
+  query to non-PII fields before running it; do not run a command and
+  then hope the output is clean.
+- **Any other source (API calls, file reads, etc.): same standard.**
+  Project/select only the safe fields; never pull a whole record
+  "just to look."
+- If a task seems to require PII to proceed, stop and say so rather
+  than pulling it -- surface the conflict and propose a PII-free
+  alternative (aggregate, hashed/derived signal, or a check the user
+  runs locally without sharing the output).
+
 ## General Behavior
 
 ### Communication Style
@@ -313,9 +347,8 @@ Match the culture of the Ruby community (MINASWAN).
 
 ## Personal Preferences
 - **Spelling**: Use "grey" (with 'e') rather than "gray" (with 'a').
-- **Search tool**: When using Bash for text search
-  (e.g., gem source, system files outside the project),
-  use `ug` (ugrep) instead of `grep`.
-  `~/.ugrep` sets `fixed-strings` by default,
-  so patterns are literal -- no escaping needed for `.`, `(`, etc.
-  Pass `-P` when regex is actually required.
+- **Search tool**: when using Bash for text search
+  use `ug` (ugrep) instead of `grep`. By default
+  valid regex syntax will be treated as such and
+  `-F` (`--fixed-strings`) must be used if literal
+  fixed string matching is preferred.
