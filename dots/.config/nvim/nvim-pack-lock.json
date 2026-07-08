@@ -9,7 +9,7 @@
       "src": "https://github.com/T-b-t-nchos/Aquavium.nvim"
     },
     "arcana": {
-      "rev": "758895d3b812db51946143aa479cff46a6d63b5a",
+      "rev": "817c73d988ee7673213c316e2590232e8eac16ff",
       "src": "https://github.com/bashful-strix/arcana"
     },
     "atomic.nvim": {
@@ -17,7 +17,7 @@
       "src": "https://github.com/kurund/atomic.nvim"
     },
     "aurora.nvim": {
-      "rev": "315a86024423c29d242a4c0cae041e5c7395a8e7",
+      "rev": "563100df1b303105b205877b310130352d536006",
       "src": "https://github.com/oahlen/aurora.nvim"
     },
     "austere.vim": {
@@ -33,7 +33,7 @@
       "src": "https://github.com/ribru17/bamboo.nvim"
     },
     "bearded-arc.nvim": {
-      "rev": "324dc99538d48344400467a0a73483eb0cb74afb",
+      "rev": "9453b5440efb376039ed0b29ba6cbbaf1ff9a69e",
       "src": "https://github.com/kcayme/bearded-arc.nvim"
     },
     "bebop.nvim": {
@@ -57,11 +57,11 @@
       "src": "https://github.com/zitrocode/carvion.nvim"
     },
     "catppuccin": {
-      "rev": "e068ab5f8261f23f6f71ffd8791ae40315b77b9c",
+      "rev": "05e8787020dcfdb937bf2ff23855ea2415b4e072",
       "src": "https://github.com/catppuccin/nvim"
     },
     "citylights.vim": {
-      "rev": "c3e421861861ac72bfa02d5e9946bedfda0d969d",
+      "rev": "531fec518f765ae83ff7636608a8e129024b454d",
       "src": "https://github.com/r1cardohj/citylights.vim"
     },
     "cursor-dark.nvim": {
@@ -129,11 +129,11 @@
       "src": "https://github.com/nkxxll/ghostty-default-style-dark.nvim"
     },
     "gitsigns.nvim": {
-      "rev": "2038c666bd9d8a0b7349a0b6ee00dc83104b9ecf",
+      "rev": "eb60cc7b94c46005237fd34170d76f3a089a90aa",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "gondolin.nvim": {
-      "rev": "4df38259f5d394621a23fc7854c3db4feab0f044",
+      "rev": "58e6e06c2cda789b7f2c2719f36106d4296670d3",
       "src": "https://github.com/wunki/gondolin.nvim"
     },
     "gruvbox-material": {
@@ -189,7 +189,7 @@
       "src": "https://github.com/omacom-io/lumon.nvim"
     },
     "lytmode.nvim": {
-      "rev": "9ceaa04525edcc9dadfa7ff5cb835e7f49cfc71d",
+      "rev": "9a75b45c61a5ff6e8c26f8e711cc8043060eeb35",
       "src": "https://github.com/github-main-user/lytmode.nvim"
     },
     "mac-clear": {
@@ -213,7 +213,7 @@
       "src": "https://github.com/fallwith/metsanpeitto.nvim"
     },
     "mini.icons": {
-      "rev": "e56797f90192d81f1fda02e662fc3e8e3d775027",
+      "rev": "98faae31e9be1cc054ae63485e58ceb185efcad0",
       "src": "https://github.com/echasnovski/mini.icons"
     },
     "moegi-neovim": {
@@ -249,7 +249,7 @@
       "src": "https://github.com/ikelaiah/nebula-drift-omega"
     },
     "nekomi.nvim": {
-      "rev": "6438702e72126ca0457956f387068ae62e80eb8d",
+      "rev": "10e9abe21cc98d89ddbb0bdbb85c213007eba961",
       "src": "https://github.com/kotsuban/nekomi.nvim"
     },
     "neon-ghost-theme": {
@@ -265,7 +265,7 @@
       "src": "https://github.com/rose-pine/neovim"
     },
     "nightfox.nvim": {
-      "rev": "26b61b1f856ec37cae3cb64f5690adb955f246a1",
+      "rev": "4dacd3f0185a2227bdf3b6c0975a8f0bf87cac9a",
       "src": "https://github.com/EdenEast/nightfox.nvim"
     },
     "nimmy.vim": {
@@ -329,7 +329,7 @@
       "src": "https://github.com/navarasu/onedark.nvim"
     },
     "onenord.nvim": {
-      "rev": "8b6fe1e0f260ca0b8201ef6a8e2c97e0f38ea35d",
+      "rev": "5240bfb79bcab7e03508626c5283cfc417b79169",
       "src": "https://github.com/rmehri01/onenord.nvim"
     },
     "paragon": {
@@ -369,7 +369,7 @@
       "src": "https://github.com/sainnhe/sonokai"
     },
     "sora": {
-      "rev": "d47f0eedfc867130f9c1b7f10f953c3bd7210411",
+      "rev": "587ba59bcfc6355f5872893c7e55181fc6f3358c",
       "src": "https://github.com/aejkatappaja/sora"
     },
     "stilla.nvim": {
@@ -435,6 +435,10 @@
     "void.nvim": {
       "rev": "c8a565e85b0282fd958839b9aea52dff8a5ed278",
       "src": "https://github.com/vyrx-dev/void.nvim"
+    },
+    "winterland.vim": {
+      "rev": "815374937522235b2206e813b31d067be54b44e7",
+      "src": "https://github.com/psteven5/winterland.vim"
     },
     "wolf359_nvim_rust_theme": {
       "rev": "b0d820eabb2390f2a52db73a099f5e94b5c67fc5",

@@ -141,6 +141,7 @@ vim.pack.add({
   "https://github.com/al3rez/darktooth.nvim",
   "https://github.com/manucoding/tokyo-night.vim",
   "https://github.com/r1cardohj/citylights.vim",
+  "https://github.com/psteven5/winterland.vim",
 
   -- editing
   "https://github.com/folke/flash.nvim",
