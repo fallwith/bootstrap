@@ -69,11 +69,14 @@ This section overrides convenience in every case. When in doubt, do less.
   troubleshoot them unless explicitly asked to.
 
 ### Linting
-- **Before committing**, run the project's linter on all changed files
-  (e.g., `bundle exec rubocop` for Ruby,
-  `fish -n` / `fish_indent --check` for fish).
-  Do not rely on code review agents or manual inspection
-  as a substitute for the real tool.
+- **Before committing**, run the project's linter on every changed file
+  the linter supports -- derive the set from `git diff --name-only`,
+  never from the files you consider the "real" change. There is no
+  second-class changed file: specs, factories, and rake tasks are as
+  in-scope as `app/` code (e.g., `bundle exec rubocop` for Ruby,
+  `fish -n` / `fish_indent --check` for fish). A passing test run, a
+  code-review agent, or manual inspection is not a substitute for the
+  linter.
 - **New code**: Fix all lint violations before committing.
 - **Pre-existing violations** surfaced in changed files:
   follow the ownership rules below.
