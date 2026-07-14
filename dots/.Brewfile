@@ -64,6 +64,7 @@ brew 'lazydocker' if working?
 brew 'libbluray'
 # brew 'libcaca'
 brew 'libffi'
+brew 'libmagic' if working?
 brew 'libxml2'
 brew 'libxslt'
 brew 'libyaml'
