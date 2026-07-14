@@ -117,7 +117,7 @@
       "src": "https://github.com/waytoopurple/fieldlights.nvim"
     },
     "flash.nvim": {
-      "rev": "fcea7ff883235d9024dc41e638f164a450c14ca2",
+      "rev": "b6346946d10d07998efee029fb0f7a593806d0cd",
       "src": "https://github.com/folke/flash.nvim"
     },
     "folk-nvim": {
@@ -340,6 +340,10 @@
       "rev": "c2423b7c391cf49c8eab39a6e0e3770a49e01f22",
       "src": "https://github.com/ankushbhagats/pastel.nvim"
     },
+    "radix.nvim": {
+      "rev": "9856e9b635a3a88e0919960cfe5d24fe0d003b4c",
+      "src": "https://github.com/rockorager/radix.nvim"
+    },
     "rime": {
       "rev": "aa75bc1dfe2b2ef5509555125458d35ccf5e01f6",
       "src": "https://github.com/danfry1/rime"
@@ -369,7 +373,7 @@
       "src": "https://github.com/sainnhe/sonokai"
     },
     "sora": {
-      "rev": "587ba59bcfc6355f5872893c7e55181fc6f3358c",
+      "rev": "ea4572d6a65dd21ed86b1ee755a8e24845c6c23d",
       "src": "https://github.com/aejkatappaja/sora"
     },
     "stilla.nvim": {
@@ -393,11 +397,11 @@
       "src": "https://github.com/jpwol/thorn.nvim"
     },
     "token": {
-      "rev": "b2a009c35cb5d992495ce4818439d19964385f96",
+      "rev": "696e001e9580a7fdfd9d034c9bcc9adda2ced0d5",
       "src": "https://github.com/thorstenrhau/token"
     },
     "tokyo-dark.nvim": {
-      "rev": "fd78d767fc338c7445934c30c886a589e7189de5",
+      "rev": "6071709eab64e278770bf447f7eb626036412080",
       "src": "https://github.com/sudoscrawl/tokyo-dark.nvim"
     },
     "tokyo-night.vim": {

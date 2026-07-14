@@ -101,7 +101,8 @@ set repos \
   al3rez/darktooth.nvim \
   manucoding/tokyo-night.vim \
   r1cardohj/citylights.vim \
-  psteven5/winterland.vim
+  psteven5/winterland.vim \
+  rockorager/radix.nvim
 
 set -l successes
 set -l auto_fixed

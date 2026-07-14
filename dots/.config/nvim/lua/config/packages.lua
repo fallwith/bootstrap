@@ -142,6 +142,7 @@ vim.pack.add({
   "https://github.com/manucoding/tokyo-night.vim",
   "https://github.com/r1cardohj/citylights.vim",
   "https://github.com/psteven5/winterland.vim",
+  "https://github.com/rockorager/radix.nvim",
 
   -- editing
   "https://github.com/folke/flash.nvim",
