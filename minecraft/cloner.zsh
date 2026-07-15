@@ -5,6 +5,7 @@
 # ==========================================
 SRC_DIR="/Users/fallwith/Library/Application Support/minecraft/saves/Ejoslallap"
 LOOP_INTERVAL=300
+CHECK_SCRIPT="./player_alive_check.py"
 
 # Resolve the directory where this script lives dynamically
 BACKUP_ROOT="$(cd "$(dirname "$0")" && pwd)"
@@ -47,7 +48,24 @@ get_oldest_slot() {
 run_backup() {
     local force_backup=$1
 
-    # 1. Capture the modification status of the source directory
+    # =========================================================================
+    # FAIL-FAST CHECK 1: Absolute Player Verification (Blocks ALL backups)
+    # =========================================================================
+    local player_status=$($CHECK_SCRIPT "$SRC_DIR")
+
+    if [ "$player_status" -eq 0 ]; then
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - Hardcore backup blocked: Player is dead!" >> "$LOG_FILE"
+        [ "$force_backup" = "true" ] && echo "[Aborted] Player is dead. No backup created."
+        return 0
+    elif [ "$player_status" -eq -1 ]; then
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - Hardcore backup blocked: State error or non-hardcore." >> "$LOG_FILE"
+        [ "$force_backup" = "true" ] && echo "[Aborted] World state invalid or non-hardcore. No backup created."
+        return 0
+    fi
+
+    # =========================================================================
+    # CHECK 2: Capture modification status (Heavy lifting)
+    # =========================================================================
     CURRENT_STATE=$(rclone size "$SRC_DIR" 2>/dev/null | grep -E 'Total size|Total objects')
 
     if [ -z "$CURRENT_STATE" ]; then
@@ -55,7 +73,7 @@ run_backup() {
         return 1
     fi
 
-    # 2. Check for structural changes
+    # Check for structural changes
     LAST_STATE=""
     [ -f "$STATE_FILE" ] && LAST_STATE=$(cat "$STATE_FILE")
 
@@ -99,9 +117,9 @@ run_backup() {
 
 # Intercept Ctrl+C (SIGINT)
 cleanup_and_force_backup() {
-    echo "\n[Interrupt] Performing immediate shutdown backup..."
+    echo "\n[Interrupt] Requesting immediate shutdown backup..."
     run_backup "true"
-    echo "Final backup complete. Exiting cleanly." >> "$LOG_FILE"
+    echo "Exiting loop." >> "$LOG_FILE"
     exit 0
 }
 trap cleanup_and_force_backup SIGINT
