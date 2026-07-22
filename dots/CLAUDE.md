@@ -81,6 +81,22 @@ This section overrides convenience in every case. When in doubt, do less.
 - **Pre-existing violations** surfaced in changed files:
   follow the ownership rules below.
 
+### Verification Integrity
+- **Never bypass a failing hook or check to move past it**
+  (`--no-verify`, skipping a CI step, silencing an assertion) without
+  first confirming the failure is pre-existing AND unrelated to the
+  change. A green run produced by silencing the check is not a green
+  run. When the failure is genuinely pre-existing, unrelated debt,
+  prefer restructuring the work so the check passes honestly -- e.g.
+  rebasing to avoid a merge commit that makes a staged-file linter lint
+  the whole merged set -- over bypassing it.
+- **Verify with the FULL, unfiltered check, never a scoped subset.**
+  A filtered type-check / lint / test run gives false confidence: it can
+  pass while the change breaks a file not in the filter (e.g. an
+  exhaustive map or enum consumer elsewhere in the tree). A scoped run
+  is fine for a fast inner loop, but run the whole-project check before
+  declaring a change verified.
+
 ### Existing Code That Violates Preferences
 - **My code**: Default to opportunistic cleanup when editing.
 - **Someone else's code**: Leave it alone
