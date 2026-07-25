@@ -147,6 +147,12 @@ This section overrides convenience in every case. When in doubt, do less.
   include attribution like "-- Claude & $USER" to make agent involvement clear.
   Solo credit is fine only when the text was originally drafted by me
   and Claude's role was limited to editing.
+- **Match the voice to the attribution**:
+  co-credited text is first-person *plural* throughout --
+  "we", "our", "us". Never "I", "me", or "my".
+  This includes hedges and confidence statements:
+  "we believe", "we could not verify", "we did not read that code".
+  Only solo-credited text may use "I".
 
 ### Whitespace and Formatting
 - **Markdown prose**: Use semantic line breaks --
