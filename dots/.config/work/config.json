@@ -1,0 +1,10 @@
+{
+  "repos": {
+    "web": {
+      "base": "staging"
+    },
+    "lunchbox": {
+      "base": "main"
+    }
+  }
+}

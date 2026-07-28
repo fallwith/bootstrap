@@ -113,18 +113,26 @@ function worktree --description 'Manage git worktrees'
             cd $sel_path
 
         case go
+            # Worktrees outside the container (e.g. ~/projects/<name>/<repo>
+            # made by `work`) keep an absolute path; show those ~-collapsed
+            # and cd to them directly rather than via $repo_root.
             set -l selection (
         $git worktree list |
-        sed "s|$repo_root/||" |
+        sed -e "s|$repo_root/||" -e "s|^$HOME|~|" |
         fzf --prompt="worktree> " | awk '{print $1}'
       )
             if test -z "$selection"
                 return 0
             end
-            cd $repo_root/$selection
+            set selection (string replace -r '^~' $HOME -- $selection)
+            if string match -q '/*' -- $selection
+                cd $selection
+            else
+                cd $repo_root/$selection
+            end
 
         case list ls
-            $git worktree list | sed "s|$repo_root/||"
+            $git worktree list | sed -e "s|$repo_root/||" -e "s|^$HOME|~|"
 
         case clean prune
             $git fetch --prune

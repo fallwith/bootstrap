@@ -158,9 +158,15 @@ function fish_mode_prompt
   set_color normal
 end
 
-# set terminal title to the basename of PWD
+# set terminal title to the ~/projects project name, falling back
+# to the basename of PWD
 function fish_title
-  if test $PWD = $HOME # prefer '~' over basename($HOME)
+  if string match -q "$HOME/projects/*" -- $PWD
+    echo -n (
+      string replace -- "$HOME/projects/" '' $PWD \
+        | string split -m1 /
+    )[1]
+  else if test $PWD = $HOME # prefer '~' over basename($HOME)
     echo -n '~'
   else
     echo -n (basename $PWD)
