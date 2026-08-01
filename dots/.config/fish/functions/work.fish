@@ -30,6 +30,11 @@
 #                               alongside the bare .json, mark todo.txt
 #                               entries done. Refuses dirty/unpushed
 #                               repos unless --force.
+#   work revive <id>          restore an archived project from its
+#                               tarball: project dir, stray files,
+#                               transcripts back into ~/.claude, and
+#                               worktrees (branch from local/origin/
+#                               bundle/start commit, first available)
 #   work gc                   flag projects whose ticket is
 #                               Done/Canceled, whose branch is merged
 #                               or upstream-gone, or idle > 30 days;
@@ -43,6 +48,11 @@
 #                        ~/.config/work/config.json, then the
 #                        repo's origin/HEAD)
 #   -n/--no-launch    prep the project but don't start a session
+#   --no-claim        skip the Linear In Progress + assign-to-me
+#                       transition (e.g. taking over a reopened
+#                       ticket that isn't yours yet)
+#   --no-intake       no intake prompt, ever, for this project --
+#                       sessions start blank
 #
 # Repos resolve to durable clones at ~/git/<name> (bare-container
 # or normal clone; a "source" path in config.json overrides).
@@ -171,8 +181,7 @@ end
 
 function __work_claude_session --description 'Launch a new Claude session recorded in project.json'
     set -l pf $argv[1]
-    set -l name $argv[2]
-    set -l rest $argv[3..]
+    set -l rest $argv[2..]
     set -l session_id (uuidgen | string lower)
     set -l tmp (mktemp)
     jq --arg id $session_id \
@@ -182,20 +191,13 @@ function __work_claude_session --description 'Launch a new Claude session record
           started: $started, cwd: $cwd}]' \
         $pf >$tmp
     and command mv -f $tmp $pf
-    claude --name "$name" --session-id $session_id $rest
+    claude --session-id $session_id $rest
 end
 
 function __work_launch --description 'Start a tracked session for a project'
     set -l projdir $argv[1]
     set -l prompt $argv[2]
     set -l pf $projdir/project.json
-
-    set -l ticket (jq -r '.ticket // empty' $pf)
-    set -l title (jq -r '.title // empty' $pf)
-    set -l session_name (string trim -- "$ticket $title")
-    # Untracked projects keep their prefix (ONCALL-, CHORE-, ...) so
-    # the session name matches what you'd type at `work`.
-    test -n "$ticket"; or set session_name (basename $projdir)
 
     # Single-repo projects run from the repo so its slash commands
     # and CLAUDE.md are discovered; multi-repo runs from the root.
@@ -207,9 +209,9 @@ function __work_launch --description 'Start a tracked session for a project'
     end
 
     if test -n "$prompt"
-        __work_claude_session $pf $session_name --permission-mode plan $prompt
+        __work_claude_session $pf --permission-mode plan $prompt
     else
-        __work_claude_session $pf $session_name
+        __work_claude_session $pf
     end
 end
 
@@ -226,10 +228,15 @@ function __work_resume --description 'Resume the latest session of an existing p
     set -l sess (jq -r '.sessions[-1].id // empty' $pf)
     if test -z "$sess"
         # No sessions yet (e.g. created with --no-launch):
-        # start the first one, with the intake prompt if ticketed.
-        set -l ticket (jq -r '.ticket // empty' $pf)
-        set -l repos (jq -r '.repos[]?.path' $pf)
-        set -l prompt (__work_prompt $projdir "$ticket" $repos | string collect)
+        # start the first one, with the intake prompt if ticketed
+        # and the project wasn't created with --no-intake.
+        set -l prompt ''
+        # NB: not `.intake // true` -- jq's // treats false as absent
+        if test (jq -r '.intake != false' $pf) = true
+            set -l ticket (jq -r '.ticket // empty' $pf)
+            set -l repos (jq -r '.repos[]?.path' $pf)
+            set prompt (__work_prompt $projdir "$ticket" $repos | string collect)
+        end
         __work_launch $projdir "$prompt"
         return
     end
@@ -363,12 +370,12 @@ function __work_session_search --description 'Find a session by transcript conte
 end
 
 function __work_start --description 'Create a project, or resume it if it exists'
-    argparse 'r/repo=+' 'b/base=' n/no-launch -- $argv
+    argparse 'r/repo=+' 'b/base=' n/no-launch no-claim no-intake -- $argv
     or return 1
 
     set -l id $argv[1]
     if test -z "$id"
-        echo "Usage: work <TICKET|PREFIX-slug> [-r repo]... [-b base] [-n]" >&2
+        echo "Usage: work <TICKET|PREFIX-slug> [-r repo]... [-b base] [-n] [--no-claim] [--no-intake]" >&2
         return 1
     end
 
@@ -477,9 +484,14 @@ function __work_start --description 'Create a project, or resume it if it exists
         '{ticket: (if $ticket == "" then null else $ticket end),
           title: $title, created: $created, repos: ., sessions: []}' >$projdir/project.json
 
-    if test -n "$ticket"
+    if test -n "$ticket"; and not set -q _flag_no_claim
         linear-cli i update $ticket -s 'In Progress' -a me -q
         or echo "Warning: failed to set $ticket to In Progress / assign to self" >&2
+    end
+    if set -q _flag_no_intake
+        set -l tmp (mktemp)
+        jq '.intake = false' $projdir/project.json >$tmp
+        and command mv -f $tmp $projdir/project.json
     end
 
     echo "Created $projdir"
@@ -960,6 +972,132 @@ function __work_done --description 'Confirm and tear down a project'
     __work_teardown $force_args $projdir
 end
 
+function __work_archives --description 'List archived projects, newest first'
+    set -l TAB (printf '\t')
+    set -l jsons ~/projects/.archive/*.json
+    if test (count $jsons) -eq 0
+        echo "No archives in ~/projects/.archive"
+        return 0
+    end
+    for j in $jsons
+        set -l name (basename $j .json)
+        set -l completed (jq -r '.completed // "-"' $j)
+        set -l title (jq -r '.title // empty' $j)
+        set -l tarball -
+        test -f ~/projects/.archive/$name.tar.gz; and set tarball tar.gz
+        printf '%s\t%-44s %-16s %-6s %s\n' $completed $name $completed $tarball $title
+    end | sort -r | cut -f2-
+end
+
+function __work_revive --description 'Restore an archived project from its tarball'
+    set -l id $argv[1]
+    if test -z "$id"
+        echo "Usage: work revive <name or prefix>" >&2
+        return 1
+    end
+
+    set -l tarball
+    if test -f ~/projects/.archive/$id.tar.gz
+        set tarball ~/projects/.archive/$id.tar.gz
+    else
+        set -l matches ~/projects/.archive/$id*.tar.gz
+        if test (count $matches) -eq 0
+            echo "No archive matching $id in ~/projects/.archive" >&2
+            return 1
+        end
+        if test (count $matches) -gt 1
+            echo "Multiple archives match $id; using the newest:" >&2
+            printf '  %s\n' $matches >&2
+        end
+        set tarball (ls -t $matches | head -1)
+    end
+
+    set -l stage (mktemp -d)
+    tar -xzf $tarball -C $stage
+    or begin
+        rm -rf $stage
+        echo "Could not extract $tarball" >&2
+        return 1
+    end
+    set -l srcroot (string trim -r -c / -- (ls -d $stage/*/)[1])
+    set -l name (basename $srcroot)
+    set -l projdir ~/projects/$name
+
+    if test -e $projdir
+        echo "$projdir already exists; nothing revived." >&2
+        rm -rf $stage
+        return 1
+    end
+    mkdir -p $projdir
+    jq 'del(.completed)' $srcroot/project.json >$projdir/project.json
+
+    if test -d $srcroot/files
+        cp -R $srcroot/files/. $projdir/
+    end
+
+    # Transcripts go back into ~/.claude under each session's recorded
+    # cwd encoding so resume-by-id works again. Never clobber a live
+    # transcript that still exists there.
+    set -l TAB (printf '\t')
+    for row in (jq -r '.sessions[]? | [.id, (.cwd // "")] | @tsv' $projdir/project.json)
+        set -l f (string split $TAB -- $row)
+        set -l sess $f[1]
+        set -l cwd (string replace -r '^~' $HOME -- $f[2])
+        test -n "$cwd"; or continue
+        set -l enc ~/.claude/projects/(string replace -ar '[/._]' '-' -- $cwd)
+        mkdir -p $enc
+        if not test -f $enc/$sess.jsonl
+            test -f $srcroot/sessions/$sess.jsonl
+            and cp $srcroot/sessions/$sess.jsonl $enc/
+        end
+        if not test -e $enc/$sess
+            test -d $srcroot/sessions/$sess
+            and cp -R $srcroot/sessions/$sess $enc/
+        end
+    end
+
+    # Recreate each worktree. Branch source, in preference order:
+    # still-local ref, origin, the archived bundle, the recorded
+    # start commit (no-commit projects have no bundle).
+    for row in (
+        jq -r '.repos[]? | select(.mode == "worktree")
+               | [.path, (.source // ""), (.branch // ""), (.start // "")] | @tsv' \
+            $projdir/project.json
+    )
+        set -l f (string split $TAB -- $row)
+        set -l path $f[1]
+        set -l branch $f[3]
+        set -l start $f[4]
+        set -l src (string replace -r '^~' $HOME -- $f[2])
+        if test -z "$src"; or not test -d "$src"
+            echo "Warning: source for $path missing ($f[2]); worktree skipped" >&2
+            continue
+        end
+        test -n "$branch"; or continue
+
+        if not git -C $src show-ref --verify --quiet refs/heads/$branch
+            git -C $src fetch --quiet origin $branch 2>/dev/null
+            if git -C $src rev-parse --verify --quiet origin/$branch >/dev/null
+                git -C $src branch $branch origin/$branch
+            else if test -f $srcroot/repos/$path/bundle.git
+                git -C $src fetch $srcroot/repos/$path/bundle.git "$branch:$branch"
+            else if test -n "$start"
+                git -C $src branch $branch $start
+            end
+        end
+        if not git -C $src show-ref --verify --quiet refs/heads/$branch
+            echo "Warning: could not recreate branch $branch for $path" >&2
+            continue
+        end
+        git -C $src worktree add $projdir/$path $branch
+        or echo "Warning: worktree add failed for $path" >&2
+    end
+
+    rm -rf $stage
+    echo "Revived $name"
+    cd $projdir
+end
+
 function __work_gc --description 'Flag and optionally tear down finished/stale projects'
     set -l now (date +%s)
     set -l idle_limit (math '30 * 86400')
@@ -1141,6 +1279,9 @@ function __work_help
     echo "  work done [id] [--force]  tear down + archive. id may be just"
     echo "                              the ticket (work done ACT-123); with"
     echo "                              no id, uses the project you're inside"
+    echo "  work archives             list archived projects, newest first"
+    echo "  work revive <id>          restore an archived project: dir,"
+    echo "                              stray files, transcripts, worktrees"
     echo "  work gc                   flag finished/stale projects,"
     echo "                              prompt to tear each down"
     echo ""
@@ -1148,6 +1289,8 @@ function __work_help
     echo "  -r/--repo NAME    repo to include (repeatable, required)"
     echo "  -b/--base BRANCH  base branch for new feature branches"
     echo "  -n/--no-launch    prep the project but don't start a session"
+    echo "  --no-claim        don't touch the Linear ticket (state/assignee)"
+    echo "  --no-intake       sessions start blank (no intake prompt)"
     echo ""
     echo "Identifiers: a Linear ticket (ACT-123) or PREFIX-slug"
     echo "(CHORE-clean_dotfiles, ONCALL-sidekiq_alert) for untracked"
@@ -1181,6 +1324,10 @@ function work --description 'Project lifecycle: create/resume/adopt LLM agent pr
             __work_status
         case done
             __work_done $argv[2..]
+        case archives
+            __work_archives
+        case revive
+            __work_revive $argv[2..]
         case gc
             __work_gc
         case -h --help
