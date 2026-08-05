@@ -18,6 +18,11 @@
 #   work adopt                register the current directory as a
 #                               project (detects repos, backfills
 #                               Claude sessions recorded for it)
+#   work promote <id> [opts]  run from an ad-hoc directory: create a
+#                               new project (same options as create),
+#                               re-home this dir's newest session
+#                               transcript (-s for a specific one) to
+#                               the project, and resume it there
 #   work add <repo> [-b BASE] add a repo worktree to the current
 #                               project when scope expands
 #   work status               local status of every project: dirty,
@@ -500,6 +505,91 @@ function __work_start --description 'Create a project, or resume it if it exists
         return 0
     end
     __work_resume $projdir
+end
+
+function __work_promote --description 'Convert an ad-hoc session in the current dir into a project'
+    argparse 'r/repo=+' 'b/base=' 's/session=' n/no-launch no-claim no-intake -- $argv
+    or return 1
+    set -l id $argv[1]
+    if test -z "$id"
+        echo "Usage: work promote <TICKET|PREFIX-slug> [-s session-id] [-r repo]... [-b base] [-n] [--no-claim] [--no-intake]" >&2
+        return 1
+    end
+    set -l srcdir (pwd)
+    if string match -q "$HOME/projects/*" -- $srcdir
+        echo "Already inside ~/projects; run promote from the ad-hoc directory." >&2
+        return 1
+    end
+    set -l existing (__work_find $id 2>/dev/null)
+    if test -n "$existing"
+        echo "Project already exists: $existing. Promote only creates new projects." >&2
+        return 1
+    end
+
+    set -l srcenc ~/.claude/projects/(string replace -ar '[/._]' '-' -- $srcdir)
+    set -l sid $_flag_session
+    if test -z "$sid"
+        set -l candidates $srcenc/*.jsonl
+        if test (count $candidates) -eq 0
+            echo "No Claude sessions recorded for $srcdir" >&2
+            return 1
+        end
+        set sid (basename (ls -t $candidates | head -1) .jsonl)
+    end
+    if not test -f $srcenc/$sid.jsonl
+        echo "No transcript for session $sid under $srcdir" >&2
+        return 1
+    end
+
+    set -l create_args $id --no-launch
+    for r in $_flag_repo
+        set -a create_args --repo $r
+    end
+    test -n "$_flag_base"; and set -a create_args --base $_flag_base
+    set -q _flag_no_claim; and set -a create_args --no-claim
+    set -q _flag_no_intake; and set -a create_args --no-intake
+    __work_start $create_args
+    or return 1
+
+    set -l projdir (__work_find $id)
+    set -l pf $projdir/project.json
+
+    # Session cwd follows the launch convention: single-repo projects
+    # live in the repo subdir, otherwise the project root.
+    set -l repo_paths (jq -r '.repos[]?.path' $pf)
+    set -l newcwd $projdir
+    test (count $repo_paths) -eq 1; and set newcwd $projdir/$repo_paths[1]
+
+    # Re-home the transcript so resume finds it at the new cwd.
+    set -l newenc ~/.claude/projects/(string replace -ar '[/._]' '-' -- $newcwd)
+    mkdir -p $newenc
+    command mv $srcenc/$sid.jsonl $newenc/
+    test -d $srcenc/$sid; and command mv $srcenc/$sid $newenc/
+
+    set -l mtime (stat -f '%m' $newenc/$sid.jsonl)
+    set -l tmp (mktemp)
+    jq --arg id $sid \
+        --arg started (date -r $mtime '+%Y-%m-%dT%H:%M') \
+        --arg cwd (string replace -- $HOME '~' $newcwd) \
+        '.sessions += [{agent: "claude", id: $id,
+          started: $started, cwd: $cwd}]' \
+        $pf >$tmp
+    and command mv -f $tmp $pf
+
+    if test (count (git -C $srcdir status --porcelain 2>/dev/null)) -gt 0
+        echo "Note: $srcdir has uncommitted changes. To carry them over:"
+        echo "  git -C $srcdir diff >/tmp/promote.patch"
+        echo "  git -C $newcwd apply /tmp/promote.patch"
+    end
+    echo "Promoted session $sid into "(basename $projdir)"."
+    echo "Its earlier context references $srcdir -- tell Claude the work now lives in $newcwd."
+
+    if set -q _flag_no_launch
+        cd $projdir
+        return 0
+    end
+    cd $newcwd
+    claude --resume $sid
 end
 
 function __work_add --description 'Add a repo worktree to an existing project'
@@ -1273,6 +1363,9 @@ function __work_help
     echo "  work resume <pattern>     find a session by transcript text,"
     echo "                              pick in fzf, cd + resume it"
     echo "  work adopt                register the current directory"
+    echo "  work promote <id> [opts]  convert the newest ad-hoc session in"
+    echo "                              this directory into a new project"
+    echo "                              (-s picks a specific session)"
     echo "  work add <repo> [-b BASE] add a repo worktree to the current"
     echo "                              project (scope expansion)"
     echo "  work status               dirty/ahead-behind/age per project"
@@ -1318,6 +1411,8 @@ function work --description 'Project lifecycle: create/resume/adopt LLM agent pr
             __work_session_search $argv[2..]
         case adopt
             __work_adopt $argv[2..]
+        case promote
+            __work_promote $argv[2..]
         case add
             __work_add $argv[2..]
         case status
