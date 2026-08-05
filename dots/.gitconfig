@@ -116,6 +116,7 @@
   cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [merge]
   tool = vimdiff
+  conflictStyle = zdiff3
 [mergetool]
   prompt = true
 [mergetool "vimdiff"]
@@ -135,6 +136,13 @@
   gpgsign = true
 [url "git@github.com:"]
   insteadOf = https://github.com/
+; rerere replays past resolutions
+; git rerere status | diff      inspect what it did
+; git rerere forget <path>      unlearn (run while conflict is live)
+; Never accept a replay on generated files (structure.sql, *.lock):
+; take one side and regenerate. autoUpdate off, so UU makes you look.
+[rerere]
+	enabled = true
 
 ; Use GPG to sign commits and tags:
 ;
