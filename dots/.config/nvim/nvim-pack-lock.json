@@ -42,7 +42,7 @@
     },
     "blacklust.nvim": {
       "rev": "171e363cd2e5bf1ad894b1e9cc69afe92c972615",
-      "src": "https://github.com/bavajitu/blacklust.nvim"
+      "src": "https://github.com/fallwith/blacklust.nvim"
     },
     "bonbon.nvim": {
       "rev": "c372f1a0aa0fb176d5e734ac1aa5582f1d37740c",
@@ -94,7 +94,7 @@
     },
     "e-ink.nvim": {
       "rev": "a0f003a0c6e2952abd9b73ef89d56c65e6c46f00",
-      "src": "https://github.com/alexxGmZ/e-ink.nvim"
+      "src": "https://github.com/e-ink-colorscheme/e-ink.nvim"
     },
     "eddy.nvim": {
       "rev": "8cf48dd6885124d076c36f6f5e2a5f5c60d8fd5c",
@@ -212,6 +212,10 @@
       "rev": "6808cd30243f80bcd67a1e2a0f4410bef001c832",
       "src": "https://github.com/fallwith/metsanpeitto.nvim"
     },
+    "midnight.nvim": {
+      "rev": "6071709eab64e278770bf447f7eb626036412080",
+      "src": "https://github.com/sudoscrawl/midnight.nvim"
+    },
     "mini.icons": {
       "rev": "98faae31e9be1cc054ae63485e58ceb185efcad0",
       "src": "https://github.com/echasnovski/mini.icons"
@@ -234,7 +238,7 @@
     },
     "myrrh.nvim": {
       "rev": "c0575c96a28d833c027f460592cf6bf4186f9162",
-      "src": "https://github.com/utakotoba/myrrh.nvim"
+      "src": "https://github.com/caelyreth/myrrh.nvim"
     },
     "nanode.nvim": {
       "rev": "cd85bbb5195b23adfb89a695b54e16daab259800",
@@ -310,7 +314,7 @@
     },
     "oc-2.nvim": {
       "rev": "78367fe68f6ad6189f025d87fc68351dbb429f89",
-      "src": "https://github.com/0xleodevv/oc-2.nvim"
+      "src": "https://github.com/builtbyleo/oc-2.nvim"
     },
     "oil.nvim": {
       "rev": "b73018b75affd13fa38e2fc94ef753b465f770d7",
@@ -318,7 +322,7 @@
     },
     "olive-crt.nvim": {
       "rev": "eaf42899fb2970bb5857bb7fa617fcaa96365e20",
-      "src": "https://github.com/reobin/olive-crt.nvim"
+      "src": "https://github.com/vimcolorschemes/olive-crt.nvim"
     },
     "one-dark-pro-max": {
       "rev": "61b3518ad55ce8fe1dc7a08cd9086bd351bef198",
@@ -358,7 +362,7 @@
     },
     "shizukana.nvim": {
       "rev": "57c09c3903d558f948e7c75aad98cfebf69666e2",
-      "src": "https://github.com/avuenja/shizukana.nvim"
+      "src": "https://github.com/meccin/shizukana.nvim"
     },
     "snacks.nvim": {
       "rev": "882c996cf28183f4d63640de0b4c02ec886d01f2",
@@ -399,14 +403,6 @@
     "token": {
       "rev": "696e001e9580a7fdfd9d034c9bcc9adda2ced0d5",
       "src": "https://github.com/thorstenrhau/token"
-    },
-    "tokyo-dark.nvim": {
-      "rev": "6071709eab64e278770bf447f7eb626036412080",
-      "src": "https://github.com/sudoscrawl/tokyo-dark.nvim"
-    },
-    "tokyo-night.vim": {
-      "rev": "dbce08121c2ece594c670a3673389737251d7394",
-      "src": "https://github.com/manucoding/tokyo-night.vim"
     },
     "tomorrow-night-bright-rstudio.nvim": {
       "rev": "78064daf347b395a36e4c872667094de52657f9f",
@@ -450,7 +446,7 @@
     },
     "ymir.nvim": {
       "rev": "8b6b1328e2b4dd70662adb2fcb87f52608f63836",
-      "src": "https://github.com/RonelXavier/ymir.nvim"
+      "src": "https://github.com/Ronxvier/ymir.nvim"
     },
     "zazen": {
       "rev": "5cd00e929df650d66abcb910602e5ebfa50c914a",

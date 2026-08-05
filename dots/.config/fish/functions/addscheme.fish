@@ -18,7 +18,9 @@ function addscheme -d 'Add a colorscheme to Neovim from repo or vimcolorschemes 
         return 1
     end
 
-    if grep -q "$owner_repo" $packages_file
+    # anchored on the closing quote or a trailing slash so that adding
+    # `owner/repo` is not blocked by an existing `owner/repo-something`
+    if grep -qE 'github\.com/'(string escape --style=regex -- $owner_repo)'["/]' $packages_file
         echo "$owner_repo is already in packages.lua"
         return 1
     end
@@ -103,23 +105,33 @@ function addscheme -d 'Add a colorscheme to Neovim from repo or vimcolorschemes 
 
     echo "Added schemes to colorscheme.lua"
 
-    if grep -q "$owner_repo" $forks_file
+    set -l repo_re (string escape --style=regex -- $owner_repo)
+    if grep -qE '(^|[[:space:]])'$repo_re'([[:space:]]|\\\\|$)' $forks_file
         echo "$owner_repo is already in update_colorscheme_forks.fish"
     else
-        set -l last_repo_line (grep -n '^\s\+\S\+/\S\+' $forks_file | tail -1 | cut -d: -f1)
+        # the repo list is a `set repos \` continuation block, so its last line
+        # is the first one without a trailing backslash. anchoring there rather
+        # than to the last owner/repo-shaped line in the file keeps insertion
+        # correct no matter what code lives below the list
+        set -l last_repo_line (awk '
+      /^set repos[[:space:]]*\\\\$/ { inblock = 1; next }
+      inblock && !/\\\\[[:space:]]*$/ { print NR; exit }
+    ' $forks_file)
         if test -n "$last_repo_line"
             set -l forks_tmp (mktemp)
             set -l before (math $last_repo_line - 1)
             set -l after (math $last_repo_line + 1)
             head -n $before $forks_file >$forks_tmp
             printf '%s %s\n' (sed -n "$last_repo_line"p $forks_file) "\\" >>$forks_tmp
-            printf '  %s\n' $owner_repo >>$forks_tmp
+            # 4 spaces to match the rest of the block; 2 left the file
+            # permanently failing `fish_indent --check`
+            printf '    %s\n' $owner_repo >>$forks_tmp
             tail -n +$after $forks_file >>$forks_tmp
             cat $forks_tmp >$forks_file
             rm -f $forks_tmp
             echo "Added $owner_repo to update_colorscheme_forks.fish"
         else
-            echo "Error: could not find insertion point in update_colorscheme_forks.fish"
+            echo "Error: could not find the repo list in update_colorscheme_forks.fish"
         end
     end
 

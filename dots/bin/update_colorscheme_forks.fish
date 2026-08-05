@@ -1,7 +1,5 @@
 #!/usr/bin/env fish
 
-set -l gh_user fallwith
-
 set repos \
     mellow-theme/mellow.nvim \
     sainnhe/gruvbox-material \
@@ -15,7 +13,7 @@ set repos \
     samharju/serene.nvim \
     EdenEast/nightfox.nvim \
     fxn/vim-monochrome \
-    alexxGmZ/e-ink.nvim \
+    e-ink-colorscheme/e-ink.nvim \
     rebelot/kanagawa.nvim \
     savq/melange-nvim \
     bluz71/vim-nightfly-colors \
@@ -25,14 +23,14 @@ set repos \
     r1cardohj/zzz.vim \
     wesenseged/stone.nvim \
     github-main-user/lytmode.nvim \
-    RonelXavier/ymir.nvim \
+    Ronxvier/ymir.nvim \
     kaiuri/juliana.nvim \
-    avuenja/shizukana.nvim \
+    meccin/shizukana.nvim \
     mitch1000/backpack.nvim \
     vyrx-dev/void.nvim \
     nkxxll/ghostty-default-style-dark.nvim \
     KijitoraFinch/nanode.nvim \
-    utakotoba/myrrh.nvim \
+    caelyreth/myrrh.nvim \
     zanshin/nvim-fourcolor-theme \
     folksoftware/nvim \
     guillermodotn/nvim-earthsong \
@@ -63,57 +61,145 @@ set repos \
     m-mead/eddy.nvim \
     vague-theme/vague.vim \
     ilm-alan/venice.vim \
-  marcos-venicius/zenburned \
-  0xleodevv/oc-2.nvim \
-  kcayme/bearded-arc.nvim \
-  omacom-io/lumon.nvim \
-  dgrco/hearthlight.nvim \
-  ankushbhagats/pastel.nvim \
-  mohseenrm/brutus \
-  reobin/olive-crt.nvim \
-  gillisc/cynosure.nvim \
-  aejkatappaja/sora \
-  sudoscrawl/tokyo-dark.nvim \
-  thorstenrhau/token \
-  terkelg/north-sea.nvim \
-  davidklassen/mote \
-  pisgahk/muted.nvim \
-  ember-theme/nvim \
-  pankvitek/bonbon.nvim \
-  anhari/zorn.nvim \
-  zitrocode/carvion.nvim \
-  xpac27/humdrum.vim \
-  nopangel/nimmy.vim \
-  jamesgadoury/neon-ghost-theme \
-  metalelf0/kintsugi-nvim \
-  jpwol/thorn.nvim \
-  initsyscall/themeinitnvim \
-  web-dev-codi/cybersynth.nvim \
-  miladggg/neonwave.nvim \
-  tickloop/solaris.nvim \
-  danfry1/rime \
-  ogswag/valve-olive.nvim \
-  boningmaple/mac-clear \
-  shiraied/wolf359_nvim_rust_theme \
-  oahlen/aurora.nvim \
-  bavajitu/blacklust.nvim \
-  nyvyme/naysayer.nvim \
-  al3rez/darktooth.nvim \
-  manucoding/tokyo-night.vim \
-  r1cardohj/citylights.vim \
-  psteven5/winterland.vim \
-  rockorager/radix.nvim
+    marcos-venicius/zenburned \
+    builtbyleo/oc-2.nvim \
+    kcayme/bearded-arc.nvim \
+    omacom-io/lumon.nvim \
+    dgrco/hearthlight.nvim \
+    ankushbhagats/pastel.nvim \
+    mohseenrm/brutus \
+    vimcolorschemes/olive-crt.nvim \
+    gillisc/cynosure.nvim \
+    aejkatappaja/sora \
+    sudoscrawl/midnight.nvim \
+    thorstenrhau/token \
+    terkelg/north-sea.nvim \
+    davidklassen/mote \
+    pisgahk/muted.nvim \
+    ember-theme/nvim \
+    pankvitek/bonbon.nvim \
+    anhari/zorn.nvim \
+    zitrocode/carvion.nvim \
+    xpac27/humdrum.vim \
+    nopangel/nimmy.vim \
+    jamesgadoury/neon-ghost-theme \
+    metalelf0/kintsugi-nvim \
+    jpwol/thorn.nvim \
+    initsyscall/themeinitnvim \
+    web-dev-codi/cybersynth.nvim \
+    miladggg/neonwave.nvim \
+    tickloop/solaris.nvim \
+    danfry1/rime \
+    ogswag/valve-olive.nvim \
+    boningmaple/mac-clear \
+    shiraied/wolf359_nvim_rust_theme \
+    oahlen/aurora.nvim \
+    nyvyme/naysayer.nvim \
+    al3rez/darktooth.nvim \
+    r1cardohj/citylights.vim \
+    psteven5/winterland.vim \
+    rockorager/radix.nvim
 
 set -l successes
 set -l auto_fixed
+set -l orphaned
 set -l failures
+
+# a fork's name cannot be derived from its source repo. observed in the list
+# above: a collision suffix (two distinct `owner/nvim` repos, so the second
+# fork became `nvim-1`), a hand-renamed fork, and several upstreams that were
+# renamed or transferred while the fork kept the old name. guessing `basename`
+# aims the second repo of a colliding pair at the FIRST repo's fork, which
+# syncs fine and is counted as a success while the real fork silently goes
+# stale -- so ask the API for the mapping once, then resolve locally.
+#
+# `gh repo list` with no argument uses the authenticated user, and
+# nameWithOwner carries the owner, so no GitHub handle is hardcoded here.
+set -l my_full
+set -l my_names
+set -l my_forked
+set -l my_parents
+for row in (gh repo list --limit 1000 --json nameWithOwner,name,isFork,parent \
+        --jq '.[] | "\(.nameWithOwner)\t\(.name)\t\(.isFork)\t\(if .parent then .parent.owner.login + "/" + .parent.name else "-" end)"')
+    set -l parts (string split \t -- $row)
+    set -a my_full $parts[1]
+    set -a my_names $parts[2]
+    set -a my_forked $parts[3]
+    set -a my_parents (string lower -- $parts[4])
+end
+
+if test (count $my_full) -eq 0
+    echo "Error: listed no repos -- is gh authenticated? try `gh auth status`" >&2
+    exit 1
+end
 
 for repo in $repos
     set -l name (basename $repo)
-    set -l fork $gh_user/$name
+    set -l repo_lc (string lower -- $repo)
 
     echo "=== $repo ==="
-    gh repo fork $repo --clone=false 2>&1
+
+    # prefer a fork whose parent is this exact repo; fall back to a repo of
+    # mine sharing the name, which is what a renamed or deleted upstream
+    # leaves behind (the parent link no longer points at the listed repo)
+    set -l candidates
+    for i in (seq (count $my_full))
+        if test "$my_parents[$i]" = "$repo_lc"
+            set -a candidates $i
+        end
+    end
+
+    set -l fork_idx
+    for i in $candidates
+        if test (string lower -- $my_names[$i]) = (string lower -- $name)
+            set fork_idx $i
+            break
+        end
+    end
+    if test -z "$fork_idx"; and test (count $candidates) -gt 0
+        set fork_idx $candidates[1]
+    end
+    if test -z "$fork_idx"
+        set fork_idx (contains -i -- (string lower -- $name) (string lower -- $my_names))
+        if test -n "$fork_idx"
+            echo "  -> Upstream no longer parents the fork; using $my_full[$fork_idx] by name"
+        end
+    end
+
+    set -l fork
+    if test -n "$fork_idx"
+        # GitHub promotes a fork to a root repo when its upstream is deleted,
+        # so there is no source left to sync from
+        if test "$my_forked[$fork_idx]" = false
+            echo "  -> $my_full[$fork_idx] has no upstream; the source repo is gone"
+            set -a orphaned "$repo | $my_full[$fork_idx] is a root repo now, nothing to sync"
+            continue
+        end
+        set fork $my_full[$fork_idx]
+    else
+        # nothing to reuse, so create the fork with an explicit name rather
+        # than letting GitHub silently append a collision suffix
+        set -l fork_name $name
+        if contains -- (string lower -- $fork_name) (string lower -- $my_names)
+            set fork_name (string replace -a / - -- $repo)
+        end
+        echo "  -> No fork yet, creating $fork_name..."
+        if not gh repo fork $repo --clone=false --fork-name $fork_name 2>&1
+            set -a failures "$repo | could not create a fork named $fork_name"
+            continue
+        end
+        # only this branch needs the account name, to address the new fork
+        set -l login (gh api user --jq .login 2>/dev/null)
+        if test -z "$login"
+            set -a failures "$repo | forked, but could not resolve the account name to sync it"
+            continue
+        end
+        set fork $login/$fork_name
+        set -a my_full $fork
+        set -a my_names $fork_name
+        set -a my_forked true
+        set -a my_parents $repo_lc
+    end
 
     set -l sync_out (gh repo sync $fork 2>&1)
     set -l sync_rc $status
@@ -140,8 +226,8 @@ for repo in $repos
     # --- Repo name mismatch or workflow scope: manual delete and re-run ---
     if test $sync_rc -ne 0
         and string match -q '*Could not resolve to a Repository*' "$sync_out"
-        echo "  -> Fork name mismatch, needs manual delete."
-        set -a failures "$repo | fork has wrong name, find and delete: https://github.com/$gh_user?tab=repositories&q=$name"
+        echo "  -> $fork no longer resolves, needs manual delete."
+        set -a failures "$repo | fork gone or renamed, find and delete: https://github.com/$fork"
         continue
     end
 
@@ -155,11 +241,7 @@ for repo in $repos
     # --- Success ---
     if test $sync_rc -eq 0
         if test -n "$sync_out"
-            if test -n "$sync_out"
-                echo "$sync_out"
-            else
-                echo "up to date"
-            end
+            echo "$sync_out"
         else
             echo "up to date"
         end
@@ -181,6 +263,7 @@ echo ""
 echo "  Total:      "(count $repos)
 echo "  Succeeded:  "(count $successes)
 echo "  Auto-fixed: "(count $auto_fixed)
+echo "  Orphaned:   "(count $orphaned)
 echo "  Failed:     "(count $failures)
 echo ""
 
@@ -188,6 +271,14 @@ if test (count $auto_fixed) -gt 0
     echo "--- Auto-fixed ---"
     for entry in $auto_fixed
         echo "  + $entry"
+    end
+    echo ""
+end
+
+if test (count $orphaned) -gt 0
+    echo "--- Orphaned (upstream gone; drop from the list or keep as an archive) ---"
+    for entry in $orphaned
+        echo "  ? $entry"
     end
     echo ""
 end
