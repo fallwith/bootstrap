@@ -4,11 +4,62 @@
 #
 # Usage:
 #   linear_attach ACT-37 file1.md file2.yaml ...
+#   linear_attach --strict ACT-37 file1.md ...
+#
+# Options:
+#   --strict   Abort on the first failure instead of continuing.
+#
+# Exit status:
+#   0  every requested file was attached
+#   1  at least one file failed (or bad usage / unresolvable issue)
+#
+# The non-zero exit on partial failure is deliberate: callers and agents
+# check $status, and a script that attaches 0 of 3 files while reporting
+# success is worse than one that fails loudly.
 #
 # Requires:
 #   LINEAR_API_KEY env var (personal API key from Linear settings)
 
 set -l api_url "https://api.linear.app/graphql"
+
+# Collapse every Unicode horizontal-space variant to a single ASCII space,
+# for filename comparison only. PCRE2 \h covers TAB, SPACE, NBSP (U+00A0),
+# and the Unicode space run including NARROW NO-BREAK SPACE (U+202F) --
+# which macOS puts before AM/PM in every screenshot filename, so a
+# hand-typed path with a plain space never matches the real file.
+function __la_normalize_spaces -a raw
+  string replace -ra '\h+' ' ' -- $raw
+end
+
+# Print same-directory files whose names differ from the requested one only
+# by Unicode space class. Suggestion only -- never substituted. Attaching
+# the wrong artifact to a ticket the whole team can see is a far worse
+# outcome than making the caller retry with the right path.
+function __la_suggest -a filepath
+  set -l dir (dirname "$filepath")
+  test -d "$dir"; or return 0
+
+  set -l want (__la_normalize_spaces (basename "$filepath"))
+  set -l hits
+
+  for cand in (find "$dir" -maxdepth 1 -type f 2>/dev/null)
+    set -l norm (__la_normalize_spaces (basename "$cand"))
+    if test "$norm" = "$want"
+      set -a hits $cand
+    end
+  end
+
+  if test (count $hits) -gt 0
+    echo "  A file there matches once Unicode spaces are normalized:" >&2
+    for hit in $hits
+      echo "    $hit" >&2
+    end
+    echo "  It looks identical because the difference is an invisible space:" >&2
+    echo "  macOS screenshots use U+202F NARROW NO-BREAK SPACE before AM/PM," >&2
+    echo "  so a hand-typed plain space never matches. Use a glob or" >&2
+    echo "  tab-completion instead of typing the name." >&2
+  end
+end
 
 if test -z "$LINEAR_API_KEY"
   echo "Error: LINEAR_API_KEY not set" >&2
@@ -16,13 +67,24 @@ if test -z "$LINEAR_API_KEY"
   exit 1
 end
 
-if test (count $argv) -lt 2
-  echo "Usage: linear_attach ISSUE_ID file [file ...]" >&2
+# Pull --strict out of argv so the positional parsing below is unchanged.
+set -l strict 0
+set -l args
+for arg in $argv
+  if test "$arg" = --strict
+    set strict 1
+  else
+    set -a args $arg
+  end
+end
+
+if test (count $args) -lt 2
+  echo "Usage: linear_attach [--strict] ISSUE_ID file [file ...]" >&2
   exit 1
 end
 
-set -l issue_id $argv[1]
-set -l files $argv[2..]
+set -l issue_id $args[1]
+set -l files $args[2..]
 
 # Resolve issue identifier (e.g., ACT-37) to UUID
 set -l resolve_query "query { issue(id: \"$issue_id\") { id identifier } }"
@@ -39,9 +101,15 @@ end
 
 echo "Resolved $issue_id -> $issue_uuid"
 
+set -l attached 0
+set -l failed 0
+
 for filepath in $files
   if not test -f "$filepath"
-    echo "Skip: $filepath not found" >&2
+    echo "Error: $filepath not found" >&2
+    __la_suggest "$filepath"
+    set failed (math $failed + 1)
+    test $strict -eq 1; and exit 1
     continue
   end
 
@@ -74,6 +142,8 @@ for filepath in $files
   if test "$success" != "true"
     echo "Error: fileUpload failed for $filename" >&2
     echo "$upload_resp" | jq . >&2
+    set failed (math $failed + 1)
+    test $strict -eq 1; and exit 1
     continue
   end
 
@@ -97,6 +167,8 @@ for filepath in $files
 
   if test "$put_status" -lt 200 -o "$put_status" -ge 300
     echo "Error: PUT returned HTTP $put_status for $filename" >&2
+    set failed (math $failed + 1)
+    test $strict -eq 1; and exit 1
     continue
   end
 
@@ -122,8 +194,18 @@ for filepath in $files
   set -l att_ok (echo "$attach_resp" | jq -r '.data.attachmentCreate.success')
   if test "$att_ok" = "true"
     echo "  -> attached as resource"
+    set attached (math $attached + 1)
   else
     echo "Error: attachmentCreate failed for $filename" >&2
     echo "$attach_resp" | jq . >&2
+    set failed (math $failed + 1)
+    test $strict -eq 1; and exit 1
   end
 end
+
+if test $failed -gt 0
+  echo "$attached attached, $failed failed" >&2
+  exit 1
+end
+
+echo "$attached attached"
