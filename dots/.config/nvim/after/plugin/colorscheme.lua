@@ -44,7 +44,6 @@ local schemes = {
   "ghostty-default-style-dark",
   "nanode",
   "myrrh",
-  "fourcolor",
   "folk-ushirogami",
   "earthsong",
   "earthsong-mute",
@@ -171,6 +170,9 @@ local schemes = {
   "winterland",
   "radix-dark",
   "radix",
+  "dancheong-storm",
+  "dancheong-night",
+  "dancheong-mist",
 }
 -- when the colorscheme changes, swap lualine to a matching theme if one
 -- ships with the colorscheme (e.g. metsanpeitto, everforest, kanagawa).

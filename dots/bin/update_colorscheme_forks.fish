@@ -31,7 +31,6 @@ set repos \
     nkxxll/ghostty-default-style-dark.nvim \
     KijitoraFinch/nanode.nvim \
     caelyreth/myrrh.nvim \
-    zanshin/nvim-fourcolor-theme \
     folksoftware/nvim \
     guillermodotn/nvim-earthsong \
     dlvandenberg/stilla.nvim \
@@ -98,7 +97,8 @@ set repos \
     al3rez/darktooth.nvim \
     r1cardohj/citylights.vim \
     psteven5/winterland.vim \
-    rockorager/radix.nvim
+    rockorager/radix.nvim \
+    art220/dancheong.nvim
 
 set -l successes
 set -l auto_fixed

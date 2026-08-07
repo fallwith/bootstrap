@@ -71,7 +71,6 @@ vim.pack.add({
   "https://github.com/nkxxll/ghostty-default-style-dark.nvim",
   "https://github.com/KijitoraFinch/nanode.nvim",
   "https://github.com/caelyreth/myrrh.nvim",
-  "https://github.com/zanshin/nvim-fourcolor-theme",
   { src = "https://github.com/folksoftware/nvim", name = "folk-nvim" },
   "https://github.com/guillermodotn/nvim-earthsong",
   "https://github.com/dlvandenberg/stilla.nvim",
@@ -143,6 +142,7 @@ vim.pack.add({
   "https://github.com/r1cardohj/citylights.vim",
   "https://github.com/psteven5/winterland.vim",
   "https://github.com/rockorager/radix.nvim",
+  "https://github.com/art220/dancheong.nvim",
 
   -- editing
   "https://github.com/folke/flash.nvim",
