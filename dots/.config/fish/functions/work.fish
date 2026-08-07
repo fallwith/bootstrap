@@ -230,11 +230,32 @@ function __work_resume --description 'Resume the latest session of an existing p
         return 1
     end
 
-    set -l sess (jq -r '.sessions[-1].id // empty' $pf)
+    # Newest session with a transcript claude can actually resume:
+    # a session exited before its first prompt writes only metadata
+    # lines, and `claude --resume` refuses those ("No conversation
+    # found"). Retention-pruned transcripts are equally unresumable.
+    set -l TAB (printf '\t')
+    set -l sess ''
+    set -l dir ''
+    for row in (jq -r '.sessions | reverse | .[] | [.id, (.cwd // "")] | @tsv' $pf)
+        set -l f (string split $TAB -- $row)
+        set -l cwd (string replace -r '^~' $HOME -- $f[2])
+        test -n "$cwd"; or set cwd $projdir
+        set -l t ~/.claude/projects/(string replace -ar '[/._]' '-' -- $cwd)/$f[1].jsonl
+        if test -f $t; and grep -qE '"type":"(user|assistant)"' $t
+            set sess $f[1]
+            set dir $cwd
+            break
+        end
+    end
+
     if test -z "$sess"
-        # No sessions yet (e.g. created with --no-launch):
-        # start the first one, with the intake prompt if ticketed
+        # Nothing resumable (never launched, exited unprompted, or
+        # pruned): start fresh, with the intake prompt if ticketed
         # and the project wasn't created with --no-intake.
+        if test (jq -r '.sessions | length' $pf) -gt 0
+            echo "No resumable session transcript; starting a new session."
+        end
         set -l prompt ''
         # NB: not `.intake // true` -- jq's // treats false as absent
         if test (jq -r '.intake != false' $pf) = true
@@ -246,11 +267,7 @@ function __work_resume --description 'Resume the latest session of an existing p
         return
     end
 
-    set -l dir (
-        jq -r '.sessions[-1].cwd // empty' $pf \
-            | string replace -r '^~' $HOME
-    )
-    test -n "$dir" -a -d "$dir"; or set dir $projdir
+    test -d "$dir"; or set dir $projdir
     cd $dir
     claude --resume $sess
 end
@@ -490,14 +507,51 @@ function __work_start --description 'Create a project, or resume it if it exists
           title: $title, created: $created, repos: ., sessions: []}' >$projdir/project.json
 
     if test -n "$ticket"; and not set -q _flag_no_claim
-        linear-cli i update $ticket -s 'In Progress' -a me -q
-        or echo "Warning: failed to set $ticket to In Progress / assign to self" >&2
+        # linear-cli can report success without applying (observed
+        # 2026-08-06 on a ticket In Review + assigned to a coworker),
+        # so verify against Linear rather than trusting the exit code.
+        linear-cli i update $ticket -s 'In Progress' -a me -q >/dev/null 2>&1
+        set -l verify (
+            linear-cli i get $ticket -o json 2>/dev/null \
+                | jq -r '(.state.name? // .state // "?") + " / "
+                    + (.assignee.email? // .assignee.name?
+                       // (if (.assignee | type) == "string" then .assignee
+                           else "unassigned" end))'
+        )
+        if string match -q 'In Progress / *' -- "$verify"
+            echo "Claimed $ticket ($verify)."
+        else
+            echo "WARNING: claim of $ticket did not stick (now: $verify)." >&2
+            echo "Set it In Progress / assigned to you manually in Linear." >&2
+        end
     end
     if set -q _flag_no_intake
         set -l tmp (mktemp)
         jq '.intake = false' $projdir/project.json >$tmp
         and command mv -f $tmp $projdir/project.json
     end
+
+    # Project-root agent instructions (AGENTS.md is tool-neutral;
+    # CLAUDE.md symlinks to it). Claude Code loads CLAUDE.md from
+    # every ancestor of its cwd, so this reaches sessions launched
+    # in repo subdirs too. The scratchpad redirect is instruction-
+    # level (no harness knob exists for the /tmp scratchpad).
+    mkdir -p $projdir/scratchpad
+    begin
+        echo "# $name"
+        echo ""
+        test -n "$title"; and echo "$title"
+        test -n "$ticket"; and echo "Linear ticket: $ticket"
+        echo ""
+        echo "## Scratchpad convention"
+        echo ""
+        echo "Use `$projdir/scratchpad/` for ALL temporary files"
+        echo "(scripts, intermediate data, working notes) instead of"
+        echo "the harness-provided /tmp scratchpad or any other system"
+        echo "temp directory. Files there survive across sessions and"
+        echo "are archived with the project at teardown."
+    end >$projdir/AGENTS.md
+    ln -s AGENTS.md $projdir/CLAUDE.md
 
     echo "Created $projdir"
     if set -q _flag_no_launch
@@ -538,8 +592,21 @@ function __work_promote --description 'Convert an ad-hoc session in the current 
     end
     if not test -f $srcenc/$sid.jsonl
         echo "No transcript for session $sid under $srcdir" >&2
+        set -l elsewhere ~/.claude/projects/*/$sid.jsonl
+        if test (count $elsewhere) -gt 0
+            echo "It exists elsewhere:" >&2
+            for f in $elsewhere
+                set -l fcwd (head -50 $f | jq -r 'select(.cwd != null) | .cwd' 2>/dev/null | head -1)
+                echo "  $f" >&2
+                echo "    (recorded cwd: $fcwd)" >&2
+            end
+            echo "If an earlier promote of a since-deleted project moved it," >&2
+            echo "mv it back into $srcenc/ and retry." >&2
+        end
         return 1
     end
+    echo "Promoting session $sid:"
+    echo "  "(__work_first_prompt $srcenc/$sid.jsonl)
 
     set -l create_args $id --no-launch
     for r in $_flag_repo
