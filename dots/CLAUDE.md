@@ -96,6 +96,25 @@ This section overrides convenience in every case. When in doubt, do less.
   exhaustive map or enum consumer elsewhere in the tree). A scoped run
   is fine for a fast inner loop, but run the whole-project check before
   declaring a change verified.
+- **Code changed in response to review is unreviewed code.**
+  After applying review findings, re-read the applied hunks before
+  committing -- especially any prose the review told you to write.
+  A passing test run proves the fix did not break anything; it does not
+  prove the fix is correct, or consistent with the lines around it.
+  Every review pass examines the diff as originally authored, so
+  whatever is edited afterwards ships without having been looked at.
+- **A low-confidence finding's suggested wording is a draft, not a fix.**
+  If the reviewer hedged, the text it proposed has not been checked
+  against the surrounding context either. Rewrite it and verify the
+  claim rather than pasting it in.
+- **A review's coverage is a point in time, not a property of the
+  branch.** Re-reading the applied hunks handles the fixes a review
+  produced, but not work that merely *arrives* after it: new scope, or a
+  decision that lands mid-session. That work has been examined by
+  nothing, so re-run the review on the delta rather than only re-reading
+  it. Watch for the case where the review ran early and the branch kept
+  growing: if most of a branch was written after its last review pass,
+  the branch is effectively unreviewed no matter how many passes ran.
 
 ### Existing Code That Violates Preferences
 - **My code**: Default to opportunistic cleanup when editing.
