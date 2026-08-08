@@ -192,6 +192,10 @@
       "rev": "f8ce95213e57b379089da23abc36a1fc39936b63",
       "src": "https://github.com/omacom-io/lumon.nvim"
     },
+    "luna.nvim": {
+      "rev": "95e1c7beeb7bffa1f02a28f0fe921520d79ce317",
+      "src": "https://github.com/WTFox/luna.nvim"
+    },
     "lytmode.nvim": {
       "rev": "9a75b45c61a5ff6e8c26f8e711cc8043060eeb35",
       "src": "https://github.com/github-main-user/lytmode.nvim"

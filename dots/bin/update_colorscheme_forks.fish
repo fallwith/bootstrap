@@ -98,7 +98,8 @@ set repos \
     r1cardohj/citylights.vim \
     psteven5/winterland.vim \
     rockorager/radix.nvim \
-    art220/dancheong.nvim
+    art220/dancheong.nvim \
+    WTFox/luna.nvim
 
 set -l successes
 set -l auto_fixed

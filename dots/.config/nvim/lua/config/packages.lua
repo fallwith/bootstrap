@@ -143,6 +143,7 @@ vim.pack.add({
   "https://github.com/psteven5/winterland.vim",
   "https://github.com/rockorager/radix.nvim",
   "https://github.com/art220/dancheong.nvim",
+  "https://github.com/WTFox/luna.nvim",
 
   -- editing
   "https://github.com/folke/flash.nvim",

@@ -173,6 +173,7 @@ local schemes = {
   "dancheong-storm",
   "dancheong-night",
   "dancheong-mist",
+  "luna",
 }
 -- when the colorscheme changes, swap lualine to a matching theme if one
 -- ships with the colorscheme (e.g. metsanpeitto, everforest, kanagawa).
