@@ -396,3 +396,10 @@ Match the culture of the Ruby community (MINASWAN).
   valid regex syntax will be treated as such and
   `-F` (`--fixed-strings`) must be used if literal
   fixed string matching is preferred.
+- **Pass `--no-line-number` when piping `ug` into another command.**
+  A `~/.ugrep` config enabling `line-number`, `pretty`, or `heading`
+  applies to stdin too, so `ug` prefixes every match with `N:` even
+  mid-pipeline. That silently corrupts the next command:
+  `git diff --name-only | ug '\.rb$'` yields `3:app/foo.rb`, and
+  whatever consumes it gets a path that does not exist.
+  Human-facing output is fine as-is; output feeding a command is not.

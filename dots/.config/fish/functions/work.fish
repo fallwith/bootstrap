@@ -129,6 +129,24 @@ function __work_base --description 'Determine the base branch for a repo'
     return 1
 end
 
+function __work_link_personal --description 'Symlink personal per-repo agent instructions into a checkout'
+    set -l wt $argv[1]
+    set -l repo $argv[2]
+    set -l src $HOME/.agents/$repo-personal.md
+
+    test -f $src; or return 0
+
+    # One real file, one symlink per agent that needs its own name:
+    # Claude Code discovers only CLAUDE.local.md, Codex only
+    # AGENTS.override.md (which beats a committed AGENTS.md). Both
+    # are gitignored via ~/.config/git/ignore. Linked per repo
+    # rather than at the project root, since a multi-repo project
+    # would otherwise apply one repo's rules to the others.
+    for name in CLAUDE.local.md AGENTS.override.md
+        test -e $wt/$name; or ln -s $src $wt/$name
+    end
+end
+
 function __work_worktree_add --description 'Create a project worktree and emit its repo JSON'
     set -l projdir $argv[1]
     set -l repo $argv[2]
@@ -146,6 +164,8 @@ function __work_worktree_add --description 'Create a project worktree and emit i
     else
         git -C $src worktree add $wt -b $branch origin/$base >&2; or return 1
     end
+
+    __work_link_personal $wt $repo
 
     # The branch tip at creation time: `work gc` treats the branch as
     # merged only when the tip has moved AND is in the base, so a
@@ -184,6 +204,41 @@ function __work_prompt --description 'Build the intake prompt for a ticketed pro
     printf '%s' $prompt
 end
 
+function __work_ruby_path --description 'Ruby bin dir when the project repos agree on one .ruby-version'
+    set -l projdir $argv[1]
+    set -l versions
+    for path in (jq -r '.repos[]?.path' $projdir/project.json 2>/dev/null)
+        set -l f $projdir/$path/.ruby-version
+        test -f $f; or continue
+        set -a versions (string trim <$f)
+    end
+    set -l distinct (printf '%s\n' $versions | sort -u | string match -rv '^$')
+    test (count $distinct) -gt 0; or return 1
+    if test (count $distinct) -gt 1
+        echo "Note: conflicting .ruby-version across repos ("(string join ', ' $distinct)"); not pinning a session Ruby." >&2
+        return 1
+    end
+    set -l bin $HOME/.rubies/ruby-$distinct[1]/bin
+    if not test -d $bin
+        echo "Warning: ruby-$distinct[1] not installed under ~/.rubies; not pinning." >&2
+        return 1
+    end
+    echo $bin
+end
+
+function __work_claude --description 'Launch claude with the project Ruby first on PATH'
+    set -l projdir $argv[1]
+    set -l ruby_bin (__work_ruby_path $projdir)
+    if test -n "$ruby_bin"
+        # Env on the claude process reaches every Bash tool call in
+        # the session, so bundle/rspec/rubocop resolve the pinned
+        # Ruby without per-command PATH prefixes.
+        env "PATH=$ruby_bin:"(string join : $PATH) claude $argv[2..]
+    else
+        claude $argv[2..]
+    end
+end
+
 function __work_claude_session --description 'Launch a new Claude session recorded in project.json'
     set -l pf $argv[1]
     set -l rest $argv[2..]
@@ -196,7 +251,7 @@ function __work_claude_session --description 'Launch a new Claude session record
           started: $started, cwd: $cwd}]' \
         $pf >$tmp
     and command mv -f $tmp $pf
-    claude --session-id $session_id $rest
+    __work_claude (dirname $pf) --session-id $session_id $rest
 end
 
 function __work_launch --description 'Start a tracked session for a project'
@@ -269,7 +324,7 @@ function __work_resume --description 'Resume the latest session of an existing p
 
     test -d "$dir"; or set dir $projdir
     cd $dir
-    claude --resume $sess
+    __work_claude $projdir --resume $sess
 end
 
 function __work_first_prompt --description 'Extract a recognizable opening prompt from a session jsonl'
@@ -385,7 +440,12 @@ function __work_session_search --description 'Find a session by transcript conte
     cd $cwd
     switch $agent
         case claude
-            claude --resume $session
+            set -l pfile (__work_project_file $cwd)
+            if test -n "$pfile"
+                __work_claude (dirname $pfile) --resume $session
+            else
+                claude --resume $session
+            end
         case codex
             codex resume $session
     end
@@ -656,7 +716,7 @@ function __work_promote --description 'Convert an ad-hoc session in the current 
         return 0
     end
     cd $newcwd
-    claude --resume $sid
+    __work_claude $projdir --resume $sid
 end
 
 function __work_add --description 'Add a repo worktree to an existing project'
@@ -771,6 +831,7 @@ function __work_adopt --description 'Register the current directory as a project
                  branch: (if $branch == "" then null else $branch end),
                  base: null}] end' $pf >$tmp
         and command mv -f $tmp $pf
+        __work_link_personal $dir $repo
     end
 
     # Backfill Claude sessions recorded for the project root and each
@@ -1246,8 +1307,11 @@ function __work_revive --description 'Restore an archived project from its tarba
             echo "Warning: could not recreate branch $branch for $path" >&2
             continue
         end
-        git -C $src worktree add $projdir/$path $branch
-        or echo "Warning: worktree add failed for $path" >&2
+        if git -C $src worktree add $projdir/$path $branch
+            __work_link_personal $projdir/$path $path
+        else
+            echo "Warning: worktree add failed for $path" >&2
+        end
     end
 
     rm -rf $stage
