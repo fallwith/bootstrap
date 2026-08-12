@@ -251,7 +251,11 @@ function __work_claude_session --description 'Launch a new Claude session record
           started: $started, cwd: $cwd}]' \
         $pf >$tmp
     and command mv -f $tmp $pf
-    __work_claude (dirname $pf) --session-id $session_id $rest
+    # Named after the project dir: the session name drives the
+    # terminal tab title (undocumented, no other knob), and the
+    # leading ticket id is what makes tabs tellable-apart.
+    set -l projdir (dirname $pf)
+    __work_claude $projdir --name (basename $projdir) --session-id $session_id $rest
 end
 
 function __work_launch --description 'Start a tracked session for a project'
