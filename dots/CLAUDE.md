@@ -3,11 +3,29 @@
 ## Data Privacy and PII Protection (ZERO TOLERANCE)
 
 This section overrides convenience in every case. When in doubt, do less.
+It covers secrets and credentials as well as personal data.
 
 - **Never, under any circumstances, fill the context window with PII,
   and never let PII leave the local machine.** This applies to every
   data source without exception: SQL, REPL/console output, API
   responses, file reads, log searches, clipboard, anything.
+- **Never read, print, or enumerate environment variables -- no
+  exceptions, and no "just the names."** `env`, `printenv`, `export -p`,
+  a bare `set`, `echo $FOO`, `ENV.to_h` in a REPL, and reading a `.env`
+  file, a shell rc, or any private config holding exported values are
+  all off limits, whatever filter is attached. A filtered listing is
+  not a safe listing: a prefix match returns whatever else happens to
+  share that prefix, and the value is in context before either of us
+  sees it coming. This is unconditional -- it holds when the
+  environment is the obvious place to look, and when I think I already
+  know what is in there.
+  - **Passing a value in is unaffected.** Prefixing a command with
+    `FOO=bar cmd`, or with
+    `export PATH="$HOME/.rubies/ruby-<version>/bin:$PATH"`, supplies a
+    value and reads nothing back. The rules requiring those stand.
+  - If a task appears to need an environment value, stop and ask --
+    do not probe, not even for set/unset. Ask me to check locally and
+    report back only the part that is needed.
 - **SQL: never use `*`.** Before running any query, proactively
   determine an explicit allowlist of safe, non-PII columns and SELECT
   only those. An allowlist (name each safe column) is required; a
@@ -213,6 +231,14 @@ This section overrides convenience in every case. When in doubt, do less.
   being managed is "the commit happened before I saw it," not the order
   the work was written in; spec-first TDD is perfectly fine and often
   preferred.
+- **Run `git diff` as its own Bash call.** Tool output renders fine on
+  a clean exit, but bundled with lint or verification commands, a
+  single nonzero exit collapses the whole block behind an `Error`
+  banner and truncates it mid-hunk -- so the diff never reaches me.
+  Note that a zero-match `ug`/`grep` exits 1, which is enough to do
+  it. If output was hidden or truncated, I have not seen the diff, and
+  saying "the diff is above" does not make it so: paste the hunks into
+  the reply instead.
 - Take extra care on PR branches, especially someone else's: confirm the
   approach before editing when the change is non-trivial, on top of the
   pre-commit diff review.
