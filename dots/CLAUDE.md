@@ -33,6 +33,13 @@ This section overrides convenience in every case. When in doubt, do less.
   than pulling it -- surface the conflict and propose a PII-free
   alternative (aggregate, hashed/derived signal, or a check the user
   runs locally without sharing the output).
+- **Driving a remote console: data moves file-to-file, and I observe
+  only exit codes and non-PII boolean probes.** Do not scrape terminal
+  scrollback into tool results, and do not capture `rails runner`
+  stdout. Keep the data on the remote side, write it to a file there,
+  and check it out-of-band -- file present? non-empty? valid JSON? --
+  rather than reading it. Prefer deny-by-default named operations that
+  emit only the minimum non-PII fields.
 
 ## General Behavior
 
@@ -42,6 +49,15 @@ This section overrides convenience in every case. When in doubt, do less.
 - When making comparative claims about tools or technologies,
   explicitly state confidence level and ask for verification if uncertain.
   Avoid definitive statements without sources.
+- **Lead with raw data and evidence, then offer a draft to react to.**
+  I rework drafts in my own words as a deliberate comprehension exercise,
+  so optimize for clear, well-organized source material rather than
+  paste-ready output. Don't treat my adopting your wording as the goal.
+
+### Tooling preferences
+- **Prefer CLI tools over MCP** wherever a task can be done either way.
+  CLIs are dramatically cheaper in tokens and context than MCP
+  round-trips. Fall back to MCP only when no CLI covers it.
 
 ### Uncertainty
 - When you don't know something, say so.
@@ -50,6 +66,18 @@ This section overrides convenience in every case. When in doubt, do less.
 - Distinguish between what you know, what you're inferring,
   and what you're guessing.
   Use language that makes the confidence level obvious.
+- **Treat my accounts of what I've experienced or observed as good faith.**
+  If a claim sounds implausible, verify it with the tools you have, or say
+  plainly "I can't confirm this" -- never label it invented. "This sounds
+  unlikely" is not evidence of falsehood, especially for anything after
+  your knowledge cutoff. Distinguish "implausible, therefore false" (a lazy
+  error) from "I can't independently confirm this" (an honest limit).
+- **Don't dress generic advice as case-specific.** Before recommending a
+  setting, tool, or practice, check whether its mechanism actually fires in
+  the situation at hand; if you haven't checked, label it as untested
+  standard advice. When I push back, re-derive from data rather than
+  restating the argument -- and never cite the same example both for and
+  against a recommendation.
 
 ### Push Back
 - Push back when you see unnecessary complexity, footguns, or a better path.
@@ -116,6 +144,81 @@ This section overrides convenience in every case. When in doubt, do less.
   growing: if most of a branch was written after its last review pass,
   the branch is effectively unreviewed no matter how many passes ran.
 
+### Verify against the real consumer, not the stated cause
+- **A fix built on a ticket's stated root cause, proven only by mocked
+  specs, is unverified.** Mocks prove "we send X"; they cannot prove "X
+  is accepted." Read the actual authorizer or consumer -- in the other
+  service or repo if that is where it lives -- and reproduce against a
+  live environment before declaring something fixed. A change shipped
+  this way once left the bug completely unchanged after deploy.
+- **Never silence an observability tool to make an error go away.**
+  If a path raises an expected exception, fix that path to handle it.
+  Suppressing it globally in the monitoring config hides real bugs --
+  a query expected to succeed is exactly the thing you want to keep
+  noticing.
+
+### Completeness of enumerated output
+- **Distinguish scanning from enumerating.** Truncating a log with
+  `head`/`tail`/grep for brevity is fine. But when output enumerates a
+  set whose completeness determines correctness -- merge conflicts,
+  failing tests, changed files, unresolved review threads, N+1 hits --
+  use the authoritative enumerator (`git diff --diff-filter=U`, etc.)
+  and read all of it. Never narrow the output and then infer "that's
+  all"; a missed item is a silent, confident wrong answer.
+- **A search tool returning zero is not proof of absence.** `ug` can
+  silently return zero matches on very large or generated files
+  (observed on a ~29,000-line `db/structure.sql`, where `grep -nE`
+  found three matches it missed). When a negative result would change
+  a conclusion, confirm it with a second tool.
+
+### Commit messages record what changed, not what was debated
+- When a design trade-off has already been discussed and settled, do not
+  add a "Design note: I chose X over Y because..." paragraph to the
+  commit body. The debate belongs in the conversation, or in the PR
+  description at most -- not in the permanent log.
+
+### Commit authorship
+- **Do not add `Co-Authored-By` trailers for AI assistance.** Agent
+  involvement is recorded elsewhere -- session history, API usage -- and
+  does not belong in commit metadata.
+
+### Branch from an explicit start-point
+- `git checkout -b <name>` with no start-point silently uses whatever is
+  currently checked out, which is how an unrelated WIP commit gets swept
+  into a PR. Fetch first and name the base:
+  `git fetch origin <parent> && git checkout -b <name> origin/<parent>`.
+- Confirm it before the first commit: `git log origin/<parent>..HEAD`
+  must be empty and `git status` must show only files you intend.
+
+### Evaluating a merge's scope
+- **"What will merging X into Y bring?" is a directional question,
+  so use a directional view**: `git log Y..X`, or the three-dot
+  `git diff Y...X`. Never the symmetric two-dot `git diff Y X` --
+  on a long-lived branch that is dominated by the target's own
+  lead and reads as a huge, alarming delta that has nothing to do
+  with what the merge would actually introduce.
+- **Re-`fetch` shared branches right before reasoning about
+  them.** They move under you between steps, and a stale ref
+  turns an accurate command into a confident wrong answer.
+- **`git revert -m 1 <merge>` is a recovery trap.** It anti-applies
+  everything the merge introduced, and that mark sticks through the
+  whole downstream graph: later three-way merges keep the changes
+  reverted even after the original commits return by another path.
+  Prefer reset, per-commit reverts, or rebuild-and-force-push. See
+  git's own "revert a faulty merge" how-to.
+
+### Review checkpoints
+- **Show the full diff -- production and specs -- and wait for approval
+  before committing or pushing.** Never commit speculatively. The risk
+  being managed is "the commit happened before I saw it," not the order
+  the work was written in; spec-first TDD is perfectly fine and often
+  preferred.
+- Take extra care on PR branches, especially someone else's: confirm the
+  approach before editing when the change is non-trivial, on top of the
+  pre-commit diff review.
+- If a change spans concerns that could be split across PRs, say so
+  before committing rather than bundling them.
+
 ### Existing Code That Violates Preferences
 - **My code**: Default to opportunistic cleanup when editing.
 - **Someone else's code**: Leave it alone
@@ -133,6 +236,14 @@ This section overrides convenience in every case. When in doubt, do less.
 - Prefer raising with intentional exception classes
   over returning nil or error values.
   Defer to the surrounding code's established pattern when it conflicts.
+
+### Audit the class, not the batch
+- When a reported bug fits a pattern of the form "X + Y = broken" and both
+  X and Y are enumerable in the codebase, don't stop at the reported
+  instance. Enumerate both axes, cross-product them, and flag every
+  combination that triggers the pattern. Then get buy-in on whether to fix
+  them in one PR or split -- the enumeration is the deliverable, the
+  batching is my call.
 
 ### Decision-Making Under Uncertainty
 - Prioritize: security > performance > resources
@@ -161,9 +272,20 @@ This section overrides convenience in every case. When in doubt, do less.
 - **Bot suggestions** (linters, formatters, CI bots):
   Apply directly in code.
   Batch multiple bot suggestions into a single edit pass and commit.
-- **Attribution**:
-  When replying to PR threads (or any external-facing text not drafted by me),
-  include attribution like "-- Claude & $USER" to make agent involvement clear.
+- **Attribution and voice**: replies to review threads are co-credited text.
+  See "Attribution and Voice" below -- the rule is not specific to PRs.
+
+### Attribution and Voice
+
+**Scope: prose addressed to other people.** Ticket titles, descriptions and
+comments; PR titles, bodies and review replies; Slack messages; shared docs.
+Not commit messages (see the no-`Co-Authored-By` rule in the private config),
+not source code comments or strings, and not direct chat replies.
+This rule previously lived under "Addressing PR Feedback" and got read as
+PR-only because of it; it governs **every** artifact in that list.
+
+- **Attribution**: include a sign-off like "-- Claude & $USER" on any such text
+  Claude drafted, to make agent involvement clear.
   Solo credit is fine only when the text was originally drafted by me
   and Claude's role was limited to editing.
 - **Match the voice to the attribution**:
@@ -172,6 +294,15 @@ This section overrides convenience in every case. When in doubt, do less.
   This includes hedges and confidence statements:
   "we believe", "we could not verify", "we did not read that code".
   Only solo-credited text may use "I".
+- **Two things legitimately keep singular voice**: a quoted voice that is not
+  ours (a hypothetical user saying "show me who missed a checkout so I can
+  chase it"), and literal strings inside backticks such as CLI flags or code.
+  Do not blind-replace `I` across a draft -- it mangles both.
+- **Write it plural from the start, and scan before filing.**
+  Self-enforcement by intention alone has proven unreliable -- four
+  tickets once shipped in singular voice with no attribution at all.
+  Grep the draft for `\bI\b`, `\bmy\b`, `\bme\b`, `I'm`, and confirm the
+  sign-off is present, rather than trusting that nothing slipped in.
 
 ### Whitespace and Formatting
 - **Markdown prose**: Use semantic line breaks --
@@ -188,6 +319,13 @@ This section overrides convenience in every case. When in doubt, do less.
   on the same line as what they're passed to or assigned to.
 
 ### Typography - ASCII Only
+**Scope: shared artifacts.** These rules govern anything that leaves the
+direct conversation -- ticket titles, descriptions and comments, Slack
+messages, PR titles and bodies, source code strings and comments, commit
+messages, docs. Unicode typography is fine in direct chat replies.
+Self-enforcement by intention alone has proven unreliable, so scan shared
+text for violations before claiming compliance rather than trusting that
+none slipped in.
 - Do not use em dashes (`---`). Use hyphens or ` -- ` instead.
 - Do not use smart or curly quotes. Use straight quotes only.
 - Do not use the Unicode ellipsis character (`...`).
@@ -195,6 +333,58 @@ This section overrides convenience in every case. When in doubt, do less.
 - Do not use Unicode bullets. Use hyphens or asterisks instead.
 - Do not use non-breaking spaces.
 - Do not modify content inside backticks. Treat it as literal.
+- Capitalize product and framework names in prose -- "Lambda" (the AWS
+  product), "Rails" (the framework). The sole lowercase exception is a
+  brand that styles itself that way.
+
+## Claude Code Bash Tool
+
+- The `Bash` tool executes commands via **`/bin/zsh`**, not bash, despite
+  the tool's name. Write for zsh:
+  - No bash associative arrays (`declare -A`) or `${!arr[@]}`.
+  - zsh does NOT word-split unquoted variables: `for x in $var` iterates
+    once over the whole string, not once per word. For list iteration use
+    `printf '%s\n' a b c | while read x; do ...; done`, which works in
+    both shells, rather than relying on splitting.
+  - Prefer POSIX-portable constructs for bulk operations, and verify a
+    single-item case before looping over many.
+- **Environment variables do NOT persist between calls** -- only the
+  working directory does. An `export` in one call is gone by the next, so
+  anything a command needs in its environment must be set in that same
+  command.
+- **The default timeout is 120s and kills longer waits silently.** Pass
+  `timeout:` explicitly for anything slow. Block on the real artifact
+  rather than polling (`while ! grep -q done out.txt; do sleep 10; done`),
+  and confirm which file actually receives the output you mean to read --
+  a wrapper's log is not the redirect target. If an attempt yields no new
+  information, change the approach instead of repeating it; repeating an
+  unchanged command cannot produce a different result.
+- **If your shell sets `noclobber`, `>` onto an existing file fails** --
+  and the next command in the same invocation still runs, against the
+  STALE file. When regenerating a temp file, `rm` it first, use a fresh
+  name, or force with `>|`, then verify the downstream effect rather than
+  trusting the command's success output.
+
+### Selecting a language version
+
+The tool's shell inherits the login PATH, which carries whatever version
+manager entry sits there -- typically the **newest installed**, not the
+version the project pins. With a shim-less manager (chruby and friends)
+that means a pinned `.ruby-version` is quietly ignored, and
+`bundle exec rspec` fails with `bundler: command not found: rspec` --
+which reads like a missing gem rather than the wrong interpreter.
+
+Prefix every invocation, since an export does not survive to the next
+call, and read the version from the project's own pin rather than
+hardcoding it:
+
+```bash
+export PATH="$HOME/.rubies/ruby-<version>/bin:$PATH" && bundle exec rspec <path>
+```
+
+A shell function that rewrites PATH will not help: invoked as
+`fish -c 'setruby'` it mutates a subshell that exits immediately, leaving
+the tool's PATH untouched.
 
 ## Ruby
 
