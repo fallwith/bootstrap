@@ -34,6 +34,12 @@ It covers secrets and credentials as well as personal data.
     `metadata`, free-text notes) into output. To inspect a JSONB
     column's shape without its values, select key names only
     (e.g. `jsonb_object_keys(col)`), never the values.
+  - **A named blocklist outranks this allowance.** Where a project
+    config names specific columns as blocked, they must not appear in
+    a query at all -- not their values, not their shape, no key-name
+    listing or existence probe. The key-names allowance is for columns
+    nobody has ruled on, and "I know what this particular row holds"
+    is not grounds to reopen a block.
   - Prefer aggregates (`count`, `group by` over enums/timestamps):
     they answer most questions and structurally cannot leak row PII.
   - Treat user-level identifiers (user UUIDs, actor ids, emails,
@@ -142,6 +148,19 @@ It covers secrets and credentials as well as personal data.
   exhaustive map or enum consumer elsewhere in the tree). A scoped run
   is fine for a fast inner loop, but run the whole-project check before
   declaring a change verified.
+- **That rule is for code with consumers. Scale verification to what the
+  changed thing can actually break.** Prose, comments, docs, PR bodies and
+  markdown conflicts get read-the-hunk treatment: prove nothing was lost,
+  then stop. A `.md` file cannot fail a spec, so running a suite against
+  one buys nothing.
+  - **A rebase or merge is a code change even when every conflict was
+    prose.** The base moved under the branch, so the risk is what moved,
+    not what you edited.
+  - **A checked-in file that code loads is code**, however data-like --
+    a YAML catalog, a fixture, a JSON seed. "Docs" means prose nothing
+    parses.
+  - **Say in one clause why you ran or skipped.** The misattribution is
+    the failure mode, not the run.
 - **Code changed in response to review is unreviewed code.**
   After applying review findings, re-read the applied hunks before
   committing -- especially any prose the review told you to write.
@@ -591,6 +610,16 @@ Match the culture of the Ruby community (MINASWAN).
   when changing API responses, enum values, or category assignments,
   verify that the frontend expects the new shape and values
   before shipping.
+- **Settle a cheap finding before filing it.**
+  If confirming a finding would take minutes -- a search, a grep,
+  reading the source document it was transcribed from -- do that first,
+  then file either a concrete defect or nothing.
+  Passing a reviewer's "I could not verify this" through unchanged is
+  not neutral: on someone else's in-review ticket it reads as implied
+  rework. Reserve unverified flags for what is genuinely out of reach,
+  and say what you tried.
+  If one goes out and later clears, post the close-out explicitly
+  rather than leaving it to decay.
 
 ## Fish Shell
 - `set -l` inside `if`/`else`/`for` blocks

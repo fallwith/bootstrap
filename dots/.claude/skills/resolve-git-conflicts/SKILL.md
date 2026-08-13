@@ -54,7 +54,7 @@ Match effort to what triage proves, not to how the conflict feels.
 |---|---|
 | Single file, all mechanically provable | Under 10 commands, report under 10 lines |
 | Several files, all mechanically provable | Under 20 commands, one short table |
-| Any judgment call present | Investigate that file properly; still skip investigation on the provable ones |
+| Any judgment call present | Investigate that file properly, **within its blast radius** -- a judgment call about wording in a doc is still a doc; still skip investigation on the provable ones |
 
 Do not read full-file diffs, run blame archaeology, or narrate reasoning for a
 conflict that a one-line test already resolved. **Reach Part 2's exit and
@@ -508,7 +508,13 @@ Never silence a check to get past it.
 
 Markers-gone plus nothing-lost proves you did not **drop** a side. It does not
 prove the two sides work together. That is a different failure mode, and tests
-are the only check for it.
+are the only check for it -- **for files that execute.**
+
+**If no conflicted file executes -- markdown, prose, docs, config the specs
+already parse -- 5d and 5e are `N/A`, and `N/A` is a pass, not an
+`UNVERIFIED`.** There is no composition to prove: a `.md` file cannot fail a
+spec. Do not run a suite because the merge dragged in other commits; those were
+tested where they landed. Prove nothing was lost, then finish.
 
 - If a conflicted file **is** a test, run it.
 - If a conflicted file **has** a corresponding test, run that.
