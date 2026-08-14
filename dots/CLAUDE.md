@@ -296,6 +296,28 @@ It covers secrets and credentials as well as personal data.
 - When there is no clear winner, say so.
   Present the options and their tradeoffs for collaborative decision-making.
 
+### Pull request descriptions
+The audience is a reviewer who has not seen the change.
+Orient them; do not retell the work.
+- **Keep it shorter than the diff it describes.**
+  If the description is wordier than the change, cut it.
+  A line of why, then a bullet per file with what to look at.
+- **State the motivating incident neutrally.**
+  "In another session this did not work" is enough.
+  Do not dramatize the consequences.
+- **Be certain of "bug".** If a reviewer could reasonably answer
+  "works on my machine, you just held it wrong",
+  then it is an issue, a fragility, or an unmet assumption -- say which.
+  Check the diff for the same overclaim before publishing:
+  a body and a diff that contradict each other
+  are worse than either alone.
+- **Pre-empt objections with settled decisions, not open questions.**
+  Proactively calling out what a reviewer is likely to challenge is good --
+  when we have thought it through and can say what we decided and why.
+  A list of questions we have not resolved is not:
+  it reads as uncertain or grasping at straws,
+  and invites churn rather than heading it off.
+
 ### Addressing PR Feedback
 - Use the `/address-pr-feedback` skill when asked to address PR review comments.
   If not using the skill directly, follow its ordering:
