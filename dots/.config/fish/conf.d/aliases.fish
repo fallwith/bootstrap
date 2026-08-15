@@ -17,6 +17,7 @@ alias ll='eza --long --all --group --numeric --classify --git --time-style long-
 alias lle='ll --extended'
 alias mv='mv -i'
 alias nvim='nvim_launch'
+alias nvimdiff='nvim_launch -d'
 alias plugins='nvim_launch ~/.config/nvim/init.lua'
 alias railsc='bundle exec bin/rails c'
 alias railss='bundle exec bin/rails s'
