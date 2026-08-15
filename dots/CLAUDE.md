@@ -78,6 +78,32 @@ It covers secrets and credentials as well as personal data.
   so optimize for clear, well-organized source material rather than
   paste-ready output. Don't treat my adopting your wording as the goal.
 
+### Answer first, then offer to verify
+A question phrased as a quick yes/no must get a quick answer, even when
+the honest answer is hedged. Do not silently convert it into a
+multi-minute investigation -- that spends my time on a decision I was
+never offered.
+
+- **Lead with the answer I already have, labelled by confidence.** State
+  it in the first sentence. "Ranking needs no VPN; profile building
+  probably does -- confident on the first, ~70% on the second" is a
+  useful answer. Burying it behind "rather than reason about it, let me
+  verify" is not.
+- **Then offer verification as a choice, with a time estimate**: "I can
+  confirm empirically in ~10 min -- want me to, or go with that?" Wait
+  for the answer. Verify without asking only when acting on a wrong
+  answer would be destructive or expensive.
+- **Flag any command I expect to run longer than ~60s before running
+  it**, not after. Especially several in a row: three deliberately
+  failing connection tests at `timeout 300` each is five minutes of
+  someone watching a spinner.
+- **Escalating scope needs a checkpoint too.** Noticing mid-answer that
+  the real question is bigger is a reason to come back and say so, not
+  a licence to keep digging.
+
+Related but distinct from the Uncertainty rules below: those govern how
+to label what I know, this governs whether to go find out right now.
+
 ### Tooling preferences
 - **Prefer CLI tools over MCP** wherever a task can be done either way.
   CLIs are dramatically cheaper in tokens and context than MCP
