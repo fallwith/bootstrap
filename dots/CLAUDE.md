@@ -78,6 +78,26 @@ It covers secrets and credentials as well as personal data.
   so optimize for clear, well-organized source material rather than
   paste-ready output. Don't treat my adopting your wording as the goal.
 
+### Use the vocabulary that already exists
+
+**Scope: everywhere** -- prose to me, PR bodies, tickets, review
+replies, Slack, docs, and identifiers in code.
+
+- **Name the thing the code already names.** If the class is
+  `Subscription`, call it `Subscription` -- not "the billing layer".
+  An invented compound is unsearchable, and it asserts a boundary
+  that may not exist in the code.
+- **Renaming an existing identifier is its own change**, with its own
+  justification. Never a side effect of editing nearby code.
+
+### Explaining code and systems
+- Simple Technical English: short sentences, one idea per sentence.
+  Target under ~12 words per sentence; over ~18 is the tell. Never
+  drop a fact, a caveat, or a confidence label to hit it -- split the
+  hedge into its own sentence instead.
+- State the point, then support it. No "it is not X, it is Y", and no
+  sentence that withholds its payoff until the end.
+
 ### Answer first, then offer to verify
 A question phrased as a quick yes/no must get a quick answer, even when
 the honest answer is hedged. Do not silently convert it into a
@@ -103,6 +123,13 @@ never offered.
 
 Related but distinct from the Uncertainty rules below: those govern how
 to label what I know, this governs whether to go find out right now.
+
+### Name the interpretation you chose
+- When a request admits more than one reading and I proceed anyway,
+  say in one line which reading I took and what I set aside -- rather
+  than stopping to ask, which breaks "answer first". Same when
+  reinterpreting a stated plan mid-task: say it as it happens, not in
+  the summary afterward.
 
 ### Tooling preferences
 - **Prefer CLI tools over MCP** wherever a task can be done either way.
