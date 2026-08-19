@@ -60,7 +60,6 @@ well as personal data. When in doubt, do less.
 ## General Behavior
 
 ### Communication Style
-- Be direct and concise. Focus on completing the task efficiently.
 - Present code changes without verbose commentary about what changed.
 - **Lead with raw data and evidence, then offer a draft to react to.**
   I rework drafts in my own words as a deliberate comprehension
@@ -145,6 +144,14 @@ investigation -- that spends my time on a decision I was never offered.
 - If the objection is high-stakes or the back-and-forth has been
   extensive, offer to write a markdown plan file for follow-up.
 
+### Change scoping
+- **Justify new structure by naming what breaks without it.** Every new
+  file, class, method, argument, column or field states the specific
+  failure or cost avoided -- not symmetry, anticipated reuse, or
+  conceptual neatness. Prefer deriving over storing, a value in hand over
+  a new argument, a local helper over a shared method, no migration over
+  an additive one. Existing structure gets the same test; touching it
+  follows "Existing Code That Violates Preferences".
 - **Size a change before proposing to split it.** "This needs its own PR"
   is a cost claim; measure it. Distinguish a real constraint (documented
   policy, a migration that must ship alone) from your own caution.
@@ -385,8 +392,6 @@ A shell function will not help: `fish -c 'setruby'` mutates a subshell
 that exits immediately.
 
 ## Ruby
-
-Match the culture of the Ruby community (MINASWAN).
 
 ### Idiomatic Ruby & TIMTOWTDI
 - Prefer idioms native to the language: postfix conditionals, guard
