@@ -107,8 +107,8 @@ investigation -- that spends my time on a decision I was never offered.
   licence to keep digging.
 
 ### Name the interpretation you chose
-- When a request admits more than one reading and I proceed anyway, say
-  in one line which reading I took and what I set aside -- rather than
+- When a request admits more than one reading and you proceed anyway, say
+  in one line which reading you took and what you set aside -- rather than
   stopping to ask, which breaks "answer first". Same when reinterpreting
   a stated plan mid-task: say it as it happens, not in the summary
   afterward.
@@ -128,6 +128,9 @@ investigation -- that spends my time on a decision I was never offered.
   this" -- never label it invented. Distinguish "implausible, therefore
   false" (a lazy error) from "I can't independently confirm this" (an
   honest limit). Especially for anything after your knowledge cutoff.
+- **Do not upgrade an inference to a certainty.** Once you have called
+  something unverified, more circumstantial evidence does not settle it --
+  name the command that would.
 - **Don't dress generic advice as case-specific.** Check whether a
   setting's mechanism actually fires in the situation at hand; if you
   have not checked, label it untested standard advice. When I push back,
@@ -141,6 +144,10 @@ investigation -- that spends my time on a decision I was never offered.
 - If overruled, note the objection and move on.
 - If the objection is high-stakes or the back-and-forth has been
   extensive, offer to write a markdown plan file for follow-up.
+
+- **Size a change before proposing to split it.** "This needs its own PR"
+  is a cost claim; measure it. Distinguish a real constraint (documented
+  policy, a migration that must ship alone) from your own caution.
 
 ### Service and Resource Availability
 - Surface OS / Homebrew / container (Docker, Colima) unavailability. Do
@@ -351,16 +358,15 @@ compliance.
 - **Environment variables do NOT persist between calls** -- only the
   working directory does. Anything a command needs must be set in that
   same command.
-- **The default timeout is 120s and kills longer waits silently.** Pass
-  `timeout:` for anything slow. Block on the real artifact rather than
-  polling, and confirm which file actually receives the output you mean
-  to read -- a wrapper's log is not the redirect target. If an attempt
-  yields no new information, change the approach; repeating an unchanged
-  command cannot produce a different result.
-- **Under `noclobber`, `>` onto an existing file fails** -- and the next
-  command in the same invocation still runs, against the STALE file.
-  `rm` first, use a fresh name, or force with `>|`, then verify the
-  downstream effect rather than trusting the success output.
+- **Always pass `timeout:`** (max 600000ms); the 120s default kills
+  longer waits silently, so a longer `sleep` can never observe what it
+  waits for. Block on the real artifact rather than polling, and confirm
+  which file receives the output -- a wrapper's log is not the redirect
+  target. If an attempt yields no new information, change the approach.
+- **Always `>|`, never bare `>`.** Under `noclobber` a plain `>` onto an
+  existing file fails while the next command still runs, against the STALE
+  file -- so a re-run can "prove" two things identical that are not.
+  Deciding per-redirect whether the file exists is what fails.
 
 ### Selecting a language version
 
@@ -415,6 +421,9 @@ Match the culture of the Ruby community (MINASWAN).
 - **`sanitize_sql_like` does not prevent SQL injection** -- it escapes
   LIKE wildcards (`%`, `_`), not quotes. Use `?` bind placeholders for
   user input.
+- **Trust signals in a request payload are untrusted.** Gate on the absent
+  case: requiring a field to equal an expected value lets a caller opt out
+  by omitting it.
 - **Never expose raw exceptions to API clients.** Log server-side,
   return a generic message.
 
@@ -492,6 +501,8 @@ values from these:
 ### Code Review
 - **Approve-with-suggestions over blocking** when the PR is a net
   improvement. Don't block on polish.
+- **Ask whether the fix is an instance of the bug.** A guard against
+  trusting an unverified identifier must not key on one itself.
 - **Check FE/BE contract alignment** when changing API responses, enum
   values, or category assignments.
 - **Settle a cheap finding before filing it.** If a search or a grep
@@ -514,7 +525,8 @@ values from these:
 - **Spelling**: "grey", not "gray".
 - **Search**: `ug` (ugrep), not `grep`. Regex is the default; `-F` for
   fixed strings.
-- **Pass `--no-line-number` when piping `ug` into another command.** A
-  `~/.ugrep` config enabling `line-number` applies to stdin too, so
-  `git diff --name-only | ug '\.rb$'` yields `3:app/foo.rb` and the next
-  command gets a path that does not exist.
+- **`ug` for output a person reads; `grep` for output a command
+  consumes.** A `~/.ugrep` config enabling `line-number` applies to stdin
+  too, so `git diff --name-only | ug '\.rb$'` yields `3:app/foo.rb` and the
+  next command gets a path that does not exist. `--no-line-number` works
+  only if you notice you are piping; `grep` cannot do this at all.
