@@ -3,6 +3,7 @@ def working?
 end
 
 brew '7zip'
+brew 'agent-browser' if working?
 # brew 'ansible'
 # brew 'asdf'
 # brew 'atool'
