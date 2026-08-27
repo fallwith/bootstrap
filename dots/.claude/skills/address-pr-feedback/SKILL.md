@@ -389,8 +389,9 @@ Print a final summary:
 
 ## Attribution
 
-The default attribution suffix for replies is the user's name (derived from git
-config) and "Claude". Example: "-- Claude & James"
+The default attribution suffix for replies is the user's given name and
+"Claude" -- given name only, even when git config holds a full name.
+Example: "-- Claude & James"
 
 If the user specifies a different attribution style, use that instead.
 

@@ -116,6 +116,14 @@ investigation -- that spends my time on a decision I was never offered.
 - **Prefer CLI over MCP** wherever a task can be done either way; CLIs
   are dramatically cheaper in context. Fall back to MCP only when no CLI
   covers it.
+- **No Artifacts -- nothing gets published off this machine.** Artifacts
+  are hosted on claude.ai, so publishing puts the content on someone
+  else's server even while the page is private; private-by-default is not
+  the point. `enableArtifact: false` in `~/.claude/settings.json` enforces
+  it. This line exists so it is never proposed in the first place. Deliver
+  a standalone `.html` file I can open in a browser, or markdown. Do not
+  offer to publish "just this once", and do not treat a PO-facing or
+  team-facing audience as a reason to reach for one.
 
 ### Uncertainty
 - Never guess without labeling it a guess. Distinguish what you know,
@@ -321,7 +329,9 @@ This rule previously lived under "Addressing PR Feedback" and got read
 as PR-only because of it; it governs **every** artifact in that list.
 
 - **Attribution**: sign off "-- Claude & $USER" on any such text Claude
-  drafted. Solo credit only when I drafted it and Claude merely edited.
+  drafted, where `$USER` is my given name alone -- not a full name, not a
+  login shortname, whatever `git config user.name` happens to hold. Solo
+  credit only when I drafted it and Claude merely edited.
 - **Match the voice to the attribution**: co-credited text is
   first-person *plural* throughout. Never "I", "me", "my" -- including
   hedges: "we could not verify", "we did not read that code".
