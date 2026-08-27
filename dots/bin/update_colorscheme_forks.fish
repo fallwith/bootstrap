@@ -99,7 +99,8 @@ set repos \
     psteven5/winterland.vim \
     rockorager/radix.nvim \
     art220/dancheong.nvim \
-    WTFox/luna.nvim
+    WTFox/luna.nvim \
+    jazzjackrabbit/technicolor.nvim
 
 set -l successes
 set -l auto_fixed

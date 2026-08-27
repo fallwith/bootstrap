@@ -45,7 +45,7 @@
       "src": "https://github.com/fallwith/blacklust.nvim"
     },
     "bonbon.nvim": {
-      "rev": "c372f1a0aa0fb176d5e734ac1aa5582f1d37740c",
+      "rev": "aacbb78cef3907cbcc0ecf30e77e8bb18c93697b",
       "src": "https://github.com/pankvitek/bonbon.nvim"
     },
     "brutus": {
@@ -57,7 +57,7 @@
       "src": "https://github.com/zitrocode/carvion.nvim"
     },
     "catppuccin": {
-      "rev": "79e2049a0fdf7ec840f8463fe1d962c94493196b",
+      "rev": "edefef779ab08ce1a4a404713e3012b0d202bd35",
       "src": "https://github.com/catppuccin/nvim"
     },
     "citylights.vim": {
@@ -109,7 +109,7 @@
       "src": "https://github.com/sainnhe/edge"
     },
     "eggfriedrice.nvim": {
-      "rev": "cac02eaa5846e4e9880952603eda84b2afabbf98",
+      "rev": "05b8f64220c130e720edc98455ed5404240dcd29",
       "src": "https://github.com/eggfriedrice24/eggfriedrice.nvim"
     },
     "everforest": {
@@ -121,7 +121,7 @@
       "src": "https://github.com/waytoopurple/fieldlights.nvim"
     },
     "flash.nvim": {
-      "rev": "b6346946d10d07998efee029fb0f7a593806d0cd",
+      "rev": "5f0f270fdc7c5b0c21d903ee85b9cb06f2ac636a",
       "src": "https://github.com/folke/flash.nvim"
     },
     "folk-nvim": {
@@ -133,7 +133,7 @@
       "src": "https://github.com/nkxxll/ghostty-default-style-dark.nvim"
     },
     "gitsigns.nvim": {
-      "rev": "31d6fb2d618bca1482b9f274751ead5f03461408",
+      "rev": "5be654f2232c10ddcad19c1607a67b6b4b78fc29",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "gondolin.nvim": {
@@ -177,7 +177,7 @@
       "src": "https://github.com/serenevoid/kiwi.nvim"
     },
     "koda.nvim": {
-      "rev": "a7da3ced59eadafbda6eb4d7f7e2a6a3d9ecf858",
+      "rev": "25a5c98ca2f6bb0b69f5e2654a78f0d7c7e0721d",
       "src": "https://github.com/oskarnurm/koda.nvim"
     },
     "kukishinobu.vim": {
@@ -193,7 +193,7 @@
       "src": "https://github.com/omacom-io/lumon.nvim"
     },
     "luna.nvim": {
-      "rev": "95e1c7beeb7bffa1f02a28f0fe921520d79ce317",
+      "rev": "727c19334528e1b8939f518d1ea43c4e62d98f91",
       "src": "https://github.com/WTFox/luna.nvim"
     },
     "lytmode.nvim": {
@@ -293,7 +293,7 @@
       "src": "https://github.com/terkelg/north-sea.nvim"
     },
     "nvim": {
-      "rev": "7365b8dede43a82ed1df741275b75333422e5402",
+      "rev": "6f8ca3d0f228fbd61e5aeeb5c68343c410720873",
       "src": "https://github.com/ember-theme/nvim"
     },
     "nvim-earthsong": {
@@ -301,7 +301,7 @@
       "src": "https://github.com/guillermodotn/nvim-earthsong"
     },
     "nvim-lint": {
-      "rev": "a219b2c9e5b4765e5c845aba119dad55806fcaf1",
+      "rev": "3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e",
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-surround": {
@@ -309,7 +309,7 @@
       "src": "https://github.com/kylechui/nvim-surround"
     },
     "nvim-treesitter": {
-      "rev": "3d3321b560a63ff92a8692401f303a5123336b86",
+      "rev": "8b98b4470eb326f1c7b50dae79f8c963568e5720",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-endwise": {
@@ -381,7 +381,7 @@
       "src": "https://github.com/sainnhe/sonokai"
     },
     "sora": {
-      "rev": "958f8f5c3c9790f1902c2c37f5c30e6fe36bab18",
+      "rev": "504df4913c55dd9ad658e331b172f86b0537b439",
       "src": "https://github.com/aejkatappaja/sora"
     },
     "stilla.nvim": {
@@ -396,16 +396,20 @@
       "rev": "8e34e3af3295ad81738c237a299571c5583875a3",
       "src": "https://github.com/NisonChrist/tailwind-theme.nvim"
     },
+    "technicolor.nvim": {
+      "rev": "31d51f735152e081df655b323210b52735b0e8a6",
+      "src": "https://github.com/jazzjackrabbit/technicolor.nvim"
+    },
     "themeinitnvim": {
       "rev": "d4cbc316523db578dce889de6f531e8da12c455a",
       "src": "https://github.com/initsyscall/themeinitnvim"
     },
     "thorn.nvim": {
-      "rev": "3653d1508e605fe87ec174e8c2ad0f36ce9844f3",
+      "rev": "e7074d253db38d76c5b709ac29f22c5e508da9d3",
       "src": "https://github.com/jpwol/thorn.nvim"
     },
     "token": {
-      "rev": "7284e7658223c8626487cd85153e8507f3dadd5e",
+      "rev": "bf483e5a12132f478c5721594ce29a247fefaf68",
       "src": "https://github.com/thorstenrhau/token"
     },
     "tomorrow-night-bright-rstudio.nvim": {

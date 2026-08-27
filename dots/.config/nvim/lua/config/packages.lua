@@ -144,6 +144,7 @@ vim.pack.add({
   "https://github.com/rockorager/radix.nvim",
   "https://github.com/art220/dancheong.nvim",
   "https://github.com/WTFox/luna.nvim",
+  "https://github.com/jazzjackrabbit/technicolor.nvim",
 
   -- editing
   "https://github.com/folke/flash.nvim",
