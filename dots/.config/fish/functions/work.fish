@@ -188,6 +188,13 @@ function __work_prompt --description 'Build the intake prompt for a ticketed pro
     test -n "$ticket" -a -f "$template"; or return 0
 
     set -l prompt (string replace -a '{{TICKET}}' $ticket <$template | string collect)
+    # Base PR-flow choreography for every ticketed project; per-repo
+    # overlays below layer on top of it rather than replacing it.
+    if test -f ~/.config/work/overlays/default.md
+        set prompt "$prompt
+
+"(string collect <~/.config/work/overlays/default.md)
+    end
     for repo in $repos
         set -l overlay
         if test -f $projdir/$repo/.agents/work-intake.md
