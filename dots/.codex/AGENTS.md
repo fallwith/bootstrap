@@ -522,6 +522,17 @@ values from these:
 ### Code Review
 - **Approve-with-suggestions over blocking** when the PR is a net
   improvement. Don't block on polish.
+- **Personal instructions govern the agent, not another author's code.**
+  Never use a global or personal preference as the basis for a PR
+  finding. Findings may rely on a functional or security defect, a
+  repository-local rule that governs the changed code, or a review
+  criterion explicitly requested in the current conversation. Cite the
+  repository rule behind any style finding; without one, do not file it.
+  Repository-local rules win when an explicit criterion conflicts.
+- **Every published finding gets an inline home.** Never mention or
+  allude to a finding in the review summary unless it is earmarked for an
+  inline comment or an existing duplicate thread. If there are no inline
+  findings, keep the summary generic.
 - **Ask whether the fix is an instance of the bug.** A guard against
   trusting an unverified identifier must not key on one itself.
 - **Check FE/BE contract alignment** when changing API responses, enum
