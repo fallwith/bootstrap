@@ -163,6 +163,61 @@ investigation -- that spends my time on a decision I was never offered.
 - **Size a change before proposing to split it.** "This needs its own PR"
   is a cost claim; measure it. Distinguish a real constraint (documented
   policy, a migration that must ship alone) from your own caution.
+- **A deploy step is new structure too.** An ordering requirement, a
+  phased rollout, a "run this before merging", a window during which two
+  versions must coexist -- each is a cost I have to carry forever, and
+  each gets the same "name what breaks without it" test as a new file.
+  **Never propose a phased, coordinated, or timing-sensitive rollout
+  unprompted; escalate instead.** If a change appears to need one, that
+  is evidence the change is wrong, not that the rollout is clever.
+
+### A queued job's signature is a wire format
+Not Sidekiq-specific: it holds for DelayedJob, Celery, SQS consumers,
+Lambda events, any message that outlives the process that wrote it.
+Arguments are serialized into a queue and read back by a *different*
+build of the code.
+- **Never add, remove, reorder or retype a parameter on an existing
+  job's entry point.** Two skews bite, and a default value only fixes
+  the first: messages enqueued by old code arriving at new workers, and
+  messages enqueued by new code arriving at workers still running old
+  code during a rolling deploy.
+- **A job derives its context; it does not receive it.** If the job needs
+  to know the time, a flag, a cohort, or a config value, read it inside
+  `perform`. Passing it in buys caller-side tidiness and pays for it with
+  a deploy dependency.
+- The tell that this went wrong is a proposal for phased deploys,
+  dual-reading consumers, or "leave the old argument for one release."
+  When that appears, revisit the signature change instead.
+- Adding a *new* job is free. Changing an existing one is not.
+
+### An unlisted drawback is a stop event, not a design event
+When work has an agreed set of accepted trade-offs and you discover one
+that is not on that list, **report it and stop. Do not design a
+mitigation for it.** Mitigating a newly-found problem is normally the
+right instinct, which is exactly why this needs saying: silently
+absorbing it converts my explicit constraint into your judgement call,
+and I find out at diff time.
+- The report names the drawback, what triggers it, and the cheapest
+  option that avoids it -- typically abandoning the mechanism that
+  introduced it.
+- "I found a problem and solved it" is the failure. "I found a problem,
+  here are your options" is the ask.
+- This outranks momentum. Being mid-implementation is not a reason to
+  push through.
+
+### Invariants travel, mechanisms don't
+When writing anything another session will execute -- a ticket, a plan,
+a handoff doc -- state the **constraint and its why**, never only your
+chosen implementation. A mechanism written as a spec becomes mandatory,
+and the receiving session will defend it rather than question it.
+- Write prohibitions, not intentions. "No new arguments on a queued
+  job" survives serialization; "keep it minimal" does not.
+- Give a size budget as a tripwire: expected files and rough line count,
+  plus "if your plan exceeds this, stop and report before writing code."
+- List accepted drawbacks exhaustively, and say that discovering another
+  is a stop event.
+- Omit "known gaps", "nice to have", and "future work" sections. Anything
+  in the body reads as in scope.
 
 ### Service and Resource Availability
 - Surface OS / Homebrew / container (Docker, Colima) unavailability. Do
