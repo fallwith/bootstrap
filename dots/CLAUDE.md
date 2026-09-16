@@ -511,6 +511,20 @@ that exits immediately.
   loaded-but-stale relation, where `count` is what you want.
 - **Park repeated computation in constants** -- a `.to_a` or `.freeze`
   on a static value during every invocation belongs in a constant.
+- **`where(col: [])` skips the query when loading rows, but not when
+  aggregating.** `WhereClause#contradiction?` short-circuits the record
+  readers -- `to_a`, `pluck`, `exists?`, `first` all return empty having
+  issued nothing. `count`, `size` and `maximum` do not: they send real
+  SQL ending in `AND 1=0`. The relation is NOT a `NullRelation` (`none`
+  is), and `to_sql` still shows the `1=0`, so neither is evidence either
+  way -- measure with a `sql.active_record` subscriber.
+  - So a `return X if list.empty?` guard in front of a `pluck` saves
+    nothing, and a spec pinning its query count asserts something that
+    cannot fail. In front of a `count` the guard is real.
+  - Verified on Rails 7.0.10. Check before relying on it: review agents
+    assert the opposite confidently, and the `#size` over `#count` rule
+    above does not rescue you here -- `size` on an unloaded relation
+    issues the same COUNT.
 
 ### Rails Console Snippet Format
 - Wrap multi-line chains in parentheses: IRB treats a leading `.` as a
