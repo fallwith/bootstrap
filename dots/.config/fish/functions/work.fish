@@ -335,7 +335,10 @@ function __work_resume --description 'Resume the latest session of an existing p
 
     test -d "$dir"; or set dir $projdir
     cd $dir
-    __work_claude $projdir --resume $sess
+    # --name on resume too: an unnamed session advertises an auto
+    # name (cwd basename + suffix) to peers via cross-session
+    # messaging, making it unrecognizable as this project.
+    __work_claude $projdir --resume $sess --name (basename $projdir)
 end
 
 function __work_first_prompt --description 'Extract a recognizable opening prompt from a session jsonl'
@@ -453,7 +456,8 @@ function __work_session_search --description 'Find a session by transcript conte
         case claude
             set -l pfile (__work_project_file $cwd)
             if test -n "$pfile"
-                __work_claude (dirname $pfile) --resume $session
+                set -l projdir (dirname $pfile)
+                __work_claude $projdir --resume $session --name (basename $projdir)
             else
                 claude --resume $session
             end
@@ -621,6 +625,15 @@ function __work_start --description 'Create a project, or resume it if it exists
         echo "the harness-provided /tmp scratchpad or any other system"
         echo "temp directory. Files there survive across sessions and"
         echo "are archived with the project at teardown."
+        echo ""
+        echo "## Peer sessions"
+        echo ""
+        echo "Agent sessions on this machine are named after their"
+        echo "~/projects directory (this one answers to $name)."
+        echo "Use ListAgents to see reachable peers; a session whose"
+        echo "name starts with PROJECT- coordinates a whole Linear"
+        echo "project and is the right peer to ask about cross-issue"
+        echo "context, decisions, and sequencing."
     end >$projdir/AGENTS.md
     ln -s AGENTS.md $projdir/CLAUDE.md
 
@@ -727,7 +740,7 @@ function __work_promote --description 'Convert an ad-hoc session in the current 
         return 0
     end
     cd $newcwd
-    __work_claude $projdir --resume $sid
+    __work_claude $projdir --resume $sid --name (basename $projdir)
 end
 
 function __work_add --description 'Add a repo worktree to an existing project'
