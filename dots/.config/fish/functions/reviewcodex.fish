@@ -46,10 +46,10 @@ Return only that Markdown -- no tool logs or progress notes."
   set -l transcript_file (string replace -r '\\.md$' '' -- "$findings_file")"_transcript.log"
 
   codex exec \
-    --sandbox read-only \
+    --profile review \
     -C "$reviewdir" \
     -o "$findings_file" \
-    "$prompt" >"$transcript_file"
+    "$prompt" >"$transcript_file" 2>&1
 
   echo "Findings:   $findings_file"
   echo "Transcript: $transcript_file"

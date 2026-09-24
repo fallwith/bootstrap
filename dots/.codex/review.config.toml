@@ -1,0 +1,17 @@
+default_permissions = "review"
+approval_policy = "never"
+
+[features]
+network_proxy = true
+
+[permissions.review]
+description = "Read-only PR review with GitHub access."
+extends = ":read-only"
+
+[permissions.review.network]
+enabled = true
+
+[permissions.review.network.domains]
+"api.github.com" = "allow"
+"github.com" = "allow"
+"objects.githubusercontent.com" = "allow"
