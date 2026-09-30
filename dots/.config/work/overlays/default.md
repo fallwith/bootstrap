@@ -4,6 +4,12 @@ until it yields diminishing returns.
 If the repository offers a `/review-pr` command,
 the plan must make use of it after `/simplify`,
 and must act on its findings before the PR is opened.
+Check the skill's documented flags first:
+where `/review-pr` supports `--second-opinion` (or `--model both`),
+run it with that switch --
+the independent second opinion then arrives with this pre-PR pass,
+tagged by model,
+and its findings are triaged like any other `/review-pr` finding.
 
 Whatever gets changed in response to a review --
 `/review-pr`'s findings, Codex's, or a human reviewer's --
@@ -16,6 +22,9 @@ for accuracy, or for consistency with the lines around them.
 After `/review-pr`, the plan should:
 
 1. Push the branch and open the PR.
+   Steps 2-4 exist to obtain an independent Codex opinion;
+   skip them entirely when `/review-pr` ran with `--second-opinion`,
+   which already provided one.
 2. Determine the repo slug via
    `gh repo view --json nameWithOwner --jq .nameWithOwner`
    and the PR number via `gh pr view --json number --jq .number`.
@@ -46,5 +55,5 @@ that work has been examined by nothing at all.
 The gates cover the tree at the moment they ran,
 so a branch whose scope grew afterwards is effectively
 unreviewed however many passes ran before the growth.
-`reviewcodex` still runs once; `/simplify` and `/review-pr`
-are the two to repeat on the delta.
+`reviewcodex` still runs at most once; `/simplify` and `/review-pr`
+(with the same flags as before) are the two to repeat on the delta.
