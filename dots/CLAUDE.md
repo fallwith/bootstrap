@@ -374,6 +374,13 @@ retell the work.
   suggestion" button, for contributor credit and exact wording. Do not
   apply locally.
 - **Bot suggestions**: apply directly, batched into one edit pass.
+- **A comment states a decision, never an offer.** The PR is the
+  proposal; a comment says what we decided and did. No "happy to", no
+  "we could", no floating a change and waiting to see whether the
+  reviewer bites -- that stalls the PR on a reply nobody owes. When a
+  reviewer's ask admits more than one response, bring me the options
+  first. We decide together, then the change lands and the reply says
+  which and why.
 
 ### Attribution and Voice
 
