@@ -53,6 +53,13 @@
 #                        ~/.config/work/config.json, then the
 #                        repo's origin/HEAD)
 #   -n/--no-launch    prep the project but don't start a session
+#   --parent PROJ     this project belongs to PROJ's initiative;
+#                       stored in project.json, named in AGENTS.md,
+#                       blocks PROJ's teardown while present
+#   --linear-project URL  marks this project as the COORDINATOR of
+#                       that Linear project: first launch gets the
+#                       ~/.config/work/coordinator.md intake (not
+#                       plan mode) instead of the ticket intake
 #   --no-claim        skip the Linear In Progress + assign-to-me
 #                       transition (e.g. taking over a reopened
 #                       ticket that isn't yours yet)
@@ -265,9 +272,21 @@ function __work_claude_session --description 'Launch a new Claude session record
     __work_claude $projdir --name (basename $projdir) --session-id $session_id $rest
 end
 
+function __work_coordinator_prompt --description 'Build the coordinator intake from its template'
+    set -l pf $argv[1]
+    set -l template ~/.config/work/coordinator.md
+    test -f $template; or return 0
+    set -l title (jq -r '.title // empty' $pf)
+    set -l lp (jq -r '.linear_project // empty' $pf)
+    string replace -a '{{TITLE}}' $title <$template \
+        | string replace -a '{{LINEAR_PROJECT}}' $lp \
+        | string replace -a '{{NAME}}' (basename (dirname $pf))
+end
+
 function __work_launch --description 'Start a tracked session for a project'
     set -l projdir $argv[1]
     set -l prompt $argv[2]
+    set -l mode $argv[3]
     set -l pf $projdir/project.json
 
     # Single-repo projects run from the repo so its slash commands
@@ -280,7 +299,11 @@ function __work_launch --description 'Start a tracked session for a project'
     end
 
     if test -n "$prompt"
-        __work_claude_session $pf --permission-mode plan $prompt
+        if test "$mode" = plan
+            __work_claude_session $pf --permission-mode plan $prompt
+        else
+            __work_claude_session $pf $prompt
+        end
     else
         __work_claude_session $pf
     end
@@ -323,13 +346,20 @@ function __work_resume --description 'Resume the latest session of an existing p
             echo "No resumable session transcript; starting a new session."
         end
         set -l prompt ''
+        set -l mode ''
         # NB: not `.intake // true` -- jq's // treats false as absent
         if test (jq -r '.intake != false' $pf) = true
-            set -l ticket (jq -r '.ticket // empty' $pf)
-            set -l repos (jq -r '.repos[]?.path' $pf)
-            set prompt (__work_prompt $projdir "$ticket" $repos | string collect)
+            set -l lp (jq -r '.linear_project // empty' $pf)
+            if test -n "$lp"
+                set prompt (__work_coordinator_prompt $pf | string collect)
+            else
+                set -l ticket (jq -r '.ticket // empty' $pf)
+                set -l repos (jq -r '.repos[]?.path' $pf)
+                set prompt (__work_prompt $projdir "$ticket" $repos | string collect)
+                test -n "$prompt"; and set mode plan
+            end
         end
-        __work_launch $projdir "$prompt"
+        __work_launch $projdir "$prompt" $mode
         return
     end
 
@@ -467,13 +497,23 @@ function __work_session_search --description 'Find a session by transcript conte
 end
 
 function __work_start --description 'Create a project, or resume it if it exists'
-    argparse 'r/repo=+' 'b/base=' n/no-launch no-claim no-intake -- $argv
+    argparse 'r/repo=+' 'b/base=' 'parent=' 'linear-project=' n/no-launch no-claim no-intake -- $argv
     or return 1
 
     set -l id $argv[1]
     if test -z "$id"
-        echo "Usage: work <TICKET|PREFIX-slug> [-r repo]... [-b base] [-n] [--no-claim] [--no-intake]" >&2
+        echo "Usage: work <TICKET|PREFIX-slug> [-r repo]... [-b base] [--parent PROJ] [--linear-project URL] [-n] [--no-claim] [--no-intake]" >&2
         return 1
+    end
+
+    set -l parent ''
+    if test -n "$_flag_parent"
+        set -l parent_dir (__work_find $_flag_parent)
+        if test -z "$parent_dir"
+            echo "Parent project not found: $_flag_parent" >&2
+            return 1
+        end
+        set parent (basename $parent_dir)
     end
 
     set -l existing (__work_find $id)
@@ -577,9 +617,13 @@ function __work_start --description 'Create a project, or resume it if it exists
 
     printf '%s\n' $repo_objs | jq -s \
         --arg ticket "$ticket" --arg title "$title" \
+        --arg parent "$parent" --arg lp "$_flag_linear_project" \
         --arg created (date '+%Y-%m-%dT%H:%M') \
         '{ticket: (if $ticket == "" then null else $ticket end),
-          title: $title, created: $created, repos: ., sessions: []}' >$projdir/project.json
+          title: $title, created: $created,
+          parent: (if $parent == "" then null else $parent end),
+          linear_project: (if $lp == "" then null else $lp end),
+          repos: ., sessions: []}' >$projdir/project.json
 
     if test -n "$ticket"; and not set -q _flag_no_claim
         # linear-cli can report success without applying (observed
@@ -630,10 +674,21 @@ function __work_start --description 'Create a project, or resume it if it exists
         echo ""
         echo "Agent sessions on this machine are named after their"
         echo "~/projects directory (this one answers to $name)."
-        echo "Use ListAgents to see reachable peers; a session whose"
-        echo "name starts with PROJECT- coordinates a whole Linear"
-        echo "project and is the right peer to ask about cross-issue"
-        echo "context, decisions, and sequencing."
+        echo "Use ListAgents to see reachable peers. When this file"
+        echo "names a coordinator for this project, that session is"
+        echo "the one to ask about cross-issue context and decisions."
+        if test -n "$parent"; and test -f ~/.config/work/worker.md
+            echo ""
+            string replace -a '{{PARENT}}' $parent <~/.config/work/worker.md \
+                | string replace -a '{{PARENT_DIR}}' $HOME/projects/$parent
+        end
+        if test -n "$_flag_linear_project"
+            echo ""
+            echo "This project coordinates Linear project"
+            echo "$_flag_linear_project. Worker projects name it in"
+            echo "their project.json parent field; enumerate them by"
+            echo "reading ~/projects/*/project.json."
+        end
     end >$projdir/AGENTS.md
     ln -s AGENTS.md $projdir/CLAUDE.md
 
@@ -646,11 +701,11 @@ function __work_start --description 'Create a project, or resume it if it exists
 end
 
 function __work_promote --description 'Convert an ad-hoc session in the current dir into a project'
-    argparse 'r/repo=+' 'b/base=' 's/session=' n/no-launch no-claim no-intake -- $argv
+    argparse 'r/repo=+' 'b/base=' 's/session=' 'parent=' 'linear-project=' n/no-launch no-claim no-intake -- $argv
     or return 1
     set -l id $argv[1]
     if test -z "$id"
-        echo "Usage: work promote <TICKET|PREFIX-slug> [-s session-id] [-r repo]... [-b base] [-n] [--no-claim] [--no-intake]" >&2
+        echo "Usage: work promote <TICKET|PREFIX-slug> [-s session-id] [-r repo]... [-b base] [--parent PROJ] [--linear-project URL] [-n] [--no-claim] [--no-intake]" >&2
         return 1
     end
     set -l srcdir (pwd)
@@ -697,6 +752,9 @@ function __work_promote --description 'Convert an ad-hoc session in the current 
         set -a create_args --repo $r
     end
     test -n "$_flag_base"; and set -a create_args --base $_flag_base
+    test -n "$_flag_parent"; and set -a create_args --parent $_flag_parent
+    test -n "$_flag_linear_project"
+    and set -a create_args --linear-project $_flag_linear_project
     set -q _flag_no_claim; and set -a create_args --no-claim
     set -q _flag_no_intake; and set -a create_args --no-intake
     __work_start $create_args
@@ -908,6 +966,19 @@ function __work_activity --description 'Epoch of the latest activity in a projec
     echo $latest
 end
 
+function __work_family_activity --description 'Latest activity across a project and its children'
+    set -l projdir $argv[1]
+    set -l name (basename $projdir)
+    set -l latest (__work_activity $projdir)
+    for cpf in ~/projects/*/project.json
+        set -l cp (jq -r '.parent // empty' $cpf 2>/dev/null)
+        test "$cp" = "$name"; or continue
+        set -l ca (__work_activity (dirname $cpf))
+        test $ca -gt $latest; and set latest $ca
+    end
+    echo $latest
+end
+
 function __work_status --description 'Local status of every project (no network)'
     set -l dirs ~/projects/*/
     if test (count $dirs) -eq 0
@@ -1093,6 +1164,18 @@ function __work_teardown --description 'Remove worktrees/clones, archive project
         else
             set -a blockers "$base: unregistered git checkout (work adopt first)"
         end
+    end
+
+    # Tearing down a coordinator orphans workers whose AGENTS.md and
+    # project.json name it as parent.
+    set -l children
+    for cpf in ~/projects/*/project.json
+        test "$cpf" = "$pf"; and continue
+        set -l cp (jq -r '.parent // empty' $cpf 2>/dev/null)
+        test "$cp" = "$name"; and set -a children (basename (dirname $cpf))
+    end
+    if test (count $children) -gt 0
+        set -a blockers (count $children)" project(s) list this as parent: "(string join ', ' $children)
     end
 
     if test (count $blockers) -gt 0; and not set -q _flag_force
@@ -1397,7 +1480,9 @@ function __work_gc --description 'Flag and optionally tear down finished/stale p
             end
         end
 
-        set -l idle (math $now - (__work_activity $projdir))
+        # Family-aware: a coordinator is not idle while its workers
+        # are active.
+        set -l idle (math $now - (__work_family_activity $projdir))
         if test $idle -gt $idle_limit
             set -a reasons "idle "(math "floor($idle / 86400)")"d"
         end
@@ -1499,11 +1584,15 @@ function __work_list --description 'List projects under ~/projects'
         set -l name (basename $d)
         set -l title ''
         set -l sessions 0
+        set -l parent ''
         if test -f $d/project.json
             set title (jq -r '.title // empty' $d/project.json)
             set sessions (jq -r '.sessions | length' $d/project.json)
+            set parent (jq -r '.parent // empty' $d/project.json)
         end
-        printf '%-44s %2d sessions  %s\n' $name $sessions $title
+        set -l suffix ''
+        test -n "$parent"; and set suffix "  (parent: $parent)"
+        printf '%-44s %2d sessions  %s%s\n' $name $sessions $title $suffix
     end
 end
 
@@ -1536,6 +1625,8 @@ function __work_help
     echo "Create options:"
     echo "  -r/--repo NAME    repo to include (repeatable, required)"
     echo "  -b/--base BRANCH  base branch for new feature branches"
+    echo "  --parent PROJ     belongs to PROJ's initiative (worker role)"
+    echo "  --linear-project URL  coordinator of that Linear project"
     echo "  -n/--no-launch    prep the project but don't start a session"
     echo "  --no-claim        don't touch the Linear ticket (state/assignee)"
     echo "  --no-intake       sessions start blank (no intake prompt)"

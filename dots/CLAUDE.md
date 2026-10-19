@@ -120,7 +120,11 @@ investigation -- that spends my time on a decision I was never offered.
   are hosted on claude.ai, so publishing puts the content on someone
   else's server even while the page is private; private-by-default is not
   the point. `enableArtifact: false` in `~/.claude/settings.json` enforces
-  it. This line exists so it is never proposed in the first place. Deliver
+  it -- for Artifacts only: the claude.ai Claude Docs connector creates
+  hosted docs through a separate path (a subagent once did, then
+  self-reverted), gated by the `mcp__claude_ai_Claude_Docs` permissions
+  deny rule in the same file.
+  This line exists so it is never proposed in the first place. Deliver
   a standalone `.html` file I can open in a browser, or markdown. Do not
   offer to publish "just this once", and do not treat a PO-facing or
   team-facing audience as a reason to reach for one.
@@ -312,10 +316,10 @@ and the receiving session will defend it rather than question it.
   reset, per-commit reverts, or rebuild-and-force-push.
 
 ### Review checkpoints
-- **Show the full diff -- production and specs -- and wait for approval
-  before committing or pushing.** Never commit speculatively. The risk
-  is "the commit happened before I saw it," not the order the work was
-  written in; spec-first TDD is fine and often preferred.
+- **Wait for approval before committing or pushing.** Never commit
+  speculatively. The risk is "the commit happened before I saw it,"
+  not the order the work was written in; spec-first TDD is fine and
+  often preferred.
 - **Run `git diff` as its own Bash call.** Bundled with lint or
   verification commands, one nonzero exit collapses the block behind an
   `Error` banner and truncates it mid-hunk. A zero-match `ug` exits 1,

@@ -28,6 +28,14 @@ every review pass examined the diff as originally authored,
 and a passing spec run does not check the edits that came after
 for accuracy, or for consistency with the lines around them.
 
+In a coordinated worker project
+(this project's AGENTS.md names a coordinator),
+the approval flow described there governs:
+the initial commit, every push, PR creation,
+and any Sandbox write go through the staged-tree approval
+and the routing in AGENTS.md.
+The steps below are the mechanics; those gates come first.
+
 After the review skill, the plan should:
 
 1. Push the branch and open the PR.
