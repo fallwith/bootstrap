@@ -170,6 +170,10 @@ function __work_worktree_add --description 'Create a project worktree and emit i
         git -C $src worktree add $wt $branch >&2; or return 1
     else
         git -C $src worktree add $wt -b $branch origin/$base >&2; or return 1
+        # The origin/<base> start-point sets the upstream to the BASE
+        # branch, so a bare `git push` targets staging/main. Unset it;
+        # the first push establishes origin/<branch> instead.
+        git -C $wt branch --unset-upstream 2>/dev/null
     end
 
     __work_link_personal $wt $repo
