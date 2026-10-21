@@ -2,26 +2,23 @@ For any non-trivial task, ensure that the plan includes instructions
 to repeatedly make use of the `/simplify` command
 until it yields diminishing returns.
 After `/simplify`, and before the PR is opened,
-the plan must run the repository's own review skill,
-chosen in this order:
-
-1. **`review-work`**, if the repository offers that skill.
-   It reviews the local changes and fixes what it finds, in one pass.
-   Acting on it means re-reading the fixes it applied
-   and settling the decisions it held back.
-   If the repository's own instructions already call for `review-work`
-   at the end of implementation, the run after `/simplify` satisfies them.
-   Do not also run it before `/simplify`.
-2. **`/review-pr`**, if the repository offers that command instead.
-   Act on its findings.
-   Check its documented flags first.
-   If it supports `--second-opinion` (or `--model both`),
-   run it with that switch.
-   The independent second opinion then arrives with this pre-PR pass,
-   tagged by model, and is triaged like any other `/review-pr` finding.
+the plan must run **`/review-pr`**, if the repository offers
+that command -- it is the only repo-level review skill;
+do not look for another.
+Act on its findings.
+Check its documented flags first.
+If it supports `--second-opinion` (or `--model both`),
+run it with that switch.
+The independent second opinion then arrives with this pre-PR pass,
+tagged by model, and is triaged like any other `/review-pr` finding.
+If the repository offers no `/review-pr`, run the built-in
+`code-review` skill on the local changes instead and act on
+its findings the same way; it has no `--second-opinion`, so
+the Codex review below then provides the second opinion.
 
 Whatever gets changed in response to a review --
-the review skill's fixes or findings, Codex's, or a human reviewer's --
+`/review-pr`'s or `code-review`'s findings, Codex's, or a
+human reviewer's --
 re-read the applied hunks before committing.
 Review fixes are themselves unreviewed code:
 every review pass examined the diff as originally authored,
@@ -36,7 +33,7 @@ and any Sandbox write go through the staged-tree approval
 and the routing in AGENTS.md.
 The steps below are the mechanics; those gates come first.
 
-After the review skill, the plan should:
+After that review pass, the plan should:
 
 1. Push the branch and open the PR.
    Steps 2-4 exist to obtain an independent Codex opinion;
@@ -65,12 +62,14 @@ After the review skill, the plan should:
 
 If work lands after the gates that is not a review fix --
 new scope, or a product decision arriving mid-session --
-re-run the review skill against the last gated commit,
+re-run the review pass (`/review-pr`, or its `code-review`
+fallback) against the last gated commit,
 so the delta gets reviewed too.
 Re-reading the applied hunks does not cover this case:
 that work has been examined by nothing at all.
 The gates cover the tree at the moment they ran,
 so a branch whose scope grew afterwards is effectively
 unreviewed however many passes ran before the growth.
-`reviewcodex` still runs at most once; `/simplify` and the review skill
-(with the same flags as before) are the two to repeat on the delta.
+`reviewcodex` still runs at most once; `/simplify` and that review
+pass (with the same flags as before) are the two to repeat on the
+delta.
