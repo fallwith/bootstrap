@@ -1,5 +1,5 @@
 function z --description 'Interactive directory selection using fzf'
-  set -l search_roots ~ ~/.config ~/git
+  set -l search_roots ~ ~/.config ~/git ~/projects
 
   for dir in ~/git/*/
     if test -d "$dir/.bare"
