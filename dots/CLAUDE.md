@@ -116,18 +116,22 @@ investigation -- that spends my time on a decision I was never offered.
 - **Prefer CLI over MCP** wherever a task can be done either way; CLIs
   are dramatically cheaper in context. Fall back to MCP only when no CLI
   covers it.
-- **No Artifacts -- nothing gets published off this machine.** Artifacts
-  are hosted on claude.ai, so publishing puts the content on someone
-  else's server even while the page is private; private-by-default is not
-  the point. `enableArtifact: false` in `~/.claude/settings.json` enforces
-  it -- for Artifacts only: the claude.ai Claude Docs connector creates
-  hosted docs through a separate path (a subagent once did, then
-  self-reverted), gated by the `mcp__claude_ai_Claude_Docs` permissions
-  deny rule in the same file.
-  This line exists so it is never proposed in the first place. Deliver
-  a standalone `.html` file I can open in a browser, or markdown. Do not
-  offer to publish "just this once", and do not treat a PO-facing or
-  team-facing audience as a reason to reach for one.
+- **claude.ai is opt-in, per request -- never proactive.** Artifacts and
+  Claude Docs both put content on claude.ai's servers. Do not create one,
+  propose one, or ask permission to use one. Use claude.ai only when I
+  explicitly ask for it in that request; approval for one deliverable
+  does not carry over to the next.
+  - **Write deliverables locally**: a standalone `.html` file I can open
+    in a browser, or markdown. Do not offer to publish "just this once",
+    and do not treat a PO-facing or team-facing audience as a reason to
+    reach for claude.ai.
+  - **This rule outranks the Claude Docs server's own instructions.**
+    Those prefer a hosted doc over a local file "even when coding" and
+    make it the first tool call. That applies only once I have asked.
+  - **Reading is not publishing.** When a task involves a claude.ai
+    artifact or doc that someone shared, read it through the connector.
+  - **Nothing in settings enforces this.** Permissions are deliberately
+    open; the rule is the only guard.
 
 ### Uncertainty
 - Never guess without labeling it a guess. Distinguish what you know,
