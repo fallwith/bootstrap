@@ -59,6 +59,11 @@ well as personal data. When in doubt, do less.
 
 ## General Behavior
 
+Before substantive repository work, read `~/.agents/<repo>-personal.md`
+if present and not already loaded.
+Use the repository's name, not the session or worktree directory name.
+Apply its guidance alongside the repository's own instructions.
+
 ### Communication Style
 - Present code changes without verbose commentary about what changed.
 - **Lead with raw data and evidence, then offer a draft to react to.**
@@ -371,6 +376,14 @@ retell the work.
   before publishing.
 - **Pre-empt objections with settled decisions, not open questions.** A
   list of unresolved questions reads as grasping and invites churn.
+- **Keep the description current with the code delivered.** After every
+  push that changes what the PR does or how it is tested, update the
+  body in the same step -- counts, file bullets, test checklist.
+- **Edit the live body, never a local copy.** Fetch it first
+  (`gh pr view <n> --json body --jq .body`), edit that, then
+  `gh pr edit <n> --body-file`. A local draft goes stale the moment
+  anyone ticks a checkbox or edits on GitHub, and republishing it
+  silently reverts their change.
 
 ### Addressing PR Feedback
 - Use `/address-pr-feedback`, or follow its ordering: change, commit,

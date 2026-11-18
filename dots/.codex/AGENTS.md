@@ -59,6 +59,11 @@ well as personal data. When in doubt, do less.
 
 ## General Behavior
 
+Before substantive repository work, read `~/.agents/<repo>-personal.md`
+if present and not already loaded.
+Use the repository's name, not the session or worktree directory name.
+Apply its guidance alongside the repository's own instructions.
+
 ### Communication Style
 - Present code changes without verbose commentary about what changed.
 - **Lead with raw data and evidence, then offer a draft to react to.**
