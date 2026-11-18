@@ -126,7 +126,7 @@ brew 'sdl2_ttf'
 brew 'sqlite'
 brew 'stripe/stripe-cli/stripe', trusted: true if working?
 # brew 'the_silver_searcher'
-brew 'terraform' if working?
+brew 'hashicorp/tap/terraform', trusted: true if working?
 brew 'tig'
 # brew 'tmux'
 brew 'todo-txt'
@@ -145,6 +145,7 @@ brew 'yarn'
 brew 'yazi'
 brew 'yt-dlp' # modern youtube-dl
 brew 'zig'
+brew 'neurosnap/tap/zmx', trusted: true
 # brew 'zsh'
 
 # brew install heroku/brew/heroku
