@@ -14,6 +14,7 @@ function reviewcodex --description 'Perform a PR review with Codex; write findin
     if not string match -q '/*' -- "$findings_file"
         set findings_file "$invocation_dir/$findings_file"
     end
+    set findings_file (path normalize -- "$findings_file")
 
     set -l findings_dir (dirname -- "$findings_file")
     mkdir -p "$review_dir_root" "$findings_dir"; or return 1
@@ -75,6 +76,25 @@ Return only that Markdown -- no tool logs or progress notes."
         -C "$reviewdir" \
         -o "$findings_file" \
         "$prompt" >"$transcript_file" 2>&1
+    set -l codex_status $status
+
+    if test $codex_status -ne 0
+        echo "codex exec failed (status $codex_status)." >&2
+        echo "Transcript: $transcript_file" >&2
+        return $codex_status
+    end
+
+    if not test -f "$findings_file"
+        echo "Review output file is missing: $findings_file" >&2
+        echo "Transcript: $transcript_file" >&2
+        return 1
+    end
+
+    if not test -s "$findings_file"
+        echo "Review output file is empty: $findings_file" >&2
+        echo "Transcript: $transcript_file" >&2
+        return 1
+    end
 
     echo "Findings:   $findings_file"
     echo "Transcript: $transcript_file"
